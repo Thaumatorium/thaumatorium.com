@@ -1,0 +1,17 @@
+{{ define "main" }}
+
+<h1>{{ .Title }}</h1>
+
+<hgroup>
+	<div class=article-meta>
+		<div class=author-box>Author: <span class=author>{{ with .Params.Author }}{{ .Params.Author }}{{ else }}NostraDavid{{ end }}</span></div>
+		<div class=published-box>Published: <time class=published datetime=2017-12-05T18:45:15+01:00>{{ .PublishDate.Format "2006-01-02" }}</time></div>
+		{{ if .Lastmod }}
+		<div class=published-box>Updated: <time class=published datetime=2017-12-05T18:45:15+01:00>{{ .Lastmod.Format "2006-01-02" }}</time></div>
+		{{ end }}
+	</div>
+</hgroup>
+
+{{ .Content }}
+
+{{ end }}

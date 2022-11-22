@@ -1,0 +1,26 @@
+
+{{ define "main"}}
+<h1>404 Not Found</h1>
+<p>This is the new page</p>
+<p>You've gone somewhere, where you're not supposed to be! That or I removed the page. It's likely my fault.</p>
+<p>Give the archives a try: <a id=archive></a></p>
+<p>Or search the site</p>
+<!-- created via https://cse.google.com/cse/all -->
+<script async src="https://cse.google.com/cse.js?cx=007273406661708460536:ir7f8zjh3fd"></script>
+<div class="gcse-search"></div>
+<footer>
+	PS: Hit me up (on one of the links in the footer) if any other search engine provides a customized search. This version is by Google, but I'd like to NOT use Google if I could. They already have enough power on the internet.
+</footer>
+
+<script>
+	// Just an inline script to fill in the Wayback Machine url for the user.
+
+	// insert the current URL
+	const target = "https://web.archive.org/" + window.location.href;
+
+	let archiveLink = document.getElementById("archive");
+	archiveLink.href = target;
+	archiveLink.innerHTML = target;
+
+</script>
+{{ end }}

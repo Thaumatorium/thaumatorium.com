@@ -1,0 +1,10 @@
+baseURL = 'http://thaumatorium.com/'
+languageCode = 'en-us'
+title = 'Thaumatorium'
+subtitle = 'Where the Magic happens'
+
+[taxonomies]
+author = 'NostraDavid'
+
+[markup.goldmark.renderer]
+unsafe = true
