@@ -4,9 +4,9 @@
 	<!-- For more information: https://www.w3.org/International/questions/qa-html-encoding-declarations#nonutf8 -->
 	<meta charset=utf-8 />
 	<!-- The title of the tab -->
-	<title>The Thaumatorium: NostraDavid's handcrafted website | The Thaumatorium</title>
+	<title>{{ .Title }} | The Thaumatorium</title>
 	<!-- This description should show up in Google results -->
-	<meta name=description content="This is a handcrafted blog where you can find articles and projects created by NostraDavid." />
+	<meta name=description content="{{ .Description }}" />
 	<!-- Needed for Hyvor, and helps search engines reduce duplicate content "/" vs "/index.html", for example -->
 	<link rel="canonical" href="https://thaumatorium.com/">
 	<!-- Theme color for Android/iOS -->
@@ -20,10 +20,7 @@
 	<link rel=webmanifest href=/manifest.json />
 	<link rel=icon href=/images/favicon.svg />
 
-	<!-- The reason for the ?v=1 in the CSS url is Cache Busting. This gives me control over which file version is cached on the user's end -->
-	<!-- 2020-08-05 I've removed ?v=1, because I never actually updated it. I can use it again once I ever move from raw HTML to a C# hosted site -->
-	<!-- Lets imagine a user has my first version cached, and I make a change, but the expiry date of the file is a year into the future. I can simply up the number and the browser will replace the file (no matter whether I actually made a change or not) -->
-	<!-- Now I'm, as of writing, hosting on github.io and I have no control over the expiry date (which is 10 minutes, IIRC), but now I can remember myself to do this in the future once I go the self-hosting route :) -->
+	<!-- ?v=x in the CSS url is for Cache Busting -->
 	<link rel=stylesheet href="/styles/main.css?v=3" />
 	<link rel=stylesheet href="/styles/projects.css?v=3" />
 
@@ -31,8 +28,8 @@
 	<!-- General OpenGraph data - shared between Facebook and Twitter -->
 	<meta property="og:url" content="https://thaumatorium.com/" />
 	<meta property="og:type" content="website" />
-	<meta property="og:title" content="NostraDavid's handcrafted website, with his articles and projects" />
-	<meta property="og:description" content="A handcrafted blog where you can find articles and projects created by NostraDavid." />
+	<meta property="og:title" content="{{ .Title }}" />
+	<meta property="og:description" content="{{ .Description }}" />
 	<meta property="og:image" content="https://thaumatorium.com/images/opengraph-cover.png?v=1" />
 	<meta property="og:image:width" content="1280" />
 	<meta property="og:image:height" content="668" />
@@ -41,8 +38,8 @@
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:site" content="@NostraDavid2" />
 	<meta name="twitter:creator" content="@NostraDavid2" />
-	<meta name="twitter:title" content="NostraDavid's handcrafted website, with his articles and projects">
-	<meta name="twitter:description" content="A handcrafted blog where you can find articles and projects created by NostraDavid.">
+	<meta name="twitter:title" content="{{ .Title }}">
+	<meta name="twitter:description" content="{{ .Description }}">
 	<meta name="twitter:image" content="https://thaumatorium.com/images/opengraph-cover.png?v=1">
 	<meta name="twitter:image:width" content="1280" />
 	<meta name="twitter:image:height" content="668" />
