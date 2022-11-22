@@ -1,5 +1,5 @@
 hugo --buildDrafts
-$htmlfiles = Get-ChildItem .\public\**\*.html
+$htmlfiles = Get-ChildItem .\public\ -Filter *.html -Recurse
 foreach ($file in $htmlfiles)
 {
 (Get-Content $file.PSPath) |
