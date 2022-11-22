@@ -1,5 +1,6 @@
 ---
 title: "How I fixed Reddit"
+description: "Well, improved more like it. One can't fix reddit"
 publishDate: 2020-07-17T00:00:00+01:00
 lastmod: 2020-07-17T00:00:00+01:00
 layout: article

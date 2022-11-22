@@ -1,5 +1,6 @@
 ---
 title: "NostraDavid's Computer hardware and general setup"
+description: "No idea anymore why I'm sharing this"
 publishDate: 2020-08-03T22:31:44+01:00
 lastmod: 2020-08-03T22:31:44+01:00
 ---

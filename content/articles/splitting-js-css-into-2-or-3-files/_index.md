@@ -1,5 +1,6 @@
 ---
 title: "Splitting JS/CSS into 2 or 3 files, meant for optimizing your site"
+description: "Just a little spark of an idea"
 publishDate: 2019-11-29T00:00:00+01:00
 lastmod: 2019-11-29T00:00:00+01:00
 layout: article

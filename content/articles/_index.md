@@ -1,5 +1,6 @@
 ---
-title: "NostraDavid's programming articles"
+title: "Articles"
+description: "NostraDavid's programming articles"
 publishDate: 2020-07-14T00:00:00+01:00
 lastmod: 2020-07-14T00:00:00+01:00
 ---

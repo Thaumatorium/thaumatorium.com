@@ -1,5 +1,6 @@
 ---
 title: "Haskell's fold functions explained"
+description: "It's comparable to the map function, but isn't ambigious about its direction"
 publishDate: 2019-05-01T00:00:00+01:00
 lastmod: 2019-05-01T00:00:00+01:00
 layout: article

@@ -1,5 +1,6 @@
 ---
-title: "About NostraDavid and the Thaumatorium"
+title: "About"
+description: "About NostraDavid and the Thaumatorium"
 publishDate: 2020-08-03T22:31:44+01:00
 lastmod: 2020-08-03T22:31:44+01:00
 ---
