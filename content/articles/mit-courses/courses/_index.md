@@ -1,7 +1,7 @@
 # MIT Courses as of 2023-06-09
 
 I used [MIT OCW](https://ocw.mit.edu/search/?s=department_course_numbers.sort_coursenum&u=compact) as source,
-then manipulated the HTML with regex until I had something like a Markdown table.
+then manipulated the HTML with regex until I had something table-like.
 
 | Couse #     | Name                                                                                                                                                                                                                                                                                                                                          | Level                               |
 | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
