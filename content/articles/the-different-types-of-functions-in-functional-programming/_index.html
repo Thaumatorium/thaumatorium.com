@@ -62,7 +62,7 @@ timesTwo = 2 *</code></pre>
 		<tr>
 			<td>Monadic</td>
 			<td>Takes an input, returns an output – has side effects (data changes) and uses either the bind >>= operator or do notation</td>
-			<td>From: <a href=https://wiki.haskell.org/All_About_Monads>https://wiki.haskell.org/All_About_Monads</a>
+			<td>From: <a http="https://wiki.haskell.org/All_About_Monads">https://wiki.haskell.org/All_About_Monads</a>
 				<pre><code class=lang-haskell>maternalGrandfather :: Sheep -&gt; Maybe Sheep
 maternalGrandfather s = (return s) &gt;&gt;= mother &gt;&gt;= father
 -- alternatively
@@ -76,7 +76,7 @@ mothersPaternalGrandfather s = do m &lt;- mother s
 		<tr>
 			<td>Parser Combinator</td>
 			<td>Accepts several parsers as input and returns a new parser as its output. </td>
-			<td>From: <a href=https://en.wikipedia.org/wiki/Parser_combinator>https://en.wikipedia.org/wiki/Parser_combinator</a> In this context, a parser is a function accepting strings as input and returning some structure as output, typically a parse tree or a set of indices representing locations in the string where parsing stopped successfully.</td>
+			<td>From: <a http="https://en.wikipedia.org/wiki/Parser_combinator">https://en.wikipedia.org/wiki/Parser_combinator</a> In this context, a parser is a function accepting strings as input and returning some structure as output, typically a parse tree or a set of indices representing locations in the string where parsing stopped successfully.</td>
 		</tr>
 	</tbody>
 </table>
