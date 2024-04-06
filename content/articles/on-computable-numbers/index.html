@@ -1371,7 +1371,7 @@ DADDCRDAA;DAADDRDAAA;
 		<p>where &rho;<sub>&gamma;</sub> is a function of very restricted, although not usually very simple, form: it is determined by the table for &Mscr;. &rho;<sub>&gamma;</sub> is &lambda;-definable (I omit the proof of this), i.e. there is a W.F.F. <var>A</var><sub>&gamma;</sub> such that, for all integers <var>n</var>,</p>
 		<div>{<var>A</var><sub>&gamma;</sub>} (<var>N</var><sub>&epsilon;(<var>n</var>)</sub>).</div>
 		<p>Let <var>U</var> stand for</p>
-		<div>&lambda;<var>u</var>[{{<var>u</var>}(<var>A</var><sub>&gamma;</sub>)}(<var>N</var><sub>r</sub>)],</div>
+		<div>&lambda;<var>u</var>[{ {<var>u</var>}(<var>A</var><sub>&gamma;</sub>)}(<var>N</var><sub>r</sub>)],</div>
 		<p>where <var>r</var>=&epsilon;(0); then, for all integers <var>n</var>,</p>
 		<div>{<var>U</var><sub>&gamma;</sub>}(<var>N</var><sub>n</sub>) conv <var>N</var><sub>&epsilon;(<var>n</var>)</sub>.</div>
 		<p>It may be proved that there is a formula <var>V</var> such that</p>
@@ -1384,14 +1384,14 @@ DADDCRDAA;DAADDRDAAA;
 			conv N3 otherwise.
 		</div>
 		<p>Let <var>W</var><sub>&gamma;</sub> stand for</p>
-		<div>&lambda;<var>u</var>[{{<var>V</var>}({<var>A</var><sub>&gamma;</sub>}({<var>U</var><sub>&gamma;</sub>}(<var>u</var>)))}({<var>U</var><sub>&gamma;</sub>}(<var>u</var>))].</div>
+		<div>&lambda;<var>u</var>[{ {<var>V</var>}({<var>A</var><sub>&gamma;</sub>}({<var>U</var><sub>&gamma;</sub>}(<var>u</var>)))}({<var>U</var><sub>&gamma;</sub>}(<var>u</var>))].</div>
 		<p>so that, for each integer <var>n</var>,</p>
-		<div>{{<var>V</var>}(<var>N</var><sub>&epsilon;(<var>n</var>+1)</sub>)}(<var>N</var><sub>&epsilon;(<var>n</var>+1)</sub>) conv {<var>W</var><sub>&gamma;</sub>}(<var>N</var><sub>n</sub>).</div>
+		<div>{ {<var>V</var>}(<var>N</var><sub>&epsilon;(<var>n</var>+1)</sub>)}(<var>N</var><sub>&epsilon;(<var>n</var>+1)</sub>) conv {<var>W</var><sub>&gamma;</sub>}(<var>N</var><sub>n</sub>).</div>
 		<p>and let <var>Q</var> be a formula such that</p>
-		<div>{{<var>Q</var>}(<var>W</var><sub>&gamma;</sub>)}(<var>N</var><sub>S</sub>) conv <var>N</var><sub>r(&epsilon;)</sub>,</div>
+		<div>{ {<var>Q</var>}(<var>W</var><sub>&gamma;</sub>)}(<var>N</var><sub>S</sub>) conv <var>N</var><sub>r(&epsilon;)</sub>,</div>
 		<p>where <var>r</var>(<var>s</var>) is the <var>s</var>-th integer <var>q</var> for which {<var>W</var><sub>&gamma;</sub>}(<var>N</var><sub>q</sub>) is convertible into either <var>N</var><sub>1</sub> or <var>B</var><sub>2</sub>. Then, if <var>M</var> stands for</p>
 		<!-- ! FIX FORMULA -->
-		<div>&lambda;<var>w</var>[{<var>W</var><sub>&gamma;</sub>}({{<var>Q</var>}(<var>W</var><sub>&gamma;</sub>)}(<var>w</var>))],</div>
+		<div>&lambda;<var>w</var>[{<var>W</var><sub>&gamma;</sub>}({ {<var>Q</var>}(<var>W</var><sub>&gamma;</sub>)}(<var>w</var>))],</div>
 		<p>it will have the required property&dagger;.</p>
 		<p>The Graduate College,
 		<p>Princeton University,
@@ -1401,9 +1401,9 @@ DADDCRDAA;DAADDRDAAA;
 		<p>&dagger; In a complete proof of the &lambda;-definability of computable sequences it would be best to modify this method by replacing the numerical description of the complete configurations by a description which can be handled more easily with our apparatus. Let us choose certain integers to represent the symbols and the <var>m</var>-configurations of the machine. Suppose that in a certain complete configuration the numbers representing the successive symbols on the tape are <var>s<sub>1</sub></var><var>s<sub>2</sub></var>&hellip;<var>s<sub>n</sub></var>, that the <var>m</var>-th symbol is scanned, and that the <var>m</var>-configuration has the number <var>t</var>; then we may represent this complete configuration by the formula</p>
 		<div>[[N<sub>s<sub>1</sub></sub>, N<sub>s<sub>2</sub></sub>, &hellip;,N<sub>s<sub>m-1</sub></sub>], [N<sub>t</sub>, N<sub>s<sub>m</sub></sub>], [N<sub>s<sub>m+1</sub></sub>,&hellip;, N<sub>s<sub>n</sub></sub>]],</div>
 		<p>where
-		<div>[a, b] stands for &lambda;u[{{u}{a}}(b)],</div>
+		<div>[a, b] stands for &lambda;u[{ {u}{a} }(b)],</div>
 		</p>
-		<div>[a, b, c] stands for &lambda;u[{{u}(a)}(b)}(c)],</div>
+		<div>[a, b, c] stands for &lambda;u[{ {u}(a)}(b)}(c)],</div>
 		<p>etc.</p>
 	</main>
 </body>
