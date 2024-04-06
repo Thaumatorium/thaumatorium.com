@@ -573,7 +573,6 @@
 				<tr>
 					<td rowspan=3>𝔣<sub>1</sub>(ℭ, 𝔟, α)</td>
 					<td rowspan=3 class=stache></td>
-					</td>
 					<td>α</td>
 					<td></td>
 					<td>ℭ</td>
@@ -772,7 +771,7 @@
 					<td>𝔯𝔢(𝔟, α, β)</td>
 					<td></td>
 					<td>𝔯𝔢(𝔯𝔢(𝔟, α, β), 𝔟, α, β)</td>
-					<td></td>𝔯𝔢(𝔟, α, β). The machine replaces all letters α by β; →𝔟.</td>
+					<td>𝔯𝔢(𝔟, α, β). The machine replaces all letters α by β; →𝔟.</td>
 				</tr>
 				<tr>
 					<td>ℭ𝔯(ℭ, 𝔟, α)</td>
@@ -838,21 +837,21 @@
 					<td><var>q<sub>i</sub></var></td>
 					<td><var>S<sub>j</sub></var></td>
 					<td><var>PS<sub>k</sub></var>, <var>L</var></td>
-					<td><var>q<sub>m</sub></td>
+					<td><var>q<sub>m</sub></var></td>
 					<td>(<var>N<sub>1</sub></var>)</td>
 				</tr>
 				<tr>
 					<td><var>q<sub>i</sub></var></td>
 					<td><var>S<sub>j</sub></var></td>
 					<td><var>PS<sub>k</sub></var>, <var>R</var></td>
-					<td><var>q<sub>m</sub></td>
+					<td><var>q<sub>m</sub></var></td>
 					<td>(<var>N<sub>2</sub></var>)</td>
 				</tr>
 				<tr>
 					<td><var>q<sub>i</sub></var></td>
 					<td><var>S<sub>j</sub></var></td>
 					<td><var>PS<sub>k</sub></var></td>
-					<td><var>q<sub>m</sub></td>
+					<td><var>q<sub>m</sub></var></td>
 					<td>(<var>N<sub>3</sub></var>)</td>
 				</tr>
 			</tbody>
@@ -864,7 +863,7 @@
 					<td><var>q<sub>i</sub></var></td>
 					<td><var>S<sub>j</sub></var></td>
 					<td><var>E</var>, <var>R</var></td>
-					<td><var>q<sub>m</sub></td>
+					<td><var>q<sub>m</sub></var></td>
 				</tr>
 			</tbody>
 		</table>
@@ -875,7 +874,7 @@
 					<td><var>q<sub>i</sub></var></td>
 					<td><var>S<sub>j</sub></var></td>
 					<td><var>PS<sub>0</sub></var>, <var>R</var></td>
-					<td><var>q<sub>m</sub></td>
+					<td><var>q<sub>m</sub></var></td>
 				</tr>
 			</tbody>
 		</table>
@@ -886,7 +885,7 @@
 					<td><var>q<sub>i</sub></var></td>
 					<td><var>S<sub>j</sub></var></td>
 					<td><var>R</var></td>
-					<td><var>q<sub>m</sub></td>
+					<td><var>q<sub>m</sub></var></td>
 				</tr>
 			</tbody>
 		</table>
@@ -897,13 +896,13 @@
 					<td><var>q<sub>i</sub></var></td>
 					<td><var>S<sub>j</sub></var></td>
 					<td><var>PS<sub>j</sub></var>, <var>R</var></td>
-					<td><var>q<sub>m</sub></td>
+					<td><var>q<sub>m</sub></var></td>
 				</tr>
 			</tbody>
 		</table>
 		<p>In this way we reduce each line of the table to a line of one of the forms (<var>N<sub>1</sub></var>), (<var>N<sub>2</sub></var>), (<var>N<sub>3</sub></var>).</p>
 
-		<p>From each line of form (<var>N<sub>1</sub></var>) let us form an expression <var>q<sub>i</sub></var><var>S<sub>j</sub></var><var>S<sub>k</sub></var><var>L</var><var>q<sub>m</sub>; from each line of form (<var>N<sub>2</sub></var>) we form an expression <var>q<sub>i</sub></var><var>S<sub>j</sub></var><var>S<sub>k</sub></var><var>R</var><var>q<sub>m</sub>; and from each line of form (<var>N<sub>3</sub></var>) we form an expression <var>q<sub>i</sub></var><var>S<sub>j</sub></var><var>S<sub>k</sub></var><var>N</var><var>q<sub>m</sub></p>
+		<p>From each line of form (<var>N<sub>1</sub></var>) let us form an expression <var>q<sub>i</sub></var><var>S<sub>j</sub></var><var>S<sub>k</sub></var><var>L</var><var>q<sub>m</sub></var>; from each line of form (<var>N<sub>2</sub></var>) we form an expression <var>q<sub>i</sub></var><var>S<sub>j</sub></var><var>S<sub>k</sub></var><var>R</var><var>q<sub>m</sub></var>; and from each line of form (<var>N<sub>3</sub></var>) we form an expression <var>q<sub>i</sub></var><var>S<sub>j</sub></var><var>S<sub>k</sub></var><var>N</var><var>q<sub>m</sub></var></p>
 
 		<p>Let us write down all expressions so formed from the table for the machine and separate them by semi-colons. In this way we obtain a complete description of the machine. In this description we shall replace <var>q<sub>i</sub></var> by the letter “<var>D</var>” followed by the letter “<var>A</var>” repeated <var>i</var> times, and <var>S<sub>j</sub></var> by “<var>D</var>” followed by “<var>C</var>” repeated <var>j</var> times. This new description of the machine may be called the <em>standard description</em> (S.D). It is made up entirely from the letters “<var>A</var>”, “<var>C</var>”, “<var>D</var>”, “<var>L</var>”, “<var>R</var>”, “<var>N</var>”, and from “<var>;</var>"</p>
 
@@ -916,25 +915,25 @@
 					<td><var>q<sub>1</sub></var></td>
 					<td><var>S<sub>0</sub></var></td>
 					<td><var>PS<sub>1</sub></var>, <var>R</var></td>
-					<td><var>q<sub>2</sub></td>
+					<td><var>q<sub>2</sub></var></td>
 				</tr>
 				<tr>
 					<td><var>q<sub>2</sub></var></td>
 					<td><var>S<sub>0</sub></var></td>
 					<td><var>PS<sub>0</sub></var>, <var>R</var></td>
-					<td><var>q<sub>3</sub></td>
+					<td><var>q<sub>3</sub></var></td>
 				</tr>
 				<tr>
 					<td><var>q<sub>3</sub></var></td>
 					<td><var>S<sub>0</sub></var></td>
 					<td><var>PS<sub>2</sub></var>, <var>R</var></td>
-					<td><var>q<sub>4</sub></td>
+					<td><var>q<sub>4</sub></var></td>
 				</tr>
 				<tr>
 					<td><var>q<sub>4</sub></var></td>
 					<td><var>S<sub>0</sub></var></td>
 					<td><var>PS<sub>0</sub></var>, <var>R</var></td>
-					<td><var>q<sub>1</sub></td>
+					<td><var>q<sub>1</sub></var></td>
 				</tr>
 			</tbody>
 		</table>
@@ -945,7 +944,7 @@
 					<td><var>q<sub>1</sub></var></td>
 					<td><var>S<sub>1</sub></var></td>
 					<td><var>PS<sub>1</sub></var>, <var>R</var></td>
-					<td><var>q<sub>2</sub></td>
+					<td><var>q<sub>2</sub></var></td>
 				</tr>
 			</tbody>
 		</table>
@@ -1088,7 +1087,7 @@ DADDCRDAA;DAADDRDAAA;
 
 		<h2>8. Application of the diagonal process.</h2>
 		<p>It may be thought that arguments which prove that the real numbers are not enumerable would also prove that the computable numbers and sequences cannot be enumerable*. It might, for instance, be thought that the limit of a sequence of computable numbers must be computable. This is clearly only true if the sequence of computable numbers is defined by some rule.</p>
-		<p>Or we might apply the diagonal process. “If the computable sequences are enumerable, let &alpha;<sub>n</sub> be the <var>n</var>-th computable sequence, and let &fcy;<sub><var>n</var></sub>(<var>m</var>) be the <var>m</var>-th figure in &alpha;<sub>n</sub>. Let /? be the sequence with \—<j>n(n) as its <var>n</var>-th figure. Since &beta; is computable, there exists a number <var>K</var> such that 1-&fcy;<sub><var>n</var></sub>(<var>n</var>)=&fcy;<sub><var>K</var></sub>(<var>n</var>) all <var>n</var>. Putting <var>n</var>=<var>K</var>, we have 1=2&fcy;<sub><var>K</var></sub>(<var>K</var>), i.e. 1 is even. This is impossible. The computable sequences are therefore not enumerable”.</p>
+		<p>Or we might apply the diagonal process. “If the computable sequences are enumerable, let &alpha;<sub>n</sub> be the <var>n</var>-th computable sequence, and let &fcy;<sub><var>n</var></sub>(<var>m</var>) be the <var>m</var>-th figure in &alpha;<sub>n</sub>. Let /? be the sequence with \—&gt;j&lt;n(n) as its <var>n</var>-th figure. Since &beta; is computable, there exists a number <var>K</var> such that 1-&fcy;<sub><var>n</var></sub>(<var>n</var>)=&fcy;<sub><var>K</var></sub>(<var>n</var>) all <var>n</var>. Putting <var>n</var>=<var>K</var>, we have 1=2&fcy;<sub><var>K</var></sub>(<var>K</var>), i.e. 1 is even. This is impossible. The computable sequences are therefore not enumerable”.</p>
 		<p>The fallacy in this argument lies in the assumption that &beta; is computable. It would be true if we could enumerate the computable sequences by finite means, but the problem of enumerating computable sequences is equivalent to the problem of finding out whether a given number is the D.N of a circle-free machine, and we have no general process for doing this in a finite number of steps. In fact, by applying the diagonal process argument correctly, we can show that there cannot be any such general process.</p>
 		<p>The simplest and most direct proof of this is by showing that, if this general process exists, then there is a machine which computes &beta;. This proof, although perfectly sound, has the disadvantage that it may leave the reader with a feeling that “there must be something wrong”. The proof which I shall give has not this disadvantage, and gives a certain insight into the significance of the idea “circle-free”. It depends not on constructing &beta;, but on constructing &beta;&prime;, whose <var>n</var>-th figure is &fcy;<sub><var>n</var></sub>(<var>n</var>).</p>
 		<aside>* Cf. Hobson, Theory of functions of a real variable (2nd ed., 1921), 87, 88.</aside>
@@ -1237,12 +1236,8 @@ DADDCRDAA;DAADDRDAAA;
 		<p>and</p>
 		<div>&Ufr;<sub>&#414;</sub> & <var>F</var><sup>(<var>M</var>)</sup> &rarr; [<var>F</var>(<var>u</var><sup>(<var>n</var>-1)</sup>, <var>u</var><sup>(<var>n</var>)</sup>) & <var>H</var>(<var>u</var><sup>(<var>n</var>-1)</sup>, <var>u</var><sup>(&#414;(<var>n</var>-1))</sup>)</div>
 		<div>& <var>K</var>(<var>u</var><sup>(<var>n</var>)</sup>, <var>u</var><sup>(&#414;(<var>n</var>-1))</sup>, <var>u</var><sup>(&#414;(<var>n</var>))</sup>) &rarr; <var>H</var>(<var>u</var><sup>(<var>n</var>)</sup>, <var>u</var><sup>(&#414;(<var>n</var>))</sup>)].</div>
-		<p>Hence
-		<div>&Ufr;<sub>&#414;</sub> & <var>F</var><sup>(<var>M</var>)</sup> &rarr; <var>H</var>(<var>u</var><sup>(<var>n</var>)</sup>, <var>u</var><sup>(&#414;(<var>n</var>))</sup>).</div>
-		</p>
-		<p>Also
-		<div>&Ufr;<sub>&#414;</sub> & <var>F</var><sup>(<var>r</var>)</sup> &rarr; <var>H</var>(<var>u</var>, <var>u</var><sup>(&#414;(0))</sup>).</div>
-		</p>
+		<p>Hence &Ufr;<sub>&#414;</sub> & <var>F</var><sup>(<var>M</var>)</sup> &rarr; <var>H</var>(<var>u</var><sup>(<var>n</var>)</sup>, <var>u</var><sup>(&#414;(<var>n</var>))</sup>).</p>
+		<p>Also &Ufr;<sub>&#414;</sub> & <var>F</var><sup>(<var>r</var>)</sup> &rarr; <var>H</var>(<var>u</var>, <var>u</var><sup>(&#414;(0))</sup>).</p>
 		<p>Hence for each <var>n</var> some formula of the form</p>
 		<div>&Ufr;<sub>&#414;</sub> & <var>F</var><sup>(<var>M</var>)</sup> &rarr; <var>H</var>(<var>u</var><sup><var>n</var></sup>, <var>u</var><sup>(&#414;(<var>n</var>))</sup>)</div>
 		<p>is provable. Also, if <var>M</var>&prime;&geq;<var>M</var> and <var>M</var>&prime;&geq;<var>m</var> and <var>m</var>&ne;&#414;(<var>u</var>), then</p>
@@ -1261,9 +1256,7 @@ DADDCRDAA;DAADDRDAAA;
 		<div>&Ufr; &alpha; <var>P</var><span style="text-decoration:overline;">0</span> &rfr;&efr;(&Bfr;, &ufr;, <var>h</var>, <var>k</var>)</div>
 		<p>and any line of the form</p>
 		<div>&Ufr; &alpha; <var>P</var><span style="text-decoration:overline;">1</span> &Bfr;</div>
-		<p>by
-		<div>&Ufr; &alpha; <var>P</var><span style="text-decoration:overline;">1</span> &rfr;&efr;(&Bfr;, &ufr;, <var>h</var>, <var>k</var>)</div>
-		</p>
+		<p>by &Ufr; &alpha; <var>P</var><span style="text-decoration:overline;">1</span> &rfr;&efr;(&Bfr;, &ufr;, <var>h</var>, <var>k</var>)</p>
 		<p>and we add to the table the following lines</p>
 		<div>&ufr; &pfr;&efr;(&ufr;<sub>1</sub>, 0)</div>
 		<div>&ufr;<sub>1</sub> <var>R, Pk, R, P&Theta;, R, P&Theta;</var> &ufr;<sub>2</sub></div>
@@ -1316,25 +1309,15 @@ DADDCRDAA;DAADDRDAAA;
 		<p><var>A</var>(&Mscr;) &rarr; <var>CC</var><sub>0</sub> is then trivial.</p>
 		<p>We next show that <var>CF</var><sub>n</sub> &rarr; <var>CF</var><sub>n+1</sub> is provable for each <var>n</var>. There are three cases to consider, according as in the move from the <var>n</var>-th to the (<var>n</var>+l)-th configuration the machine moves to left or to right or remains stationary. We suppose that the first case applies, i.e. the machine moves to the left. A similar argument applies in the other cases. If <var>r</var>(<var>n</var>,<var>i</var>(<var>n</var>))=&alpha;, <var>r</var>(<var>n</var>+1, <var>i</var>(<var>n</var>+1))=c, <var>k</var>(<var>i</var>(<var>n</var>))=b, and <var>k</var>(<var>i</var>(<var>n</var>+1))=d, then Des(&Mscr;) must include Inst {<var>q</var><sub>a</sub><var>S</var><sub>b</sub><var>S</var><sub>d</sub><var>Lq</var><sub>c</sub>} as one of its terms, i.e.</p>
 		<div>Des(&Mscr;) &rarr; Inst {<var>q</var><sub>a</sub><var>S</var><sub>b</sub><var>S</var><sub>d</sub><var>Lq</var><sub>c</sub>}.</div>
-		<p>Hence
-		<div><var>A</var>(&Mscr;) & <var>F</var><sup>(n+1)</sup> &rarr; Inst {<var>q</var><sub>a</sub><var>S</var><sub>b</sub><var>S</var><sub>d</sub><var>Lq</var><sub>c</sub>} & <var>F</var><sup>(n+1)</sup>.</div>
-		</p>
-		<p>But
-		<div>Inst {<var>q</var><sub>a</sub><var>S</var><sub>b</sub><var>S</var><sub>d</sub><var>Lq</var><sub>c</sub>} & <var>F</var><sup>(n+1)</sup> &rarr; (<var>CC</var><sub>n</sub> &rarr; <var>CC</var><sub>n+1</sub>)</div>
-		</p>
+		<p>Hence <var>A</var>(&Mscr;) & <var>F</var><sup>(n+1)</sup> &rarr; Inst {<var>q</var><sub>a</sub><var>S</var><sub>b</sub><var>S</var><sub>d</sub><var>Lq</var><sub>c</sub>} & <var>F</var><sup>(n+1)</sup>.</p>
+		<p>But Inst {<var>q</var><sub>a</sub><var>S</var><sub>b</sub><var>S</var><sub>d</sub><var>Lq</var><sub>c</sub>} & <var>F</var><sup>(n+1)</sup> &rarr; (<var>CC</var><sub>n</sub> &rarr; <var>CC</var><sub>n+1</sub>)</p>
 		<p>is provable, and so therefore is</p>
 		<div><var>A</var>(&Mscr;) & <var>F</var><sup>(n+1)</sup> &rarr; (<var>CC</var><sub>n</sub> &rarr; <var>CC</var><sub>n+1</sub>)</div>
-		<p>and
-		<div>(<var>A</var>(&Mscr;) &<var>F</var><sup>(n)</sup> &rarr; <var>CC</var><sub>n</sub>) &rarr; (<var>A</var>(&Mscr;) & <var>F</var><sup>(n+1)</sup> &rarr; <var>CC</var><sub>n+1</sub>),</div>
-		</p>
-		<p>i.e.
-		<div><var>CF</var><sub>n</sub> &rarr; <var>CF</var><sub>n+1</sub></div>
-		</p>
+		<p>and (<var>A</var>(&Mscr;) &<var>F</var><sup>(n)</sup> &rarr; <var>CC</var><sub>n</sub>) &rarr; (<var>A</var>(&Mscr;) & <var>F</var><sup>(n+1)</sup> &rarr; <var>CC</var><sub>n+1</sub>), </p>
+		<p>i.e. <var>CF</var><sub>n</sub> &rarr; <var>CF</var><sub>n+1</sub></p>
 		<p><var>CF</var><sub>n</sub>is provable for each <var>n</var>. Now it is the assumption of this lemma that <var>S</var><sub>1</sub> appears somewhere, in some complete configuration, in the sequence of symbols printed by &Mscr;; that is, for some integers <var>N</var>, <var>K</var>, <var>CC</var><sub>N</sub> has <var>R</var><sub>S<sub>l</sub></sub>(<var>u</var><sup>(<var>N</var>)</sup>, <var>u</var><sup>(<var>K</var>)</sup>) as one of its terms, and therefore <var>CC</var><sub>N</sub> &rarr;<var>R</var><sub>S<sub>l</sub></sub>(<var>u</var><sup>(<var>N</var>)</sup>, <var>u</var><sup>(<var>K</var>)</sup>) is provable. We have then</p>
 		<div><var>CC</var><sub>N</sub> &rarr;<var>R</var><sub>S<sub>l</sub></sub>(<var>u</var><sup>(<var>N</var>)</sup>, <var>u</var><sup>(<var>K</var>)</sup>)</div>
-		<p>and
-		<div><var>A</var>(&Mscr;) & <var>F</var><sup>(N)</sup> &rarr; <var>CC</var><sup>N</sup>.</div>
-		</p>
+		<p>and <var>A</var>(&Mscr;) & <var>F</var><sup>(N)</sup> &rarr; <var>CC</var><sup>N</sup>.</p>
 		<p>We also have</p>
 		<div>(&exist;<var>u</var>) <var>A</var>(&Mscr;) &rarr; (&exist;<var>u</var>)(&exist;<var>u</var>&prime;) &hellip; (&exist;<var>u</var> <sup>(N&prime;)</sup>)(<var>A</var>(&Mscr;) & <var>F</var><sup>(N)</sup>),</div>
 		<p>where <var>N</var>&prime = max(<var>N</var>, <var>K</var>). And so</p>
@@ -1360,9 +1343,7 @@ DADDCRDAA;DAADDRDAAA;
 		<p>i.e.{<var>M</var><sub>&gamma;</sub>}{<var>N</var><sub>&gamma;</sub>} is convertible into &lambda;<var>xy.x</var>(<var>x</var>(<var>y</var>)) or into &lambda;<var>xy.x</var>(<var>y</var>) according as the <var>n</var>-th figure of &lambda; is 1 or 0.</p>
 		<p>To show that every &lambda;-definable sequence &gamma; is computable, we have to show how to construct a machine to compute &gamma;. For use with machines it is convenient to make a trivial modification in the calculus of conversion. This alteration consists in using <var>x</var>, <var>x</var>&prime;, <var>x</var>&prime;&prime;, &hellip; as variables instead of <var>a</var>, <var>b</var>, <var>c</var>, &hellip;. We now construct a machine &Lscr; which, when supplied with the formula <var>M</var><sub>&gamma;</sub>, writes down the sequence &gamma;. The construction of &Lscr; is somewhat similar to that of the machine &Kscr; which proves all provable formulae of the functional calculus. We first construct a choice machine &Lscr;<sub>1</sub> which, if supplied with a W.F.F., <var>M</var> say, and suitably manipulated, obtains any formula into which <var>M</var> is convertible. &Lscr;<sub>1</sub> can then be modified so as to yield an automatic machine &Lscr;<sub>2</sub> which obtains successively all the formulae into which <var>M</var> is convertible (cf. foot-note p. 252). The machine &Lscr; includes &Lscr;<sub>2</sub> as a part. The motion of the machine &Lscr; when supplied with the formula <var>M</var><sub>&gamma;</sub> is divided into sections of which the <var>n</var>-th is devoted to finding the <var>n</var>-th figure of &gamma;. The first stage in this <var>n</var>-th section is the formation of {<var>M</var><sub>&gamma;</sub>}(<var>N</var><sub>n</sub>). This formula is then supplied to the machine &Lscr;<sub>2</sub>, which converts it successively into various other formulae. Each formula into which it is convertible eventually appears, and each, as it is found, is compared with</p>
 		<div>&lambda;<var>x</var>[&lambda;<var>x</var>&prime;[{<var>x</var>}({<var>x</var>}(<var>x</var>&prime;))]], i.e. <var>N</var><sub>2</sub>,</div>
-		<p>and with
-		<div>&lambda;<var>x</var>[&lambda;<var>x</var>&prime;[{<var>x</var>}(<var>x</var>&prime;)]], i.e. <var>N</var><sub>1</sub></div>
-		</p>
+		<p>and with &lambda;<var>x</var>[&lambda;<var>x</var>&prime;[{<var>x</var>}(<var>x</var>&prime;)]], i.e. <var>N</var><sub>1</sub></p>
 		<p>If it is identical with the first of these, then the machine prints the figure 1 and the <var>n</var>-th section is finished. If it is identical with the second, then 0 is printed and the section is finished. If it is different from both, then the work of &Lscr;<sub>2</sub> is resumed. By hypothesis, {<var>M</var><sub>&gamma;</sub>}(<var>N</var><sub>n</sub>) is convertible into one of the formulae <var>N</var><sub>2</sub> or <var>N</var><sub>1</sub>; consequently the <var>n</var>-th section will eventually be finished, i.e. the <var>n</var>-th figure of &gamma; will eventually be written down.</p>
 		<p>To prove that every computable sequence &gamma; is &lambda;-definable, we must show how to find a formula <var>M</var><sub>&gamma;</sub> such that, for all integers <var>n</var>,</p>
 		<div>{<var>M</var><sub>&gamma;</sub>}(<var>N</var><sub>n</sub>) conv <var>N</var><sub>1+&fcy;<sub>&gamma;</sub>(<var>n</var>)</sub></div>
@@ -1393,16 +1374,12 @@ DADDCRDAA;DAADDRDAAA;
 		<!-- ! FIX FORMULA -->
 		<div>&lambda;<var>w</var>[{<var>W</var><sub>&gamma;</sub>}({ {<var>Q</var>}(<var>W</var><sub>&gamma;</sub>)}(<var>w</var>))],</div>
 		<p>it will have the required property&dagger;.</p>
-		<p>The Graduate College,
-		<p>Princeton University,
+		<p>The Graduate College,</p>
+		<p>Princeton University,</p>
 		<p>New Jersey, U.S.A.</p>
-		</p>
-		</p>
 		<p>&dagger; In a complete proof of the &lambda;-definability of computable sequences it would be best to modify this method by replacing the numerical description of the complete configurations by a description which can be handled more easily with our apparatus. Let us choose certain integers to represent the symbols and the <var>m</var>-configurations of the machine. Suppose that in a certain complete configuration the numbers representing the successive symbols on the tape are <var>s<sub>1</sub></var><var>s<sub>2</sub></var>&hellip;<var>s<sub>n</sub></var>, that the <var>m</var>-th symbol is scanned, and that the <var>m</var>-configuration has the number <var>t</var>; then we may represent this complete configuration by the formula</p>
 		<div>[[N<sub>s<sub>1</sub></sub>, N<sub>s<sub>2</sub></sub>, &hellip;,N<sub>s<sub>m-1</sub></sub>], [N<sub>t</sub>, N<sub>s<sub>m</sub></sub>], [N<sub>s<sub>m+1</sub></sub>,&hellip;, N<sub>s<sub>n</sub></sub>]],</div>
-		<p>where
-		<div>[a, b] stands for &lambda;u[{ {u}{a} }(b)],</div>
-		</p>
+		<p>where [a, b] stands for &lambda;u[{ {u}{a} }(b)],</p>
 		<div>[a, b, c] stands for &lambda;u[{ {u}(a)}(b)}(c)],</div>
 		<p>etc.</p>
 	</main>
