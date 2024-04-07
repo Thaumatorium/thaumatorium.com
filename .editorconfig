@@ -1,0 +1,28 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = crlf
+insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = true
+
+# HTML, CSS, JavaScript, and Markdown files
+[*.{html,css,md}]
+indent_style = tab
+
+[*.{js}]
+indent_style = space
+indent_size = 2
+
+# XML-specific settings
+[*.{xml}]
+indent_style = tab
+max_line_length = 999
+
+# Binary files (images, etc.) do not need whitespace handling
+[*.{png,jpg,jpeg,gif,ico}]
+end_of_line = unset
+charset = unset
+trim_trailing_whitespace = false
+insert_final_newline = false
