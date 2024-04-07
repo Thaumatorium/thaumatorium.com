@@ -45,6 +45,15 @@ body > nav span {
 	font: large sans-serif;
 }
 
+body > nav > ul > li {
+	display: inline-block;
+}
+
+body > nav > ul {
+	margin: 0;
+	padding-left: 0;
+}
+
 /* MAIN */
 
 body {
@@ -167,15 +176,15 @@ table td {
 	vertical-align: top;
 }
 
-ul > li {
+body > main ul > li {
 	list-style-type: "– ";
 }
 
-ul.classic > li {
+body > main ul.classic > li {
 	list-style-type: "– ";
 }
 
-ul.none > li {
+body > main ul.none > li {
 	list-style-type: "";
 }
 
