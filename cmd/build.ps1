@@ -6,3 +6,5 @@ foreach ($file in $htmlfiles) {
     Where-Object { $_.trim() -ne "" } |
     Set-Content $file.PSPath
 }
+
+prettier --ignore-path .prettierignore --write "public/**/*"

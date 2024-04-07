@@ -26,3 +26,10 @@ end_of_line = unset
 charset = unset
 trim_trailing_whitespace = false
 insert_final_newline = false
+
+# Specific overrides for certain JS and JSON files
+[{highlight.pack.js,d3.js,wow_credits.json}]
+indent_style = unset
+indent_size = unset
+trim_trailing_whitespace = false
+insert_final_newline = false
