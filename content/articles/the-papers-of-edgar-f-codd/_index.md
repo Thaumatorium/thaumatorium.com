@@ -1,9 +1,8 @@
 ---
-title: "These are the articles and white papers of Edgar F. Codd"
-description: "Links to his papers"
-publishDate: 2024-05-06T00:00:00+01:00
-lastmod: 2024-05-06T00:00:00+01:00
-layout: article
+title: "The Papers of Edgar F Codd"
+publishDate: 2024-04-07T16:14:44+02:00
+lastmod: 2024-04-07T16:14:44+02:00
+draft: true
 ---
 
 Edgar F. Codd, known as "The Codd Father", or more generally as "The Father of Relational Databases"
