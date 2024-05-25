@@ -5,7 +5,8 @@
     box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     font-family: 'Times New Roman', serif;
     line-height: 1.6;
     color: #333;
@@ -19,7 +20,7 @@ html, body {
     margin: 20px auto;
     padding: 20px;
     border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     background-color: #fff;
     overflow: hidden;
 }
