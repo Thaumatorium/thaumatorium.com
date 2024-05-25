@@ -4,7 +4,7 @@ body {
     line-height: 1.2;
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
+    background-color: #2a2a2e;
     font-weight: 200;
 }
 
@@ -23,6 +23,7 @@ section {
     padding: 80px;
     margin-bottom: 40px;
     page-break-after: always;
+    background-color: #fff;
 }
 
 h1 {
@@ -55,7 +56,6 @@ h5,
 h6 {
     font-weight: 100;
 }
-
 
 address {
     text-align: center;
@@ -185,10 +185,12 @@ math text, so TTS will weirdly "skip" the math */
 /* better styling for MATHS */
 .math {
     font-family: 'Times New Roman', Times, serif;
-    font-weight: 100;
+    font-weight: normal; /* Ensure normal weight for the math class */
+    text-decoration: none;
 }
 
 /* better styling for MATHS */
 .sub-math {
     font-family: 'Courier New', Courier, sans-serif;
+    font-weight: normal; /* Ensure normal weight for the sub-math class */
 }
