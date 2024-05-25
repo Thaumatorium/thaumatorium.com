@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A Relational Model of Data for Large Shared Data Banks by E.F. Codd">
+    <title>A Relational Model of Data</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <section id="page-1" class="page" aria-label="Page 1">
+            <header>
+                <h1>Information Retrieval</h1>
+                <p class="editor">P. Baxendale, Editor</p>
+            </header>
+            <article>
+                <h2>A Relational Model of Data for Large Shared Data Banks</h2>
+                <p class="author"><strong>E. F. Codd</strong><br>IBM Research Laboratory, San Jose, California</p>
+                <p>Future users of large data banks must be protected from having to know how the data is organized in the machine (the internal representation). A prompting service which supplies such information is not a satisfactory solution. Activities of users at terminals and most application programs should remain unaffected when the internal representation of data is changed and even when some aspects of the external representation are changed. Changes in data representation will often be needed as a result of changes in query, update, and report traffic and natural growth in the types of stored information.</p>
+                <p>Existing noninferential, formatted data systems provide users with tree-structured files or slightly more general network models of the data. In Section 1, inadequacies of these models are discussed. A model based on n-ary relations, a normal form for data base relations, and the concept of a universal data sublanguage are introduced. In Section 2, certain operations on relations (other than logical inference) are discussed and applied to the problems of redundancy and consistency in the user's model.</p>
+                <p><strong>KEY WORDS AND PHRASES:</strong> data bank, data base, data structure, data organization, hierarchical model of data, networks of data, relations, derivability, redundancy, consistency, composition, join, retrieval languages, predicate calculus, security, data integrity</p>
+                <p><strong>CR CATEGORIES:</strong> 3.70, 3.73, 3.75, 4.20, 4.22, 4.29</p>
+                <h3>1. Relational Model and Normal Form</h3>
+                <h4>1.1. Introduction</h4>
+                <p>This paper is concerned with the application of elementary relation theory to systems which provide shared access to large banks of formatted data. Except for a paper by Childs [1], the principal application of relations to data systems has been to deductive question-answering systems. Levien and Maron [2] provide numerous references to work in this area.</p>
+                <p>In contrast, the problems treated here are those of <em>data independence</em>—the independence of application programs and terminal activities from growth in data types and changes in data representation—and certain kinds of <em>data inconsistency</em> which are expected to become troublesome in non deductive systems.</p>
+                <p>The provision of data description tables in recently developed information systems represents a major advance toward the goal of data independence [5, 6, 7]. Such tables facilitate changing certain characteristics of the data representation stored in a data bank. However, the variety of data representation characteristics which can be changed <em>without logically impairing some application programs</em> is still quite limited. Further, the model of data with which users interact is still cluttered with representational properties, particularly in regard to the representation of collections of data (as opposed to individual items). Three of the principal kinds of data dependencies which still need to be removed are: ordering dependence, indexing dependence, and access path dependence. In some systems these dependencies are not clearly separable from one another.</p>
+                <h4>1.2.1. Ordering Dependence.</h4>
+                <p>Elements of data in a data bank may be stored in a variety of ways, some involving no concern for ordering, some permitting each element to participate in one ordering only, others permitting each element to participate in several orderings. Let us consider those existing systems which either require or permit data elements to be stored in at least one total ordering which is closely associated with the hardware-determined ordering of addresses. For example, the records of a file concerning parts might be stored in ascending order by part serial number. Such systems normally permit application programs to assume that the order of presentation of records from such a file is identical to (or is a subordering of) the</p>
+            </article>
+        </section>
+        <!-- Add more sections as needed for additional pages -->
+    </main>
+</body>
+</html>
