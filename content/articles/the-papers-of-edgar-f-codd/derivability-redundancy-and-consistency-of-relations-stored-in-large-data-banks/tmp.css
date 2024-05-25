@@ -1,0 +1,123 @@
+body {
+    font-family: 'Inconsolata', 'Consolas', 'Courier New', Courier, monospace;
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    color: #000000;
+    font-weight: 200;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+main {
+    margin: 40px;
+}
+
+section {
+    border: 1px solid #cccccc;
+    padding: 80px;
+    margin-bottom: 40px;
+    page-break-after: always;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    text-align: center;
+    margin: 40px 0;
+}
+
+address {
+    text-align: center;
+    font-style: normal;
+}
+
+ol {
+    list-style-type: none;
+    counter-reset: section;
+    padding-left: 0;
+}
+
+ol li {
+    display: flex;
+    justify-content: space-between;
+    counter-increment: section;
+    position: relative;
+    margin: 5px 0;
+}
+
+ol li::before {
+    content: counter(section) ". ";
+    position: absolute;
+    left: -40px;
+    /* Adjust this value for the desired spacing */
+    text-align: right;
+    width: 30px;
+}
+
+ol ol {
+    counter-reset: subsection;
+    padding-left: 20px;
+}
+
+ol ol li {
+    counter-increment: subsection;
+}
+
+ol ol li::before {
+    content: counter(section) "." counter(subsection) " ";
+    position: absolute;
+    left: -40px;
+    /* Adjust this value for the desired spacing */
+    text-align: right;
+    width: 30px;
+}
+
+ol li span {
+    float: right;
+    text-align: right;
+    width: 30px;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 80px;
+}
+
+li {
+    margin: 5px 0;
+}
+
+pre {
+    font-family: 'Inconsolata', 'Consolas', 'Courier New', Courier, monospace;
+    padding: 0 40px;
+    border: none;
+    background-color: transparent;
+    white-space: pre;
+}
+
+pre span {
+    text-decoration: underline;
+}
+
+strong {
+    font-weight: bold;
+}
+
+p {
+    margin: 10px 0;
+    text-align: justify;
+    padding: 0 40px;
+}
+
+.smaller-text {
+    font-size: 80%;
+    /* 20% smaller than the regular font size */
+}
