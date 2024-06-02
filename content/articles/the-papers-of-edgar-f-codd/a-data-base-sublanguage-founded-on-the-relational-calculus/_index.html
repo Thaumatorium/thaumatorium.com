@@ -3,7 +3,6 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="description" content="Document pages recreated in HTML5" />
 		<title>Document Recreation</title>
 		<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400&display=swap" rel="stylesheet" />
 		<link rel="stylesheet" href="styles.css" />
@@ -48,7 +47,7 @@
 				<p>We use the term <u>data sublanguage</u> (rather than language) because we are not concerned with general processing (or the capability of computing all computable functions). Instead, we wish to focus on only those language components which support storage and retrieval of formatted data from large shared data bases.</p>
 				<p>Excluded from discussion in this paper is language used for describing the physical representations permitted by a data base system.</p>
 				<h3 data-number="1.1">Data Model</h3>
-				<p>In [1] the author discussed a number of data models then in use and introduced a relational model based on <u>normalized relations of assorted degrees</u> (not just binary relations).&ast; Further normalization of this model is pursued in [2]. The principal motivations of the relational data model were (and are):</p>
+				<p>In [1] the author discussed a number of data models then in use and introduced a relational model based on <u>normalized relations of assorted degrees</u> (not just binary relations). Further normalization of this model is pursued in [2]. The principal motivations of the relational data model were (and are):</p>
 				<ol>
 					<li>data independence</li>
 					<li>the simplest possible structure consistent with semantic considerations</li>
@@ -64,12 +63,297 @@
 					<li>The physical representation of the data may be changed without logically impairing any application programs;</li>
 					<li>The system can automatically translate requests expressed in terms of the logical structure of the data into corresponding operations on whatever physical data structure is currently in force (this automatic translation must continue to work correctly when the physical data structures are changed while the logical data structure is kept fixed).</li>
 				</ol>
-				<p>In some proposed systems (CODASYL [4], SHARE-GUIDE [5]) three levels of data representation are planned: the user logical, the system logical, and the physical. The system logical representation can be thought of as providing the basic data model with which the community of users interacts. Superimposed on this community model of the data is provision for individuals or sub-communities to establish specializations or simple variations of the community model suitable for their particular applications. We shall use the term <u>data model</u> as a concise phrase for the community model of the data.</p>
-				<p>Existing and proposed data base systems may be classified by the data model with which the user interacts and the language features provided to the user for expressing this interaction. Table 1 displays such a classification.</p>
-				<h3 data-number="1.2">Procedural Approach</h3>
-				<p>Most readers of this paper will have some familiarity with the existing systems (and the CODASYL proposal) cited in the top two rows of this table. The data sublanguages for these systems, so far as they can be identified separately from their host languages, are rather primitive. Not even boolean selection expressions are provided in IDS [9] and CODASYL [4]. Therefore, there is a heavy dependence on the host language for iterative scanning and searching.</p>
-				<p>Feldman and Rovner [10] introduced a semi-algebraic approach based on binary relations as the data model and user-specified triples (attribute, object, value) as the linguistic means of reference. Ash and Sibley [11] extended this approach.</p>
-				<footer>* The separation in the CODASYL proposal is clear.</footer>
+				<p>In some proposed systems (CODASYL [4], SHARE-GUIDE [5]) three levels of data representation are planned: the user logical, the system logical, and the physical. The system logical representation can be thought of as providing the basic data model with which the community of users interacts. Superimposed on this community model of the data is provision for individuals or sub-communities to establish specializations or simple variations of the community model suitable for their particular applications. We shall</p>
+			</section>
+
+			<section id="page4" aria-label="Page 4">
+				<h1>Types of Data Models and Languages</h1>
+				<table>
+					<thead>
+						<tr>
+							<th rowspan="2" colspan="2" class="right-double bottom-double diagonal-cell">
+								<div></div>
+								<span class="top-left">DATA<br />SUBLANGUAGE</span>
+								<span class="bottom-right">DATA<br />MODEL</span>
+							</th>
+							<th rowspan="2" class="bottom-double">TREES</th>
+							<th rowspan="2" class="bottom-double">NETS</th>
+							<th colspan="2">RELATIONS</th>
+						</tr>
+						<tr>
+							<th class="bottom-double">DEGREE<br />2 ONLY</th>
+							<th class="bottom-double">ASSORTED<br />DEGREES<br />(n ≥ 1)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th rowspan="2" class="vertical">LOW</th>
+							<th class="right-double">Minimal<br />Selection<br />Capability</th>
+							<td></td>
+							<td>[9] IDS<br />[4] Codasyl</td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th class="right-double">Boolean<br />Selection<br />Expressions</th>
+							<td>[6] IMS<br />[7] GIS<br />[8] UL/1</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th rowspan="2" class="vertical">INTERMEDIATE</th>
+							<th class="right-double">Attribute<br />&nbsp;&nbsp;- Object<br />&nbsp;&nbsp;- Value</th>
+							<td></td>
+							<td></td>
+							<td>[10] Feldman<br />&nbsp;&nbsp;&nbsp;- Rovner<br />[11] Ash<br />&nbsp;&nbsp;&nbsp;- Sibley</td>
+							<td></td>
+						</tr>
+						<tr>
+							<th class="right-double">Algebra<br />Oriented</th>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td>[15] Childs<br />[16] MacAIMS</td>
+						</tr>
+						<tr>
+							<th class="vertical">HIGH</th>
+							<th class="right-double">Calculus<br />Oriented</th>
+							<td>[20] TDMS</td>
+							<td></td>
+							<td></td>
+							<td>Codd (&alpha;)</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="page5" aria-label="Page 5">
+				<h3 data-number="1.3">Algebraic Approach</h3>
+				<p>In the algebraic approach retrieval of data is viewed as the formation of a new relation from the data base relations by use of some operation of the algebra. It should be stressed that these operations act upon entire relations as their operands just as matrix operations treat entire matrices as their operands. Bertrand Russell described several interesting operations on binary relations in the Principia [12].</p>
+				<p>The algebraic approach has been favored by researchers working in fact retrieval and deductive inference. In addition to their own contributions, Levien and Maron [13] and Bell [14] provide excellent lists of references to work in this area. For our present purposes, let us set aside the heavy emphasis on natural language processing which characterizes much of this work. Typically, in fact retrieval and deductive inference experiments (as well as in many graphics-oriented data bases), there are many relations of low degree and low cardinality (in other words, there are small amounts of data per relation). This probably explains why these researchers restricted their theory and experimentation to binary relations. Fact retrieval researchers also tend to treat their data bases as having no more structure than a collection of sentences (cf. the Rand Relational Data File [13]).</p>
+				<p>In commercial and industrial data bases which reflect the operations of the company the situation is markedly different. These data bases tend to consist of relatively few relations, often of large degree and large cardinality. The need for a data model in which relations of higher degree than two is permitted is clear. Accordingly, algebras dealing with relations of arbitrary degree are being considered and implemented. Childs was an early contributor, although the operations he lists in [15] are heavily biased towards binary relations.&ast; Goldstein and Strnad [16, 17] describe a system called MacAIMS which uses an algebra of normalized relations of arbitrary degree. In [3] this author has defined a relational algebra which possesses as much selective power as the relational calculus.</p>
+
+				<h3 data-number="1.4">Relational Calculus Approach</h3>
+				<p>The Time Shared Data Management System of the System Development Corporation employed a limited form of predicate calculus in its query language. At most, one quantifier was permitted in a query and the interpretation of these queries was highly dependent on the particular tree structuring which a given body of information was cast in.</p>
+				<p>In [3] the author proposed an applied predicate calculus with tuple variables, subscripts and the concept of range separability. The data sublanguage ALPHA described informally in sections 2 and 3 is based on this calculus.</p>
+				<footer>&ast;For example, in [15] there appears to be no operation which is degree-increasing. An operation on relations is degree-increasing if it produces a relation of higher degree than that of any of its operands. The natural join defined in [1] is an example of a degree-increasing operation.</footer>
+			</section>
+
+			<section id="page6" aria-label="Page 6">
+				<h2 data-number="2.">DSL ALPHA: Basic Characteristics</h2>
+				<p>The ALPHA sublanguage is a language for manipulating relations. It possesses the following characteristics:</p>
+				<ol>
+					<li>The full power of the relational calculus [3] - an applied predicate calculus with tuple variables;</li>
+					<li>The capability of specifying any of the operations:</li>
+					<ol>
+						<li>fetch value or set of values</li>
+						<li>change value or set of values</li>
+						<li>insert element (i.e., tuple) or set thereof into a relation</li>
+						<li>delete element (i.e., tuple) or set thereof from a relation</li>
+						<li>declare a relation and its domains for inclusion in the established set of data base relations</li>
+						<li>drop a relation from the data base.</li>
+					</ol>
+					<li>The capability (through <u>RANGE</u> statements) of delimiting the scope of interaction between a user or his program on the one hand and the data base on the other;</li>
+					<li>A variable binding capability to permit use in either an interactive or batch environment.</li>
+				</ol>
+				<p>The language is accordingly more than a query or search language. In this author's opinion the frequent separation of query languages from other aspects of retrieval is usually artificial. The proposed language is intended to be a sublanguage (in a semantic rather than syntactic sense) of the languages used by all terminal users of a shared, formatted data base, except those users who have such narrow needs that their requirements can be more efficiently satisfied by a set of pre-structured (or canned) queries and/or updates.</p>
+				<p>It is also intended to be a sublanguage of such host programming languages as PL/1, Cobol and Fortran. However, syntactic modifications may be necessary in order to adapt it to these different host languages. Some modification (semantic as well as syntactic) of candidate host languages may be necessary also. For example, it might be desirable to introduce RELATION as a data type in Fortran. All computation of functions is defined in host language statements; all retrieval and storage operations in data sublanguage statements. A data sublanguage statement can, however, contain a use of a function defined in host statements.</p>
+				<p>Unlike previous proposals, the notion of <u>position</u> in a file, entity set, data set or relation is de-emphasized. Data base relations, in particular, are treated as sets whose ordering, organization and physical representation are not known to the majority of users. These representation attributes are assumed to be subject to change without notice. As will be clear later, a position concept <u>is</u> included in the sublanguage, but is relative to a user-defined ordering only. The user can specify an ordering in which the elements to be retrieved are delivered to a designated output device.</p>
+			</section>
+
+			<section id="page7" aria-label="Page 7">
+				<h3 data-number="2.1">The Workspace&ast;</h3>
+				<p>Data flows into and out of the data base via <u>user workspaces</u> as directed by data sublanguage statements (see Fig. 1). A workspace may consist of space in high speed memory or low speed storage, or, for interactive purposes, may be identified with a terminal (video or hard-copy). A single user or application program may have several workspaces in use concurrently.</p>
+				<p>The workspace concept on which DSL ALPHA is based serves several purposes. Perhaps the most important is that it provides a data interface between the host language and the data sublanguage. The normal user never applies host language statements directly to data residing in the data base, but instead fetches the desired data into one or more workspaces using data sublanguage statements, and then applies host language statements to the data in these workspaces. Statements of DSL ALPHA may be intermixed with host language statements (see 3.19).</p>
+				<p>Data transmitted from the data base to a workspace W is placed in W with a special representation which can be handled by such host languages as PL/I and Cobol. This <u>interface representation</u> consists of a rectangular array with the following properties:</p>
+				<ol>
+					<li>data items are homogeneous within each column;</li>
+					<li>different columns may have dissimilar types of data items;</li>
+					<li>all rows consist of distinct tuples.</li>
+				</ol>
+				<p>In addition, each column is headed by a workspace attribute name. Thus, at each instant of time, each workspace holds the array representation of one relation or a tuple thereof.</p>
+				<p>Since representations used in the data base can be entirely different from the interface representation, system-determined extraction and re-ordering operations usually accompany any transmission of data between the data base and the workspaces in either direction.</p>
+				<p>A relation which has been deposited in a workspace W may be used for retrieval purposes as an extension of the collection of relations in the data base, but only by the user or application program which owns W. This feature of the data sublanguage is particularly helpful in breaking down very complicated queries into a sequence of much simpler ones (see example 3.13). The various steps which must be taken before a relation can "go public" (i.e., be established as a sharable data base relation) are summarized in example 3.31.</p>
+				<footer>&ast;The reader who is familiar with the CODASYL <u>user working area</u> is cautioned not to confuse it with the DSL ALPHA workspace (they are quite different concepts).</footer>
+			</section>
+
+			<!-- TODO: fix this -->
+			<section id="page8" aria-label="Page 8">
+				<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
+					<!-- Title -->
+					<text x="250" y="20" font-family="Inconsolata" font-size="14" font-weight="bold">*DSL ALPHA STATEMENTS</text>
+
+					<!-- Data bank box -->
+					<rect x="100" y="100" width="100" height="50" stroke="black" fill="none" />
+					<text x="125" y="130" font-family="Inconsolata" font-size="12">data bank</text>
+
+					<!-- Workspaces box -->
+					<rect x="400" y="100" width="100" height="50" stroke="black" fill="none" />
+					<text x="420" y="130" font-family="Inconsolata" font-size="12">workspaces</text>
+
+					<!-- Host language box -->
+					<rect x="450" y="250" width="100" height="30" stroke="black" fill="none" />
+					<text x="460" y="270" font-family="Inconsolata" font-size="12">host language</text>
+
+					<!-- Arrows -->
+					<line x1="200" y1="125" x2="400" y2="125" stroke="black" marker-end="url(#arrow)" />
+					<line x1="200" y1="100" x2="200" y2="50" stroke="black" marker-end="url(#arrow)" />
+					<line x1="400" y1="50" x2="400" y2="100" stroke="black" marker-end="url(#arrow)" />
+					<line x1="200" y1="150" x2="200" y2="200" stroke="black" marker-end="url(#arrow)" />
+					<line x1="200" y1="200" x2="400" y2="200" stroke="black" marker-end="url(#arrow)" />
+					<line x1="250" y1="125" x2="350" y2="125" stroke="black" marker-end="url(#arrow)" />
+					<line x1="450" y1="125" x2="450" y2="250" stroke="black" stroke-dasharray="5,5" marker-end="url(#arrow)" />
+
+					<!-- Arrow marker definition -->
+					<defs>
+						<marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+							<path d="M0,0 L0,6 L9,3 z" fill="#000" />
+						</marker>
+					</defs>
+
+					<!-- Labels -->
+					<text x="110" y="75" font-family="Inconsolata" font-size="12">DECLARE*</text>
+					<text x="430" y="75" font-family="Inconsolata" font-size="12">OPEN*</text>
+					<text x="405" y="60" font-family="Inconsolata" font-size="12">CLOSE*</text>
+					<text x="405" y="45" font-family="Inconsolata" font-size="12">RELEASE*</text>
+					<text x="225" y="140" font-family="Inconsolata" font-size="12">HOLD*</text>
+					<text x="150" y="225" font-family="Inconsolata" font-size="12">DELETE*</text>
+					<text x="150" y="240" font-family="Inconsolata" font-size="12">DROP*</text>
+					<text x="225" y="100" font-family="Inconsolata" font-size="12">GET*</text>
+					<text x="225" y="210" font-family="Inconsolata" font-size="12">UPDATE*</text>
+					<text x="225" y="225" font-family="Inconsolata" font-size="12">PUT*</text>
+
+					<!-- Figure label -->
+					<text x="250" y="380" font-family="Inconsolata" font-size="12">Fig. 1: Information Flow</text>
+				</svg>
+			</section>
+
+			<section id="page9" aria-label="Page 9">
+				<p>The user may specify either of two modes of data transmission. In the <u>non-piped mode</u>, data transmission between a workspace and the data base appears to the user to take place all at once. Control is returned to the user only upon completion of transmission of the entire relation involved in the request. In the <u>piped mode</u> data transmission takes place tuple by tuple, and control is returned to the user after each tuple is transmitted (see section 3.18, 3.22, 3.27).</p>
+				<p>A state diagram is given in Fig. 2 showing permissible changes of state for any workspace. Note that whenever a workspace is in one of the 8 busy states it is inaccessible to statements of both the host language and the data sublanguage. In any of the non-busy states host language statements may be applied to the workspace. Which DSL ALPHA statements are applicable depends (as indicated in Fig. 2) on the particular non-busy state which a workspace is in.</p>
+
+				<h3 data-number="2.2">Names</h3>
+				<p>Basically, the ALPHA sublanguage uses only the following kinds of names: domain names, data base relation names, attribute names, workspace names and tuple variables. Names for data base domains, relations, and attributes are chosen by the community of users (possibly through an agent called the data base administrator). Names for workspaces and tuple variables are chosen by individual users.</p>
+				<p>The underlying domains, on which the data base relations are defined, must be assigned names which are unique relative to one another. The data base relations must also be named uniquely relative to themselves and to the underlying domains.</p>
+				<p>When a relation R is defined on certain underlying domains (D<sub>1</sub>, D<sub>2</sub>, ..., D<sub>n</sub>), each of these n domain applications is assigned a distinct <u>attribute name</u> (remember that two or more of the domains used to define R may be identical, and we do not want users to be forced to remember domain positions). A relation of degree n thus has n distinct attribute names. If all n domains on which that relation is defined are distinct, then the attribute names can be precisely the same as the domain names. Two applications of a common underlying domain to a relation R are given distinct attribute names by attaching distinct prefixes (called <u>role names</u> in [1]) to a common stem which is the name of the common domain.</p>
+				<p>For example, suppose one of the underlying domains is a set of serial numbers of parts and the domain name is P#. Suppose there is a relation COMPONENT with attributes named SUB_P#, SUP_P#. Then, the common stem P# indicates that values for these two domains are always serial numbers of parts. The prefixes SUB, SUP serve to distinguish the two distinct applications of the domain P# within the single relation COMPONENT. If an attribute of some other relation has a prefixed or non-prefixed name with the stem P#, its values must also come from this same underlying domain.</p>
+			</section>
+
+			<!-- TODO: fix this -->
+			<section id="page10" aria-label="Page 10">
+				<svg width="600" height="600" xmlns="http://www.w3.org/2000/svg">
+					<!-- Title -->
+					<text x="250" y="20" font-family="Inconsolata" font-size="14" font-weight="bold">*DSL ALPHA STATEMENTS</text>
+
+					<!-- Legend -->
+					<rect x="350" y="40" width="200" height="100" stroke="black" fill="none" />
+					<text x="360" y="60" font-family="Inconsolata" font-size="12">T=ready to transmit</text>
+					<text x="360" y="80" font-family="Inconsolata" font-size="12">R=ready to receive</text>
+					<text x="360" y="100" font-family="Inconsolata" font-size="12">G=GET</text>
+					<text x="360" y="120" font-family="Inconsolata" font-size="12">P=PUT</text>
+					<text x="360" y="140" font-family="Inconsolata" font-size="12">H=HOLD</text>
+					<text x="360" y="160" font-family="Inconsolata" font-size="12">U=UPDATE</text>
+					<text x="360" y="180" font-family="Inconsolata" font-size="12">p=piped</text>
+					<text x="360" y="200" font-family="Inconsolata" font-size="12">EXAMPLE: TpU means</text>
+					<text x="360" y="220" font-family="Inconsolata" font-size="12">ready to transmit and</text>
+					<text x="360" y="240" font-family="Inconsolata" font-size="12">ready for a piped UPDATE.</text>
+
+					<!-- Circles -->
+					<circle cx="300" cy="100" r="20" stroke="black" fill="none" />
+					<text x="295" y="105" font-family="Inconsolata" font-size="12">T</text>
+					<text x="295" y="115" font-family="Inconsolata" font-size="12">U</text>
+
+					<circle cx="150" cy="100" r="20" stroke="black" fill="none" />
+					<text x="145" y="105" font-family="Inconsolata" font-size="12">T</text>
+					<text x="145" y="115" font-family="Inconsolata" font-size="12">U</text>
+
+					<circle cx="300" cy="300" r="20" stroke="black" fill="none" />
+					<text x="295" y="305" font-family="Inconsolata" font-size="12">R</text>
+					<text x="295" y="315" font-family="Inconsolata" font-size="12">T</text>
+
+					<circle cx="150" cy="300" r="20" stroke="black" fill="none" />
+					<text x="145" y="305" font-family="Inconsolata" font-size="12">R</text>
+					<text x="145" y="315" font-family="Inconsolata" font-size="12">T</text>
+
+					<circle cx="150" cy="200" r="20" stroke="black" fill="none" />
+					<text x="145" y="205" font-family="Inconsolata" font-size="12">R</text>
+					<text x="145" y="215" font-family="Inconsolata" font-size="12">G</text>
+
+					<circle cx="300" cy="200" r="20" stroke="black" fill="none" />
+					<text x="295" y="205" font-family="Inconsolata" font-size="12">R</text>
+					<text x="295" y="215" font-family="Inconsolata" font-size="12">H</text>
+
+					<circle cx="450" cy="200" r="20" stroke="black" fill="none" />
+					<text x="445" y="205" font-family="Inconsolata" font-size="12">R</text>
+					<text x="445" y="215" font-family="Inconsolata" font-size="12">P</text>
+
+					<circle cx="450" cy="300" r="20" stroke="black" fill="none" />
+					<text x="445" y="305" font-family="Inconsolata" font-size="12">R</text>
+					<text x="445" y="315" font-family="Inconsolata" font-size="12">P</text>
+
+					<circle cx="450" cy="100" r="20" stroke="black" fill="none" />
+					<text x="445" y="105" font-family="Inconsolata" font-size="12">R</text>
+					<text x="445" y="115" font-family="Inconsolata" font-size="12">U</text>
+
+					<circle cx="450" cy="400" r="20" stroke="black" fill="none" />
+					<text x="445" y="405" font-family="Inconsolata" font-size="12">T</text>
+					<text x="445" y="415" font-family="Inconsolata" font-size="12">pU</text>
+
+					<!-- Arrows -->
+					<line x1="170" y1="100" x2="280" y2="100" stroke="black" marker-end="url(#arrow)" />
+					<line x1="170" y1="200" x2="280" y2="200" stroke="black" marker-end="url(#arrow)" />
+					<line x1="320" y1="100" x2="430" y2="100" stroke="black" marker-end="url(#arrow)" />
+					<line x1="320" y1="200" x2="430" y2="200" stroke="black" marker-end="url(#arrow)" />
+					<line x1="320" y1="300" x2="430" y2="300" stroke="black" marker-end="url(#arrow)" />
+					<line x1="170" y1="300" x2="280" y2="300" stroke="black" marker-end="url(#arrow)" />
+					<line x1="150" y1="120" x2="150" y2="180" stroke="black" marker-end="url(#arrow)" />
+					<line x1="450" y1="120" x2="450" y2="180" stroke="black" marker-end="url(#arrow)" />
+					<line x1="450" y1="320" x2="450" y2="380" stroke="black" marker-end="url(#arrow)" />
+					<line x1="150" y1="320" x2="150" y2="380" stroke="black" stroke-dasharray="5,5" marker-end="url(#arrow)" />
+					<line x1="300" y1="120" x2="300" y2="180" stroke="black" stroke-dasharray="5,5" marker-end="url(#arrow)" />
+					<line x1="300" y1="320" x2="300" y2="380" stroke="black" stroke-dasharray="5,5" marker-end="url(#arrow)" />
+
+					<!-- Arrow marker definition -->
+					<defs>
+						<marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+							<path d="M0,0 L0,6 L9,3 z" fill="#000" />
+						</marker>
+					</defs>
+
+					<!-- Figure label -->
+					<text x="250" y="580" font-family="Inconsolata" font-size="12">Fig. 2: Transmission Control: State Transition Diagram</text>
+				</svg>
+			</section>
+
+			<section id="page11" aria-label="Page 11">
+				<p>We shall omit consideration of user-chosen synonyms for data base domains, relations and attributes, and accordingly assume that each user avoids the use of any data base domain name, relation name, or attribute name as a workspace name or tuple variable. In all other respects, however, each user need not be aware of names in use by other users.</p>
+				<p>Now, to refer to a particular attribute D in some chosen relation R, we use the qualified name R.D. Similarly, if Z is a tuple variable with range R and we wish to refer to the D component of Z, we use the qualified name Z.D. As examples we might have as qualified names:</p>
+				<pre>
+	SUPPLIER.LOC     S.LOC
+	COMPONENT.SUB_PART     C.SUB_PART
+				</pre
+				>
+				<p>where</p>
+				<pre>
+	SUPPLIER, COMPONENT are relation names
+	LOC, PART are domain names
+	LOC, SUB_PART are attribute names
+	S is a tuple variable with range SUPPLIER
+	C is a tuple variable with range COMPONENT.
+				</pre
+				>
+				<p>One important advantage of having attribute names structured in this way is that they permit systematic handling of the <u>all-occurrence transformations</u> which arise in practice. An example of this is a sweeping change of all part numbers wherever they occur, or even of just one part number wherever it occurs. By examining the catalog of relation names, attribute names (prefixed as necessary) and domain names, the system can discover all of the attributes involving part numbers (see example 3.22).</p>
+				<p>Domain and attribute names for workspaces receiving information from the data base are system-determined according to a name inheritance rule (see examples 3.2, 3.12, 3.14).</p>
+
+				<h3 data-number="2.3">Absent and irrelevant values</h3>
+				<p>In any practical data base there is a strong likelihood that some value or values are not presently available, while others never will be available because they are (for some reason) irrelevant. Of all the examples given in section 3, only example 3.25 touches upon this subject. The ramifications, however, are substantial.</p>
+				<p>First of all, a three-valued logic is needed, one which involves the truth values</p>
+				<pre>
+	<u>TRUE</u>, <u>FALSE</u>, <u>MAYBE</u>.
+				</pre
+				>
+				<p>An explanation can be found in [18]. Secondly, when the final evaluation of a condition for eliciting a data item is completed and the result is <u>MAYBE</u>, the question arises: Should this item be included in</p>
 			</section>
 		</main>
 	</body>
