@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content="Document pages recreated in HTML5" />
+		<title>Document Recreation</title>
+		<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400&display=swap" rel="stylesheet" />
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+
+	<body>
+		<main>
+			<section id="page1" aria-label="Page 1">
+				<h1>A DATA BASE SUBLANGUAGE FOUNDED ON THE RELATIONAL CALCULUS</h1>
+				<br />
+				<br />
+				<br />
+				<p style="text-align: center">by</p>
+				<br />
+				<br />
+				<br />
+				<address>
+					E. F. Codd<br />
+					IBM Research Laboratory<br />
+					San Jose, California
+				</address>
+				<br />
+				<br />
+				<p>ABSTRACT:</p>
+				<p>Three principal types of language for data base manipulation are identified: the low-level, procedure-oriented (typified by the CODASYL-proposed DML), the intermediate level, algebraic (typified by the Project MAC MacAIMS language), and the high level, relational calculus-based data sublanguage, an example of which is described in this paper. The language description is informal and stresses concepts and principles. Following this, arguments are presented for the superiority of the calculus-based type of data base sublanguage over the algebraic, and for the algebraic over the low-level procedural. These arguments are particularly relevant to the questions of inter-system compatibility and standardization.</p>
+				<p class="smaller-text">LIMITED DISTRIBUTION NOTICE - This report has been submitted for publication elsewhere and has been issued as a Research Report for early dissemination of its contents. As a courtesy to the intended publisher, it should not be widely distributed until after the date of outside publication.</p>
+				<p class="smaller-text">Copies may be requested from IBM Thomas J. Watson Research Center, Post Office Box 218, Yorktown Heights, New York 10598</p>
+			</section>
+
+			<section id="page2" aria-label="Page 2">
+				<h2 data-number="1.">Introduction</h2>
+				<p>The two main goals of this paper are:</p>
+				<ol>
+					<li>To describe a data base sublanguage (ALPHA) founded on the relational model [1, 2] and also on the relational calculus [3];</li>
+					<li>To compare this calculus-oriented sublanguage with two other types of sublanguage used or proposed for data base manipulation.</li>
+				</ol>
+				<p>Two reasons for publishing this paper at this time are:</p>
+				<ol>
+					<li>It exhibits a high-level approach to data base language which is basically different from that proposed by the CODASYL Data Base Task Group [4];</li>
+					<li>It is intended to provide a framework for subsequent papers on authorization principles, search tactics and data representation techniques.</li>
+				</ol>
+				<p>We use the term <u>data sublanguage</u> (rather than language) because we are not concerned with general processing (or the capability of computing all computable functions). Instead, we wish to focus on only those language components which support storage and retrieval of formatted data from large shared data bases.</p>
+				<p>Excluded from discussion in this paper is language used for describing the physical representations permitted by a data base system.</p>
+				<h3 data-number="1.1">Data Model</h3>
+				<p>In [1] the author discussed a number of data models then in use and introduced a relational model based on <u>normalized relations of assorted degrees</u> (not just binary relations).&ast; Further normalization of this model is pursued in [2]. The principal motivations of the relational data model were (and are):</p>
+				<ol>
+					<li>data independence</li>
+					<li>the simplest possible structure consistent with semantic considerations</li>
+					<li>provision of a unifying principle which would simplify a) the language needed for interaction and b) statement analysis needed for authorization of access and optimization of search</li>
+					<li>relatively easy analysis for consistency.</li>
+				</ol>
+				<p>The need for a very high degree of independence (item 1 above) between application programs and terminal activities on the one hand, and the physical (or storage) representation of data on the other hand, is now widely recognized. Two key properties of a system which supports such data independence are:</p>
+				<footer>&ast; For definitions, see Appendix</footer>
+			</section>
+
+			<section id="page3" aria-label="Page 3">
+				<ol>
+					<li>The physical representation of the data may be changed without logically impairing any application programs;</li>
+					<li>The system can automatically translate requests expressed in terms of the logical structure of the data into corresponding operations on whatever physical data structure is currently in force (this automatic translation must continue to work correctly when the physical data structures are changed while the logical data structure is kept fixed).</li>
+				</ol>
+				<p>In some proposed systems (CODASYL [4], SHARE-GUIDE [5]) three levels of data representation are planned: the user logical, the system logical, and the physical. The system logical representation can be thought of as providing the basic data model with which the community of users interacts. Superimposed on this community model of the data is provision for individuals or sub-communities to establish specializations or simple variations of the community model suitable for their particular applications. We shall use the term <u>data model</u> as a concise phrase for the community model of the data.</p>
+				<p>Existing and proposed data base systems may be classified by the data model with which the user interacts and the language features provided to the user for expressing this interaction. Table 1 displays such a classification.</p>
+				<h3 data-number="1.2">Procedural Approach</h3>
+				<p>Most readers of this paper will have some familiarity with the existing systems (and the CODASYL proposal) cited in the top two rows of this table. The data sublanguages for these systems, so far as they can be identified separately from their host languages, are rather primitive. Not even boolean selection expressions are provided in IDS [9] and CODASYL [4]. Therefore, there is a heavy dependence on the host language for iterative scanning and searching.</p>
+				<p>Feldman and Rovner [10] introduced a semi-algebraic approach based on binary relations as the data model and user-specified triples (attribute, object, value) as the linguistic means of reference. Ash and Sibley [11] extended this approach.</p>
+				<footer>* The separation in the CODASYL proposal is clear.</footer>
+			</section>
+		</main>
+	</body>
+</html>

@@ -1,0 +1,149 @@
+body {
+	font-family: "Inconsolata", "Consolas", "Courier New", Courier, monospace;
+	font-size: 14px;
+	line-height: 1.2;
+	margin: 0;
+	padding: 0;
+	background-color: #2a2a2e;
+	font-weight: 200;
+}
+
+header {
+	text-align: center;
+	padding: 20px;
+	background-color: #f0f0f0;
+}
+
+main {
+	margin: 40px;
+}
+
+section {
+	border: 1px solid #cccccc;
+	padding: 80px;
+	margin-bottom: 40px;
+	page-break-after: always;
+	background-color: #fff;
+}
+
+h2::before,
+h3::before {
+	content: attr(data-number) " ";
+	font-weight: normal;
+	text-decoration: none;
+}
+
+h2[data-number]:before {
+	content: attr(data-number) " ";
+	font-weight: normal;
+	text-decoration: none;
+}
+
+h3[data-number]:before {
+	content: attr(data-number) " ";
+	font-weight: normal;
+	text-decoration: none;
+}
+
+h1 {
+	text-align: center;
+	margin: 0 40px;
+}
+
+h2,
+h3,
+h4 {
+	font-size: 100%;
+	text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 100;
+}
+
+address {
+	text-align: center;
+	font-style: normal;
+}
+
+li {
+	padding: 5px 0;
+}
+
+footer {
+	border-top: 1.5px solid black;
+}
+
+pre {
+	font-family: "Inconsolata", "Consolas", "Courier New", Courier, monospace;
+	padding: 0 40px;
+	border: none;
+	background-color: transparent;
+	white-space: pre;
+}
+
+pre span {
+	text-decoration: underline;
+}
+
+strong {
+	font-weight: bold;
+}
+
+p {
+	margin: 10px 0;
+	text-align: left;
+	padding: 0 20px;
+}
+
+.figure-text {
+	margin: 10px 0;
+	text-align: left;
+	padding: 0 40px;
+	text-decoration: underline;
+	text-indent: 0px;
+}
+
+.smaller-text {
+	font-size: 80%;
+	/* 20% smaller than the regular font size */
+}
+
+.dashed {
+	border: none;
+}
+
+.hr-container {
+	padding: 0 40px;
+}
+
+.dashed {
+	border: none;
+	border-top: 1.5px dashed;
+	margin: 0;
+}
+
+/* this class is used to pronounce math correctly, while silencing the original
+math text, so TTS will weirdly "skip" the math */
+.TTS {
+	position: absolute;
+	clip: rect(0, 0, 0, 0);
+}
+
+/* better styling for MATHS */
+.math {
+	font-family: "Times New Roman", Times, serif;
+	font-weight: normal; /* Ensure normal weight for the math class */
+	text-decoration: none;
+}
+
+/* better styling for MATHS */
+.sub-math {
+	font-family: "Courier New", Courier, sans-serif;
+	font-weight: normal; /* Ensure normal weight for the sub-math class */
+}
