@@ -1,107 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Numbered Headings</title>
+		<style>
+			/* Initialize a counter */
+			body {
+				counter-reset: section;
+			}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Famous Math Formulas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inconsolata', 'Consolas', 'Courier New', Courier, monospace;
-            font-size: 14px;
-            line-height: 1.2;
-            margin: 0;
-            padding: 0;
-            background-color: #ffffff;
-            font-weight: 100;
-        }
+			/* Base styles for headings */
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6 {
+				position: relative;
+				padding-left: 40px; /* Adjust as necessary for spacing */
+			}
 
-        .formula {
-            background-color: #f4f4f4;
-            border-left: 4px solid #007BFF;
-            padding: 10px;
-            margin: 20px 0;
-        }
+			/* Pseudo-elements to add numbering */
+			.numbered-title::before {
+				counter-increment: section;
+				content: counter(section) ". ";
+				position: absolute;
+				left: 0;
+				font-weight: bold;
+			}
 
-        code {
-            font-size: 1.2em;
-        }
-
-        /* better styling for MATHS */
-        .math {
-            font-family: 'Times New Roman', Times, serif;
-            font-weight: normal;
-            /* Ensure normal weight for the math class */
-        }
-
-        /* better styling for MATHS */
-        .sub-math {
-            font-family: 'Courier New', Courier, sans-serif;
-            font-weight: normal;
-            /* Ensure normal weight for the sub-math class */
-        }
-
-        p {
-            margin: 10px 0;
-            text-align: left;
-            padding: 0 40px;
-            text-indent: 40px;
-            /* Negative indent to counteract the margin of the first letter */
-        }
-
-        pre {
-            font-family: 'Inconsolata', 'Consolas', 'Courier New', Courier, monospace;
-            padding: 0 40px;
-            border: none;
-            background-color: transparent;
-            white-space: pre;
-        }
-    </style>
-</head>
-
-<body>
-    <h1>Famous Math Formulas</h1>
-    <section>
-        <p>
-            Those relations which are in the named set and not in the stored set are defined by expressions (independent of time) involving names of relations in the stored set, together with the permutation-projection, natural composition, natural join and tie operators
-            <math xmlns="http://www.w3.org/1998/Math/MathML">
-                <mo>&Pi;</mo>
-            </math>,
-            <math class="serif" xmlns="http://www.w3.org/1998/Math/MathML">
-                <mo>&sdot;</mo>
-            </math>,
-            <math class="serif" xmlns="http://www.w3.org/1998/Math/MathML">
-                <mo>&lowast;</mo>
-            </math>,
-            <math class="serif" xmlns="http://www.w3.org/1998/Math/MathML">
-                <mi>&gamma;</mi>
-            </math>.
-            Such definitions by expressions must be within the scope of the retrieval language R.
-        </p>
-        <div class="hr-container">
-            <hr class="dashed">
-        </div>
-        <p class="no-indent">
-            **Once a user is aware that a certain relation is stored, he will expect to be able to exploit it using any combination of its arguments as "knowns" and the remaining arguments as "unknowns," because the information (like Everest) is there. This is a system feature (missing from many current information systems), which we shall call (logically) symmetric exploitation of relations.
-        </p>
-        <div class="hr-container">
-            <hr class="dashed">
-        </div>
-    </section>
-    <section>
-        <p>Inspection of these relations reveals an element (element 1) of the domain part (the domain on which the join is to be made) with the property that it possesses more than one relative under R and also under S. It is this element which gives rise to the plurality of joins. Such an element in the joining domain is called a point of ambiguity with respect to the joining of R with S.</p>
-        <p>If either <span class="math">&Pi;</span><sub>1</sub>(R) or S is a function*, no point of ambiguity can occur in joining R with S. In such a case, the natural join of R with S is the only join of R with S. Note that the reiterated qualification "of R with S" is necessary, because S might be joinable with R (as well as with S), and this join would be an entirely separate consideration. In Figure 4, none of the relations R, <span class="math">&Pi;<sub>1</sub></span>(R), S, <span class="math">&Pi;</span><sub>2</sub>(S) is a function.</p>
-        <p>Ambiguity in the joining of R with S can sometimes be resolved by means of other relations. Suppose we are given, or can derive from sources independent of R and S, a relation T on the domains project and supplier with the following properties:</p>
-        <ul>
-            <li>(1) &Pi;<sub class="sub-math">1</sub>(T) = <span class="math">&Pi;</span><sub class="sub-math">2</sub>(S)</li>
-            <li>(2) &Pi;<sub class="sub-math">2</sub>(T) = <span class="math">&Pi;</span><sub class="sub-math">1</sub>(R)</li>
-            <li>(3) T(j, s) &rarr; &exist;p R(s, p) &and; S(p, j)</li>
-            <li>(4) R(s, p) &rarr; &exist;j (S(p, j) &and; T(j, s))</li>
-            <li>(5) S(p, j) &rarr; &exist;s (T(j, s) &and; R(s, p))</li>
-        </ul>
-        <p>then we may form a three-way join of R, S, T; that is, a ternary relation such that</p>
-    </section>
-</body>
-
+			/* Underlining only the title text */
+			.title-text {
+				text-decoration: underline;
+			}
+		</style>
+	</head>
+	<body>
+		<h1 class="numbered-title"><span class="title-text">Heading 1</span></h1>
+		<h2 class="numbered-title"><span class="title-text">Heading 2</span></h2>
+		<h3 class="numbered-title"><span class="title-text">Heading 3</span></h3>
+		<h4 class="numbered-title"><span class="title-text">Heading 4</span></h4>
+		<h5 class="numbered-title"><span class="title-text">Heading 5</span></h5>
+		<h6 class="numbered-title"><span class="title-text">Heading 6</span></h6>
+		<h1 class="numbered-title"><span class="title-text">Heading 1</span></h1>
+		<h2 class="numbered-title"><span class="title-text">Heading 2</span></h2>
+		<h3 class="numbered-title"><span class="title-text">Heading 3</span></h3>
+		<h4 class="numbered-title"><span class="title-text">Heading 4</span></h4>
+		<h5 class="numbered-title"><span class="title-text">Heading 5</span></h5>
+		<h6 class="numbered-title"><span class="title-text">Heading 6</span></h6>
+		<h1 class="numbered-title"><span class="title-text">Heading 1</span></h1>
+		<h2 class="numbered-title"><span class="title-text">Heading 2</span></h2>
+		<h3 class="numbered-title"><span class="title-text">Heading 3</span></h3>
+		<h4 class="numbered-title"><span class="title-text">Heading 4</span></h4>
+		<h5 class="numbered-title"><span class="title-text">Heading 5</span></h5>
+		<h6 class="numbered-title"><span class="title-text">Heading 6</span></h6>
+	</body>
 </html>
