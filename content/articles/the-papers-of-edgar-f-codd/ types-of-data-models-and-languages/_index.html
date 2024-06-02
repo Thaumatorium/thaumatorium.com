@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Types of Data Models and Languages</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				margin: 0;
+				padding: 20px;
+				background-color: #f0f0f0;
+			}
+			h1 {
+				text-align: center;
+			}
+			th {
+				font-weight: 100;
+			}
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin: 20px 0;
+				background-color: #fff;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			}
+			thead th {
+				border: 1px double #000;
+				padding: 8px;
+				text-align: left;
+				position: relative;
+			}
+			.bottom-double {
+				border-bottom: 2px double #000;
+			}
+			tbody th {
+				border: 1px double #000;
+				padding: 8px;
+				text-align: left;
+			}
+			.right-double {
+				border-right: 2px double #000;
+			}
+			td {
+				border: 1px solid #ccc;
+				padding: 8px;
+				text-align: left;
+			}
+			.vertical {
+				writing-mode: vertical-rl;
+				transform: rotate(180deg);
+				text-align: center;
+			}
+			.diagonal-cell {
+				position: relative;
+				overflow: hidden;
+			}
+			.diagonal-cell div {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+                /* this linear-gradient is a hack to create a line, where there is none. */
+				background: linear-gradient(to right top, #ffffff 0%, #ffffff 49.9%, #000000 50%, #000000 50%, #ffffff 51.1%, #ffffff 100%);
+				pointer-events: none;
+			}
+			.diagonal-cell span.top-left {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				padding: 4px;
+			}
+			.diagonal-cell span.bottom-right {
+				position: absolute;
+				top: 0;
+				right: 0;
+				padding: 4px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Types of Data Models and Languages</h1>
+		<table>
+			<thead>
+				<tr>
+					<th rowspan="2" colspan="2" class="right-double bottom-double diagonal-cell">
+						<div></div>
+						<span class="top-left">DATA<br />SUBLANGUAGE</span>
+						<span class="bottom-right">DATA<br />MODEL</span>
+					</th>
+					<th rowspan="2" class="bottom-double">TREES</th>
+					<th rowspan="2" class="bottom-double">NETS</th>
+					<th colspan="2">RELATIONS</th>
+				</tr>
+				<tr>
+					<th class="bottom-double">DEGREE<br />2 ONLY</th>
+					<th class="bottom-double">ASSORTED<br />DEGREES<br />(n ≥ 1)</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th rowspan="2" class="vertical">LOW</th>
+					<th class="right-double">Minimal<br />Selection<br />Capability</th>
+					<td></td>
+					<td>[9] IDS<br />[4] Codasyl</td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<th class="right-double">Boolean<br />Selection<br />Expressions</th>
+					<td>[6] IMS<br />[7] GIS<br />[8] UL/1</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<th rowspan="2" class="vertical">INTERMEDIATE</th>
+					<th class="right-double">Attribute<br />&nbsp;&nbsp;- Object<br />&nbsp;&nbsp;- Value</th>
+					<td></td>
+					<td></td>
+					<td>[10] Feldman<br />&nbsp;&nbsp;&nbsp;- Rovner<br />[11] Ash<br />&nbsp;&nbsp;&nbsp;- Sibley</td>
+					<td></td>
+				</tr>
+				<tr>
+					<th class="right-double">Algebra<br />Oriented</th>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>[15] Childs<br />[16] MacAIMS</td>
+				</tr>
+				<tr>
+					<th class="vertical">HIGH</th>
+					<th class="right-double">Calculus<br />Oriented</th>
+					<td>[20] TDMS</td>
+					<td></td>
+					<td></td>
+					<td>Codd (&alpha;)</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>
