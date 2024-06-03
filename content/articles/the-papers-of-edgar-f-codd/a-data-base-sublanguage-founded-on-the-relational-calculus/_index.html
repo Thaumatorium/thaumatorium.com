@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Document Recreation</title>
-		<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400&display=swap" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500&display=swap" rel="stylesheet" />
 		<link rel="stylesheet" href="styles.css" />
 	</head>
 
@@ -182,7 +182,7 @@
 			<section id="page8" aria-label="Page 8">
 				<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
 					<!-- Title -->
-					<text x="250" y="20" font-family="Inconsolata" font-size="14" font-weight="bold">*DSL ALPHA STATEMENTS</text>
+					<text x="250" y="20" font-family="Inconsolata" font-size="14" font-weight="bold">&ast;DSL ALPHA STATEMENTS</text>
 
 					<!-- Data bank box -->
 					<rect x="100" y="100" width="100" height="50" stroke="black" fill="none" />
@@ -213,16 +213,16 @@
 					</defs>
 
 					<!-- Labels -->
-					<text x="110" y="75" font-family="Inconsolata" font-size="12">DECLARE*</text>
-					<text x="430" y="75" font-family="Inconsolata" font-size="12">OPEN*</text>
-					<text x="405" y="60" font-family="Inconsolata" font-size="12">CLOSE*</text>
-					<text x="405" y="45" font-family="Inconsolata" font-size="12">RELEASE*</text>
-					<text x="225" y="140" font-family="Inconsolata" font-size="12">HOLD*</text>
-					<text x="150" y="225" font-family="Inconsolata" font-size="12">DELETE*</text>
-					<text x="150" y="240" font-family="Inconsolata" font-size="12">DROP*</text>
-					<text x="225" y="100" font-family="Inconsolata" font-size="12">GET*</text>
-					<text x="225" y="210" font-family="Inconsolata" font-size="12">UPDATE*</text>
-					<text x="225" y="225" font-family="Inconsolata" font-size="12">PUT*</text>
+					<text x="110" y="75" font-family="Inconsolata" font-size="12">DECLARE&ast;</text>
+					<text x="430" y="75" font-family="Inconsolata" font-size="12">OPEN&ast;</text>
+					<text x="405" y="60" font-family="Inconsolata" font-size="12">CLOSE&ast;</text>
+					<text x="405" y="45" font-family="Inconsolata" font-size="12">RELEASE&ast;</text>
+					<text x="225" y="140" font-family="Inconsolata" font-size="12">HOLD&ast;</text>
+					<text x="150" y="225" font-family="Inconsolata" font-size="12">DELETE&ast;</text>
+					<text x="150" y="240" font-family="Inconsolata" font-size="12">DROP&ast;</text>
+					<text x="225" y="100" font-family="Inconsolata" font-size="12">GET&ast;</text>
+					<text x="225" y="210" font-family="Inconsolata" font-size="12">UPDATE&ast;</text>
+					<text x="225" y="225" font-family="Inconsolata" font-size="12">PUT&ast;</text>
 
 					<!-- Figure label -->
 					<text x="250" y="380" font-family="Inconsolata" font-size="12">Fig. 1: Information Flow</text>
@@ -244,7 +244,7 @@
 			<section id="page10" aria-label="Page 10">
 				<svg width="600" height="600" xmlns="http://www.w3.org/2000/svg">
 					<!-- Title -->
-					<text x="250" y="20" font-family="Inconsolata" font-size="14" font-weight="bold">*DSL ALPHA STATEMENTS</text>
+					<text x="250" y="20" font-family="Inconsolata" font-size="14" font-weight="bold">&ast;DSL ALPHA STATEMENTS</text>
 
 					<!-- Legend -->
 					<rect x="350" y="40" width="200" height="100" stroke="black" fill="none" />
@@ -354,6 +354,610 @@
 				</pre
 				>
 				<p>An explanation can be found in [18]. Secondly, when the final evaluation of a condition for eliciting a data item is completed and the result is <u>MAYBE</u>, the question arises: Should this item be included in</p>
+			</section>
+
+			<section id="page12" aria-label="Page 12">
+				<p>the retrieved set or not? In DSL ALPHA (in contrast to [18]), inclusion or exclusion of such items is under the control of the user through his attachment or non-attachment of the keyword MAYBE_TOO on the pertinent retrieval request.</p>
+
+				<h2 data-number="3">Data Sublanguage ALPHA Examples</h2>
+				<p>The examples which follow are intended to introduce the reader gradually to the concepts and semantics of ALPHA. The author does not attach any special importance to the syntax of ALPHA (note for example the absence of an end-of-statement symbol). Examples 1-18 deal with queries, 19-23 with updates, 24-27 with insertions, 28-30 with deletions, 31-32 with establishing and dropping data base relations.</p>
+				<p>The sample data base which these examples exploit, consists of four relations as tabulated in Table 2. The primary key of each relation is underlined.</p>
+
+				<table>
+					<caption>
+						Table 2: Sample Data Base
+					</caption>
+					<thead>
+						<tr>
+							<th><u>Relation</u></th>
+							<th><u>Attributes/Domains</u></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>SUPPLIER</td>
+							<td><u>S#</u>, SNAME, LOC</td>
+						</tr>
+						<tr>
+							<td>PART</td>
+							<td><u>P#</u>, PNAME, COLOR, WEIGHT, QOH</td>
+						</tr>
+						<tr>
+							<td>PROJECT</td>
+							<td><u>J#</u>, JNAME, MGR, E#</td>
+						</tr>
+						<tr>
+							<td>SUPPLY</td>
+							<td><u>S#</u>, P#, J#, SHIPDATE, QUANTITY</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<p>The relation SUPPLY satisfies the following integrity constraints:</p>
+				<ol>
+					<li>The set of supplier numbers appearing in the SUPPLY relation is a subset of the set of supplier numbers appearing in the SUPPLIER relation;</li>
+					<li>A similar constraint applies to part numbers relative to the PART relation;</li>
+					<li>A similar constraint applies to project numbers relative to the PROJECT relation.</li>
+				</ol>
+
+				<h3 data-number="3.1">Simple Query</h3>
+				<p>&ast;&ast; Find all the part numbers of parts being supplied</p>
+				<pre>
+			<u>GET</u> W SUPPLY.P#
+				</pre
+				>
+				<p>The set of distinct part numbers appearing in the part number attribute (P#) of the relation SUPPLY is copied into workspace W. Note that redundant duplicate values of P# are not delivered to W. After execution of this statement, W may be treated as a unary relation, whose sole attribute is P#.</p>
+			</section>
+
+			<section id="page13" aria-label="Page 13">
+				<p>This query has three principal parts:</p>
+				<table>
+					<tr>
+						<td><u>an operation name</u></td>
+						<td>GET</td>
+					</tr>
+					<tr>
+						<td><u>a workspace name</u></td>
+						<td>W</td>
+					</tr>
+					<tr>
+						<td><u>a target list</u></td>
+						<td>SUPPLY.P#</td>
+					</tr>
+				</table>
+				<p>Generally, a target list is composed of elements each of which is of one of the forms:</p>
+				<pre>
+	relation name.attribute name
+	tuple variable.attribute name
+	relation name
+	tuple variable
+				</pre
+				>
+				<p>In the last two cases, the omission of an attribute name indicates that complete tuples are to be elicited from the corresponding relation.</p>
+				<p>Because a desired ordering is not specified in this sample query, the part numbers are delivered to W in a system-determined order, which is not guaranteed to be invariant with time.</p>
+
+				<h3 data-number="3.2">Query with Qualification</h3>
+				<p>&ast;&ast; Find the part numbers, names and quantities on hand where quantity on hand is less than 25</p>
+				<pre>
+<u>GET</u> W (PART.P#, PART.PNAME, PART.QOH):(PART.QOH < 25)
+				</pre>
+				<p>This statement contains an additional principal part, the <u>qualification</u>. This appears after the target list and, for clarity, is separated from the target list by a colon which can be taken to mean <u>where</u> or <u>such that</u>.</p>
+				<p>The set of distinct PART triples (P#, PNAME, QOH) satisfying the requirement that the value of quantity-on-hand (QOH) is less than 25 is copied into workspace W. Accordingly, W may be regarded as a normal ternary relation with attributes P#, PNAME, QOH.</p>
+				<p>A convention called the <u>name inheritance rule</u> permits these attributes to be referred to by the terms</p>
+				<pre>
+	W.P#, W.PNAME, W.QOH
+				</pre
+				>
+				<p>Examples 3.12, 3.13 deal further with this matter.</p>
+
+				<h3 data-number="3.3">Tuple Variables and their Range</h3>
+				<p>Suppose a user is beginning a terminal session or writing an application</p>
+			</section>
+
+			<section id="page14" aria-label="Page 14">
+				<p>program in which he is going to make frequent reference to the relation PART. He can use a range declaration<sup>&ast;</sup> of the form</p>
+				<pre>
+	RANGE PART P
+				</pre
+				>
+				<p>to tell the system that he wants to talk about parts and is going to use P to designate a typical tuple of the relation PART. This declaration stays in effect until explicitly overridden by another RANGE statement involving P or until termination of the session or until exit of control from the pertinent application program block.</p>
+				<p>Assuming the above declaration is in effect, example 3.2 can be expressed as follows:</p>
+				<pre>
+	GET W (P.P#, P.PNAME, P.QOH):(P.QOH < 25)
+				</pre
+				>
+				<p>Looking back at examples 3.1 and 3.2, we now see that we used a relation name (PART) in those queries to denote <u>not</u> the relation itself, but a variable whose range is that relation. This is permitted in DSL ALPHA, only when <u>neither</u> of the following conditions holds:</p>
+				<ol>
+					<li>The variable in question is quantified (see examples 3.6, 3.9);</li>
+					<li>The variable in question shares its range with some other variable (see example 3.7).</li>
+				</ol>
+				<p>One important reason for insisting on RANGE statements is that it forces the user to state the context of his requests, and thereby tends to make it difficult for him to ask unreasonable questions such as: find all the items in the data base that are not suppliers of the part with part number 3. The response to such a query would be almost the entire data base (see [3] for the underlying concept of a range-separable formula of the relational calculus). Incidentally, range declarations do not jeopardize the use of DSL ALPHA in an <u>interpretive</u>, interactive mode.</p>
+
+				<h3 data-number="3.4">User-specified Ordering</h3>
+				<p>&ast;&ast; Same query as 3.3, except that elements are to be delivered to the workspace in order by increasing WEIGHT (major order) and decreasing QOH (minor order).</p>
+				<pre>
+	<u>GET</u> W (P.P#, P.PNAME, P.QOH):(P.QOH < 25) <u>UP</u> P.WEIGHT
+						  <u>DOWN</u> P.QOH</pre
+				>
+				<p>This statement contains an additional principal part, the <u>element ordering expression</u>. This expression follows the qualification part (if this is null, it follows the colon). It is a list of pairs, each consisting of the keyword UP or DOWN followed by a relation name, period, and attribute name.</p>
+				<footer>
+					<p><sup>&ast;</sup> In a somewhat different context E. S. Lowry proposed range declarations (see [19]).</p>
+				</footer>
+			</section>
+
+			<section id="page15" aria-label="Page 15">
+				<h3 data-number="3.5">Limited Number of Elements</h3>
+				<p>&ast;&ast; Find the part numbers, part names, and quantities on hand where quantity on hand is less than 25, retrieving no more than five elements.</p>
+				<pre>	<u>GET</u> W (5)(P.P#, P.PNAME, P.QOH):(P.QOH < 25)</pre>
+				<p>Another principal part, the <u>quota</u>, is introduced in this example. It is either an integer or an integer valued expression, and indicates to the system that no more than that particular number of elements are to be delivered to the specified workspace. If no element ordering expression is specified and the data base contains more elements satisfying the specified qualification than the quota, the system determines which ones of the qualified elements are to be delivered. By including an element ordering expression along with a quota, the user can exert partial (and in some cases, complete) control over which elements are delivered.</p>
+
+				<h3 data-number="3.6">Single Existential Quantifier</h3>
+				<p>Consider two queries concerning suppliers and parts. Assume that the following range declarations are in effect.</p>
+				<pre>
+	<u>RANGE</u>    SUPPLIER  S
+	<u>RANGE</u>    SUPPLY    Z</pre
+				>
+				<p>&ast;&ast; Find the supplier numbers of those suppliers who supply the part with part number 3.</p>
+				<pre>	<u>GET</u> W Z.S#:(Z.P#=3)</pre>
+				<p>&ast;&ast; Find the supplier names of those suppliers who supply the part with part number 3.</p>
+				<pre>	<u>GET</u> W S.SNAME:&exist;Z((S.S#=Z.S#)&and;(Z.P#=3))</pre>
+				<p>Note that reference must be made to both the SUPPLIER relation and the SUPPLY relation to answer the second query, whereas the SUPPLY relation alone is adequate for the first.</p>
+				<p>The second <u>GET</u> statement above may be paraphrased as follows: Find the name of every supplier such that there exists a supply tuple having the same supplier number together with an associated part number of value 3. Quantifiers may appear in the qualification, but not in the target list or in the element ordering expression. Where a quantifier appears at the extreme left of a qualification, it may be moved up to the <u>RANGE</u> statement for the variable which is quantified. Thus, the second query above may be expressed as follows:</p>
+			</section>
+
+			<section id="page16" aria-label="Page 16">
+				<pre>
+	<u>RANGE</u>   SUPPLIER    S
+	<u>RANGE</u>   SUPPLY      Z  <u>SOME</u>
+
+	<u>GET</u> W S.SNAME:(S.S#=Z.S#)&and;(Z.P#=3)
+				</pre
+				>
+				<p>The attribute <u>SOME</u> indicates existential quantification of the associated tuple variable, while <u>ALL</u> indicates universal quantification. A natural default rule for a missing quantifier attribute on a tuple variable (a variable not appearing in the target list) is that <u>SOME</u> be assumed. All tuple variables appearing in the qualification and not in the target list must be quantified either explicitly or by default. The case of multiple quantifiers and their attachment to <u>RANGE</u> statements is dealt with in example 3.10.</p>
+				<p>Expressions of the form</p>
+				<pre>	T.D&lt;U.E, T.D=U.E, T.D&gt;U.E</pre>
+				<p>where T, U are tuple variables,</p>
+				<pre> 	D,E are attribute names</pre>
+				<p>are called <u>join</u> terms, since they are the relational calculus counterparts of the relational algebraic operations <u>lo-join</u>, <u>equi-join</u>, and <u>hi-join</u> (see [3]). Such expressions are permitted in DSL ALPHA only in those cases where the units of the attribute T.D are system-convertible into the units of U.E -- for example, T.D could be in grams and U.E in pounds, if the system had a conversion algorithm it could invoke. A common special case of this occurs when T.D and U.E have the same units. For example, both attributes might refer to part numbers or both to ages in years.</p>
+				<p>Since all qualifications can be converted to a logically equivalent formula with the quantifiers at the extreme left (prenex normal form), it is always possible to express a given query using the attributes <u>SOME</u> or <u>ALL</u> on <u>RANGE</u> statements, so that no quantifiers appear explicitly in the <u>GET</u> statement.</p>
+
+				<h3 data-number="3.7">Multiple Tuple Variables with Common Range</h3>
+				<p>&ast;&ast; Find the supplier numbers of those suppliers who have the same location (LOC) as supplier Jones.</p>
+				<pre>
+			<u>RANGE</u>     SUPPLIER  S
+			<u>RANGE</u>     SUPPLIER  T  <u>SOME</u>
+			<u>GET</u>  W  S.S#:(T.SNAME='JONES')&and;(T.LOC=S.LOC)</pre
+				>
+				<p>Note that S and T have the common range SUPPLIER but must be distinguished in the query. The response to this query includes the</p>
+			</section>
+
+			<section id="page17" aria-label="Page 17">
+				<p>supplier number of Jones himself assuming he is recorded in the data base as a supplier.</p>
+
+				<h3 data-number="3.8">Negation</h3>
+				<p>&ast;&ast; Find the supplier numbers of suppliers who supply a part other than part number 3.</p>
+				<pre>
+	<u>RANGE</u>     SUPPLY Z
+	<u>GET</u>  W  Z.S#:&#65506;(Z.P#=3)
+				</pre
+				>
+
+				<h3 data-number="3.9">Single Universal Quantifier</h3>
+				<p>&ast;&ast; Find the supplier numbers of suppliers who do not supply part number 3 (and may not supply any part at all at this time).</p>
+				<pre>	<u>GET</u>  W  S.S#:&#65506;&exist;Z((S.S#=Z.S#)&and;(Z.P#=3))</pre>
+				<p>The following statement has a logically equivalent qualification and makes use of the universal quantifier:</p>
+				<pre>	<u>GET</u>  W  S.S#:&forall;Z&#65506;((S.S#=Z.S#)&and;(Z.P#=3))</pre>
+				<p>Because the second version is in prenex normal form (quantifiers at the extreme left of the qualification), it is possible in this case to pre-declare the quantification as follows:</p>
+				<pre>
+	<u>RANGE</u>     SUPPLIER S
+	<u>RANGE</u>     SUPPLY  Z  ALL
+	<u>GET</u>  W  S.S#:&#65506;((S.S#=Z.S#)&and;(Z.P#=3))</pre
+				>
+				<h3 data-number="3.10">Multiple Quantifiers</h3>
+				<p>&ast;&ast; Find the names and locations of all suppliers, each of whom supplies all projects.</p>
+				<pre>	<u>GET</u> W (S.NAME, S.LOC):&forall;J&exist;Z((S.S#=Z.S#)&and;(Z.J#=J.J#))</pre>
+				<p>In this statement the ordering of quantifiers cannot be changed without changing its meaning. Thus, when the quantifiers are moved to the corresponding RANGE statements, these statements must appear in the order shown below:</p>
+			</section>
+
+			<section id="page18" aria-label="Page 18">
+				<pre>
+	<u>RANGE</u>   SUPPLIER  S
+	<u>RANGE</u>   PROJECT  J  <u>ALL</u>
+	<u>RANGE</u>   SUPPLY  Z  <u>SOME</u>
+	<u>GET</u>  W  (S.SNAME,S.LOC):(S.S#=Z.S#)&and;(Z.J#=J.J#)</pre
+				>
+				<p>Note that tuple variables appearing in the target list (in this example, just S) are <u>never</u> quantified.</p>
+				<h3>3.11 Multiple Relation Target List</h3>
+				<p>&ast;&ast; For each project obtain as a triple the project number, project name and supplier location for all suppliers who supply that project.</p>
+				<pre>
+	<u>RANGE</u>   PROJECT  J
+	<u>RANGE</u>   SUPPLIER  S
+	<u>RANGE</u>   SUPPLY  Z <u>SOME</u>
+	<u>GET</u>  W  (J.J#,J.JNAME,S.LOC):(J.J#=Z.J#)&and;(Z.S#=S.S#)</pre
+				>
+				<p>The first and second components of each triple copied into W come from the PROJECT relation. The third component comes from the SUPPLIER relation. In general, any number of distinct relations may be referenced in the target list. As usual, any tuple variable appearing in the qualification and not in the target list must be quantified either explicitly or by default.</p>
+				<h3>3.12 Naming of Workspace Attributes</h3>
+				<p>The name inheritance rule mentioned in example 3.2 needs to be re-examined in the light of example 3.11. This rule must be so defined that it is never possible for two distinct attributes of a workspace to inherit identical names. Recall that for each established data base relation it is decreed that its attributes be distinctly named -- if necessary through prefixing as in</p>
+				<pre>	COMPONENT(SUP_P#,SUB_P#,...)</pre>
+				<p>where two part number (P#) attributes are involved. It is not forbidden, however, for an attribute of one relation to have the same name as an attribute of some other relation. If this occurs, a query like that of example 3.11 could be constructed which would give rise to ambiguous naming of workspace attributes. Consider the possibility that J.JNAME and S.SNAME had been named J.NAME and S.NAME respectively (a legal possi- bility). A query of the form</p>
+				<pre>	<u>GET</u>  W  (J.NAME,S.NAME) ...</pre>
+			</section>
+
+			<section id="page19" aria-label="Page 19">
+				<p>would raise the question of how the two attributes of &nbsp;W&nbsp; are to be distinguished.</p>
+				<p>To resolve this problem the name inheritance rule is formulated as follows.</p>
+				<p>When information is transmitted from the data base into a workspace &nbsp;W&nbsp; in accordance with a target list of the form</p>
+				<pre>(R<sub>1</sub>.D<sub>1</sub>,R<sub>2</sub>.D<sub>2</sub>,...,R<sub>n</sub>.D<sub>n</sub>)</pre>
+				<p>the jth attribute of &nbsp;W&nbsp; inherits the prefixed name &nbsp;R<sub>j-</sub>D<sub>j</sub>&nbsp; if &nbsp;R<sub>j</sub>&nbsp; is a relation name, and &nbsp;S<sub>j-</sub>D<sub>j</sub>&nbsp; if &nbsp;R<sub>j</sub>&nbsp; is a tuple variable whose range is the relation S<sub>j</sub>. The prefix may be dropped, if the unprefixed name does not occur as part of any other attribute name for that workspace.</p>
+
+				<h3>3.13 Using a Workspace as Just Another Relation</h3>
+				<p>&ast;&ast; Find the names and locations of all suppliers who supply at least those projects supplied by supplier Jones.</p>
+				<p>One approach to formulating this query is to decompose it into two queries. First, develop as a unary relation in workspace W1 the set of project numbers supplied by supplier Jones. Then use this set to obtain the required suppliers' names and locations as a binary relation in workspace W2.</p>
+				<pre>
+	<u>RANGE</u>     SUPPLY  Z
+	<u>RANGE</u>     SUPPLIER  T <u>SOME</u>
+	<u>GET</u>  W1  Z.J#: (Z.S#=T.S#)&and;(T.NAME='JONES')
+	<u>RANGE</u>     SUPPLIER  S
+	<u>RANGE</u>     W1  X <u>ALL</u>
+	<u>RANGE</u>     SUPPLY  Z <u>SOME</u>
+	<u>GET</u>  W2  (S.NAME,S.LOC): (S.S#=Z.S#)&and;(Z.J#=X.J#)</pre
+				>
+				<p>When a new relation is formed in a workspace, this relation does not thereby become available to the community of users as a data base relation. Additional steps are required to make such a relation publicly available (see example 3.31).</p>
+
+				<h3>3.14 Simple Functions in the Target List</h3>
+				<p>An expandable library of functions which can be invoked in queries provides a means of extending the selective capability of DSL ALPHA.</p>
+			</section>
+
+			<section id="page20" aria-label="Page 20">
+				<p>Some rather important members of this library are the following:</p>
+				<pre>
+	COUNT    counts the number of elements in a finite set;
+	MAX 	 selects the maximum value in a finite set of numbers;
+	MIN 	 selects the minimum value in a finite set of numbers;
+	TOTAL    forms the sum of all <u>occurrences</u> of values in a numeric attribute (duplicates, if any, are included in the sum)</pre
+				>
+				<p>The function TOTAL has two arguments (a relation and a numeric attribute), whereas COUNT, MAX, MIN have only one (a set name or set expression).</p>
+				<p>&ast;&ast; Find the number of suppliers who supply project #5</p>
+				<pre>
+	<u>RANGE</u>     SUPPLY Z
+	<u>GET</u>  W  COUNT(Z.S#):(Z.J#=5)</pre
+				>
+				<p>The name inheritance rule is extended to accommodate functions (simple or otherwise) in the target list. A workspace attribute formed by application of a function is given a multiply-prefixed name, the prefixes consisting of the function name and the argument names. Any tuple variable occurring as an argument is replaced by the name of its range (see 3.16). Prefixes are removed if no ambiguity results.</p>
+
+				<h3>3.15 Simple Functions in the Qualification</h3>
+				<p>We now consider examples of Boolean functions which can usefully appear in a qualification expression. Let X be a tuple belonging to relation R, let D be a numeric attribute of R and let N be an integer.</p>
+				<pre>
+	TOP(N,X.D)   has the value <u>true</u> if the D-component of tuple X has a value which is the Nth largest in R.D (the projection of R onto D); otherwise, its value is <u>false</u>.
+	BOTTOM(N,X.D) is similarly defined, except "largest" is replaced by "smallest".</pre
+				>
+				<p>&ast;&ast; Find the part numbers of all parts having the largest quantity-on-hand.</p>
+				<pre>
+	<u>RANGE</u>     PART  P
+	<u>GET</u>  W  P.P#:TOP(1,P.QOH)</pre
+				>
+
+				<h3>3.16 Image Functions in Target List</h3>
+				<p>Consider the SUPPLY relation. The set of supplier numbers associated</p>
+			</section>
+
+			<section id="page21" aria-label="Page 21">
+				<p>under this relation with a given part number is an example of what may be called an <u>image set</u>. The function COUNT applied to this set would yield the number of suppliers who supply this particular part.</p>
+				<p>So common is this kind of construction and so often can the actual generation of the image set be avoided that we introduce composite functions called I-functions. For example, ICOUNT applied to a SUPPLY tuple, the P# attribute, and the S# attribute yields the count of suppliers who supply the part identified by the P# component of that SUPPLY tuple. ITOTAL applied to a SUPPLY tuple and the attributes P#, QUANTITY yields the total quantity being supplied of the part identified by the P# component of that SUPPLY tuple. IMAX, IMIN, IAVERAGE correspond in an analogous way to MAX, MIN, AVERAGE.</p>
+				<p>&ast;&ast; For each part number being supplied to a project, find as a triple the part number, the project number, and the total quantity of that part being supplied to that project.</p>
+				<pre>
+	<u>RANGE</u>     SUPPLY  Z
+	<u>GET</u>  W  (Z.P#,Z.J#,ITOTAL(Z,(P#,J#),QUANTITY))</pre
+				>
+				<p>Note that, in this query, image sets of QUANTITY values are conceptually formed for each distinct pair of values (Z.P#,Z.J#). The first argument of the function ITOTAL is Z, the second is the compound attribute (P#,J#), and the third is QUANTITY.</p>
+				<p>The name inheritance rule results in the following attribute names for W: P#,J#,QUANTITY. The prefix ITOTAL_SUPPLY_P#_J# is dropped from QUANTITY because no ambiguity results.</p>
+
+				<h3>3.17 Image Functions in the Qualification</h3>
+				<p>&ast;&ast; Find the part number of parts supplied to more than two projects.</p>
+				<pre>
+	<u>RANGE</u>     SUPPLY  Z
+	<u>GET</u>  W  Z.P#:(ICOUNT(Z,P#,J#)>2)</pre
+				>
+				<p>Image functions can, of course, appear in both the target list and the qualification.</p>
+
+				<h3>3.18 Piped Query</h3>
+				<p>In all of the examples of queries given so far, the information requested by the user is completely assembled into the specified workspace before the user (or his application program) regains control from the data base system. If the expected amount of information is large, a correspondingly large workspace would be required to hold all of it. To conserve space the system can be requested to deliver the desired relation one element (or tuple) at a time. We refer to this as piped transmission.</p>
+			</section>
+
+			<section id="page22" aria-label="Page 22">
+				<p>Take query 3.6 for example. To obtain the response element-by-element we use an OPEN statement which specifies the details of the request.</p>
+				<pre>
+	<u>RANGE</u>     SUPPLIER  S
+	<u>RANGE</u>     SUPPLY  Z  <u>SOME</u>
+	<u>OPEN GET</u>  W  (S.NAME,S.LOC):(S.S#=Z.S#)&and;(Z.P#=3)</pre>
+				<p>Each succeeding execution of</p>
+				<pre><u>GET</u> W</pre>
+				<p>causes the replacement in &nbsp;W&nbsp; of the previous pair of values of supplier name and location by a new pair of values. The order of delivery is system-determined unless an element ordering expression is included in the OPEN_GET statement. Control is returned to the user (or his application program) after each new pair of values is copied into &nbsp;W.</p>
+				<p>To discontinue piped transmission a statement of the form</p>
+				<pre><u>CLOSE</u> W</pre>
+				<p>can be used, where W is the workspace involved. When the last element of qualified data has been delivered, and a further</p>
+				<pre><u>GET</u> W</pre>
+				<p>is executed, the system returns a signal indicating the end of qualified data.</p>
+
+				<h3>3.19 Simple Update</h3>
+				<p>&ast;&ast; Add DELTA to the quantity-on-hand QOH for the part with part number 3.</p>
+				<pre>
+	<u>HOLD</u> W PART.QOH:(PART.P#=3)
+	W.QOH=W.QOH+DELTA  (host language)
+	<u>UPDATE</u> W</pre
+				>
+				<p>The <u>HOLD</u> statement has the same effect as the corresponding <u>GET</u> in regard to the information made available in the specified workspace. An additional effect of the <u>HOLD</u> statement is that it warns the system to be prepared to return modified data to the elements supplying the retrieved data. This returning of modified data is requested by the <u>UPDATE</u> statement.</p>
+				<p>Upon receipt of a <u>HOLD</u> the system retains enough primary key information (associating it with the particular workspace W) so that it can perform the <u>UPDATE</u> properly. If the value of the primary key in W has changed when the <u>UPDATE</u> is received, the system balks and signals an error. The system may also suspend other non-query accesses until this <u>UPDATE</u> is completed or cancelled. Cancellation is requested by means of</p>
+			</section>
+
+			<section id="page23" aria-label="Page 23">
+				<pre><u>RELEASE</u> W.</pre>
+
+				<h3>3.20 Primary Key Update</h3>
+				<p>A sharp distinction is made between updates of primary keys (including components thereof) and updates of other domains, because of the crucial role of primary keys in identification and search, and the high impact on the user community of changes in these keys.</p>
+				<p>&ast;&ast; Change the primary key of the part with the part number 3 to 4</p>
+				<pre>
+	<u>GET</u>  W  PART:(PART.P#=3)
+	<u>DELETE</u>  PART:(PART.P#=3)
+	W.P# = 4  (host language)
+	<u>PUT</u>  W  PART</pre
+				>
+				<p>The <u>GET</u> statement retrieves the entire PART tuple which has 3 in its P# component. The <u>DELETE</u> statement then deletes that tuple from the data base relation PART (not from W). The host language statement alters the primary key value to 4. Finally, the <u>PUT</u> statement inserts this new tuple into the data base relation PART.</p>
+
+				<h3>3.21 Multi-relation Update</h3>
+				<p>The <u>HOLD</u> statement (unlike the <u>GET</u>) is restricted to a single relation occurring in its target list. This avoids unwarranted complexity. Thus multi-relation updates entail the use of more than one <u>HOLD</u> statement and possibly more than one workspace.</p>
+				<p>&ast;&ast; A partial shipment of part number 3 has arrived for project number 7 from supplier number 5 with shipdate January 31, 1970. Reduce the corresponding quantity Q by 30 and increase the quantity-on-hand QOH for that part by 30.</p>
+				<pre>
+	<u>RANGE</u>     SUPPLY Z
+	<u>HOLD</u>  W  Z.Q:(Z.P#=3)&and;(Z.S#=5)&and;(Z.J#=7)
+		  &and;(Z.SHIPDATE=70,1,31)
+	W.Q = W.Q - 30                               (host language)
+	<u>UPDATE</u>  W</pre
+				>
+				<p>The system retains at least the full compound value of the primary key from the <u>HOLD</u> to the <u>UPDATE</u>, in order to be able to return the new values to the proper tuple.</p>
+			</section>
+
+			<section id="page24" aria-label="Page 24">
+				<pre>
+	<u>HOLD</u>  W1  PART:(PART.P#=3)
+	W1.QOH = W1.QOH + 30                          (host language)
+	<u>UPDATE</u>  W1</pre
+				>
+
+				<h3>3.22 Piped Update</h3>
+				<p>The two transmission modes, piped and non-piped, which were described for queries are equally applicable to updates. The <u>OPEN</u> statement for preparing the system for a piped update is <u>OPEN UPDATE</u>.</p>
+				<p>&ast;&ast; Update all SUPPLY tuples which have a SHIPDATE of January 31, 1970 on a piped basis.</p>
+				<pre>
+	<u>OPEN UPDATE</u>  W  SUPPLY:(SUPPLY.SHIPDATE=70,1,31)
+	<u>HOLD</u>  W
+		... host language statements ...
+	<u>UPDATE</u>  W</pre>
+				<p>Each successive execution of a <u>HOLD</u>, <u>UPDATE</u> pair causes one tuple of SUPPLY to be updated. At any instant W contains only one tuple. Whenever it is discovered that a tuple in W need not be returned to the data base, <u>RELEASE</u> W may be substituted for <u>UPDATE</u> W.</p>
+				<p>At any time <u>CLOSE</u> W can be used to cancel all further transmission per the corresponding <u>OPEN</u> statement.</p>
+
+				<h3>3.23 All-occurrence Update</h3>
+				<p>Consider the underlying domain P#. It occurs as the primary key in the relation PART, and both as a foreign key and as a component of the primary key in the relation SUPPLY. It could also occur in many other relations of the sample data base. Suppose we wish to replace all existing values of P# by a new set in accordance with a given function (tabulated or algorithmic).</p>
+				<p>One approach to this problem is first to form expanded relations in the data base -- relations in which the old part numbers and the new co-exist for a while. Later the old part numbers are dropped.</p>
+				<p>Another approach is to apply the primary key update technique of example 3.20 in turn to each data base relation that contains an attribute whose underlying domain is P#. To prepare this procedure in a general form implies a search of the catalog of relations to find the names of all relations and attributes affected by this global change. The catalog of relations can itself be a part of the data base and would then consist of additional relations. Detailed treatment of this will be postponed.</p>
+			</section>
+
+			<section id="page25" aria-label="Page 25">
+				<p>to another paper. Suffice it to say that in order to make use of the names of affected relations and attributes (once these have been transmitted to a workspace), it is necessary to have in the data sublanguage an indirect reference capability. This is provided in DSL ALPHA by the <u>PER</u> function. For example, execution of</p>
+				<pre><u>GET</u>  W  PER(W1.RELNAME)</pre>
+				<p>causes the relation, whose name is contained in W1.RELNAME, to be copied from the data base into workspace &nbsp;W.</p>
+
+				<h3>3.24 Simple Insertion</h3>
+				<p>&ast;&ast; Insert into the quaternary data base relation PART the 4-tuples now located in workspace &nbsp;W.</p>
+				<pre><u>PUT</u>  W  PART</pre>
+				<p>In all <u>PUT</u> statements exactly one data base relation is specified. The system checks that no duplicate values of the primary key are introduced by the <u>PUT</u> operation.</p>
+
+				<h3>3.25 Partial Insertion</h3>
+				<p>&ast;&ast; Insert into the quaternary relation PART the (P#,COLOR,QOH) triples now located in workspace &nbsp;W.</p>
+				<pre><u>PUT</u>  W  PART.(P#,COLOR,QOH)</pre>
+				<p>The attribute ordering of &nbsp;W&nbsp; is as specified in the parentheses: that is, first P#, then COLOR, then QOH. The element ordering in &nbsp;W&nbsp; may be any ordering.</p>
+				<p>The system converts each triple from &nbsp;W&nbsp; into a 4-tuple by appending the absent value as the value of PART.WEIGHT.</p>
+
+				<h3>3.26 Ordered Insertion of Bulk Data</h3>
+				<p>&ast;&ast; Same as 3.25, except that the element ordering in &nbsp;W&nbsp; is by P# increasing, and the system is to be so advised for efficiency reasons.</p>
+				<pre><u>PUT</u>  W  PART.(P#,COLOR,QOH) <u>UP</u> P#</pre>
+				<p>If it happens that the data base relation PART is represented in storage by a data set ordered on P#, the system can make this insertion more rapidly if advised about the ordering in &nbsp;W. This could be important in case the number of tuples to be inserted is large. Such a case often occurs when a new relation is being established (see example 3.31).</p>
+			</section>
+
+			<section id="page26" aria-label="Page 26">
+				<h3>3.27 Piped Insertion</h3>
+				<p>The piped mode of transmission can be applied to insertion just as to queries.</p>
+				<p>&ast;&ast; Same as 3.26, except that transmission is to be in the piped mode.</p>
+				<pre>
+	<u>OPEN PUT</u> W PART.(P#,COLOR,QOH) <u>UP</u> P#
+	... host language statements ...
+	<u>PUT</u>  W
+	... host language statements ...</pre>
+				<p>Each successive execution of a <u>PUT</u> statement causes a tuple from W to be inserted into the data base relation PART. At any instant W contains only one tuple. As usual the piped transmission from W can be terminated by execution of</p>
+				<pre><u>CLOSE</u> W.</pre>
+
+				<h3>3.28 Simple Deletion</h3>
+				<p>&ast;&ast; Delete the tuple for part number 5 from the data base relation PART</p>
+				<pre><u>DELETE</u> PART:(PART.P#=5)</pre>
+				<p>No workspace is required as an information sink, and this applies to all deletions. Normally, none is needed as an information source, but see example 3.30.</p>
+
+				<h3>3.29 Qualified Deletion</h3>
+				<p>&ast;&ast; Delete all tuples of the data base relation SUPPLY involving supplier JONES and project ALPHA in combination with one another.</p>
+				<pre>
+	<u>RANGE</u>     SUPPLY  Z
+	<u>RANGE</u>     SUPPLIER  S  <u>SOME</u>
+	<u>RANGE</u>     PROJECT  J  <u>SOME</u>
+	<u>DELETE</u> Z:(S.NAME='JONES')&and;(S.S#=Z.S#)
+		  &and; (Z.J#=J.J#)&and;(J.NAME='ALPHA')</pre
+				>
+				<p>A single <u>DELETE</u> statement removes tuples from precisely one data base relation (no more, no less). The qualification in a <u>DELETE</u> can involve any number of relations and quantifiers.</p>
+			</section>
+
+			<section id="page27" aria-label="Page 27">
+				<h3>3.30 Workspace-Conditioned Deletion</h3>
+				<p>&ast;&ast; Delete those tuples of the data base relation SUPPLY whose part numbers are contained in workspace W2.</p>
+				<pre><u>DELETE</u>  SUPPLY:(SUPPLY.P#=W2.P#)</pre>
+				<p>The workspace W2 used in this deletion acts only as a source of conditioning information.</p>
+
+				<h3>3.31 Establishing a New Data Base Relation</h3>
+				<p>Suppose a new relation has been developed in workspace W and it is desired that this relation be established in the data base for shared use. Before the data can be copied from W into the data base, several actions must be taken:</p>
+				<ol>
+					<li>The relation to be established must now be declared. This involves giving it a name which is not in conflict with those of other data base relations, naming its domains (if not already declared) and attributes in accordance with community-established rules, identifying its primary key (possibly a compound attribute), and giving certain characteristics of the components of its tuples. All of this information must be entered in those relations which catalog the data base relations.</li>
+					<li>The access authorization constraints for the new relation must be set up in those relations which describe these constraints.</li>
+					<li>A storage representation must be selected for the new relation (this may include a decision as to which attributes are to be indexed) and this descriptive data must be stored in appropriate relations.</li>
+				</ol>
+				<p>When these preparatory "gold-plating" steps have been taken (and they will be dealt with more fully in a later paper), the relation is ready to "go public". A statement of the form</p>
+				<pre><u>PUT</u> W R</pre>
+				<p>then sets up the initial data for the new relation R.</p>
+				<p>The following declarations describe the underlying domains for the sample data base used throughout this section:</p>
+				<pre>
+	<u>DOMAIN</u>    S#. <u>CHAR</u>(5)
+		  SNAME <u>CHAR</u>(15)
+		  LOC <u>CHAR</u>(20)
+		  P# <u>CHAR</u>(20)</pre
+				>
+			</section>
+
+			<section id="page28" aria-label="Page 28">
+				<pre>
+		PNAME <u>CHAR</u>(30)
+		COLOR <u>STATE</u>(1='BLUE',2='RED',...)
+		WEIGHT <u>NUM</u>(3,1)
+		QOH <u>NUM</u>(4,0)
+		J# <u>CHAR</u>(4)
+		JNAME <u>CHAR</u>(10)
+		E# <u>NUM</u>(6,0)
+		SHIPDATE <u>DATE</u>(YEAR,MONTH,DAY)
+		QUANTITY <u>NUM</u>(3,0)</pre
+				>
+				<p>Data base relations are declared separately from the underlying domains, so that a new relation may be readily defined on already declared domains. Included in each relation declaration is identification of the primary key. The following declarations describe the relations in the sample data base under consideration:</p>
+				<pre>
+	<u>RELATION</u> SUPPLIER(S#,SNAME,LOC,...)  <u>KEY</u>  S#
+	<u>RELATION</u> PART(P#,PNAME,COLOR,WEIGHT,QOH)  <u>KEY</u>  P#
+	<u>RELATION</u> PROJECT(J#,JNAME,MGR_E#,...)  <u>KEY</u>  J#
+	<u>RELATION</u> SUPPLY(S#,P#,J#,SHIPDATE,QUANTITY)
+		 <u>KEY</u> (S#,P#,J#,SHIPDATE)</pre
+				>
+				<p>Note the attribute name MGR_E# has the prefix MGR and stem E#. The underlying domain is indicated by its stem E#. In all other cases the attribute name is identical with the name of its underlying domain.</p>
+
+				<h3>3.32 Dropping a Data Base Relation or Domain</h3>
+				<p>If R is the name of a data base relation, execution of the statement</p>
+				<pre>	<u>DROP</u> R</pre>
+				<p>has the effect of removing all information about R from the data base catalog. Further, if any tuples of R still exist, they are deleted. Note that declarations of the underlying domains on which R is defined remain in force.</p>
+				<p>Information about an underlying domain D may be removed from the data base catalog by execution of the statement</p>
+				<pre>	<u>DROP</u> D</pre>
+			</section>
+
+			<section id="page29" aria-label="Page 29">
+				<p>providing there is no data base relation defined on D. Any attempt to drop a domain still in use by some relation is treated as an error.</p>
+				<p>The statement <u>DROP</u> R (where R is a relation) should be contrasted with <u>DELETE</u> R which merely deletes all tuples of R, but leaves R as an established (albeit empty) relation of the data base.</p>
+
+				<h3>3.33 Other Operations and Attributes</h3>
+				<p>Several additional features are desirable (in some cases necessary) to handle interlocking (for example, a means whereby certain operations may be temporarily excluded from specified portions of the data base), access authorization, integrity preservation, virtual attributes, literal insertions, etc. Various types of errors and the feedback which a user might expect from them have also been intentionally omitted. These topics will be discussed in a later paper.</p>
+
+				<h2>4. Comparison of Language Levels</h2>
+				<p>In this section we consider the pros and cons of the three principal levels of data base language identified in the introduction. Arguments in favor of a relational model of the data were presented earlier by this author (see [1]). Except for the first point below, these arguments are not repeated here, but it should be noted that they strongly reinforce the arguments for both the intermediate algebraic and the high level calculus-oriented languages.</p>
+
+				<h3>4.1 Protection of Users from Representation Clutter</h3>
+				<p>
+					The question of providing the majority of users with a conceptually concise model of the data and a powerful, conceptually concise language for its manipulation is not just an aesthetic concern. When users are forced to make numerous choices and decisions about avoidable representation details, the consequences are manifold and costly. Programs inevitably become more elaborate, hence more time-consuming to <u>write</u>, to <u>debug</u>, and to <u>modify</u>. This is not merely an argument for protecting users from manipulating the sordid details of the physical (or storage) representation of the data. It is an equally valid argument against imposing on the user an over-elaborate, conceptually redundant logical data representation. Perhaps the most elaborate data model is to be found in the CODASYL proposal [4]. The Data Base Task Group "set" concept together with all its attendant ramifications could be dropped without losing any logical power in storage and
+					retrieval. The algebraic and calculus-oriented data sublanguages score heavily in protecting users from representation clutter by using a simple data model and by treating relations as data items manipulable in their entirety. The procedural approach, on the other hand, treats relations or sets in an element-by-element and connection-by-connection fashion.
+				</p>
+			</section>
+
+			<section id="page30" aria-label="Page 30">
+				<h3>4.2 Descriptive versus Constructive Expression of Intent</h3>
+				<p>In the low-level procedural approach much of the searching for data is hand-coded by the application programmer. In the relational algebraic approach more of the responsibility for searching is taken over by the data base system. Finally, in the relational calculus approach the system takes over complete responsibility for searching.</p>
+				<p>From the linguistic standpoint we can characterize the procedural and algebraic approaches as <u>constructive</u>, while the calculus approach is <u>descriptive</u>. The clarity of intent of the descriptive approach facilitates all those system activities which depend on discovery by the system of the user's intent--for example:</p>
+
+				<pre>
+	optimal search
+	authorization
+	transformability in case of structural change in the data model.</pre
+				>
+
+				<h3>4.3 Understanding and Modifying Programs</h3>
+				<p>As a corollary of points 1 and 2, clarity of intent is important for programs to be understandable by people, especially those who did not write the programs. This becomes of crucial importance when an application program has to be changed because the application itself has changed.</p>
+				<p>As a simple example of modifiability of programs, compare the work needed to change the order of two quantifiers in a DSL ALPHA program with the work needed to re-structure a corresponding CODASYL program to give the same effect.</p>
+
+				<h3>4.4 Evolutionary Development of Search Techniques</h3>
+				<p>As a further corollary of point 2, adoption of the calculus-oriented approach permits successive improvements in general search algorithms to be incorporated into data base systems without impacting users' programs (the language in which these programs are written stays constant).</p>
+
+				<h3>4.5 Evolutionary Development of Data Structures</h3>
+				<p>By adopting a data model of reasonable abstraction (that is, not too close to the currently fashionable physical representations) more scope is provided for future implementations to evolve in the data organizations and physical representations which they use to support the data model. This evolution can take place without logically impairing users' application programs.</p>
+				<p>In this regard, both types of relational languages (the algebraic and the calculus-oriented) are superior to the network procedural type.</p>
+			</section>
+
+			<section id="page31" aria-label="Page 31">
+				<h3>4.6 Support for Specialized Query-Update Languages</h3>
+				<p>Many users need query languages specialized to their applications. The high cost of supporting a great variety of these languages with translators suggests that as many as possible of the common services in these translators be identified and programmed once and for all. This, in turn, suggests adopting as a target language for these translators a very high level storage and retrieval language. The calculus-oriented type of language appears best suited for this purpose. Indeed, research done to-date in the relatively free use of natural language, such as English, for storage and retrieval purposes suggests that the calculus-oriented language is an appropriate stepping stone toward this goal.</p>
+
+				<h2>5. Summary</h2>
+				<p>In section 1 three types of language for data base manipulation were identified. Information on two of these (the low-level procedural and the intermediate algebraic) is available in the literature. An example of the third type (based on the relational calculus) is described in sections 2 and 3. The comparison of these three types in section 4 suggests that more attention be paid to the relational calculus type before computer users, the computing industry and society in general get committed to the heavy costs of implementing proposed data base language standards and to the long-term binding of their application programs to these standards.</p>
+
+				<h2>6. Acknowledgments</h2>
+				<p>An early draft of this paper was circulated under the title "Notes on a Data Sublanguage". It is a pleasure to acknowledge the benefit of considerable feedback since then, particularly from T. R. Heywood, C. J. Date and P. Hopewell of the IBM Laboratory in England, from Sharon Weinberg and Philip Shaw of the New York Programming Center, and from Erich Neuhold of the Vienna Laboratory.</p>
+				<p>The author is also grateful to Robert W. Engles of Poughkeepsie and Robert L. Griffith of San Jose for suggesting changes which improved the clarity.</p>
+			</section>
+
+			<section id="page32" aria-label="Page 32">
+				<h2>References</h2>
+				<ol>
+					<li>E. F. Codd, "A Relational Model of Data for Large Shared Data Banks", Comm. ACM <u>13</u> 6 June 1970, 377-387.</li>
+					<li>E. F. Codd, "Further Normalization of the Data Base Relational Model", Courant Computer Science Symposia <u>6</u> "Data Base Systems", to be published by Prentice-Hall, May 1971.</li>
+					<li>E. F. Codd, "Relational Completeness of Data Base Sublanguages", Courant Computer Science Symposia <u>6</u> "Data Base Systems", to be published by Prentice-Hall, May 1971.</li>
+					<li>CODASYL "Data Base Task Group Report", ACM HQ, October 1969.</li>
+					<li>Joint Guide-Share, "Data Base Management System Requirements", Guide or Share Distribution, November 1970.</li>
+					<li>Information Management System IMS/360, Application Description Manual (Version 2) GH20-0765-1 IBM, White Plains, New York, 1971.</li>
+					<li>Generalized Information System GIS/360, Application Description Manual (Version 2) GH20-0892-0 IBM, White Plains, New York, 1970.</li>
+					<li>T. W. Olle, "A Non-procedural Language for Retrieving Information from Data Bases", IFIP Congress, Edinburgh, August 1968, North-Holland, Amsterdam.</li>
+					<li>IDS Reference Manual GE625/635, GE Information Systems Division, Phoenix, Arizona, CPB 1093B, February 1968.</li>
+					<li>J. A. Feldman, P. D. Rovner, "An Algol-Based Associative Language", Comm. ACM <u>12</u>, 8 August 1969, 439-449.</li>
+					<li>W. Ash, E. H. Sibley, "TRAMP, an interpretive associative processor with deductive capabilities", Proc ACM 23rd Nat. Conf., Brandon Systems Press, Princeton N.J., 1968, 143-156.</li>
+					<li>A. N. Whitehead, B. Russell, "Principia Mathematica", Vol 1., Cambridge University Press, 1960.</li>
+					<li>R. E. Levien, M. E. Maron, "A Computer System for Inference Execution and Data Retrieval", Comm. ACM <u>10</u>, 11 November 1967, 715-721.</li>
+					<li>C. J. Bell, "A Relational Model for Information Retrieval and the Processing of Linguistic Data", IBM Research Report RC1705, Yorktown Heights, New York, November 1966.</li>
+					<li>D. L. Childs, "Description of a Set-Theoretic Data Structure", Proc. FJCC, Vol 33, Part 1, December 1968, 557-564.</li>
+				</ol>
+			</section>
+
+			<section id="page33" aria-label="Page 33">
+				<ol start="16">
+					<li>R. C. Goldstein, A. L. Strnad, "The MacAIMS Data Management System" Proc. 1970 ACM-SICFIDET Workshop on Data Description and Access", ACM HQ, November 1970.</li>
+					<li>A. L. Strnad, "The Relational Approach to the Management of Data Bases", to be presented at IFIP Congress, Ljubljana 1971.</li>
+					<li>D. Cantor, B. Dimsdale, A. Hurwitz, "Query Language One (QL/1) Users Manual", Report 320-2627, IBM Scientific Center, Los Angeles, Calif., June 1969, 15-19.</li>
+					<li>E. S. Lowry, "Proposed Language Extensions to Aid Coding and Analysis of Large Programs", IBM Poughkeepsie Laboratory Technical Report TR00.1940-1, November 1969.</li>
+					<li>R. E. Bleier, "Treating Hierarchical Data Structures in the SDC Time Shared Data Management System TDMS, Proc. ACM 22nd Nat. Conf., MDI Publications, Wayne, Pa, 1967, 41-49.</li>
+				</ol>
+				<h3>Additional Bibliography</h3>
+				<ol start="21">
+					<li>P. Suppes, "Introduction to Logic", van Nostrand, 1967.</li>
+					<li>R. W. Engles, "A Tutorial on Data Base Organization", IBM Poughkeepsie Laboratory Technical Report TR00.2004, March 1970.</li>
+					<li>E. J. Neuhold, "Data Mapping: A Formal Hierarchical and Relational View", Courant Computer Science Symposia <u>6</u>, "Data Base Systems", to be published by Prentice-Hall, May 1971.</li>
+					<li>R. A. Lorie, A. J. Symonds, "A Schema for Describing a Relational Data Base", Proc. 1970 ACM-SICFIDET Workshop on Data Description and Access, ACM HQ, November 1970.</li>
+					<li>C. J. Date, P. Hopewell, "File Definition and Logical Data Independence", Proc. 1971 ACM-SIGFIDET Workshop on Data Description, Access and Control, to be available from ACM HQ, 1972.</li>
+					<li>C. J. Date, P. Hopewell, "Storage Structure and Physical Data Independence", Proc. 1971 ACM-SIGFIDET Workshop on Data Description, Access and Control, to be available from ACM HQ, 1972.</li>
+					<li>I. J. Heath, "Unacceptable File Operations in a Relational Data Base", Proc. 1971 ACM-SIGFIDET Workshop on Data Description Access and Control, to be available from ACM HQ, 1972.</li>
+				</ol>
+			</section>
+
+			<section id="appendix" aria-label="Appendix">
+				<h2 style="text-align: center">APPENDIX: DEFINITIONS</h2>
+				<p>
+					The term <u>relation</u> is used in this paper in its accepted mathematical sense. Given sets S<sub>1</sub>, S<sub>2</sub>... , S<sub>n</sub> (not necessarily distinct), &nbsp;R&nbsp; is a relation on these n sets if it is a set of n-tuples each of which has its first element from S<sub>1</sub>, its second element from S<sub>2</sub>, and so on. More concisely, &nbsp;R&nbsp; is a subset of the Cartesian product <u>S<sub>1</sub></u> x <u>S<sub>2</sub></u> x ... x S<sub>n</sub>. We refer to S<sub>j</sub> as the jth <u>domain</u> of &nbsp;R&nbsp;. As defined above, &nbsp;R&nbsp; is said to have <u>degree</u> n. Relations of degree 1 are often called <u>unary</u>, degree 2 <u>binary</u>, degree 3 <u>ternary</u>, and degree n <u>n-ary</u>.
+				</p>
+				<p>Relations are sets, but not all sets are relations. The elements of a relation of degree n are called <u>n-tuples</u> or <u>tuples</u>. A relation is in <u>first normal form</u> if it has the property that none of its domains has elements which are themselves sets. An <u>unnormalized relation</u> is one which is not in first normal form.</p>
+				<br />
+				<p>A <u>candidate key</u> K of relation &nbsp;R&nbsp; is a combination of attributes&ast; (possibly a single attribute) of &nbsp;R&nbsp; with properties &nbsp;P<sub>1</sub>&nbsp; and &nbsp;P<sub>2</sub>:</p>
+				<pre>
+	P<sub>1</sub>: (Unique identification) In each tuple of &nbsp;R&nbsp; the value of &nbsp;K&nbsp; uniquely identifies that tuple;
+	P<sub>2</sub>: (Non-redundancy) No attribute in &nbsp;K&nbsp; can be discarded without destroying property &nbsp;P<sub>1</sub>.
+				</pre
+				>
+
+				<p>For each relation &nbsp;R&nbsp; in a data base, one of its candidate keys is arbitrarily designated as the <u>primary key</u> of &nbsp;R. An attribute or attribute combination of &nbsp;R&nbsp; is a <u>foreign key</u> if it is not a candidate key of &nbsp;R&nbsp; but its elements are values of the primary key of some relation &nbsp;S&nbsp; (the possibility that &nbsp;R&nbsp; and &nbsp;S&nbsp; are identical is not excluded).</p>
+
+				<footer>
+					<p><sup>&ast;</sup>See section 2.2.</p>
+				</footer>
 			</section>
 		</main>
 	</body>
