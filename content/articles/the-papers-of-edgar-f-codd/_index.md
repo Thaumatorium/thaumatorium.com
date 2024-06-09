@@ -49,17 +49,14 @@ To find these papers, this page was very helpful: [dblp computer science bibliog
 
 - [Extending the database relational model to capture more meaning](https://dl.acm.org/doi/pdf/10.1145/320107.320109)
 
-## 1981
-
-- [The Significance of the SQL/Data System Announcement]
-- [The 1981 ACM Turing Award Lecture](https://users.dcc.uchile.cl/~cgutierr/cursos/BD/Relational_Database_A_Practical_foundation_For_productivity.pdf)
-
-## 1990
+## 1980
 
 - [DATA MODELS in DATABASE MANAGEMENT](https://sigmodrecord.org/publications/sigmodRecord/8102/pdfs/960126.806891.pdf)
 
 ## 1981
 
+- [The Significance of the SQL/Data System Announcement]
+- [The 1981 ACM Turing Award Lecture](https://users.dcc.uchile.cl/~cgutierr/cursos/BD/Relational_Database_A_Practical_foundation_For_productivity.pdf)
 - [Relational database: a practical foundation for productivity](https://dl.acm.org/doi/pdf/10.1145/358396.358400)
 
 ## 1985
