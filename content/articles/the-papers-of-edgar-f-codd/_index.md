@@ -47,7 +47,7 @@ To find these papers, this page was very helpful: [dblp computer science bibliog
 
 ## 1979
 
-- [xtending the database relational model to capture more meaning](https://dl.acm.org/doi/pdf/10.1145/320107.320109)
+- [Extending the database relational model to capture more meaning](https://dl.acm.org/doi/pdf/10.1145/320107.320109)
 
 ## 1981
 
