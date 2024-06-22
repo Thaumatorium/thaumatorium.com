@@ -1,0 +1,350 @@
+<!--This document is still a bit messy, but good enough to generally be readable-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Universality of Data Retrieval Languages</title>
+	<style>
+		body {
+			font-family: "Times New Roman", Times, serif;
+			margin: calc(5vw - 1rem);
+			line-height: 1.6;
+		}
+
+		h1,
+		h2,
+		h3 {
+			text-align: center;
+		}
+
+		h1 {
+			font-size: 2.5em;
+		}
+
+		h2 {
+			font-size: 2em;
+			margin-top: 40px;
+		}
+
+		h3 {
+			font-size: 1.5em;
+			margin-top: 20px;
+		}
+
+		p {
+			text-align: justify;
+		}
+
+		.author {
+			text-align: center;
+			margin-bottom: 40px;
+		}
+
+		.footer {
+			margin-top: 40px;
+			font-size: 0.9em;
+			color: gray;
+		}
+	</style>
+</head>
+
+<body>
+	<div style="background-color: #ffffb3; padding: 15px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); width: 500px">
+		28/05/2002, 15:44:50
+		<hr>
+		Permission to make digital or hard copies of part or all of this work or personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. To copy otherwise, to republish, to post on servers, or to redistribute to lists, requires prior specific permission and/or a fee.<br><br>
+		© 1979 ACM 0-12345-678-9…$5.00
+	</div>
+
+	<h1>Universality of Data Retrieval Languages</h1>
+	<strong>Alfred V. Aho</strong><br>
+	<em>Bell Laboratories</em><br>
+	<em>Murray Hill, New Jersey</em><br>
+	and
+	<strong>Jeffrey D. Ullman†</strong><br>
+	<em>Princeton University</em><br>
+	<em>Princeton, New Jersey</em><br>
+	<hr>
+	† Work partially supported by NSF grant MCS-76-15255
+	<hr>
+	<h2>Abstract</h2>
+	<p>We consider the question of how powerful a relational query language should be and state two principles that we feel any query language should satisfy. We show that although relational algebra and relational calculus satisfy these principles, there are certain queries involving least fixed points that cannot be expressed by these languages, yet that also satisfy the principles. We then consider various extensions of relational algebra to enable it to answer such queries. Finally, we discuss our extensions to relational algebra in terms of a new programming language oriented model for queries.</p>
+	<h2>1. Introduction</h2>
+	<p>One facility provided by a database system is a query, or data manipulation, language whose primary function is the extraction of information from the database. The data retrieved by a single query can range from a small simple subset of the database, as in “print the name and address of the employee with employee number 12345,” to a large complex subset, as in “print the names of all employees under 40 whose last three raises have been above average.” A query will be treated as a mapping on the contents of the database, which we here regard as a collection of relations [C1]. The value returned by a query will also be a relation, that is, a set of <em>k</em>-tuples for some <em>k</em>≥1.</p>
+	<p>One key question concerning query languages is what power they should have. For example, should a query language be able to specify any mapping whatsoever from lists of relations to relations? It is our point of view, and one held widely, that a query language should provide physical data independence; that is, the result of a query should not depend on the representation of the data. We also feel that the role of a query language should be primarily the selection of data from a database, rather than arithmetic computation on this data. The computational capability, if desired, should be separate from the retrieval capability. This separation of function has a number of benefits, such as simplifying the optimization of both the computational and the query operations.</p>
+
+	<p>We therefore postulate two principles that a query language should obey. In essence, these principles state (1) that the value produced by a query should be independent of the manner in which the data are actually stored in a database and (2) that a query language should treat data values as essentially uninterpreted objects, although certain properties, such as a linear ordering on certain domains can be built into the query language. These principles are defined more formally in Section 2.</p>
+	<p>The relational algebra and calculus of Codd [C1] satisfy these principles and are often used as models of a query language. One purpose for which Codd introduced these languages was to provide a yardstick for measuring the relative power of query languages.</p>
+	<p>There is, however, an important family of “least fixed point” operations that still satisfy our principles but yet cannot be expressed in relational algebra or calculus. Such fixed point operations arise naturally in a variety of common database applications. In an airline reservations system, for example, one may wish to determine the number of possible flights between two cities during a given time period. In a network analysis system, one may wish to determine whether there is an active circuit connecting two points. In a business management system, one may wish to determine the lowest-level manager common to a group of employees. None of these queries can be couched in relational algebra. In the appendix, we give a formal proof that the transitive closure of a binary relation, an elementary example of a least fixed point operation, cannot be expressed in relational calculus.</p>
+	<p>In Sections 4 and 5 we consider extensions to relational algebra to enable queries such as these to be expressed. In Section 6 we discuss various methods by which relational algebra expressions containing least fixed point operators can be efficiently implemented.</p>
+	<p>Finally, in Section 7 we examine the universality of our extensions in terms of a new, stylized programming language that is intended to serve as a model of computation for query languages. We show that the programming language is at least as powerful as relational algebra with a least fixed point operator. We also show that Codd’s original formulation of relational algebra is equivalent to this language with a restrictive interpretation of the semantics of the <em>for</em> statement in this language.</p>
+	<h2>2. Two Principles for Data Retrieval Languages</h2>
+	<p>The general consensus is that, at least for query languages based on the relational model, one does not wish to have general Turing machine (see [HU], e.g.) capabilities. In particular, one wants the query language to be sufficiently high level that it deals with relations as sets of tuples, meaning that the order in which the tuples are considered should not influence the result. In this sense, the Turing machine working on an input tape containing lists of tuples is too powerful a model. This is the basis of the first of our two principles regarding what properties a relational query language should have.</p>
+	<p><strong>Principle 1.</strong> The result of a function on relations should depend only on the values of the relations as sets of tuples. The result should not depend on the order in which the tuples are stored.</p>
+	<p>Our formalization of the second principle is related to an idea used independently by Paredaens [P] and Bancilhon [B] to characterize certain aspects of relational queries. Their idea is that queries should preserve symmetries that exist among the values that appear in argument relations. More formally, assume <em>D</em> is the domain from which all values for the components of relations are taken. Let <em>μ</em> be a 1-1 mapping of <em>D</em> into itself. (<em>D</em> is presumably infinite.) Call <em>μ</em> a <em>renaming</em>. If <em>f</em> is a function that takes <em>n</em> relations as arguments, we say <em>f</em> commutes with <em>μ</em> if <em>μ(f(r₁, ..., rₙ)) = f(μ(r₁), ..., μ(rₙ))</em>. Let us call <em>f</em> an <em>acceptable query</em> if <em>f</em> commutes with every renaming. In this sense, operations like the union or Cartesian product of relations are acceptable; so is the transitive closure of a binary relation.</p>
+	<p>There are, however, other queries we might well regard as acceptable that do not commute with arbitrary renamings. For example, “print the name of the employee with employee number 12345” does not commute with renamings that do not map 12345 to itself. Saying that the renaming should also apply to 12345 in the query skirts the issue that we are concerned with a class of abstract functions on relations, and such functions need not have a concrete representation where a specially treated constant like 12345 is explicitly named. Another problem comes up when we want to use a relationship like <, as in AGE < 40. We would not expect such a function to commute with those renamings that did not preserve the < order on <em>D</em>.</p>
+	<p>We thus extend the Bancilhon-Paredaens concept in the following way. We postulate the existence of a collection of predicates <em>P</em> on the domain <em>D</em>. These could be any sort of predicates; for example, a unary predicate like “x = 12345” or a binary predicate like “x < y.” Intuitively, one might expect that a function <em>f</em> uses some finite subset of the available predicates in <em>P</em> to extract or select information from its argument relations. We would not, therefore, expect that <em>f</em> would commute with renamings that did not preserve the predicates.</p>
+	<p>We say <em>μ</em> preserves predicate <em>p(x₁, ..., xₙ)</em> if <em>μ(p(x₁, ..., xₙ))</em> is true if and only if <em>p(μ(x₁), ..., μ(xₙ))</em> is true. For example, if <em>p</em> is “x = 12345”, then <em>μ</em> preserves <em>p</em> if and only if it maps 12345 (and therefore no other value) to 12345. <em>μ</em> preserves < if <em>μ(x) < μ(y)</em> if and only if <em>x < y</em>. We can now state our second principle formally.</p>
+	<p><strong>Principle 2.</strong> A function <em>f</em> is allowable with respect to a set of predicates <em>P</em> on domain <em>D</em> if and only if there is a finite subset <em>P₁ ⊆ P</em> such that <em>f</em> commutes with every renaming that preserves the predicates in <em>P₁</em>.</p>
+	<p>In what follows, we shall always talk as though <em>D</em> were a set containing integers, reals, and character strings, with < defined in the obvious manner when applied to values of the same type. We shall also take the set of predicates <em>P</em> to be boolean combinations of statements of the form <em>x < y</em> and <em>x = c</em>, for some constant <em>c</em> in <em>D</em>. The ideas extend to other sets of predicates, although if we use too rich a set, such as “x + y = z” and “u × v = w,” we can with a finite set of predicates <em>P₁</em> assure that only the identity mapping preserves <em>P₁</em>, thus making every <em>f</em> allowable.</p>
+	<p>We shall not take a position on the “correct” set of underlying predicates, but we shall take the two principles above as a definition of what properties a complete query language should have, relative to a given set of “built-in” predicates <em>P</em>.</p>
+	<p>Codd’s relational algebra [C1] is often used as a model of a query language, that is, as a minimal set of operations that every query language should have. We shall describe relational algebra in the next section, whereupon it will be obvious that all queries posable in relational algebra satisfy the two principles above, if the allowable predicates are taken to be <em>x < y</em> and <em>x = c</em> for all constants <em>c</em>.</p>
+	<h2>3. Relational Algebra</h2>
+	<p>In this section we shall define a set of relational algebra expressions that is complete for <em>relational calculus</em>, which is the first order theory of relations and tuples with comparison operators = and &lt; on components of tuples [C2]. The operands of an expression are either constant unary relations or variables representing relations. The operators of an expression are the following:</p>
+	<ol>
+		<li><em>Cartesian Product.</em> If <em>R</em> and <em>S</em> are relations consisting of <em>r</em>-tuples and <em>s</em>-tuples, respectively, then <em>R × S</em> is the set of <em>(r + s)</em>-tuples of which the first <em>r</em> components are an <em>r</em>-tuple in <em>R</em> and the last <em>s</em> components are an s-tuple in <em>S</em>.</li>
+		<li><strong>Set Union.</strong> If <em>R</em> and <em>S</em> are relations whose tuples are of the same length, then <em>R ∪ S</em> is the union of the tuples in <em>R</em> and <em>S</em>.</li>
+		<li><strong>Set Difference.</strong> If <em>R</em> and <em>S</em> are relations whose tuples are of the same length, then <em>R - S</em> is the set of tuples that are in <em>R</em> but not in <em>S</em>.</li>
+		<li><strong>Selection.</strong> Let <em>F</em> be a predicate built from
+			<ol>
+				<li>the logical operators: <em>and (∧)</em>, <em>or (∨)</em>, <em>not (¬)</em>,</li>
+				<li>the arithmetic relational operators: <em>=, <,>, ≤, ≥, ≠</em>, and</li>
+				<li>operands of the form $i standing for the <em>i</em>th component of a tuple.</li>
+			</ol>
+			Then <em>σ_F(R) = {t | for some tuple t in R, F becomes true when $i is replaced by the i<em>th</em> component of t}</em>.
+		</li>
+		<li><strong>Projection.</strong> <em>π_s1,s2,...,sk (R) = {t' | for some t in R, t' is the k-tuple whose j<em>th</em> component is the i_j<em>th</em> component of t}</em>. We assume <em>i₁, i₂,..., iₖ</em> have no repetitions (although this constraint is not essential), and the <em>i_j</em>'s are not assumed to be in any particular order.</li>
+	</ol>
+	<p>All expressions in relational algebra produce relations as values, when given relations as arguments. Moreover, the value of an expression cannot involve a symbol in a tuple if that symbol was not part of some tuple of some argument relation. Therefore, if the operands in a relational expression are all finite relations, then the value of the expression is also a finite relation.</p>
+	<p><strong>Example 1.</strong> Let <em>R</em> = {012, 121, 001}.† Then <em>σ_s1&lt;s2(R)={012,121}</em>, and <em>π_s3,s1(R) = {20,11,10}</em>.</p>
+	<hr>
+	† Throughout, we shall indicate a tuple such as (0,1,2) by the sequence 012
+	<hr>
+	<p>As another example, we can define the composition of two binary (two-component) relations <em>R</em> and <em>S</em> by <em>R ∘ S = π_s1,s4(σ_s2=s3(R × S))</em>. This shorthand will be used subsequently. □</p>
+	<h2>4. The Least Fixed Point Operator</h2>
+	<p>Consider an equation of the form</p>
+	<p><em>R = f(R)</em> (1)</p>
+	<p>where <em>f(R)</em> is a relational algebra expression with operand <em>R</em>, perhaps among other operands, such that the degree (i.e., the number of components in each tuple) of <em>R</em> and <em>f(R)</em> are the same. A least fixed point of equation (1), denoted <em>LFP(R = f(R))</em>, is a relation <em>R</em> such that</p>
+	<ol>
+		<li><em>R</em> = <em>f(R*)</em> and</li>
+		<li>If <em>R</em> is any relation such that <em>R = f(R)</em>, then <em>R*</em> ⊆ <em>R</em>.</li>
+	</ol>
+	<p>In general, there may not be any <em>R*</em> satisfying (i) or any satisfying (ii). However, Tarski [T] assures us that a unique least fixed point exists if <em>f</em> is monotone, which in the context of the partial order ⊆ on relations means that</p>
+	<p><em>if R₁ ⊆ R₂, then f(R₁) ⊆ f(R₂)</em> (2)</p>
+	<p>or equivalently</p>
+	<p><em>f(R₁ ∪ R₂) ⊇ f(R₁) ∪ f(R₂)</em> (3)</p>
+
+	<p>There is a stronger condition called <em>additivity</em>, expressed by</p>
+	<p><em>f(R₁ ∪ R₂) = f(R₁) ∪ f(R₂)</em> (4)</p>
+	<p>Obviously (4) implies (3), so every additive <em>f</em> is monotone.</p>
+	<p>If <em>f</em> is monotone, then by induction on <em>i</em> we can show that</p>
+	<p><em>fⁱ⁻¹(∅) ⊆ fⁱ(∅)</em></p>
+	<p>where <em>fⁱ</em> is <em>f</em> applied <em>i</em> times. If all argument relations are finite, then since no new component values are introduced by the relational algebra operators, we know that there is some finite relation of which each <em>fⁱ(∅)</em> is a subset. Therefore, there must be some <em>n₀</em> such that</p>
+	<p><em>∅ ⊆ f(∅) ⊆ f²(∅) ⊆ ... ⊆ fⁿ⁰(∅) = fⁿ⁰⁺¹(∅)</em> (5)</p>
+	<p>We shall use the term</p>
+	<p><em>lim (n→∞) fⁿ(∅)</em></p>
+	<p>for <em>fⁿ⁰(∅)</em>.</p>
+	<p>It is easy to check that <em>fⁿ⁰(∅)</em> is a fixed point of <em>R</em>. An induction on <em>i</em> shows that <em>fⁱ(∅)</em> is contained in any fixed point of equation (1). Therefore <em>lim (n→∞) fⁿ(∅)</em> is the least fixed point of (1).</p>
+	<p><strong>Example 2.</strong> The transitive closure of a binary relation <em>R₀</em> is the least fixed point of</p>
+	<p><em>R = R ∘ R₀ ∪ R₀</em></p>
+	<p>If we let <em>f(R) = R ∘ R₀ ∪ R₀</em>, then</p>
+	<p><em>fⁿ(∅) = ∪ (i=1 to n) R₀ ∘ R₀ ∘ ... ∘ R₀</em> (i times)</p>
+	<p>as may be proved by an easy induction on <em>n</em>. Thus by (5), the least fixed point of <em>R = f(R)</em> is what we normally call the transitive closure, that is,</p>
+	<p><em>∞∪ (i=1) R₀ ∘ R₀ ∘ ... ∘ R₀</em> (i times)</p>
+	<p><strong>Example 3.</strong> Suppose we have a database representing airline flights, containing the relation</p>
+	<p><em>FLIGHTS(SOURCE, DEST, D_TIME, A_TIME)</em></p>
+	<p>where SOURCE and DEST indicate the source and destination cities; D_TIME and A_TIME indicate the departure and arrival times. We might wish to compute a relation FLIGHTS* with the same four components that includes FLIGHTS and, in addition, represents all finite sequences of flights such that in each sequence</p>
+	<ol>
+		<li>the destination of each flight (except the last) is the source of the next, and</li>
+		<li>the arrival time of each flight (except the last) occurs before the departure time of the next.</li>
+	</ol>
+	<p>We could express this relation as the least fixed point of the equation</p>
+	<p><em>FLIGHTS* = FLIGHTS ∪ π_{S1,S6,S3,S8} (σ_{S2=S5 and S4&lt;S7}(FLIGHTS × FLIGHTS*))</em> (6)</p>
+	<p>Note that when we treat (6) as an equation of the form <em>R = f(R)</em>, then <em>f(R)</em> is</p>
+	<p><em>FLIGHTS ∪ π_{S1,S6,S3,S8} (σ_{S2=S5 and S4&lt;S7}(FLIGHTS × R))</em>
+	</p>
+	<p>and FLIGHTS is an operand that is presumed to be a constant as far as the taking of a fixed point is concerned. □</p>
+	<p>The following theorem is easy to prove by induction on the number of operators in a relational expression.</p>
+	<p><strong>Theorem 1.</strong> Any relational algebra expression that does not use the set difference operator is additive in all its variables. □</p>
+	<p>On the other hand, a nonmonotone expression can have a least fixed point and not every expression involving the difference operator fails to be monotone.</p>
+	<h2>5. Embedding the Least Fixed Point Operator in a Query Language</h2>
+	<p>The problem of how to incorporate a least fixed point (LFP) operator into a query language in a useful manner is not trivial. To begin, it may be hard just to determine whether the LFP of an equation exists, let alone to visualize what it is. Also, evaluating a LFP in a straightforward way may be computationally infeasible unless some advantage is taken of the sparseness of a relation or the special nature of the expression involved. In this section, we propose three syntactic mechanisms whereby the LFP operator can be made available to a query language modeled after relational algebra.</p>
+	<ol>
+		<li>Provide specialized operators such as * (reflexive-and-transitive closure) or + (transitive closure) that can be applied to certain relations. Such shorthands are clearly useful, but they do not provide us with the versatility of the LFP operator; witness Example 2.</li>
+	</ol>
+	<p>Standard methods for computing the transitive closure [AHU] will probably be prohibitively expensive unless they take into consideration the likely sparseness of a relation. Recently, an algorithm for transitive closure that is optimal in an expected time sense has been given [S]. A facility to define transitive closures (but not general LFP’s) is available in Query-by-Example [Z].</p>
+	<ol start="2">
+		<li>Provide a syntactically sugared way of saying “let S be the LFP of R = f(R),” where <em>f</em> is an expression in relational algebra, perhaps with other fixed point operators. In essence, here we are proposing that the user be able to write down an equation that his desired relation satisfies, but no smaller relation satisfies. If he does so, and his intuition is correct, <em>R = f(R)</em> will have a LFP. If <em>f</em> is monotone, the LFP can be computed using (5), where, as we have mentioned, only a finite number of terms need be taken before we obtain the limit; there is, however, no <em>a priori</em> upper bound on the number of terms to be taken.</li>
+		<li>Provide a procedural method of constructing a relation <em>R</em> inductively. That is, we provide a basis rule that says <em>R₀ ⊆ R</em> for some relation <em>R₀</em>, which may be an algebraic expression of existing relations. We then provide an inductive rule that says <em>g(R) ⊆ R</em>, where <em>g</em> is some function of <em>R</em>, expressed in relational algebra, that has as value a relation with the same degree as <em>R</em>. By implication, we assume an exclusion clause saying that nothing is in <em>R</em> unless it follows from the basis and induction rules. We might express such a procedure in terms of a simple while-loop:</li>
+	</ol>
+	<pre>
+	R ← R₀
+	do
+	 R' ← R
+	 R ← R ∪ g(R)
+	while (R' ≠ R)</pre>
+	<p>Now the value of <em>R</em> can be computed as the limit of the sequence <em>X₀, X₁, ...</em>, where <em>X₀ = R₀</em> and <em>Xᵢ = g(Xᵢ₋₁) ∪ Xᵢ₋₁</em> for <em>i ≥ 1</em>. If <em>g</em> is monotone, and <em>f(R) = R₀ ∪ g(R) ∪ R</em>, then <em>f</em> is also monotone, and <em>Xᵢ ⊆ fⁱ⁺¹(∅) ⊆ Xᵢ₊₁</em> for all <em>i ≥ 0</em>, as an easy induction on <em>i</em> shows. As the limit of <em>fⁿ(∅)</em> exists, the limit of <em>Xₙ</em> exists, and the limits are the same.</p>
+	<p>Conversely, if <em>f</em> is monotone, then the LFP of <em>R = f(R)</em> can be expressed by giving the basis rule: <em>∅ ⊆ R</em> and the induction rule <em>f(R) ⊆ R</em>. As <em>fⁱ⁻¹(∅) ⊆ fⁱ(∅)</em> follows from monotonicity and induction on <em>i</em>, we see that <em>Xᵢ = fⁱ(∅)</em>. Therefore, for monotone functions, methods (2) and (3) are equivalent in their ability to define relations. However, method (3) has the additional advantage that the limit <em>lim (n→∞) Xᵢ</em> is known to exist independent of whether <em>g</em> is monotone, since when <em>g</em> is a relational algebra expression, there are only a finite number of symbols that can appear in the tuples of any <em>Xᵢ</em>, and <em>X₀ ⊆ X₁ ⊆ X₂ ⊆ ...</em>.</p>
+	<h2>6. Optimization of Queries with the LFP Operator</h2>
+	<p>The mechanical optimization of queries that is possible when the operators are union, selection, projection, and Cartesian product [CM, ASU, SY] does not seem to be available when the LFP operator is included. A “next-best” alternative is to develop commutation laws for the LFP operator, similar to those developed for other relational operators by [SC]. Most important is a method for evaluating selections ahead of LFP operators. For example, this change can convert a general transitive closure problem into a single source shortest path problem.</p>
+	<p>We shall present a method for commuting selections over a LFP operation, provided that in the expression <em>LFP(R = f(R))</em> the function <em>f</em> is such that it has only one instance of <em>R</em>. There are certain restrictions on the form of the selection as well, since selection does not commute with Cartesian product, in general. We also assume either that <em>f</em> is monotone, or that the semantics of the LFP operator are such that the limit of the series (5) is what is wanted. Let us begin with an example that will introduce the general method.</p>
+	<p><strong>Example 5.</strong> The transitive closure of a relation <em>R₀</em> is <em>LFP(R = R ∘ R₀ ∪ R₀)</em>. If we want to know the points accessible from a given point <em>a₀</em>, we could write <em>σ_{S1=a₀}(LFP(R = R ∘ R₀ ∪ R₀))</em>. However, computing the desired relation <em>S = {a₀b | a₀b is in R⁺}</em> requires that we first compute <em>R⁺</em>, an operation that is far more expensive than we need. Our goal is to, in a sense, move <em>σ_{S1=a₀}</em> inside the LFP operator, so <em>S</em> can be computed directly.</p>
+	<p>Our approach is to replace the expression</p>
+	<p><em>σ_{S1=a₀}(LFP(R = R ∘ R₀ ∪ R₀))</em></p>
+	<p>by its infinite expansion</p>
+	<p><em>σ_{S1=a₀}(((((...) ∘ R₀) ∪ R₀) ∘ R₀) ∪ R₀)</em> (7)</p>
+	<p>obtained by repeatedly replacing <em>R</em> by <em>R ∘ R₀ ∪ R₀</em>. Expression (7) has the form <em>σ_{S1=a₀}(X ∪ R₀)</em>. Since selection distributes across union, we can rewrite (7) as</p>
+	<p><em>σ_{S1=a₀}(X) ∪ σ_{S1=a₀}(R₀)</em> (8)</p>
+	<p>where expression <em>X</em> has the form <em>Y ∘ R₀</em>, and</p>
+	<p><em>Y = (((((...) ∘ R₀) ∪ R₀) ∘ R₀) ∪ R₀)</em></p>
+	<p>We would now like to distribute the selection operator across the composition, but we may not do this in general. If the selection involves only the first or second argument of the composition, however, then it is possible to move the selection through the composition operator. Since <em>σ_{S1=a₀}</em> involves only the first argument here, we can replace (8) by</p>
+	<p><em>σ_{S1=a₀}(Y) ∘ R₀ ∪ σ_{S1=a₀}(R₀)</em> (9)</p>
+	<p>We now note that <em>σ_{S1=a₀}(Y)</em> looks exactly like (7), our original expression. If we use <em>E</em> to denote the value of (7), we obtain the following fixed point equation for <em>E</em></p>
+	<p><em>E = E ∘ R₀ ∪ σ_{S1=a₀}(R₀)</em> (10)</p>
+	<p>The value of equation (10) can be computed relatively efficiently by expanding according to (5). Note that we never put into <em>T</em> any tuple <em>ab</em> with <em>a ≠ a₀</em>. □</p>
+	<p>The above example works because several conditions hold.</p>
+	<ol>
+		<li>The function <em>f(R) = R ∘ R₀ ∪ R₀</em> is monotone, so the infinite expansion “makes sense,” and the constructed function (10) is also monotone.</li>
+		<li>We are able to distribute the selection operator through every subexpression of (7).</li>
+		<li>We obtain a subexpression which has the same form as our original expression.</li>
+	</ol>
+	<p>Condition (3) turns out to hold without loss of generality, provided that (2) holds. This follows from the fact that the selection cannot change substantially as it is distributed; it can only apply to different components or disappear entirely. Thus only a finite number of selections are ever applied to the various subexpressions.</p>
+	<p>We can now state our general algorithm for taking an expression of the form <em>σ_F(LFP(R = f(R)))</em>, where <em>f(R)</em> has only one occurrence of <em>R</em>, and is monotone, and converting it to a particular expression <em>h(LFP(S = g(S)))</em>. The work involved in computing the latter expression is of no greater order than that to compute the former, and in some circumstances will be an order of magnitude less.</p>
+	<p><strong>Algorithm 1. Distribution of selection through the LFP operator.</strong></p>
+	<p><em>Input.</em> An expression <em>σ_F(LFP(R = f(R)))</em> where <em>f(R)</em> has only one occurrence of <em>R</em> and is monotone.<br>
+		<em>Output.</em> An equivalent expression <em>h(LFP(S = g(S)))</em>.
+	</p>
+	<p><strong>Method.</strong> We construct a sequence of expressions <em>E₀, E₁, ...</em>, each with one occurrence of the operand <em>R</em>, by the following rules.</p>
+	<p><strong>Basis.</strong> <em>E₀</em> is <em>σ_F(R)</em>.</p>
+	<p><strong>Induction.</strong> Suppose we have constructed <em>Eᵢ</em>. If <em>Eᵢ</em> has a subexpression of the form <em>σ_G(R)</em>, then in <em>Eᵢ</em> replace <em>σ_G(R)</em> by <em>σ_G(f(R))</em>. Since <em>f(R)</em> has one occurrence of <em>R</em>, the resulting expression will also have one occurrence of <em>R</em>.</p>
+	<p>We now attempt to distribute the selection operator through <em>f(R)</em> as far as possible using the following identities.</p>
+	<ol>
+		<li>If <em>σ_G</em> is applied to <em>Y × Z</em>, the following rules apply.
+			<ol>
+				<li><em>σ_G(Y × Z) = (σ_G(Y)) × Z</em> if <em>σ_G</em> applies only to components that come from <em>Y</em>.</li>
+				<li><em>σ_G(Y × Z) = Y × σ_G'(Z)</em> if <em>σ_G</em> applies only to components from <em>Z</em>. <em>G'</em> is <em>G</em> with the component numbers adjusted appropriately.</li>
+				<li>If neither <em>Y</em> nor <em>Z</em> by itself includes all components mentioned in <em>G</em>, we cannot distribute the selection through the Cartesian product.</li>
+			</ol>
+		</li>
+		<li><em>σ_G(Y ∪ Z) = σ_G(Y) ∪ σ_G(Z)</em></li>
+		<li><em>σ_G(Y - Z) = σ_G(Y) - σ_G(Z)</em></li>
+		<li><em>σ_G(σ_H(Y)) = σ_H(σ_G(Y))†</em></li>
+		<li><em>σ_G(π_L(Y)) = π_L(σ_G'(Y))</em> where <em>G'</em> is <em>G</em> with component numbers adjusted appropriately.</li>
+	</ol>
+	<hr>
+	† We could combine the two selections, but we assume selections within <em>f</em> have been distributed as much as possible, and to combine selections here may make it impossible to pass our selection through a Cartesian product.
+	<hr>
+	<p>As a special case, if the selection is not distributed to the subexpression of <em>f(R)</em> that contains <em>R</em>, then apply the trivial selection that is satisfied by every tuple to that subexpression. This is done for convenience, to ensure some selection will eventually reach the argument <em>R</em>.</p>
+	<p>Expression <em>Eᵢ₊₁</em> results from applying these rules as far as possible. We continue the induction with <em>Eᵢ₊₁</em> in place of <em>E</em>, except in two cases.</p>
+	<ol>
+		<li>If we are unable to pass a selection through a Cartesian product of terms, one of which involves the argument <em>R</em>, then we fail to commute <em>σ_F</em> with the LFP operator.</li>
+		<li>If <em>Eᵢ₊₁</em> is of the form <em>h(g(σ_F(R)))</em> and for some <em>j ≤ i</em>, <em>Eⱼ</em> is of the form <em>h(σ_F(R))</em>, then we have found <em>g</em> and <em>h</em>. From <em>Eᵢ₊₁</em> we construct the expression <em>h(LFP(S = g(S)))</em>.</li>
+	</ol>
+	<p><strong>Theorem 2.</strong> If <em>f</em> is monotone, Algorithm 1 succeeds in producing an equivalent expression <em>h(LFP(S = g(S)))</em>. If no relation appearing as an operand in <em>f</em>, or as the result of evaluating a subexpression of <em>f</em> is empty, then the time to evaluate <em>h(LFP(S = g(S)))</em> is no greater than a constant times that needed to evaluate <em>σ_F(R = f(R)) (and in general may be much less).</em></p>
+	<p><strong>Some Extensions</strong></p>
+	<p>The same technique as described above for selections can also be used to distribute some projections into a LFP operator. In fact, projections always pass through a Cartesian product, so there is no risk of failure from that source. We may also generalize what we have done to LFP operators that simultaneously define several relations.</p>
+	<h2>7. Toward an Improved Model for a Relational Query Language</h2>
+	<p>In this section we define a language that we feel can serve as a model of computation for relational database retrieval operations. The language obeys the principles specified in Section 2 and has the ability to:</p>
+	<ol>
+		<li>Create new tuples from given tuples by selecting certain components from the given tuples and arranging them in some order.</li>
+		<li>Create new relations.</li>
+		<li>Copy relations.</li>
+		<li>Iterate over all tuples of a relation in an unspecified order.</li>
+		<li>Make tests based on some property of a given tuple, provided that property involves only arithmetic comparisons among components of the tuple and, perhaps, constants.</li>
+		<li>Make tests based on the membership of a tuple in a relation.</li>
+	</ol>
+	<p>Although we cannot prove that we have found the maximal class of queries that respect the two principles of Section 2, we nevertheless feel that our language serves as one natural benchmark against which other notations for operating on relations can be evaluated, in exactly the same way that relational calculus serves as a benchmark. Under one natural interpretation of the iteration statement our language is equivalent to relation calculus or algebra; under another more general interpretation it is at least as powerful as relational algebra with the fixed point operator, and we conjecture that it is strictly more powerful.</p>
+	<h3>A Language for Data Retrieval</h3>
+	<p>We now define our data retrieval language. The statements of the language are as follows.</p>
+	<ol>
+		<li><em>t ← f(t₁, ..., tₙ)</em>
+			Here <em>t</em> and <em>tᵢ</em> are tuple-valued variables and <em>f</em> is a function that produces from tuples <em>t₁, ..., tₙ</em> a particular tuple <em>t₁(j₁) t₂(j₂) ... tₖ(jₖ)</em>, where <em>tᵢ(j)</em> is the <em>j</em>th component of tuple <em>tᵢ</em>.</li>
+		<li><em>insert(t, R)</em> and <em>delete(t, R)</em>
+			Here, <em>t</em> is a tuple variable and <em>R</em> a relation variable.</li>
+		<li><em>R ← S</em>
+			<em>R</em> is a relation variable and <em>S</em> is a relational variable or constant.
+		</li>
+		<li><em>for t in R do &lt;statement&gt;</em>
+			Here <em>t</em> is a tuple variable whose scope is local to the <em>for</em> statement and <em>R</em> is a relation variable. Any tuple variable assigned within the <em>for</em> statement is assumed local to that <em>for</em> statement. We shall see that the precise semantics of the <em>for</em> statement determines the class of functions definable in the language.</li>
+		<li><em>if p(t) then &lt;statement&gt; [else &lt;statement&gt;]</em>
+			Here <em>t</em> is a tuple variable and <em>p</em> is a predicate built from the arithmetic comparison operators and the logical connectives (and, or, not).</li>
+		<li><em>if t in R then &lt;statement&gt; [else &lt;statement&gt;]</em>
+			Again, <em>t</em> is a tuple variable and <em>R</em> a relation variable.</li>
+		<li><em>begin &lt;statement list&gt; end</em></li>
+		<li><em>local t</em></li>
+	</ol>
+	<p>This statement defines a tuple variable <em>t</em> whose scope is local to the <em>begin-end</em> block in which this define statement is contained.</p>
+	<p>A program in this language is a statement, which can be a <em>begin-end</em> block. The input to a program is the set of relation variables in the program that are referenced but not previously defined. One relation variable is designated as being the output relation variable. Thus a program computes a function whose arguments are the input relation variables and whose value is that of the output relation variable.</p>
+	<p>We assume that for each relation variable there is a fixed degree, and all tuples in the relation have this number of components. We also assume that there is a fixed arity for each tuple variable. Finally, we assume each component of each relation is selected from a known finite domain for that component.</p>
+	<h2>The Four Interpretations of the for Statement</h2>
+	<p>The semantics of the <em>for</em> statement</p>
+	<p><em>for t in R do &lt;statement&gt;</em></p>
+	<p>can be defined in several different ways. There are two orthogonal issues. The <em>
+			&lt;statement&gt;
+		</em> should be executed for each tuple of <em>R</em>. But should the execution be in parallel, or should we iterate over each <em>t</em> in <em>R</em> serially? The second issue is, should the value of <em>R</em> be bound on entry to the <em>for</em> loop, or should it be allowed to change within the loop? In each case we get a different class of functions. Let us consider the four interpretations and the resulting classes of functions in turn.</p>
+	<h3>7.1. R Bound Before the Loop; Parallel Execution</h3>
+	<p>In this interpretation we associate with each tuple variable a set of tuples. The following rules are used to interpret the statements:</p>
+	<ol>
+		<li><em>t ← f(t₁, ..., tₙ)</em>. Assign to <em>t</em> the set of tuples formed by taking one tuple in each set for <em>tᵢ</em>, 1 ≤ i ≤ n and applying <em>f</em> to those tuples. For example, if the assignment is <em>t ← t₁t₂</em> (juxtaposition of tuples denotes concatenation), then the set for <em>t</em> is the Cartesian product of the sets for <em>t₁</em> and <em>t₂</em>.</li>
+		<li><em>insert(t, R)</em> and <em>delete(t, R)</em> are executed by setting <em>R</em> to <em>R ∪ T</em> and <em>R - T</em>, respectively, where <em>T</em> is the set of tuples associated with <em>t</em>.</li>
+		<li><em>R ← S</em> has the obvious meaning and does not affect the sets associated with tuple variables.</li>
+		<li><em>for t in R do &lt;statement&gt;</em>
+			The set associated with <em>t</em> is <em>R</em> at the beginning of <em>
+				&lt;statement&gt;
+			</em>. The tuple variable <em>t</em> is local to the <em>for</em> statement.</li>
+		<li><em>if p(t) then &lt;statement1&gt; [else &lt;statement2&gt;]</em>
+			Let <em>T</em> be the set associated with the tuple variable <em>t</em> before the <em>if</em> statement. Let <em>T'</em> be the set <em>{s | s is in T and p(s)}</em>. Within <em>
+				&lt;statement1&gt;
+			</em>, set <em>T'</em> is associated with tuple variable <em>t</em> and within <em>
+				&lt;statement2&gt;
+			</em>, if it is present, <em>T - T'</em> is associated with <em>t</em>. After the <em>if</em> statement <em>T</em> is again associated with <em>t</em>, even if at that time the union of the two sets associated with <em>t</em> is not <em>T</em>. Note that we in effect define a new <em>t</em> local to the <em>if</em> statement.</li>
+		<li><em>if t in R then &lt;statement1&gt; [else &lt;statement2&gt;]</em>
+			The meaning of this statement is similar to (5) with <em>T' = T - R</em>.</li>
+		<li><em>begin &lt;statement1&gt; ... &lt;statementₙ&gt; end</em>
+			Any changes to the set associated with a tuple variable local to the block made by <em>
+				&lt;statementᵢ&gt;
+			</em> carry over to the next statement, unless the rule for <em>
+				&lt;statementᵢ&gt;
+			</em> causes the value for that variable to be changed (as in (1)).</li>
+	</ol>
+	<p><strong>Example 6.</strong> Consider the program in Fig. 5, which computes <em>T = R ∘ S</em>. Suppose <em>R = {ab, ac, bc}</em> and <em>S = {aa, cb}</em> initially. After statement <em>t ← r ∘ s</em> the sets associated with <em>t</em>, <em>r</em> and <em>s</em> are <em>{abaa, abcb, acaa, accb, bcaa, bccb}, {ab, ac, bc}</em>, and <em>{aa, cb}</em>, respectively. The statement <em>insert(u, T)</em> sets <em>T</em> to <em>{ab, bb}</em>, which is <em>R ∘ S</em>. □</p>
+	<pre><code>begin
+        T ← ∅;
+        for s in S do
+            for r in R do
+                begin
+                    local u;
+                    t ← r s;
+                    if t(2) = t(3) then
+                        begin
+                            u ← t(1) t(4);
+                            insert(u, T)
+                        end
+                end
+    end
+    </code></pre>
+	<p><strong>Fig. 5. Program to compute composition.</strong></p>
+	<p><strong>Theorem 3.</strong> The set of functions computable by programs with <em>t</em> bound to the current value of <em>R</em> in <em>for t in R do</em> and parallel interpretation of <em>for</em> loops is coextensive with the functions computed by relational algebra expressions.</p>
+	<h3>7.2. R Not Bound Before the Loop; Parallel Execution</h3>
+	<p>There is the possibility that <em>R</em> changes within a <em>for</em> loop, and if so, we might wish to consider the possibility that the set associated with <em>t</em> in the loop <em>for t in R do</em> changes as <em>R</em> changes. One way to effect such changes might be to modify the set associated with <em>t</em> after an assignment, insertion or deletion to <em>R</em> within the loop. It is not hard to show that such an interpretation does not add to the capability of the language to produce new functions; the language is still equivalent to relational algebra.</p>
+	<p>A second interpretation is to fix the set associated with <em>t</em>, but to repeat the <em>for</em> loop with <em>t</em> associated with the set of tuples added to <em>R</em> at the previous repetition, until at some point no new tuples are added to <em>R</em>. Let us call this interpretation the <em>iterative-parallel</em> interpretation of programs.</p>
+	<p><strong>Theorem 4.</strong> Every function expressible by the basis-induction method (method 3) of specifying fixed points can be computed under the iterative-parallel interpretation.</p>
+	<h3>7.3. Serial Execution</h3>
+	<p>Let us now consider interpretations of <em>for t in R do &lt;statement&gt;</em> that select an arbitrary ordering for the members of <em>R</em> and execute the <em>
+			&lt;statement&gt;
+		</em> once for each value of <em>t</em>. We may either fix the set of <em>t</em>'s before entering the loop or we may allow the set to adapt to changes in <em>R</em> within the loop. The method of adaptation could be either of those suggested in Section 7.2, or we could at each iteration of the <em>for</em> loop select a <em>t</em> currently in <em>R</em> that has not been selected before. Unlike the iterative-parallel interpretation, this interpretation permits the loop to respond to deletions within the loop.</p>
+	<p>We shall not fix on a serial interpretation with <em>R</em> not bound on entry to the loop because our negative remarks about the serial interpretation with <em>R</em> bound on entry to the loop apply to all these interpretations as well, and our conclusion is that serial interpretations must be rejected as candidates for universal database languages.</p>
+	<p>Our principal objection to serial interpretations is that they can violate the first principle: order independence. It is easy to construct programs whose output is determined by the order in which tuples in some relation are considered.</p>
+	<p>While we do not advocate serial interpretations of our language as candidates for the notion of a universal data manipulation language, we shall state the following theorem which places the interpretation above into perspective.</p>
+	<p><strong>Theorem 5.</strong> Every relational algebra expression can be computed by a program under the fixed binding, serial interpretation.</p>
+	<h2>References</h2>
+	<p>[AHU] A. V. Aho, J. E. Hopcroft, and J. D. Ullman, <em>The Design and Analysis of Computer Algorithms</em>, Addison-Wesley, Reading, Mass., 1974.</p>
+	<p>[ASU] A. V. Aho, Y. Sagiv, and J. D. Ullman, "Equivalences Among Relational Expressions," <em>SIAM J. Computing</em>, 1978.</p>
+	<p>[B] F. Bancilhon, "On the completeness of query languages for relational expressions," Rapport de Recherche No. 297, IRIA, Rocquencourt, France, May, 1978.</p>
+	<p>[C1] E. F. Codd, "A Relational Model for Large Shared Data Banks," <em>Comm. ACM</em> 13:6 (June, 1970), 377-387.</p>
+	<p>[C2] E. F. Codd, "Relational Completeness of Data Base Sublanguages," in <em>Data Base Systems</em> (R. Rustin, ed.), Prentice-Hall, Englewood Cliffs, N. J., 1972, pp. 65-98.</p>
+	<p>[Ch] A. Church, <em>Introduction to Mathematical Logic, Vol. 1</em>, Princeton University Press, 1956.</p>
+	<p>[CM] A. K. Chandra and P. M. Merlin, "Optimal Implementation of Conjunctive Queries in Relational Data Bases," <em>Proc. Ninth Annual ACM Symposium on Theory of Computing</em>, May 1976, pp. 77-90.</p>
+	<p>[D] C. J. Date, <em>An Introduction to Database Systems</em>, Addison-Wesley, Reading, Mass., 1975.</p>
+	<p>[HU] J. E. Hopcroft and J. D. Ullman, <em>Formal Languages and their Relation to Automata</em>, Addison-Wesley, Reading, Mass., 1969.</p>
+	<p>[P] J. Paredaens, <em>Information Processing Letters</em> 7:2, 1978.</p>
+	<p>[S] C. P. Schnorr, "An Algorithm for Transitive Closure with Linear Expected Time," <em>SIAM J. Computing</em> 7:2 (May, 1978), 127-133.</p>
+	<p>[SC] J. M. Smith and P. Y.-T. Chang, "Optimizing the Performance of a Relational Algebra Database Interface," <em>Comm. ACM</em> 18:10 (Oct., 1975), 568-579.</p>
+	<p>[SY] Y. Sagiv and M. Yannakakis, "Equivalence Among Relational Expressions with the Union and Difference Operations," <em>Proc. ACM International Conference on Very Large Data Bases</em>, Sept., 1978.</p>
+	<p>[T] A. Tarski, "A Lattice-Theoretical Fixpoint Theorem and its Applications," <em>Pacific J. Mathematics</em> 5:2 (June, 1955), 285-309.</p>
+	<p>[Z] M. M. Zloof, "Query-by-Example: a Database Language," <em>IBM Syst. J.</em>, 16:4 (1977), pp. 324-343.</p>
+</body>
+
+</html>
