@@ -13,10 +13,6 @@ The papers are ordered by year of publishing
 
 To find these papers, this page was very helpful: [dblp computer science bibliography about Edgar F. Codd](https://dblp.org/pid/c/EFCodd.html)
 
-## 1965
-
-- [Propagation, Computation, and Construction in Two-dimensional cellular spaces](https://media.proquest.com/media/hms/ORIG/1/ZxO1K?_s=u954RD588JKHvlB8ihj%2F94B3%2BCQ%3D)
-
 ## 1970
 
 - [A Relational Model of Data for Large Shared Data Banks](https://dl.acm.org/doi/pdf/10.1145/362384.362685)
