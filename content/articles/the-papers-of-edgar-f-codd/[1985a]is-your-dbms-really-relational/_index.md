@@ -1,0 +1,417 @@
+# Is your DBMS really relational?
+
+### By E. F. Codd
+
+*The originator of the relational model for data base management presents basic
+principles for determining how relational a DBMS product is — a question that
+faces many buyers today because almost every vendor claims its DBMS is
+relational. Some vendors may not realize how far from the mark they are.*
+
+#### Part 1
+
+In recent years, the data base management system market has undergone a very
+rapid swing in favor of products that take the relational approach to data base
+management. It is hard to find a vendor that does not claim its DBMS is
+relational. This swing has been so extensive that some vendors of nonrelational
+DBMS have quickly (and recently) added a few relational features — in some
+cases, very few features — in order to be able to claim their systems are
+relational, even though they may not meet the simple requirements for being
+truly "minimally relational". We shall refer to this kind of DBMS as "born
+again". It is a safe bet that these Johnny-come-lately vendors have not taken
+the time or manpower to investigate optimization techniques needed for
+relational DBMS to yield good performance. This is the principal reason they
+continue to proclaim the "performance myth" — namely, that relational DBMS must
+perform poorly because they are relational.
+
+---
+
+E. F. Codd is the originator of the relational model for data base management.
+He was the leader of the team that designed and implemented the first operating
+system with multiprogramming capability. Currently he is president of The
+Relational Institute and the Codd & Date Consulting Group, both based in San
+Jose, Calif.
+
+---
+
+Once consequence of this rapid swing of the market to the relational approach is
+that products that are claimed by their vendors to be relational DBMS range from
+those that support the relational model with substantial fidelity to those that
+definitely do not deserve the label "relational", because their support is only
+token. Some vendors claim that fourth-generation languages will provide all the
+productivity advantages. This claim conveniently overlooks the fact that most of
+these languages do little or nothing for shared data (the programming language
+fraternity still does not appear to realize that support for the dynamic sharing
+of data is an absolute requirement). In addition, there is no accepted
+theoretical foundation for fourth-generation languages and not even an accepted,
+precise definition.
+
+This article outlines a technique that should help users determine how
+relational a DBMS really is. Accordingly, I shall discuss the following:
+
+- The fidelity of DBMS to the relational model.
+- The fidelity of the proposed ANSI SQL standard to the relational model.
+- Conclusions regarding choosing a DBMS product.
+
+I shall not attempt a complete description of the relational model here — a
+relatively brief and concise definition appears in the article "RM/T: Extending
+the Relational Model to Capture More Meaning," (Chapter 2, "The Basic Relational
+Model") in the Association for Computing Machinery's "Transactions on Data Base
+Systems" (December 1979). It is, however, vitally important to remember that the
+relational model includes three major parts: the structural part, the
+manipulative part, and the integrity part — a fact that is frequently and
+conveniently forgotten.
+
+In this paper, I supply a set of rules with which a DBMS should comply if it is
+claimed to be fully relational. No existing DBMS product that I know of can
+honestly claim to be fully relational, at this time.
+
+- The proposed ANSI standard does not fully comply with the relational model,
+  because it is based heavily on that nucleus of SQL that is supported in common
+  by numerous vendors. Moreover, it takes a static, schema-based approach to
+  data base description — reminiscent of CODASYL — instead of specifying a
+  comprehensive, dual-mode data sublanguage that provides the underlying access
+  to relational data bases and that is unique to the relational approach. Thus,
+  the fidelity of the proposed ANSI standard to the relational model is even
+  less than that of some relational DBMS products.
+- However, the standard could be readily modified to be more faithful to the
+  model, and pressure should be brought on ANSI to do so. In fact, vendors are
+  advised to extend their products soon in these respects so that they support
+  customers' DBMS needs more fully and avoid possibly large customer expenses in
+  application program maintenance at the time of the improvement.
+
+### The 12 rules
+
+Twelve rules are cited below as part of a test to determine whether a product
+that is claimed to be fully relational is actually so. Use of the term "fully
+relational" in this report is slightly more stringent than in my Turing paper
+(written in 1981). This is partly because vendors in their ads and manuals have
+translated the term "minimally relational" to "fully relational," and partly
+because in this report, we are dealing with relational DBMS and not relational
+systems in general, which would include mere query-reporting systems.
+
+However, the 12 rules tend to explain why full support of the relational model
+is in the users' interest. No new requirements are added to the relational
+model. A grading scheme is later defined and used to measure the degree of
+fidelity to the relational model.
+
+First, I define these rules: Although I have defined each rule in earlier
+papers, I believe this to be the first occurrence of all 12 of them together.
+
+In rules eight through 11, I specify and require four different types of
+independence aimed at protecting customers' investments in application programs,
+terminal activities, and training. Rules eight and nine — physical and logical
+data independence — have been heavily discussed for many years.
+
+Rules 10 and 11 — integrity independence and distribution independence — are
+aspects of the relational approach that have received inadequate attention to
+date but are likely to become as important as eight and nine.
+
+These rules are based on a single foundation rule, which I shall call **Rule
+Zero**:
+
+*For any system that is advertised as, or claimed to be, a relational data base
+management system, that system must be able to manage data bases entirely
+through its relational capabilities.*
+
+This rule must hold whether or not the system supports any non-relational
+capabilities of managing data. Any DBMS that does not satisfy this rule is not
+worth rating as a relational DBMS.
+
+One consequence of this rule: Any system claimed to be a relational DBMS must
+support data base insert, update and delete at the relational level
+(multiple-records-at-a-time). Another consequence is the necessity of supporting
+the information rule and the guaranteed access rule. "Multiple-record-at-a-time"
+includes as special cases those situations in which zero or one record is
+retrieved, inserted, updated, or deleted. In other words, a relation (table) may
+have either zero tuples (rows) or one tuple and still be a valid relation.
+
+- Any statement in the manuals of a system claimed to be a relational DBMS that
+  advises users to revert to some nonrelational capabilities "to achieve
+  reasonable performance" — or for any reason other than compatibility with
+  programs written in the past on nonrelational data base systems — should be
+  interpreted as an apology by the vendor. Such a statement indicates the vendor
+  has not done the work necessary for achieving good performance with the
+  relational approach.
+
+What is the danger to buyers and users of a system that claims to be a
+relational DBMS and that fails on Rule Zero? Buyers and users will expect all
+the advantages of a truly relational DBMS, and they will fail to get these
+advantages.
+
+Now I shall describe the 12 rules that, together with the nine structural, 18
+manipulative, and three integrity rules of the relational model, determine in
+specific detail the extent of validity of a vendor's claim to have a "fully
+relational DBMS."
+
+All 12 rules are motivated by Rule Zero defined above, but a DBMS can be more
+readily checked for compliance with these 12 than with Rule Zero.
+
+### The Information Rule
+
+**Rule 1: All information in a relational data base is represented explicitly at
+the logical level and in exactly one way — by values in tables.**
+
+Even table names, column names, and domain names are represented as character
+strings in some tables. Tables containing such names are normally part of the
+built-in system catalog. The catalog is accordingly a relational data base
+itself — one that is dynamic and active and represents the metadata (data
+describing the rest of the data in the system).
+
+The information rule is enforced not only for user productivity but also to make
+it a reasonably simple job for software vendors to define additional software
+packages (such as application development aids, expert systems, and so on) that
+interface with relational DBMS and, by definition, are well integrated with the
+DBMS.
+
+That is, these packages retrieve information already existing in the catalog
+and, as needed, put new information in the catalog by the very act of using the
+DBMS.
+
+An additional reason to enforce this rule is to make the data base
+administrator's task of maintaining the data base in a state of overall
+integrity both simpler and more effective. There is nothing more embarrassing to
+a data base administrator than being asked if his data base contains certain
+specific information and his replying after a week’s examination of the data
+base that he does not know.
+
+### Guaranteed Access Rule
+
+**Rule 2: Each and every datum (atomic value) in a relational data base is
+guaranteed to be logically accessible by resorting to a combination of table
+name, primary key value, and column name.**
+
+Clearly, each datum in a relational data base can be accessed in a rich variety
+— possibly thousands — of logically distinct ways. However, it is important to
+have at least one way, independent of the specific relational data base, that is
+guaranteed, because most computer-oriented concepts (such as scanning successive
+addresses) have been deliberately omitted from the relational model.
+
+Note that the guaranteed access rule represents an associative addressing scheme
+that is unique to the relational model. The rule does not depend at all on the
+usual computer-oriented addressing. However, the primary key concept is an
+essential part of it.
+
+### Systematic Treatment of Null Values
+
+**Rule 3: Null values (distinct from the empty character string or a string of
+blank characters and distinct from zero or any other number) are supported in
+fully relational DBMS for representing missing information and inapplicable
+information in a systematic way, independent of data type.**
+
+To support basic data integrity, it must be possible to specify "nulls not
+allowed" for each primary key column and for any other columns where the data
+base administrator considers it an appropriate integrity constraint (for
+example, certain foreign key columns).
+
+Past techniques entailed defining a special value (peculiar to each column or
+field) to represent missing information. This would be most unsystematic in a
+relational data base because users would have to employ different techniques for
+each column or domain — a difficult task because of the high level of language
+in use (and a task that I believe would decrease user productivity).
+
+### Dynamic On-line Catalog Based on the Relational Model
+
+**Rule 4: The data base description is represented at the logical level in the
+same way as ordinary data, so that authorized users can apply the same
+relational language to its interrogation as they apply to the regular data.**
+
+One consequence of this is that each user (whether an application programmer or
+end user) needs to learn only one data model — an advantage that nonrelational
+systems usually do not offer (IBM's IMS, together with its dictionary, requires
+the user to learn two distinct data models).
+
+Another consequence is that authorized users can easily extend the catalog to
+become a full-fledged, active, relational data dictionary whenever the vendor
+fails to do so.
+
+### Comprehensive Data Sublanguage Rule
+
+**Rule 5: A relational system may support several languages and various modes of
+terminal use (for example, the fill-in-the-blanks model). However, there must be
+at least one language whose statements are expressible, per some well-defined
+syntax, as character strings and that is comprehensive in supporting all of the
+following items:**
+
+- Data definition.
+- View definition.
+- Data manipulation (interactive and by program).
+- Integrity constraints.
+- Authorization.
+- Transaction boundaries (begin, commit, and rollback).
+
+The relational approach is intentionally highly dynamic — that is, it should
+rarely be necessary to bring the database activity to a halt (in contrast to
+nonrelational DBMS). Therefore, it does not make sense to separate the services
+listed above into distinct languages.
+
+In the mid-'70s, the ANSI Standards Planning and Requirements Committee
+generated a document advocating 42 distinct interfaces and (potentially) 42
+distinct languages for DBMS. Fortunately, that idea has apparently been
+abandoned.
+
+### View Updating Rule
+
+**Rule 6: All views that are theoretically updatable are also updatable by the
+system.**
+
+Note that a view is theoretically updatable if there exists a time-independent
+algorithm for unambiguously determining a single series of changes to the base
+relations that will have the effect of making the changes in the view. In this
+regard, "update" is intended to include insertion and deletion as well as
+modification.
+
+### High-level Insert, Update and Delete
+
+**Rule 7: The capability of handling a base relation or a derived relation as a
+single operand applies not only to the retrieval of data but also to the
+insertion, update and deletion of data.**
+
+This requirement gives the system much more scope in optimizing the efficiency
+of its execution-time actions. It allows the system to determine which access
+paths to exploit to obtain the most efficient code.
+
+- It can also be extremely important in obtaining efficient handling of
+  transactions across a distributed data base. In this case, users would prefer
+  that communications costs are saved by avoiding the necessity of transmitting
+  a separate request for each record obtained from remote sites.
+
+### Physical Data Independence
+
+**Rule 8: Application programs and terminal activities remain logically
+unimpaired whenever any changes are made in either storage representations or
+access methods.**
+
+To handle this, the DBMS must support a clear, sharp boundary between the
+logical and semantic on the one hand and the physical and performance aspects of
+the base tables on other; application programs must deal with the logical
+aspects only.
+
+Nonrelational DBMS rarely provide complete support for this rule — in fact, I
+know of none that do.
+
+### Logical Data Independence
+
+**Rule 9: Application programs and terminal activities remain logically
+unimpaired when information-preserving changes of any kind that theoretically
+permit unimpairment are made to the base tables.**
+
+Take the following two examples: splitting a table into two tables, either by
+rows using row content or by columns using column names, if primary keys are
+preserved in each result; or combining two tables into one by means of a nonloss
+join (Stanford University and MIT authors call these joins "lossless").
+
+To provide this service whenever possible, the DBMS must be capable of handling
+inserts, updates and deletes on all views that are theoretically updatable. This
+rule permits logical data base design to be changed dynamically if, for example,
+such a change would improve performance.
+
+The physical and logical data independence rules permit data base designers for
+relational DBMS to make mistakes in their designs without the heavy penalties
+levied by nonrelational DBMS. This, in turn, means that it is much easier to get
+started with a relational DBMS because not nearly as much performance-oriented
+planning is needed prior to "blast-off".
+
+### Integrity Independence
+
+**Rule 10: Integrity constraints specific to a particular relational data base
+must be definable in the relational data sublanguage and stored in the catalog,
+not in the application programs.**
+
+In addition to the two integrity rules (entity integrity and referential
+integrity) that apply to every relational data base, there is a clear need to be
+able to specify additional integrity constraints reflecting other business
+policies or government regulations.
+
+Assume that the relational model is faithfully reflected. Then, the additional
+integrity constraints are defined in terms of the high-level data sublanguage
+and the definitions stored in the catalog, not in the application programs.
+
+Information about inadequately identified objects is never recorded in a
+relational data base. To be more specific, the following two integrity rules
+apply to every relational data base:
+
+- Entity integrity. No component of a primary key is allowed to have a null
+  value.
+- Referential integrity. For each distinct nonnull foreign key value in a
+  relational data base, there must exist a matching primary key value from the
+  same domain.
+
+If, as sometimes happens, either business policies or government regulations
+change, it will probably be necessary to change the integrity constraints.
+Normally, this can be accomplished in a fully relational DBMS by changing one or
+more of the integrity statements that are stored in the catalog.
+
+In many cases, neither the application programs nor the terminal activities are
+logically impaired.
+
+Nonrelational DBMS rarely support this rule as part of the DBMS engine, where it
+belongs. Instead, they depend on a dictionary package, which may or may not be
+present and can readily be bypassed.
+
+### Distribution Independence
+
+**Rule 11: A relational DBMS has distribution independence.**
+
+By distribution independence, I mean that the DBMS has a data sublanguage that
+enables application programs and terminal activities to remain logically
+unimpaired:
+
+- when data distribution is first introduced (if the originally installed DBMS
+  manages nondistributed data only).
+- when data is redistributed (if the DBMS manages distributed data).
+
+Note that the definition is carefully worded so that both distributed and
+nondistributed DBMS can fully support Rule 11. IBM's SQL/DS and DB2, Oracle
+Corp.'s Oracle and Relational Technology, Inc.'s Ingres, (all nondistributed in
+present released) fully support this rule.
+
+This has been demonstrated as follows: SQL programs have been written to operate
+on nondistributed data (using System R) run correctly on distributed versions of
+that data (using System R*, the IBM San Jose Research Laboratory prototype), and
+the distributed Ingres project at the University of California at Berkeley has
+shown the same capability for the QUEL language of Ingres.
+
+It is important to distinguish distributed processing from distributed data. In
+the former case, work (for example, programs) is transmitted to the data; in the
+latter case, data is transmitted to the work. Many nonrelational DBMS support
+distributed processing but not distributed data. The only systems that support
+the concept of making all the distributed data appear to be local are relational
+DBMS — these are prototypes right now.
+
+In the case of distributed relational DBMS, a single transaction may straddle
+several remote sites. Such straddling is managed entirely under the covers — the
+system may have to execute recovery at multiple sites. Each program or terminal
+activity treats the totality of data as if it were all local to the site where
+the application program or terminal activity is executed.
+
+A fully relational DBMS that does not support distributed data bases has the
+capability of being extended to provide that support while leaving application
+programs and terminal activities logically unimpaired, both at the time of
+initial distribution and whenever later redistribution is made.
+
+There are four important reasons why relational DBMS enjoy this advantage:
+
+1. **Decomposition flexibility** in deciding how to deploy the data.
+2. **Recomposition power** of the relational operators when combining the
+   results of subtransactions executed at different sites.
+3. **Economy of transmission** resulting from the fact that there need not be a
+   request message sent for each record to be retrieved from any remote site.
+4. **Analyzability of intent** (owing to the very high level of relational
+   languages) for vastly improved optimization of execution.
+
+### Nonsubversion Rule
+
+**Rule 12: If a relational system has a low-level (single-record-at-a-time)
+language, that low-level cannot be used to subvert or bypass the integrity rules
+and constraints expressed in the higher-level relational language
+(multiple-records-at-a-time).**
+
+In the relational approach, preservation of integrity is made independent of
+logical data structure to achieve integrity independence. This rule is extremely
+difficult for a "born-again" system to obey because such a system already
+supports an interface below the relational constraint interface. Vendors of
+"born-again" systems do not appear to have given this problem adequate
+attention.
+
+(Part two: the practical consequences of the 12 rules and an evaluation of
+certain products against the relational model.)
