@@ -31,7 +31,7 @@ In an article entitled "Where SQL Falls Short" by C.J. Date (see May 1, 1987, p.
 were cited. I agree with the errors cited, but feel that three of the most
 serious errors were omitted altogether.
 
-My position on these three flaws is as follows: 
+My position on these three flaws is as follows:
 
 - duplicate rows within relations ought to be prohibited, as Teradata has done
 with its version of SQL;
