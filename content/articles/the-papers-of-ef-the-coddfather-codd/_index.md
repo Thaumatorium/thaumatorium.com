@@ -1,7 +1,7 @@
 ---
 title: "The Papers of E.F. \"The Coddfather\" Codd"
 publishDate: 2024-04-07T16:14:44+02:00
-lastmod: 2024-04-07T16:14:44+02:00
+lastmod: 2024-07-23T22:52:47+02:00
 draft: true
 ---
 
