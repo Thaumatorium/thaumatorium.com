@@ -1,18 +1,24 @@
+---
+title: "FURTHER NORMALIZATION OF THE DATA BASE RELATIONAL MODEL"
+description: ""
+publishDate: 1971-01-01T00:00:00+01:00
+lastmod: 1971-01-01T00:00:00+01:00
+---
 # FURTHER NORMALIZATION OF THE DATA BASE RELATIONAL MODEL
 
 by
 
-E. F. Codd  
-IBM Research Laboratory  
+E. F. Codd
+IBM Research Laboratory
 San Jose, California
 
 ## ABSTRACT:
 
 In an earlier paper, the author proposed a relational model of data as a basis for protecting users of formatted data systems from the potentially disruptive changes in data representation caused by growth in the data base and changes in traffic. A first normal form for the time-varying collection of relations was introduced. In this paper, second and third normal forms are defined with the objective of making the collection of relations easier to understand and control, simpler to operate upon, and more informative to the casual user. The question "Can application programs be kept in a viable state when data base relations are restructured?" is discussed briefly and it is conjectured that third normal form will significantly extend the life expectancy of application programs.
 
-RJ 909 (#18557)  
-August 31, 1971  
-Information technology  
+RJ 909 (#18557)
+August 31, 1971
+Information technology
 (IR, Documentation, etc.)
 
 # Introduction
@@ -68,7 +74,7 @@ since E# is included in (E#, D#).
 
 ### 1.3 Candidate Keys
 
-Each candidate key K of relation R is, by definition, a combination of attributes (possibly a single attribute) of R with properties P1 and P2: 
+Each candidate key K of relation R is, by definition, a combination of attributes (possibly a single attribute) of R with properties P1 and P2:
 
 P<sub>1</sub>: **(Unique Identification)** In each tuple of R the value of K uniquely identifies that tuple; i.e., R.K → R.Ω where Ω denotes the collection of all attributes of the specified relation;
 
@@ -130,7 +136,7 @@ Now suppose supplier v ceases to supply parts 1 and 3, but may in the near futur
 
 Conversion of T to second normal form consists of replacing T by two of its projections:
 
-T<sub>1</sub> = Π<sub>S#,P#</sub>(T)  
+T<sub>1</sub> = Π<sub>S#,P#</sub>(T)
 T<sub>2</sub> = Π<sub>S#,SC</sub>(T)
 
 We thus obtain the relations tabulated in Fig. 2.
@@ -151,24 +157,24 @@ Note how the undesirable insertion, update and deletion dependencies have disapp
 
 Unfortunately, the simple example above does not illustrate all of the complexities which can arise. For expository purposes we now consider five possible relations in a data base concerning suppliers, parts, and projects. In a crude sense these relations represent five alternative possibilities - it is not intended that they coexist in a single data base. Note, however, that some contain more information (in the form of additional attributes) than others. In each case the primary key is underlined.
 
-R<sub>1</sub>(S#, P#, J#)  
-R<sub>2</sub>(X#, S#, P#, J#)  
-R<sub>3</sub>(X#, S#, P#, J#, Q)  
-R<sub>4</sub>(X#, S#, P#, J#, Q, SC)  
+R<sub>1</sub>(S#, P#, J#)
+R<sub>2</sub>(X#, S#, P#, J#)
+R<sub>3</sub>(X#, S#, P#, J#, Q)
+R<sub>4</sub>(X#, S#, P#, J#, Q, SC)
 R<sub>5</sub>(S#, P#, J#, Q, SC)
 
-where  
-S# = supplier number  
-P# = part number  
-J# = project number  
-X# = serial number  
-Q = quantity supplied  
+where
+S# = supplier number
+P# = part number
+J# = project number
+X# = serial number
+Q = quantity supplied
 SC = supplier city
 
 A triple (x, y, z) belongs to R<sub>1</sub> if supplier x supplies part y to project z. The same interpretation holds for Π<sub>S#, P#, J#</sub>(R<sub>i</sub>) for i = 2, 3, 4, 5. In each of the five relations, a given combination of supplier and part may be associated with more than one project, a given combination of part and project may be associated with more than one supplier, and a given combination of project and supplier may be associated with more than one part. Thus, for all i
 
-R<sub>i</sub>.(S#, P#) ↛ R<sub>i</sub>.(J#)  
-R<sub>i</sub>.(P#, J#) ↛ R<sub>i</sub>.(S#)  
+R<sub>i</sub>.(S#, P#) ↛ R<sub>i</sub>.(J#)
+R<sub>i</sub>.(P#, J#) ↛ R<sub>i</sub>.(S#)
 R<sub>i</sub>.(J#, S#) ↛ R<sub>i</sub>.(P#)
 
 In each of the relations that have the attribute Q, there is only one value of Q for a given value of the attribute combination (S#, P#, J#). Thus,
@@ -177,8 +183,8 @@ R<sub>i</sub>.(S#, P#, J#) → R<sub>i</sub>.Q for i = 3, 4, 5.
 
 However, the value of Q is not uniquely determined by any proper subset of these attributes. Thus, for i = 3, 4, 5
 
-R<sub>i</sub>.(S#, P#) ↛ R<sub>i</sub>.Q  
-R<sub>i</sub>.(P#, J#) ↛ R<sub>i</sub>.Q  
+R<sub>i</sub>.(S#, P#) ↛ R<sub>i</sub>.Q
+R<sub>i</sub>.(P#, J#) ↛ R<sub>i</sub>.Q
 R<sub>i</sub>.(J#, S#) ↛ R<sub>i</sub>.Q .
 
 In each of the relations that have the attribute SC, there is only one value of SC for a given value of S#. Thus, for i = 4, 5
@@ -479,7 +485,7 @@ Some of the reasons why attribute migration may accompany data base growth are a
 
 To illustrate the effect of attribute migration on application programs, consider the splitting of data base relation U(E#, JC, D#, M#, CT) into the two projections:
 
-U<sub>1</sub> = Π<sub>E#, JC, D#</sub>(U)  
+U<sub>1</sub> = Π<sub>E#, JC, D#</sub>(U)
 U<sub>2</sub> = Π<sub>D#, M#, CT</sub>(U)
 
 (see section 3.1 for the interpretation of U and its attributes).
