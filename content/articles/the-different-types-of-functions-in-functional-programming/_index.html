@@ -1,82 +1,92 @@
 ---
-title: "The different types of functions in Functional Programming"
-description: "There are no explanations such as these available anywhere else"
+title: "The Different Types of Functions in Functional Programming"
+description: "Comprehensive explanations of various function types in functional programming"
 publishDate: 2018-10-15T00:00:00+01:00
 lastmod: 2018-10-15T00:00:00+01:00
 layout: article
 ---
-<p>Slightly annoying that 'type' already have a certain meaning in Haskell, but I think you're smart enough to understand what I mean with the title.</p>
-<p>In this context, a parser is a function accepting strings as input and returning some data structure as output, typically it's a parse tree or a set of indices representing locations in the string where parsing stopped successfully.</p>
+
+<p>In functional programming, the term "type" can be somewhat overloaded, especially in languages like Haskell. However, in this context, we are referring to different kinds of functions and their behaviors. A parser, for example, is a function that accepts strings as input and returns some data structure as output, typically a parse tree or a set of indices representing where parsing stopped successfully.</p>
+
+<h2>Types of Functions</h2>
+
 <table>
 	<thead>
 		<tr>
 			<th>Type</th>
-			<th>What it does</th>
-			<th>Example code</th>
+			<th>Description</th>
+			<th>Example Code</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
 			<td>Pure</td>
-			<td>Takes an input, returns an output – no side effects (data changes)</td>
+			<td>Takes an input, returns an output – no side effects (data changes).</td>
 			<td>
-				<pre><code class=lang-haskell>f :: Int -> Int
+				<pre><code class="lang-haskell">f :: Int -> Int
 f x = x</code></pre>
 			</td>
 		</tr>
 		<tr>
 			<td>Predicate</td>
-			<td>Takes an input, returns a Bool </td>
+			<td>Takes an input, returns a Bool.</td>
 			<td>
-				<pre><code class=lang-haskell>f :: Int -> Bool
+				<pre><code class="lang-haskell">f :: Int -> Bool
 f x = x > 5</code></pre>
 			</td>
 		</tr>
 		<tr>
 			<td>Recursive</td>
-			<td>Like a Pure function, but also calls itself (at least once) with a subset of the original input </td>
+			<td>Like a Pure function, but also calls itself (at least once) with a subset of the original input.</td>
 			<td>
-				<pre><code class=lang-haskell>length :: [a] -> Int
+				<pre><code class="lang-haskell">length :: [a] -> Int
 length (x:xs) = 1 + length xs</code></pre>
 			</td>
 		</tr>
 		<tr>
 			<td>Curried</td>
-			<td>You can give a function a part of the input to create a new function (imperative languages like C or Python always want all arguments at once)</td>
+			<td>"Partial Application" means that a function receives only a part of the input, which makes it return a <em>new</em> function that still wants the rest of the input (imperative languages like C or Python always want all arguments at once)</td>
 			<td>
-				<pre><code class=lang-haskell>timesTwo :: Int -> Int
-timesTwo = 2 *</code></pre>
-				As you can see, the <samp>*</samp> operator only has one input – It's been partially applied!<br> When you look at the definition, you see that timesTwo expects at least one Int,<br> which when applied, gets added at the end of the function:
-				<pre><code class=lang-haskell>timesTwo 3
-= { apply timesTwo }
+				<pre><code class="lang-haskell">timesTwo :: Int -> Int
+timesTwo = (2 *)</code></pre>
+				<p>Example usage: As you can see, the <samp>*</samp> operator only has one input - It's been partially applied! When you look at the definition, you see that timesTwo expects at least one Int, which when applied, gets added at the end of the function:</p>
+				<pre><code class="lang-haskell">timesTwo 3
+-- { apply timesTwo }
 2 * 3
-= { apply * }
+-- { apply * }
 6</code></pre>
 			</td>
 		</tr>
 		<tr>
 			<td>Applicative</td>
-			<td>Can take a variable amount of inputs, returns an output </td>
-			<td>Uses a function (<samp>pure</samp>) and an operator (<samp>&lt;*&gt;</samp>), where 'pure' lifts the function into<br> a wrapped type/function and '&lt;*&gt;' accepts a wrapped type/function and a variable<br> (that's also wrapped)</td>
+			<td>Can take a variable amount of inputs and return an output. Uses the <code>pure</code> function and the <code>&lt;*&gt;</code> operator.</td>
+			<td>
+				<p><code>pure</code> lifts a function into a wrapped type, and <code>&lt;*&gt;</code> accepts a wrapped type and a variable (also wrapped).</p>
+			</td>
 		</tr>
 		<tr>
 			<td>Monadic</td>
-			<td>Takes an input, returns an output – has side effects (data changes) and uses either the bind >>= operator or do notation</td>
-			<td>From: <a http="https://wiki.haskell.org/All_About_Monads">https://wiki.haskell.org/All_About_Monads</a>
-				<pre><code class=lang-haskell>maternalGrandfather :: Sheep -&gt; Maybe Sheep
-maternalGrandfather s = (return s) &gt;&gt;= mother &gt;&gt;= father
--- alternatively
-mothersPaternalGrandfather :: Sheep -&gt; Maybe Sheep
-mothersPaternalGrandfather s = do m &lt;- mother s
-                               gf &lt;- father m
-                               father gf
+			<td>Takes an input, returns an output - can have side effects and uses either the bind <code>&gt;&gt;=</code> operator or <code>do</code> notation.</td>
+			<td>
+				<p>From: <a href="https://wiki.haskell.org/All_About_Monads">Haskell Wiki: All About Monads</a></p>
+				<pre><code class="lang-haskell">maternalGrandfather :: Sheep -> Maybe Sheep
+maternalGrandfather s = (return s) >>= mother >>= father
+
+-- Alternatively
+mothersPaternalGrandfather :: Sheep -> Maybe Sheep
+mothersPaternalGrandfather s = do m  <- mother s
+                                  gf <- father m
+                                  father gf
 </code></pre>
 			</td>
 		</tr>
 		<tr>
 			<td>Parser Combinator</td>
-			<td>Accepts several parsers as input and returns a new parser as its output. </td>
-			<td>From: <a http="https://en.wikipedia.org/wiki/Parser_combinator">https://en.wikipedia.org/wiki/Parser_combinator</a> In this context, a parser<br> is a function accepting strings as input and returning some structure as output,<br> typically a parse tree or a set of indices representing locations in the string where<br> parsing stopped successfully.</td>
+			<td>Accepts several parsers as input and returns a new parser as output.</td>
+			<td>
+				<p>From: <a href="https://en.wikipedia.org/wiki/Parser_combinator">Wikipedia: Parser Combinator</a></p>
+				<p>A parser is a function accepting strings as input and returning some structure as output, typically a parse tree or a set of indices representing where parsing stopped successfully in the string.</p>
+			</td>
 		</tr>
 	</tbody>
 </table>
