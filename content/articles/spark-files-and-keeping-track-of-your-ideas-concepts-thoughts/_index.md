@@ -42,10 +42,7 @@ than English and lacks a VSCode extension). It's a neat combination!
 The ideas I place in my Spark files are usually about programming, such as
 features I want to add to a project I've had in mind since 2014. This project is
 intended to compete with Reddit, which I feel has declined in quality with poor
-puns and low-quality communities. If you take offense at my use of the word
-"retarded": my site is not for you. The word "retarded" literally means "held
-back," and if you think that's a 'naughty no-no word,' you're the one who's held
-back. Please, go back to Reddit. /rant
+puns and low-quality communities.
 
 Reviewing these ideas periodically has given me several well-developed concepts
 over the years. I can't share them here because I intend to monetize them
