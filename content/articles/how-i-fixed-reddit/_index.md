@@ -2,10 +2,13 @@
 title: "How I fixed Reddit"
 description: "Well, improved more like it. One can't fix reddit"
 publishDate: 2020-07-17T00:00:00+01:00
-lastmod: 2020-07-17T00:00:00+01:00
+lastmod: 2024-07-24T18:41:00+02:00
 layout: article
 ---
 
+2024: Just use Lemmy, lmao - [programming.dev](https://programming.dev/)
+
+<del>
 ## For context
 
 I've been on reddit.com since 2008 (deleted my first account because I was going to "quit reddit" over some bullshit in 2012) and have seen this site _slowly_ change over time and it has become unbearable.
@@ -45,3 +48,4 @@ I know that my categories can be construed as a fragile white redditor not being
 Constantly being confronted with things _I can not change_ (mostly because I'm Dutch, so I basically have 0 political power in the USA) will only fuck up my mind, and for what? Because of some subreddit that _may_ shame my inaction (which I've blocked anyway, so I won't see it anyway)? Fuck no.
 
 PS: I'm aware that some people may use the subs I named to subscribe to them. More power to you! I unironically hope you'll enjoy those subreddits; I simply didn't.
+</del>
