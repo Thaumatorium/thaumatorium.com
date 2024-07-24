@@ -1,10 +1,12 @@
 ---
-title: "Articles"
-description: "Relational Algebra Operators in Database Management"
+title: "Relational Algebra Operators in Database Management"
+description: "An overview of basic and additional relational algebra operators"
 publishDate: 2024-06-22T14:27:00+01:00
-lastmod: 2024-06-22T14:27:00+01:00
+lastmod: 2024-07-24T19:23:00+01:00
+layout: article
 ---
-<p>This article contains the symbols I've found in a video from CMU Database Group, a YT channel from Carnegie Mellon University.</p>
+
+<p>This article summarizes the symbols and operations of relational algebra as explained in a video from the CMU Database Group, a YouTube channel by Carnegie Mellon University.</p>
 
 <h2>Basic Relational Algebra Operators</h2>
 
@@ -13,7 +15,7 @@ lastmod: 2024-06-22T14:27:00+01:00
 	<dd>
 		<strong>Symbol:</strong> &sigma; (Sigma)<br>
 		<strong>Description:</strong> The Selection operator is used to filter rows based on a specified condition.<br>
-		<strong>Example:</strong> &sigma;(condition)(relation)
+		<strong>Example:</strong> &sigma;<sub>condition</sub>(relation)
 	</dd>
 
 	<dt>&pi; (Projection)</dt>
@@ -66,14 +68,14 @@ lastmod: 2024-06-22T14:27:00+01:00
 	<dd>
 		<strong>Symbol:</strong> &rho; (Rho)<br>
 		<strong>Description:</strong> The Rename operator is used to rename the relation or attributes.<br>
-		<strong>Example:</strong> &rho;(new_name)(relation)
+		<strong>Example:</strong> &rho;<sub>new_name</sub>(relation)
 	</dd>
 
 	<dt>&ShortLeftArrow; (Assignment)</dt>
 	<dd>
 		<strong>Symbol:</strong> R &ShortLeftArrow; S (Assignment)<br>
-		<strong>Description:</strong> The Assignment operator is used to assign the result of a query to a relation variable.<br>
-		<strong>Example:</strong> R &ShortLeftArrow; &sigma;(condition)(relation)
+		<strong>Description:</strong> The Assignment operator assigns the result of a query to a relation variable.<br>
+		<strong>Example:</strong> R &ShortLeftArrow; &sigma;<sub>condition</sub>(relation)
 	</dd>
 
 	<dt>&delta; (Duplicate Elimination)</dt>
@@ -100,7 +102,7 @@ lastmod: 2024-06-22T14:27:00+01:00
 	<dt>&div; (Division)</dt>
 	<dd>
 		<strong>Symbol:</strong> &div; (Division)<br>
-		<strong>Description:</strong> The Division operator is used to find tuples in one relation that are related to all tuples in another relation.<br>
+		<strong>Description:</strong> The Division operator finds tuples in one relation that are related to all tuples in another relation.<br>
 		<strong>Example:</strong> relation1 &div; relation2
 	</dd>
 </dl>
@@ -108,12 +110,10 @@ lastmod: 2024-06-22T14:27:00+01:00
 <h2>Sources</h2>
 <p><em>"F2023 #01 - Relational Model & Algebra (CMU Intro to Database Systems)"</em> by <em>CMU Database Group</em>:</p>
 <ul>
-  <li><a href="https://youtu.be/XGMoq-D_mao?t=2731">Basic Relational Algebra Operators</a></li>
-  <li><a href="https://youtu.be/XGMoq-D_mao?t=3564">Additional Relational Algebra Operators</a></li>
+	<li><a href="https://youtu.be/XGMoq-D_mao?t=2731">Basic Relational Algebra Operators</a></li>
+	<li><a href="https://youtu.be/XGMoq-D_mao?t=3564">Additional Relational Algebra Operators</a></li>
 </ul>
 
 <h2>Addendum</h2>
 
-<p>I'm reading "E. F. Codd and Relational Theory (revised edition)" by C. J. Date, and he has a few more operators, but no symbols.</p>
-
-
+<p>I'm currently reading "E. F. Codd and Relational Theory (revised edition)" by C. J. Date, which introduces additional operators without specific symbols.</p>
