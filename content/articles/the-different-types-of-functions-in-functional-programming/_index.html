@@ -46,7 +46,7 @@ length (x:xs) = 1 + length xs</code></pre>
 			<td>
 				<pre><code class=lang-haskell>timesTwo :: Int -> Int
 timesTwo = 2 *</code></pre>
-				As you can see, the <samp>*</samp> operator only has one input – It's been partially applied! When you look at the definition, you see that timesTwo expects at least one Int, which when applied, gets added at the end of the function:
+				As you can see, the <samp>*</samp> operator only has one input – It's been partially applied!<br> When you look at the definition, you see that timesTwo expects at least one Int,<br> which when applied, gets added at the end of the function:
 				<pre><code class=lang-haskell>timesTwo 3
 = { apply timesTwo }
 2 * 3
@@ -57,7 +57,7 @@ timesTwo = 2 *</code></pre>
 		<tr>
 			<td>Applicative</td>
 			<td>Can take a variable amount of inputs, returns an output </td>
-			<td>Uses a function (<samp>pure</samp>) and an operator (<samp>&lt;*&gt;</samp>), where 'pure' lifts the function into a wrapped type/function and '&lt;*&gt;' accepts a wrapped type/function and a variable (that's also wrapped)</td>
+			<td>Uses a function (<samp>pure</samp>) and an operator (<samp>&lt;*&gt;</samp>), where 'pure' lifts the function into<br> a wrapped type/function and '&lt;*&gt;' accepts a wrapped type/function and a variable<br> (that's also wrapped)</td>
 		</tr>
 		<tr>
 			<td>Monadic</td>
@@ -68,15 +68,15 @@ maternalGrandfather s = (return s) &gt;&gt;= mother &gt;&gt;= father
 -- alternatively
 mothersPaternalGrandfather :: Sheep -&gt; Maybe Sheep
 mothersPaternalGrandfather s = do m &lt;- mother s
-															gf &lt;- father m
-															father gf
+                               gf &lt;- father m
+                               father gf
 </code></pre>
 			</td>
 		</tr>
 		<tr>
 			<td>Parser Combinator</td>
 			<td>Accepts several parsers as input and returns a new parser as its output. </td>
-			<td>From: <a http="https://en.wikipedia.org/wiki/Parser_combinator">https://en.wikipedia.org/wiki/Parser_combinator</a> In this context, a parser is a function accepting strings as input and returning some structure as output, typically a parse tree or a set of indices representing locations in the string where parsing stopped successfully.</td>
+			<td>From: <a http="https://en.wikipedia.org/wiki/Parser_combinator">https://en.wikipedia.org/wiki/Parser_combinator</a> In this context, a parser<br> is a function accepting strings as input and returning some structure as output,<br> typically a parse tree or a set of indices representing locations in the string where<br> parsing stopped successfully.</td>
 		</tr>
 	</tbody>
 </table>
