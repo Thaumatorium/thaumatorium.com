@@ -1,170 +1,140 @@
 // script.js
 
-// Set up the dimensions and margins of the diagram
-const margin = { top: 20, right: 90, bottom: 30, left: 90 },
-	width = 960 - margin.left - margin.right,
-	height = 600 - margin.top - margin.bottom;
+// Configuration variables
+const config = {
+    margin: { top: 20, right: 90, bottom: 30, left: 90 },
+    width: 960,
+    height: 600,
+    circleRadius: 10,
+    collapsedCircleColor: 'lightsteelblue',
+    expandedCircleColor: '#fff',
+    jsonDataPath: 'wow_credits.json',
+    svgSelector: '#warcraft_diagram'
+};
 
 // Append the svg object to the body of the page
-const svg = d3
-	.select("body")
-	.append("svg")
-	.attr("width", width + margin.right + margin.left)
-	.attr("height", height + margin.top + margin.bottom)
-	.append("g")
-	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+const svg = d3.select(config.svgSelector).append("svg")
+    .attr("width", config.width + config.margin.right + config.margin.left)
+    .attr("height", config.height + config.margin.top + config.margin.bottom)
+    .call(d3.zoom().on("zoom", zoomed))
+    .append("g")
+    .attr("transform", "translate(" + config.margin.left + "," + config.margin.top + ")");
 
-var i = 0,
-	duration = 750,
-	root;
-
-// Declare a tree layout and assign the size
-const treemap = d3.tree().size([height, width]);
+function zoomed(event) {
+    svg.attr("transform", event.transform);
+}
 
 // Load the external data
-d3.json("wow_credits.json").then((data) => {
-	// Assigns parent, children, height, depth
-	root = d3.hierarchy(data[0], (d) => d.credits);
-	root.x0 = height / 2;
-	root.y0 = 0;
+d3.json(config.jsonDataPath).then(data => {
+    console.log("Data loaded:", data);
 
-	// Collapse after the second level
-	root.children.forEach(collapse);
-
-	update(root);
+    // Transform the data
+    const graph = transformData(data[0]);
+    createForceDirectedGraph(graph);
+}).catch(error => {
+    console.error("Error loading data:", error);
 });
 
-function collapse(d) {
-	if (d.children) {
-		d._children = d.children;
-		d._children.forEach(collapse);
-		d.children = null;
-	}
+function transformData(data) {
+    const nodes = [];
+    const links = [];
+
+    // Create the game node
+    const gameNode = { id: data.title + ": " + data.subtitle, group: "game" };
+    nodes.push(gameNode);
+
+    // Create role and person nodes
+    const rolesMap = {};
+    data.credits.forEach(credit => {
+        if (!rolesMap[credit.role]) {
+            const roleNode = { id: credit.role, group: "role" };
+            nodes.push(roleNode);
+            links.push({ source: gameNode.id, target: roleNode.id });
+            rolesMap[credit.role] = roleNode;
+        }
+        const personNode = { id: credit.name, group: "person" };
+        nodes.push(personNode);
+        links.push({ source: rolesMap[credit.role].id, target: personNode.id });
+    });
+
+    return { nodes, links };
 }
 
-function update(source) {
-	// Assigns the x and y position for the nodes
-	const treeData = treemap(root);
+function createForceDirectedGraph(graph) {
+    const simulation = d3.forceSimulation(graph.nodes)
+        .force("link", d3.forceLink(graph.links).id(d => d.id).distance(100))
+        .force("charge", d3.forceManyBody().strength(-300))
+        .force("center", d3.forceCenter(config.width / 2, config.height / 2))
+        .force("collide", d3.forceCollide().radius(config.circleRadius * 2));
 
-	// Compute the new tree layout
-	const nodes = treeData.descendants(),
-		links = treeData.descendants().slice(1);
+    const link = svg.append("g")
+        .attr("class", "links")
+        .selectAll("line")
+        .data(graph.links)
+        .enter().append("line")
+        .attr("stroke-width", 1.5)
+        .attr("stroke", "#999");
 
-	// Normalize for fixed-depth
-	nodes.forEach((d) => (d.y = d.depth * 180));
+    const node = svg.append("g")
+        .attr("class", "nodes")
+        .selectAll("g")
+        .data(graph.nodes)
+        .enter().append("g")
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
 
-	// Update the nodes
-	const node = svg.selectAll("g.node").data(nodes, (d) => d.id || (d.id = ++i));
+    node.append("circle")
+        .attr("r", config.circleRadius)
+        .attr("fill", d => d.group === "game" ? config.collapsedCircleColor : (d.group === "role" ? config.expandedCircleColor : "#fff"))
+        .attr("stroke", "#000")
+        .attr("stroke-width", 1.5);
 
-	// Enter any new modes at the parent's previous position
-	const nodeEnter = node
-		.enter()
-		.append("g")
-		.attr("class", "node")
-		.attr("transform", (d) => "translate(" + source.y0 + "," + source.x0 + ")")
-		.on("click", click);
+    node.append("text")
+        .attr("dy", 3)
+        .attr("x", d => d.group === "person" ? 12 : 6)
+        .style("text-anchor", "start")
+        .text(d => d.id);
 
-	// Add Circle for the nodes
-	nodeEnter
-		.append("circle")
-		.attr("class", "node")
-		.attr("r", 1e-6)
-		.style("fill", (d) => (d._children ? "lightsteelblue" : "#fff"));
+    simulation.on("tick", () => {
+        link
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
 
-	// Add labels for the nodes
-	nodeEnter
-		.append("text")
-		.attr("dy", ".35em")
-		.attr("x", (d) => (d.children || d._children ? -13 : 13))
-		.attr("text-anchor", (d) => (d.children || d._children ? "end" : "start"))
-		.text((d) => (d.data.role ? d.data.role + ": " + d.data.name : d.data.title || d.data.subtitle));
+        node
+            .attr("transform", d => `translate(${d.x},${d.y})`);
+    });
 
-	// UPDATE
-	const nodeUpdate = nodeEnter.merge(node);
+    function dragstarted(event, d) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+    }
 
-	// Transition to the proper position for the node
-	nodeUpdate
-		.transition()
-		.duration(duration)
-		.attr("transform", (d) => "translate(" + d.y + "," + d.x + ")");
+    function dragged(event, d) {
+        d.fx = event.x;
+        d.fy = event.y;
+    }
 
-	// Update the node attributes and style
-	nodeUpdate
-		.select("circle.node")
-		.attr("r", 10)
-		.style("fill", (d) => (d._children ? "lightsteelblue" : "#fff"))
-		.attr("cursor", "pointer");
-
-	// Remove any exiting nodes
-	const nodeExit = node
-		.exit()
-		.transition()
-		.duration(duration)
-		.attr("transform", (d) => "translate(" + source.y + "," + source.x + ")")
-		.remove();
-
-	// On exit reduce the node circles size to 0
-	nodeExit.select("circle").attr("r", 1e-6);
-
-	// On exit reduce the opacity of text labels
-	nodeExit.select("text").style("fill-opacity", 1e-6);
-
-	// Update the links
-	const link = svg.selectAll("path.link").data(links, (d) => d.id);
-
-	// Enter any new links at the parent's previous position
-	const linkEnter = link
-		.enter()
-		.insert("path", "g")
-		.attr("class", "link")
-		.attr("d", (d) => {
-			const o = { x: source.x0, y: source.y0 };
-			return diagonal(o, o);
-		});
-
-	// UPDATE
-	const linkUpdate = linkEnter.merge(link);
-
-	// Transition back to the parent element position
-	linkUpdate
-		.transition()
-		.duration(duration)
-		.attr("d", (d) => diagonal(d, d.parent));
-
-	// Remove any exiting links
-	const linkExit = link
-		.exit()
-		.transition()
-		.duration(duration)
-		.attr("d", (d) => {
-			const o = { x: source.x, y: source.y };
-			return diagonal(o, o);
-		})
-		.remove();
-
-	// Store the old positions for transition
-	nodes.forEach((d) => {
-		d.x0 = d.x;
-		d.y0 = d.y;
-	});
-
-	// Creates a curved (diagonal) path from parent to the child nodes
-	function diagonal(s, d) {
-		return `M ${s.y} ${s.x}
-	  C ${(s.y + d.y) / 2} ${s.x},
-		${(s.y + d.y) / 2} ${d.x},
-		${d.y} ${d.x}`;
-	}
-
-	// Toggle children on click
-	function click(event, d) {
-		if (d.children) {
-			d._children = d.children;
-			d.children = null;
-		} else {
-			d.children = d._children;
-			d._children = null;
-		}
-		update(d);
-	}
+    function dragended(event, d) {
+        if (!event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+    }
 }
+
+// Zoom in and out controls
+d3.select("#zoom_in").on("click", () => {
+    svg.transition().call(d3.zoom().scaleBy, 1.2);
+});
+
+d3.select("#zoom_out").on("click", () => {
+    svg.transition().call(d3.zoom().scaleBy, 0.8);
+});
+
+d3.select("#reset_zoom").on("click", () => {
+    svg.transition().call(d3.zoom().transform, d3.zoomIdentity);
+});
