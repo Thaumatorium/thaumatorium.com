@@ -19,7 +19,8 @@ lastmod: 2021-11-08T21:37:49+01:00
 	const FORCE_MANYBODY_STRENGTH = -0.1;
 	const FORCE_COLLIDE = 1;
 	const FORCE_COLLIDE_STRENGTH = 0.01;
-	const NODE_SIZE = 2;
+	const NODE_SIZE = 5;  // Default node size
+	const GAME_NODE_SIZE = 20;  // Larger size for game nodes
 	let clean_data;
 	const game1Elem = d3.select("#game1selection");
 	const game2Elem = d3.select("#game2selection");
@@ -62,8 +63,8 @@ lastmod: 2021-11-08T21:37:49+01:00
 		};
 
 		// Add the selected games as a node (to point to)
-		nodes.push({ "id": game1.full_title, "group": "game" });
-		nodes.push({ "id": game2.full_title, "group": "game" });
+		nodes.push({ "id": game1.full_title, "group": "game", "size": GAME_NODE_SIZE });
+		nodes.push({ "id": game2.full_title, "group": "game", "size": GAME_NODE_SIZE });
 
 		// Now add all the persons
 		game1.credits.forEach(person_filtered_node_push);
@@ -83,7 +84,6 @@ lastmod: 2021-11-08T21:37:49+01:00
 		const nodeStroke = "#fff";
 		const nodeStrokeWidth = 1.5;
 		const nodeStrokeOpacity = 1;
-		const nodeRadius = 5;
 		const linkStroke = "#999";
 		const linkStrokeOpacity = 0.6;
 		const linkStrokeWidth = 1.5;
@@ -96,6 +96,7 @@ lastmod: 2021-11-08T21:37:49+01:00
 		const intern = (value) => value !== null && typeof value === "object" ? value.valueOf() : value;
 		const nodeTitle = (_, i) => `${nodes[i].id}, ${nodes[i].group}`;
 		const nodeGroup = d => d.group;
+		const nodeSize = d => d.size || NODE_SIZE;
 
 		let nodeGroups;
 		const N = d3.map(nodes, nodeId).map(intern);
@@ -104,21 +105,21 @@ lastmod: 2021-11-08T21:37:49+01:00
 
 		const T = nodeTitle == null ? null : d3.map(nodes, nodeTitle);
 		const G = nodeGroup == null ? null : d3.map(nodes, nodeGroup).map(intern);
-		const W = typeof linkStrokeWidth !== "function" ? null : d3.map(links, linkStrokeWidth);
 
-		nodes = d3.map(nodes, (_, i) => ({ id: N[i] }));
+		nodes = d3.map(nodes, (_, i) => ({ id: N[i], group: G[i], size: nodeSize(nodes[i]) }));
 		links = d3.map(links, (_, i) => ({ source: LS[i], target: LT[i] }));
 
 		if (G && nodeGroups === undefined) nodeGroups = d3.sort(G);
 
 		const color = nodeGroup == null ? null : d3.scaleOrdinal(nodeGroups, colors);
 
-		const forceNode = d3.forceManyBody();
+		const forceNode = d3.forceManyBody().strength(FORCE_MANYBODY_STRENGTH);
 		const forceLink = d3.forceLink(links).id(({ index: i }) => N[i]);
 		const simulation = d3.forceSimulation(nodes)
 			.force("link", forceLink)
 			.force("charge", forceNode)
 			.force("center", d3.forceCenter())
+			.force("collision", d3.forceCollide().radius(d => d.size))
 			.on("tick", ticked);
 
 		const svg = d3.select("#warcraft_diagram")
@@ -145,10 +146,9 @@ lastmod: 2021-11-08T21:37:49+01:00
 			.selectAll("circle")
 			.data(nodes)
 			.join("circle")
-			.attr("r", nodeRadius)
+			.attr("r", d => d.size)
 			.call(drag(simulation));
 
-		if (W) link.attr("stroke-width", ({ index: i }) => W[i]);
 		if (G) node.attr("fill", ({ index: i }) => color(G[i]));
 		if (T) node.append("title").text(({ index: i }) => T[i]);
 
@@ -186,6 +186,33 @@ lastmod: 2021-11-08T21:37:49+01:00
 				.on("drag", dragged)
 				.on("end", dragended);
 		}
+
+		// Add a separate force-directed layout for non-connected nodes
+		const nonConnectedNodes = nodes.filter(node => !links.some(link => link.source === node.id || link.target === node.id));
+		const nonConnectedSimulation = d3.forceSimulation(nonConnectedNodes)
+			.force("charge", d3.forceManyBody().strength(-50))
+			.force("center", d3.forceCenter(width / 2, height / 2))
+			.force("collision", d3.forceCollide().radius(d => d.size))
+			.on("tick", nonConnectedTicked);
+
+		//const nonConnectedGroup = svg.append("g")
+		//	.attr("class", "non-connected")
+		//	.selectAll("circle")
+		//	.data(nonConnectedNodes)
+		//	.enter()
+		//	.append("circle")
+		//	.attr("r", d => d.size)
+		//	.attr("fill", "grey")
+		//	.attr("stroke", nodeStroke)
+		//	.attr("stroke-opacity", nodeStrokeOpacity)
+		//	.attr("stroke-width", nodeStrokeWidth)
+		//	.call(drag(nonConnectedSimulation));
+//
+		//function nonConnectedTicked() {
+		//	nonConnectedGroup
+		//		.attr("cx", d => d.x)
+		//		.attr("cy", d => d.y);
+		//}
 
 		return Object.assign(svg.node(), { scales: { color } });
 	};
