@@ -51,33 +51,40 @@ lastmod: 2021-11-08T21:37:49+01:00
 		// Remove existing SVG if it exists
 		d3.select("#warcraft_diagram").select("svg").remove();
 
-		// Create clean nodes
+		// Create clean nodes and links
 		let nodes = [];
-		const person_filtered_node_push = new_person => {
-			if (!nodes.filter(existing_person => existing_person.name === new_person.name && existing_person.role === new_person.role).length
-				&& !game1.non_employee_roles.includes(new_person.group)
-				&& !game2.non_employee_roles.includes(new_person.group)
-			) {
-				nodes.push({ "id": new_person.name, "group": new_person.role });
-			}
-		};
-
-		// Add the selected games as a node (to point to)
-		nodes.push({ "id": game1.full_title, "group": "game", "size": GAME_NODE_SIZE });
-		nodes.push({ "id": game2.full_title, "group": "game", "size": GAME_NODE_SIZE });
-
-		// Now add all the persons
-		game1.credits.forEach(person_filtered_node_push);
-		game2.credits.forEach(person_filtered_node_push);
-
 		let links = [];
-		const person_filtered_link_push = gameselection => {
-			return new_person => {
-				links.push({ "source": new_person.name, "target": gameselection });
+		let personNodes = new Map();
+
+		// Add the selected games as nodes (to point to)
+		nodes.push({ "id": game1.full_title, "group": "game", "size": GAME_NODE_SIZE });
+		if (game1.full_title !== game2.full_title) {
+			nodes.push({ "id": game2.full_title, "group": "game", "size": GAME_NODE_SIZE });
+		}
+
+		const addPersonNode = (person) => {
+			if (!personNodes.has(person.name)) {
+				personNodes.set(person.name, { "id": person.name, "group": "person", "roles": new Set([person.role]) });
+			} else {
+				personNodes.get(person.name).roles.add(person.role);
 			}
 		};
-		game1.credits.forEach(person_filtered_link_push(game1selection.value));
-		game2.credits.forEach(person_filtered_link_push(game2selection.value));
+
+		const addPersonLinks = (person, gameTitle) => {
+			links.push({ "source": person.name, "target": gameTitle, "role": person.role });
+		};
+
+		// Process credits for both games
+		game1.credits.forEach(person => {
+			addPersonNode(person);
+			addPersonLinks(person, game1.full_title);
+		});
+		game2.credits.forEach(person => {
+			addPersonNode(person);
+			addPersonLinks(person, game2.full_title);
+		});
+
+		nodes = nodes.concat(Array.from(personNodes.values()));
 
 		const width = 1920 * 2;
 		const height = 1080 * 2;
@@ -107,7 +114,7 @@ lastmod: 2021-11-08T21:37:49+01:00
 		const G = nodeGroup == null ? null : d3.map(nodes, nodeGroup).map(intern);
 
 		nodes = d3.map(nodes, (_, i) => ({ id: N[i], group: G[i], size: nodeSize(nodes[i]) }));
-		links = d3.map(links, (_, i) => ({ source: LS[i], target: LT[i] }));
+		links = d3.map(links, (_, i) => ({ source: LS[i], target: LT[i], role: links[i].role }));
 
 		if (G && nodeGroups === undefined) nodeGroups = d3.sort(G);
 
@@ -194,25 +201,6 @@ lastmod: 2021-11-08T21:37:49+01:00
 			.force("center", d3.forceCenter(width / 2, height / 2))
 			.force("collision", d3.forceCollide().radius(d => d.size))
 			.on("tick", nonConnectedTicked);
-
-		//const nonConnectedGroup = svg.append("g")
-		//	.attr("class", "non-connected")
-		//	.selectAll("circle")
-		//	.data(nonConnectedNodes)
-		//	.enter()
-		//	.append("circle")
-		//	.attr("r", d => d.size)
-		//	.attr("fill", "grey")
-		//	.attr("stroke", nodeStroke)
-		//	.attr("stroke-opacity", nodeStrokeOpacity)
-		//	.attr("stroke-width", nodeStrokeWidth)
-		//	.call(drag(nonConnectedSimulation));
-//
-		//function nonConnectedTicked() {
-		//	nonConnectedGroup
-		//		.attr("cx", d => d.x)
-		//		.attr("cy", d => d.y);
-		//}
 
 		return Object.assign(svg.node(), { scales: { color } });
 	};
