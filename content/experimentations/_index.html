@@ -194,14 +194,6 @@ lastmod: 2021-11-08T21:37:49+01:00
 				.on("end", dragended);
 		}
 
-		// Add a separate force-directed layout for non-connected nodes
-		const nonConnectedNodes = nodes.filter(node => !links.some(link => link.source === node.id || link.target === node.id));
-		const nonConnectedSimulation = d3.forceSimulation(nonConnectedNodes)
-			.force("charge", d3.forceManyBody().strength(-50))
-			.force("center", d3.forceCenter(width / 2, height / 2))
-			.force("collision", d3.forceCollide().radius(d => d.size))
-			.on("tick", nonConnectedTicked);
-
 		return Object.assign(svg.node(), { scales: { color } });
 	};
 
