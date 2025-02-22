@@ -1,0 +1,836 @@
+Game Design
+	Blizzard Entertainment
+
+Executive Producer
+	Mike Morhaime
+
+Team Lead
+	Frank Pearce
+
+Art Director
+	Samwise Didier
+
+Lead Designer
+	Rob Pardo
+
+Lead Technical Artist
+	Rob McNaughton
+
+Producer
+	Chris Sigaty
+
+Technology Lead
+	Jay Patel
+
+Programming
+	Andy Bond
+	Carl Chimes
+	Jeff Chow
+	Alan Dabiri
+	Bob Fitch
+	Monte Krol
+	Dave Lawrence
+	Graham Madarasz
+	Collin Murray
+	Jay Patel
+	Frank Pearce
+	Andrea Pessino
+	Brett Wood
+
+Battle.net Programming
+	James Anhalt
+	Robert Bridenbecker
+	Brian Fitzgerald
+	Tony Tribelli
+	Matthew Versluys
+
+Additional Programming
+	Robert Barris
+	John Cash
+	Brian Fitzgerald
+	Mike Heiberg
+	Sam Lantinga
+	Mike Morhaime
+	John Stiles
+	Tim Truesdale
+	Matthew Versluys
+	Jeremy Wood
+
+Macintosh Programming
+	John Stiles
+
+Additional Macintosh Programming
+	Robert Barris
+	John Mikros
+	Brett Wood
+
+Artists
+	Dave Berggren
+	Samwise Didier
+	Allen Dilling
+	Trevor Jacobs
+	Roman Kenney
+	Rob McNaughton
+	Micky Neilson
+	Matt Oursbourn
+	Ted Park
+	Stu Rose
+	Ru Weerasuriya
+
+Additional Art
+	Kevin Beardslee
+	Adam Byrne
+	Brandon Idol
+	Kyle Harrison
+	Eric Henze
+	Brian Hsu
+	Solomon Lee
+	Justin Thavirat
+
+Senior Designer
+	Allen Adham
+
+Writer & Creative Director
+	Chris Metzen
+
+Campaign Design & Layout
+	Tim Campbell
+	David Fried
+	Dave Hale
+	Michael Heiberg
+	Scott Mercer
+	Matt Morris
+	Rob Pardo
+	Dean Shipley
+
+Story Concept
+	Samwise Didier
+	Chris Metzen
+	Rob Pardo
+
+Script & Text Editing
+	Micky Neilson
+	Susan Sams
+	Ru Weerasuriya
+
+Associate Producers
+	Frank Gilson
+	Chris Millar
+
+Cinematic Director
+	Nicholas S. Carpenter
+
+Cinematic Executive Producer
+	Matt Samia
+
+Cinematic Producer
+	Scott Abeyta
+
+Cinematic Editor
+	Joeyray Hall
+
+Cinematic Script Writers
+	Nicholas S. Carpenter
+	Chris Metzen
+
+Cinematic Artists
+	Scott Abeyta
+	John Burnett
+	Nicholas S. Carpenter
+	John Chalfant
+	Jeff Chamberlain
+	Aaron Chan
+	Ben Dai
+	Joe Frayne
+	Jay Hathaway
+	Harley D. Huggins II
+	Jared Keller
+	Jon Lanz
+	James McCoy
+	Matthew Mead
+	Dennis Price
+	Matt Samia
+	Mark Skelton
+	Patrick Thomas
+	Seth Thompson
+	Ru Weerasuriya
+	Kenson Yu
+
+Cinematic Technical Artists & Tools Development
+	Scott Abeyta
+	John Burnett
+	Jeff Chamberlain
+	Aaron Chan
+	Joe Frayne
+	Steeg Haskell
+	Jared Keller
+	Jon Lanz
+	Alen Lapidis
+
+Additional Cinematic Work
+	Dan Burke
+	Paul Hormis
+	Brit Snyder
+	Tharyn Valavanis
+
+Audio Director
+	Glenn Stafford
+
+Music
+	Tracy W. Bush
+	Derek Duke
+	Jason Hayes
+	Glenn Stafford
+
+Sound Design
+	Tracy W. Bush
+	Tami Donner Harrison
+	Derek Duke
+	Brian Farr
+	Glenn Stafford
+
+Voice Direction & Internal Casting
+	Tracy W. Bush
+	Nicholas S. Carpenter
+	Tami Donner Harrison
+	Jason Hayes
+	Chris Metzen
+	Micky Neilson
+
+Voice Editing
+	Tami Donner Harrison
+
+Outside Voice Casting
+	Donald Paul Pemrick
+	Dean E. Fronk
+
+Outside Voice Casting Assistants
+	Amanda Fenster
+	Greg Sacks
+
+Voice Acting
+	Michael Barken
+	Richard Barnes
+	Michael Bradberry
+	Fredrick Bloggs
+	Tracy W. Bush
+	Piera Coppola
+	Jackson Daniels
+	Samwise Didier
+	Tami Donner Harrison
+	Derek Duke
+	Alex Dumas
+	Richard George
+	Carrie Gordon Lowrey
+	Michael McConnohie
+
+Voice Acting
+	Michael Gough
+	Justin Gross
+	Tiffany Hayes
+	Thomas Jung
+	Matthew King
+	Monte Krol
+	Abe Lasser
+	Rob McNaughton
+	Chris Metzen
+	Lani Minella
+	Calab Moody
+	Bob Papenbrook
+	Gary Platner
+	Bill Roper
+	Stu Rose
+	Glenn Stafford
+	Kai Vilhelmsen
+	Ted Whitney
+
+Additional Game Review
+	Allen Adham
+	Kevin Beardslee
+	Adam Byrne
+	Zach Callanan
+	Jeff Chamberlain
+	Samwise Didier
+	Eric Dodds
+	Bob Fitch
+	Geoff Fraizer
+	Eric Henze
+	Trevor Jacobs
+	Solomon Lee
+	Chris Millar
+	Mike Morhaime
+	Jamie Neveaux
+	Ted Park
+	Chris Sigaty
+	Ian Welke
+	Blaine Whittle
+	Beau Yarbrough
+
+Blizzard North Game Review
+	Chris Arretche
+	Dave Brevik
+	Jeff Gates
+	Matt Householder
+	Steve Librande
+	Bill Roper
+	Mike Scandizzo
+	Erich Schaefer
+	Max Schaefer
+	Tyler Thompson
+	Ken Williams
+
+Multiplayer Maps
+	Andrew Brownell
+	Zach Callanan
+	Tim Campbell
+	Jeremy Cargilo
+	Eric Dodds
+	Dave Fried
+	Ron Frybarger
+	Dave Hale
+	Edward Hanes
+	Dana Jan
+	Derek Johnstone
+	Mike Kramer
+	Nicholas Lawson
+	Jonathan Mankin
+	Scott Mercer
+	Kaeo Milker
+	Matt Morris
+	Michael Nguyen
+	Nicholas Pisani
+	Dean Shipley
+	Evelyn Smith
+	John Yoo
+
+Manual Development and Editing
+	Eli Catalan
+	Elliott Chin
+	Melissa Edwards
+	Dave Fried
+	Jason Hutchins
+	Scott Mercer
+	Chris Metzen
+	Susan Sams
+	Mikey Schaefer
+	Evelyn Smith
+	Peter Underwood
+
+Manual Artwork
+	Samwise Didier
+	Chris Metzen
+	Ted Park
+	Ru Weerasuriya
+
+Quality Assurance Management
+	Christopher Manley
+	Mark Moser
+	Ian Welke
+
+QA Lead Tester
+	Ed Kang
+
+QA Assistant Lead Tester
+	Kelly Chun
+
+QA Technical Engineer
+	Evelyn Smith
+
+QA Team Leads
+	Zach Allen
+	Michael Backus
+	Ilya Berelson
+	Zach Callanan
+	James Chadwick
+	Michael Chu
+	Les Douglas
+	Robert Foote
+	Ron Frybarger
+	Gary Gibson
+	Manny Gonzales
+	Ray Laubach
+	Dean Lee
+	Matt Lee
+	Brian Love
+	Jonathan Mankin
+	Sean McCrea
+	Michael Murphy
+	Justin Parker
+	Michael Schaefer
+	Emilio Segura
+	Dean Shimonishi
+	Stan Wang
+
+Game Testers
+	Aaron Adams
+	Michael Barken
+	Andrew Brownell
+	Edward Bui
+	Jeremy Cargilo
+	Shane Cargilo
+	Charles Carter
+	Bryan Chen
+	Jack Chen
+	Michelle Elbert
+	Jason Fader
+	Christopher Fisher
+	Arthur Fong
+	Derek Johnstone
+	Dennis Lam
+	Jonas Laster
+
+Game Testers
+	Nicholas Lawson
+	Allen Lin
+	John Meyers
+	Kaeo Milker
+	Brian Mitchell
+	Danny Nguyen
+	Nick Pisani
+	William Roseman
+	Lloyd Tullues
+	Brian Urquhart
+	John Wick
+	Stephen Wong
+	John Yoo
+
+Additional Testers
+	Jose Aello
+	Carlo Arellano
+	Ted Barken
+	Bo Bell
+	Jesse Blomberg
+	Jeanette Clausen
+	David Dooley
+	Mark Downie
+	Roger Eberhart
+	Tod Fay
+	Carlos Guerrero
+	Scott Hartin
+	Josh Hillborn
+	Kevin Jordan
+	Jeffrey Kaplan
+	Aaron Keller
+	Mark Kern
+	Joshua Kurtz
+
+Additional Testers
+	Cameron Lamprecht
+	Twain Martin
+	Jeff Mclean
+	Matt Mocarski
+	Dan Moore
+	Bill Petras
+	David Ray
+	Joe Rumsey
+	Matt Sanders
+	Samuel Schrimsher
+	Jamin Shoulet
+	John Staats
+	Eric Strauss
+	Cosmo Taormina
+
+Technical Support Management
+	Thor Biafore
+	John Schwartz
+
+Online Support
+	Timothy Fox
+	Edward Hanes
+	Chad Jones
+	Mike Kramer
+	Alen Lapidis
+	David Nguyen
+	Michael Nguyen
+	Collin Smith
+	Martin Tande
+	Kenny Zigler
+
+Technical Support
+	Geoff Goodman
+	Norman Harms
+	John Hsieh
+	Kris Nedrebo
+	Christopher Roberts
+	Richard Sanford
+	Adam Slack
+	Jason Stilwell
+
+Support File Development & Editing
+	Michael Backus
+	Michael Chu
+	Edward Hanes
+	Edward Kang
+	Mike Kramer
+	Ray Laubach
+	Dean Lee
+	Jonathan Mankin
+	Collin Smith
+	Evelyn Smith
+	John Stiles
+
+Technical Support Tools
+	David Nguyen
+
+Localization & Macintosh Producer
+	Jason Hutchins
+
+Globalization Producer
+	Flavie Gufflet
+
+Localization Project Manager
+	Barry Kehoe
+
+Localization Project Leads
+	Caitriona Finlay
+	David Hickey
+	Padraig McCaul
+
+Localization Lead Engineer
+	Damien Monaghan
+
+Localization Engineers
+	Attila Edelenyi
+	Jason King
+	Monte Krol
+	Brendan O' Mahony
+	Stuart Nolan
+
+Localization QA Leads
+	Jesus Baquedano Ferrer
+	David Hickey
+
+Localization QA
+	Francis "Frux" Courchinoux
+	Nelly Dietrich
+	Andrew Hagger
+	Franchesco Musso
+	J.C. Pastor "pAsh"
+
+International Web Teams
+	Sebastien Gernault
+	Steve Martin
+	Georges Martins
+	Stefanie Pranz
+	Myriam Santoso
+
+Business Development
+	Paul W. Sams
+
+Additional Business Development & Operations
+	Elaine Di Iorio
+	Melissa Edwards
+	Isaac Matarasso
+
+Battle.net Producer
+	John Lagrave
+
+Battle.net Network Engineers
+	Adrian Luff
+	Hung Nguyen
+
+Information Technologies
+	Mike Hale
+	Kris Mackey
+	Kirk Mahony
+	Isaac Matarasso
+	Hung Nguyen
+	Jeremy Smith
+	Robert Van Dusen
+
+Office Administration
+	Christina Cade
+	Jamie Neveaux
+	Lisa Schoner
+
+Financial Management
+	David Gee
+	Paul W. Sams
+
+Public Relations
+	Lisa Bucek
+	Susan Sams
+	Gil Shif
+	Beau Yarbrough
+
+Web Team
+	Elaine Di Iorio
+	Geoff Fraizer
+	Mike Hein
+	Ted Park
+	Blaine Whittle
+
+Legal Counsel
+	Kevin Crook
+	Will Glenn (in loving memory)
+	Bob Marafioti
+	Rob Rigole
+	Eric Roeder
+	Patrick Sweeney
+
+Global Brand Management
+	Neal Hubbard
+
+Marketing & Creative Services
+	Kathy Carter
+	Jessica Drossin
+	Elisabeth Miller
+	Steven Parker
+	Hayley Sumner
+	Bill Watt
+	Stewart Weiss
+
+Box Cover Artwork
+	Justin Thavirat
+
+North American Sales
+	Philip O'Neil
+	Bruce Slywka
+
+International Sales, Marketing, & PR
+	Chris Ansell
+	Michael Fuller
+	Hubert Larenaudie
+	Cyril Marchal
+	Cedric Marechal
+	Christophe Ramboz
+	Stephane Vallet
+	Mark Warburton
+	Kim Watt
+
+Direct Sales
+	Rob Beatie
+	Kim Bridenbecker
+
+Manufacturing
+	Tom Bryan
+	Jaime Chavez
+	Bob Wharton
+
+Recruiting
+	Pat Nagle
+	Derek Simmons
+	Jack Sterling
+	Bernie Wilkins
+
+Global Launch Team
+	Lisa Bucek
+	Gerry Carty
+	Melissa Edwards
+	Lang Fredrickson
+	Michael Fuller
+	Flavie Gufflet
+	Neal Hubbard
+	Jason Hutchins
+	Hubert Larenaudie
+	Cyril Marchal
+	Cedric Marechal
+	Mike Morhaime
+	Philip O'Neil
+	Christophe Ramboz
+	Paul W. Sams
+	Chris Sigaty
+	Bruce Slywka
+	Luc Vanhal
+	Steve Voorma
+	Mark Warburton
+	Bob Wharton
+	Edward Zinser
+
+Battle.net Hosting Partners
+	AT&T
+	DACOM/KIDC
+	Telia
+
+Dunsel Specialist
+	Shane Dabiri
+
+Thanks To
+	Jean-Marie Messier
+	Eric Licoys
+	Agnes Touraine
+	Ken Cron
+	Edward Zinser
+	Jay Meschel
+	Sandy Gunn
+	Cameron Buschardt
+	The Warcraft III Beta Testers
+	Adrian Bourke
+	John Funnell
+	Darrius Thompson
+	Bart Farkas
+	Wade Farrell
+
+Thanks To
+	Mike O'Brien
+	Jeff Strain
+	Pat Wyatt
+	Paula Duffy
+	Danny Kearns
+	Todd Coyle
+	Ralph Becker
+	Mark Kern
+	Ian & Rosemary Gilson
+	Celeste Aviva
+	Ronald J. Millar Sr.
+	Susan Krol
+	Garrett & Tori Fitch
+	House Madarasz
+	Kenneth and Veronica Pessino
+
+Thanks To
+	The Sigaty Family
+	Jamie Neveaux
+	Lisa Pearce
+	Raf Cecco
+	Xabier Abaroa
+	The Bond Family
+	Diana Smallwood
+	Pamina Elgueta
+	Tiffany Neilson
+	Carin & Madisyn Jacobs
+	Amy Dilling
+	Christy Goddess
+	Tracy Park
+	Tracey "Minxey" McNaughton
+
+Thanks To
+	Alicia Campbell
+	Maye McGowan-Hale
+	Jennifer Deem
+	Sydney Pardo
+	The Heiberg Family
+	Nikita Mikros
+	Petros Melissakis
+	William Hutchins
+	Jon Ritman
+	Walter Takata
+	Pamela & Traver Campbell
+	Hector Fried
+	Ghost Platoon (Black Sheep)
+	Strada
+	Donik the Irritable Narwhal
+
+Thanks To
+	E:OS
+	Rush
+	Legacy of Steel
+	ME
+	Shaq
+	Inner Loop
+	Tenacious D
+	John Carpenter
+	Ripper Owens
+	Shmoo
+	The Parasite
+	Ferrari
+	Lamborghini
+	Porsche
+	Mucho Hot Chicken
+	Bruce Lee
+	Samurai Shodown II
+	Thursday Karaoke Nights
+	Ray the Soda Guy
+	Edwin Braun
+
+Thanks To
+	John and Gai Burnett
+	Amanda Sabo
+	Daisy Campbell
+	Lisa Carden
+	Jo Anne, David, and Jason Carpenter
+	Brad Chamberlain
+	Laura Clifton
+	Stacy Frayne
+	The Griffith Clan
+	Jason and Damian Hall
+	The Henderson Clan
+	Melissa "Chagirl" Huggins
+	Peter Jackson
+	Barbara and Tilden Keller
+	Debbie Lanz
+	Henry Luvert
+	The McCoy Clan
+
+Thanks To
+	Shelly "Saucy" Mead
+	Mummsy Mead
+	Judah Mehler
+	Sheryl Narahara
+	Don and Becky Price
+	Amma and Thaththa
+	Saranga, Stephanie, Ryan, David and Christopher Samia
+	Elizabeth and Jessica Skelton
+	Tara and Jacob Thomas
+	Randall and Debra Thompson
+	Sin Li, Wai Kien, and Kerwin Yu
+
+Thanks To
+	Susan, Ethan, Quinn and Aaron Stafford
+	Kyle Harrison
+	Tracy Farr
+	Tiffany Hayes
+	Alison and Madeline Jane Bush
+	Susan, Matthew, and Michael Sams
+	Megan Wooley
+	Steve and Vicky Oglesby
+	Jim and Kay Sams
+
+Thanks To
+	The Schoenfeld Clan
+	Amos, David and Cameron Di Iorio
+	The Oh Family
+	John and Kathy Hein
+	Amy Attal
+	The Cade Family
+	Skyler and Ethan Kelley
+	Tracy and Eric Getz
+	Lynn Neveaux
+	Holly & Riley
+	Deana Segal
+	Dominos
+	Mike Boyko
+	Ceredwynn
+	Mooguel
+	Kellin
+	Aggranor
+	Aurrius
+	Jarvis
+
+Thanks To
+	Nicole Numbers
+	Crystal Chweh
+	Joe "Vargen" Biafore
+	Ed Silveira
+	Nathan Lutsock
+	Sarah Le
+	Anja Moser
+	Jamie Wood
+	Joseph Holley
+	Margie Bridegam
+	Taylor Scherer
+	LA Lakers
+
+Special Thanks
+	Blizzard North
+	Luc Vanhal
+	Bob & Jan Davidson
+
+We want to extend a very special thanks to all our families. Your never-ending patience and understanding made it all possible. We love you!
+
+(c) 2002 Blizzard Entertainment. All rights reserved.
+Reign of Chaos is a trademark and Battle.net, Blizzard Entertainment, Diablo, StarCraft and Warcraft are trademarks or registered trademarks of Blizzard Entertainment in the U.S. and/or other countries.
+
+Windows is a registered trademark of Microsoft Corporation. Pentium is a registered trademark of Intel Corporation. Macintosh is a registered trademark of Apple Computer, Inc. Dolby and the double-D symbol are trademarks of Dolby Laboratory.
+
+Uses the Thorndale font. Thorndale is a trademark of Agfa Monotype Corporation. DFK Gothic, DF Li Hei, DF Maru Gothic, DF Song, and Ang Thong are trademarks or registered trademarks of Bitstream, Inc. or DynaLab, Inc. All other trademarks are the property of their respective owners.
+
+Uses Miles Sound System. Copyright (c) 1991-2002 by RAD Game Tools, Inc. All rights reserved.
+
+Uses high-quality DivX video. Copyright (c) 1999-2002 by DivXNetworks, Inc. DivX is a trademark of DivXNetworks, Inc. All rights reserved.
+
+Uses the FreeType 2.0 library. The FreeType Project is copyrighted (c) 1996-2002 by David Turner, Robert Wilhelm, and Werner Lemberg. All rights reserved.
+
+Uses 'zlib' general-purpose compression library. Copyright (c) 1995-2002 Jean-loup Gailly and Mark Adler. All rights reserved.
+
+No vertices were harmed during the making of this game.

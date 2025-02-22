@@ -1,0 +1,272 @@
+Game Design
+	Blizzard Entertainment
+
+Macintosh version
+	Future Point
+
+Producers
+	Michael Morhaime
+	Samwise Didier
+	Patrick Wyatt
+
+Executive Producer
+	Allen Adham
+
+Senior Designer
+	Ron Millar
+
+Story & Design
+	Chris Metzen
+
+Programming
+	Michael Morhaime
+	Patrick Wyatt
+	Jesse McReynolds
+	Frank Pearce
+	Bob Fitch
+
+Programming (Mac)
+	Brian Fitzgerald (Future Point)
+	David Lawrence (Future Point)
+	Ron Meyer (Future Point)
+
+Scenario Editor Programming
+	Tim Thein
+
+Scenario Editor Programming (Mac)
+	Tim Thein
+
+Installer Programming
+	Andy Weir
+
+Autoplay Programming
+	Mike O'Brien
+
+3D Artwork
+	Duane Stinnett
+	Justin "Han" Thavirat
+	Trevor Jacobs
+	Joeyray Hall
+	Matt Samia
+	Nick Carpenter
+	Micky Neilson
+	Brian Sousa
+	Dave Berggren
+	Roman Kenney
+
+Artwork
+	Samwise Didier
+	Dave Berggren
+	Nick Carpenter
+	Roman Kenney
+	Micky Neilson
+	Brian Sousa
+	Chris Metzen
+	Ron Millar
+	Justin "Han" Thavirat
+	Stu Rose
+
+Audio Producer
+	Glenn Stafford
+
+Music Composition
+	Glenn Stafford
+
+Sound Effects Design
+	Glenn Stafford
+
+Narration
+	Bill Roper
+
+Voices
+	Bill Roper
+	Glenn Stafford
+	Chris Metzen
+	Ron Millar
+	Tymothi Loving
+	Stu Rose
+
+Scenario Design
+	Ron Millar
+	Chris Metzen
+
+Scenario Layout
+	Eric Flannum
+	Ron Millar
+
+Dunsel
+	James Phinney
+
+Assistant to Mr. Phinney
+	Alan "Cheated by Fate" Dabiri
+
+Manual Design and Layout
+	Robert Djordjevich
+	Bill Roper
+	Chris Metzen
+	Ron Millar
+
+Manual Artwork
+	Chris Metzen
+	Samwise Didier
+	Eric Flannum
+	Roman Kenney
+	Micky Neilson
+	Stuart Rose
+	Ron Millar
+	Dave Berggren
+	Brian Sousa
+	Duane Stinnett
+	Nick Carpenter
+	Trevor Jacobs
+	Collin Murray
+	Matt Samia
+	Justin "Han" Thavirat
+
+Director of QA
+	Shane Dabiri
+
+Lead Tester
+	Tymothi Loving
+
+Testers
+	Robert Bridenbecker, II
+	Josh Cook
+	Kamran Fotoohi
+	David "deltree" Hale
+	Vic Larson
+	Brian "Doc" Love
+	Adam Maxwell
+	Chris Millar
+	Daniel Moore
+	Jorge "Crazy Cuban" Rivero
+	John Schwartz
+	James Shipley
+	Walter Takata
+
+Office Manager
+	Christina Cade
+
+Public Relations
+	Linda Duttenhaver
+	Susan Wooley
+
+Marketing
+	John Patrick
+	Steve Huot
+	Kathy Carter
+	Mark Polcyn
+
+International Sales
+	Ralph Becker
+	Florian Mueller
+	Chris Yoshimura
+
+U.S. Sales
+	Todd Coyle
+
+Manufacturing
+	John Goodman
+	Tom Bryan
+
+Technical Help and Stuff
+	John Miles
+	Kendall Bennett
+	Jay Patel
+	Jeff Roberts
+
+Thanks To
+	Scoop
+	Rich Amtower
+	Bill Banks
+	Rob Beatie
+	Kerry Bischoff
+	Dawn Caddel
+	Mike Carrillo
+	Amber Carson
+	Mark Catley
+	Pamina Elgueta
+	Graphix Zone
+	Mike Hale
+	Lyno Hychong
+	Chris Kanaar
+	Isaac Matarasso
+	Sam Moore
+	Mark Pearce
+	David Peng
+	John Phinney
+	Mike Pirozzi
+	Pixis Interactive
+	Dave Riller
+	Dean Shipley
+	Krisann Shipley
+	Jeff Vaughn
+	Julie Westlake
+	Chris Wheeler
+	Jerry Wheeler
+	Annie Liu
+	Jeff Kyser
+	Rhonda Michelle
+	Ed Ka-Spel
+	caffeine (without which...)
+	Sketchead Sign
+	Rider
+	Big Daddy Ogre
+	Salty Dog and the Anvil Chorus
+	Frazetta Woman Dar
+	Tom Waits
+	Gretchen Witte
+	Brazil 2001
+
+	Lisa Pearce
+	Samantha
+	Whiskers
+	Ted Spellman
+	Aaron Daluiski
+	Sting
+	1995 UCLA Hoops
+	The Dallas Cowboys
+
+	Elizabeth Millar
+	Tim and Prin
+	Carrie
+	Rich
+	Shannon Reagan
+	Jabe and friends
+
+	The Poxy Boggards
+	The King
+	Team Hamro
+	The Mighty Thor
+	Ray the Soda Guy
+	Brendan Allison
+	Shawn "Vital Tech" Ree
+	Michaele S. Bialon
+	Brita and Ruth
+	PLF
+	Jo Anne Muncey
+	Judah Mehler
+	Blue Harvest
+	Jason Carpenter
+	Dunsel Training Institute
+	Vladimir Pufkin
+	Jason and Damian
+	Stephen "The Gimp" Hibbert
+
+	Bunny and Doug
+	Paul and Alinda
+	Paul and Renae
+	David Jefferson
+	The S.F. '49ers
+	The Letter M
+	Nine Inch Nails
+	--- surfing ---
+
+	James E. Anhalt, III
+	-- can we drive the Ferrari now?
+
+Very Special Thanks To
+	Bob and Jan Davidson
+
+No pixels were harmed during the
+making of this game.
