@@ -1,9 +1,11 @@
 ---
 title: "FURTHER NORMALIZATION OF THE DATA BASE RELATIONAL MODEL"
-description: ""
-publishDate: 1971-01-01T00:00:00+01:00
-lastmod: 1971-01-01T00:00:00+01:00
+description: "This paper explores advanced techniques for refining relational databases by addressing higher normal forms to enhance data integrity and minimize redundancy"
+publishDate: 1971-08-31T00:00:00+00:00
+lastmod: 1971-08-31T00:00:00+00:00
+layout: article
 ---
+
 # FURTHER NORMALIZATION OF THE DATA BASE RELATIONAL MODEL
 
 by

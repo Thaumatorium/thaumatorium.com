@@ -87,12 +87,12 @@ Reports](https://dominoweb.draco.res.ibm.com/) (IBM)
 
 ### Bonus
 
-[RIP E.F. "Ted" Codd, by C.J. Date](https://www.nae.edu/187653/EDGAR-F-CODD-19232003)
-[The Entity-Relationship Model - Toward a Unified View of Data](https://dl.acm.org/doi/pdf/10.1145/320434.320440). The origin of the Entity-Relationship Diagram (ERD)
-[SEQUEL: A Structured English QUEry Language](https://web.archive.org/web/20070926212100/http://www.almaden.ibm.com/cs/people/chamberlin/sequel-1974.pdf) - the original SQL paper
-[SIGMOD Records](https://sigmodrecord.org/issues/) - DB related articles since 1969 (back when it was called SIGFIDET)
-[The design and implementation of INGRES](https://dl.acm.org/doi/pdf/10.1145/320473.320476) - Michael Stonebreaker is another legend
-[The Design of Postgres](https://dsf.berkeley.edu/papers/ERL-M85-95.pdf)
-[Query-by-Example](https://dl.acm.org/doi/pdf/10.1145/1499949.1500034) - I couldn't believe QBE was this old!
-[Query-by-Example: a data base language](https://sci-hub.se/10.1147/sj.164.0324)
-[Data base Abstractions: Aggregation and Generalization](https://dl.acm.org/doi/pdf/10.1145/320544.320546) - probably had an influence on "Extending the database relational model to capture more meaning"
+* [RIP E.F. "Ted" Codd, by C.J. Date](https://www.nae.edu/187653/EDGAR-F-CODD-19232003)
+* [The Entity-Relationship Model - Toward a Unified View of Data](https://dl.acm.org/doi/pdf/10.1145/320434.320440). The origin of the Entity-Relationship Diagram (ERD)
+* [SEQUEL: A Structured English QUEry Language](https://web.archive.org/web/20070926212100/http://www.almaden.ibm.com/cs/people/chamberlin/sequel-1974.pdf) - the original SQL paper
+* [SIGMOD Records](https://sigmodrecord.org/issues/) - DB related articles since 1969 (back when it was called SIGFIDET)
+* [The design and implementation of INGRES](https://dl.acm.org/doi/pdf/10.1145/320473.320476) - Michael Stonebreaker is another legend
+* [The Design of Postgres](https://dsf.berkeley.edu/papers/ERL-M85-95.pdf)
+* [Query-by-Example](https://dl.acm.org/doi/pdf/10.1145/1499949.1500034) - I couldn't believe QBE was this old!
+* [Query-by-Example: a data base language](https://sci-hub.se/10.1147/sj.164.0324)
+* [Data base Abstractions: Aggregation and Generalization](https://dl.acm.org/doi/pdf/10.1145/320544.320546) - probably had an influence on "Extending the database relational model to capture more meaning"
