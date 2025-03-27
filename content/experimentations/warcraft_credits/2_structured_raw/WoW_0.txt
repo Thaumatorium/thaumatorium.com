@@ -1,0 +1,1224 @@
+Game Design
+	Blizzard Entertainment
+
+Executive Producer
+	Mike Morhaime
+
+Team Lead
+	Mark Kern
+
+Art Director
+	William Petras
+
+Creative Director
+	Chris Metzen
+
+Lead Animator
+	Kevin Beardslee
+
+Lead Artist
+	Justin Thavirat
+
+Lead Character Artist
+	Brandon Idol
+
+Lead Designers
+	Rob Pardo
+	Allen Adham
+
+Lead Programmer
+	John Cash
+
+Lead Technical Artist
+	Kyle Harrison
+
+Producers
+	Shane Dabiri
+	Carlos Guerrero
+
+Additional Production
+	Chris Sigaty
+
+Programming
+	Jesse Blomberg
+	Dan Buckler
+	Robert Bridenbecker
+	Jeff Chow
+	Scott Hartin
+	Sam Lantinga
+	Twain Martin
+	Loren McQuade
+	Collin Murray
+	David Ray
+	Joe Rumsey
+	Derek Sakamoto
+	Tim Truesdale
+	Matthew Versluys
+	Jeremy Wood
+
+Additional Programming
+	James Anhalt III
+	Andy Bond
+	Bob Fitch
+	Don Grey
+	Monte Krol
+	Graham Madarasz
+	Jay Patel
+	Evelyn Smith
+
+Install/Patch/Distribution Programming
+	Brian Fitzgerald
+	John Mikros
+	John Stiles
+	Tony Tribelli
+	Stephen C. Wong
+
+Install/Patch/Distribution Producer
+	Derek Simmons
+
+Macintosh Programming
+	John Mikros
+
+Additional Macintosh Programming
+	Rob Barris
+	John Stiles
+
+Animators
+	Adam Byrne
+	Jay Hathaway
+	Eric Henze
+	Solomon Lee
+
+Dungeon/City Artists
+	Jose Aello, Jr.
+	Roger Eberhart
+	Dana Jan
+	Aaron Keller
+	Jimmy Lo
+	Matt Mocarski
+	Brian Morrisroe
+	Jamin Shoulet
+	John Staats
+
+World Content Artists
+	Carlo Arellano
+	Sam Didier
+	Brian Hsu
+	Roman Kenney
+	Maxx Marshall
+	Matt Milizia
+	Dan Moore
+	Ted Park
+	Gary Platner
+
+Technical Artist
+	Peter Underwood
+
+Exterior Level Designers
+	Bo Bell
+	James Chadwick
+	Mark Downie
+	Alen Lapidis
+	Matt Sanders
+
+Additional Art
+	Dave Berggren
+	Allen Dilling
+	Toph Gorham
+	Trevor Jacobs
+	Tom Jung
+	Cameron Lamprecht
+	Rob McNaughton
+	Mickey Nielson
+	Matt Oursbourn
+
+Game Designers
+	Tom Chilton
+	Eric Dodds
+	Michael Heiberg
+	Kevin Jordan
+	Jeffrey Kaplan
+	John Yoo
+
+Quest Designers
+	Alex Afrasiabi
+	Michael Backus
+	Suzanne Brownell
+	Shawn Carnes
+	Michael Chu
+	Jeffrey Kaplan
+	Pat Nagle
+
+World Designers
+	Geoff Goodman
+	Andy Kirton
+	Joshua Kurtz
+	Steven Pierce
+
+Additional Design
+	Tom Cadwell
+	Dave Fried
+	Dave Hale
+	Eric Maloof
+	Scott Mercer
+	Matt Morris
+	Jennifer Powell
+	Dean Shipley
+
+Cinematic Intro Director, Writer
+	Matt Samia
+
+Cinematic Trailer Director, Writer
+	Harley D. Huggins II
+
+Cinematics Producer
+	Scott Abeyta
+
+Video Processing & Post Production Supervisor
+	Joeyray Hall
+
+Cinematic Artists
+	Jonathan Berube
+	Nicholas S. Carpenter
+	Jeff Chamberlain
+	Aaron Chan
+	Ben Dai
+	Fausto DeMartini
+	Sheng Jin
+	Jeramiah Johnson
+	Jon Lanz
+	James McCoy
+	Matthew Mead
+	Joe Peterson
+	Dennis "wiz" Price
+	Jarett Riva
+	Xin Wang
+	Kenson Yu
+
+Cinematic Technical Artists
+	John Burnett
+	Joe Frayne
+	Steeg Haskell
+	Jared Keller
+	Hung Le
+	Nelson Wang
+
+Render Farm Supervisor
+	Mike Kramer
+
+Additional Cinematic Artists
+	Dan Burke
+	John Chalfant
+	Ryan Duncan
+	Mark Skelton
+	Patrick Thomas
+	Seth Thompson
+	Ru Weerasuriya
+	Jason Wen
+
+Audio Supervisor (Cinematics)
+	Glenn Stafford
+
+Sound Producer
+	Gloria Soto
+
+Lead Composer
+	Jason Hayes
+
+Lead Sound Designer
+	Brian Farr
+
+Music
+	Tracy W. Bush
+	Derek Duke
+	Jason Hayes
+	Glenn Stafford
+
+Sound Design
+	Tracy W. Bush
+	Victor Crews
+	Brian Farr
+
+Casting Supervisor/ VO & Sound Editor
+	Tami Donner Harrison
+
+Voice Direction
+	Chris Metzen
+	Micky Neilson
+
+Voice Acting
+	Michele Arko
+	Tracy W. Bush
+	Joey Cash
+	Johnny Cash
+	Victor Crews
+	Samwise Didier
+	Tami Donner Harrison
+	Derek Duke
+	Michelle Elbert
+	Brian Farr
+	Ron Frybarger
+	Manuel Gonzales
+	Carrie Gordon-Lowrey
+	Trula Hoosier
+	Harley Huggins
+	Timothy Ismay
+	Monte Krol
+	Abe Lasser
+	Jon Mankin
+	Twain Martin
+	Holly Matecki
+	Sean McCrea
+	Chris Metzen
+	Kaeo Milker
+	Lani Minella
+	Mike Morhaime
+	Collin Murray
+	Gloria Neely
+	Mickey Neilson
+	Nicholas Pisani
+	Gary Platner
+	David Saunders
+	Evelyn Smith
+	Glenn Stafford
+	Snoopy Watkins
+	Sunda Zafrin
+
+Worldwide Launch Executive
+	Paul Sams
+
+Worldwide Launch Management
+	Itzik Ben-Bassat
+	Lisa Pearce
+
+Manual Layout
+	Eli Catalan
+
+Manual Producer
+	Jason Hutchins
+
+Manual Development and Editing
+	Eli Catalan
+	Elliott Chin
+	Jason Hutchins
+	Mark Kern
+	Denise Lopez
+	Jonathan Mankin
+	Chris Metzen
+	Rob Pardo
+	Lisa Pearce
+	Evelyn Smith
+
+Manual Artwork
+	Carlo Arellano
+	Adam Byrne
+	Samwise Didier
+	Allen Dilling
+	Eric Henze
+	Brian Hsu
+	Brandon Idol
+	Semi Kim
+	Chris Metzen
+	Ted Park
+	Bill Petras
+	Glenn Raine
+	John Staats
+	Justin Thavirat
+	Ru Weerasuriya
+
+Thanks to White Wolf
+
+Quality Assurance Manager
+	John Lagrave
+
+Quality Assurance Assistant Managers
+	Sean McCrea
+	Mark Moser
+
+QA Night Supervisor
+	Jonathan Mankin
+
+QA Lead Testers
+	Robert Foote
+	Michael Murphy
+
+QA Lead Assistant
+	Kelly Chun
+
+QA Technical Engineers
+	Jason Fader
+	Evelyn Smith
+
+QA Compatibility Testing
+	Omar Gonzalez
+	Danny Nguyen
+	Taylor Russ
+
+QA Team Leads
+	Michele Marie Arko
+	Scott N. Army
+	Ben Brode
+	Shane S. Cargilo
+	Jamie Chang
+	Michael Chen
+	Steven Chow
+	Dennis Crabtree
+	Les W. Douglas
+	Michelle Elbert
+	Ron Frybarger
+	Ed Kang
+	Jin Kim
+	Ray Laubach
+	Chris Manprin
+	Justin K. Parker
+	Lee Sparks
+	Craig Steele
+	Stan Wang
+
+Game Testers
+	Nicholas Betteker
+	Edward Bui
+	Jeff Chang
+	Jack Chen
+	James Cho
+	Aaron Contreras
+	Brandon Crumpler
+	Tim Daniels
+	Foster Michael Elmendorf
+	Mei Dean Francis
+	Jon Graves
+	Josh Hilborn
+	Timothy Ismay
+	Michael Maggard
+	Stuart Massie
+	Jeff McLean
+	Kurtis Paddock
+	RA Pearson
+	Nicholas M. Pisani
+	Anthony Reyes
+	Chuck Salzman
+	David Sanchez
+	Samuel Schrimsher
+	Michael Schwan
+	Anant Singh
+	Brian Stankowitz
+	Shawn Su
+	Michael Mooteh Sun
+	Alex Tsang
+	Joseph Vales
+	Brandan Vanderpool
+	Sean Wang
+	Geoffrey Yeh
+	Tengying Yu
+
+Additional Game Testing
+	Zach Allen
+	Zebulon Batke
+	Josh Bertram
+	Zach Callanan
+	Wesley Campbell
+	Greg Cucchissi
+	Dustin Chang
+	Yuan Cheng
+	Jack Cheung
+	Joel Clift
+	Matt Coalson
+	Beni Elgueta
+	Dave Eliasberg
+	Brian Fattorini
+	Gary Gibson
+	Manuel Gonzales
+	Justin Hamilton
+	Jason Thor Hall
+	Patrick Henry
+	Lyno Hychong
+	Jeff Jones
+	Stephen Kim
+	Jason Liang
+	Richard Lin
+	Robert Lohaus
+	Brian Love
+	John Meyers
+	Brandon Norton
+	Haz Novoa
+	Wale Oyejide
+	David Potts
+	Emilio Segura
+	Kenneth Shaw
+	Steve Shin
+	Geordie Swainbank
+	Walter Takata
+	Joshua Tapley
+	Jeffrey Therrien
+	Christopher Van Der Westhuizen
+	David G. Wagner
+	Constance Wang
+	Ian Welke
+	Daniel Westmoreland
+
+Technical Support Manager
+	Thor Biafore
+
+Assistant Technical Support Manager
+	Jason Stilwell
+
+Billing and Account Services Lead
+	Doug Abel
+
+Sales/Billing
+	Liam Knapp
+	Dean Shelden
+	Jeffery Smith
+	Jason White
+
+Technical Support Programming
+	David Nguyen
+
+Technical Support Representatives
+	Charlie Areson
+	Jason Chen
+	Brett Dixon
+	Norman Harms
+	Joseph Holley
+	John Hsieh
+	Chad Jones
+	Jeff Jones
+	Richard Kennedy
+	Nathan Lutsock
+	Kris Nedrebo
+	Michael Nguyen
+	Michael Pierce
+	Cuong Quach
+	Adam Slack
+	Scott Sweeting
+	Martin Tande
+	Micah Whipple
+	Mataio Wilson
+	Jamie Wood
+	Kenny Zigler
+
+In-Game Support Management
+	Eric Avila
+
+In-Game Support Leads
+	Mitchell Bricker
+	Chris Manley
+	Jason Park
+	John Schwartz
+	Max Whitaker
+
+In-Game Support
+	Tim Ashwood
+	Matt Barnett
+	Derek Benton
+	Jason Bereznay
+	Carl Brumm
+	David Carey
+	Sam Carne
+	Kevin Carter
+	Dustin Chang
+	Darius Cho
+	Bryn Clark
+	Joanna Cleland
+	Matt Coburn
+	Angelo Conception
+	Jeremy Conrad
+	Dana Darnell
+	Joshua Downs
+	Jon Dvorak
+	Adam Ebmeier
+	Tom Edwards
+	Nathan Erickson
+	Ronnie Everett
+	Bejan Fozdar
+	Justin Goad
+	Manuel Gonzales
+	Ryan Gunst
+	Justin Guthrie
+	Kristen Hewes
+	Danielle Homer
+	Joshua Horst
+	Adam Hughes
+	Leanne Huynh
+	Tony Hsu
+	Jessica Johnson
+	Bryan Langford
+	Corey Louie
+	Holly Matecki
+	Mark McCarty
+	Mike Moneymaker
+	Travis Otten
+	Alfredo Padron
+	Danny Palmer
+	Brad Pray
+	Nicholas Ray
+	Ryan Quinn
+	Kyle Riseling
+	Trevor Rothman
+	Andreas Rounds
+	Julie Salter
+	Matthew Sherman
+	Shaun Simmons
+	Julie Sklarew
+	Brian Smith
+	Richard Smith
+	Craig Sweet
+	Laura Szigeti
+	Jesse Thomas
+	Jason Throop
+	Asheesh Thukral
+	Christopher Towne
+	Jake Turner
+	Tom Twedell
+	Melissa Ullrich
+	Chris Voss
+	Oliver Voss
+	David Wareham
+	Maurice Wilson
+	Matt Worcester
+
+Localization Producer
+	Jason Hutchins
+
+Associate Localization Producer
+	Jonas Laster
+
+
+VUG LOCALIZATION TEAM
+
+General Manager
+	Gerry Carty
+
+European Localisation Manager
+	Barry Kehoe
+
+Project Manager
+	Eithne Hagan
+
+Translation Vendor Manager
+	Annette Lee
+
+Linguistic Project Manager
+	Laura Casanellas
+
+Linguistic Coordinator
+	Corina Zaha
+
+Engineering Manager
+	Lawrence Moran
+
+Software Engineering
+	David Doheny
+
+Q.A. Manager
+	David Hickey
+
+Q.A. Lead
+	Conor Harlow
+
+Q.A. Testers - French
+	Maurice Larkin
+	Russell Perin
+	Dimitry Renardet
+
+Q.A. Testers - German
+	Sandra Rothig
+	Henry Ertner
+	Hugh Lawton
+
+Graphics/Audio Coordination
+	Bill Sweeney
+	David Fleming
+
+RTM Validation
+	Philippe Gendreau
+
+
+BLIZZARD ENTERTAINMENT
+
+Business Development & Business Operations
+	Paul Sams
+
+Business Development & Operations
+	Elaine DiIorio
+	Denise Lopez
+	Isaac Matarasso
+	Lisa Pearce
+	Sarah Tucker
+
+Information Technologies Manager
+	Robert Van Dusen
+
+Information Technologies
+	Edward Hanes
+	Brian Hill
+	Mike Kramer
+	Hung Nguyen
+	Mike Pearce
+	Mike Schaefer
+	Jeremy Smith
+	Casey Suyeto
+	Stephen T. Wong
+
+IT Engineering & Network Design
+	Adrian Luff
+	Jeff Berube
+
+Data Archivist
+	Kris Mackey
+
+Office Administration/ Human Resources/ Facilities Management
+	Kacy Dishon
+	Jeanette Gullock
+	Kaeo Milker
+	Jamie Neveaux
+	Hugh Todd
+	Talishia Thompson
+
+Financial Management
+	David Gee
+	Paul Sams
+
+Public Relations
+	Lisa Bucek-Jensen
+	Elliott Chin
+	Gil Shif
+	George Wang
+
+Web Team
+	Lisa Bucek-Jensen
+	Mathieu Chauvin
+	Geoff Fraizer
+	Mike Hein
+	Jon Jelinek
+	Gil Shif
+	Alex Sun
+	Blaine Whittle
+
+Community Management
+	Lisa Bucek-Jensen
+	Daniel Chin
+	Paul Della Bitta
+	Kristen DeMeza
+	Gil Shif
+
+Legal Counsel
+	Kevin Crook
+	Terri Durham
+	Rod Rigole
+	Eric Roeder
+	Tracy Gibbs-Sargeant
+	James Shaw
+
+Global Brand Management
+	Neal Hubbard
+	Marc Hutcheson
+	Matt Kassan
+
+North American Sales
+	Philip O'Neil
+	Bruce Slywka
+	Lowell Vaughen
+
+Marketing Creative Services
+	Kathy Carter-Humphreys
+	Jessica Drossin
+	Zachary Hubert
+	Steve Parker
+	Raul Ramirez
+	Hayley Sumner
+	Bill Watt
+
+Recruiting
+	Jack Sterling
+
+Packaging Artwork
+	Brom
+	William Petras
+	Justin Thavirat
+
+Manufacturing
+	Tom Bryan
+	Bob Wharton
+
+Hosting Partners
+	AT&T
+	DACOM/KIDC
+	Telia
+
+Director of Dunsel Development
+	Frank Pearce
+
+Dunsel Specialist
+	Alan Dabiri
+
+Thanks To
+	Chris Sigaty
+	Brad Mason
+	Don Grey
+	Huong Grey
+	Kirk Mahony
+	Jimmie Nelson
+	Donna Anthony
+	Beau Yarborough
+	Ian Welke
+	DJAMES Goddard
+	Christophe Ramboz
+	Michael Fuller
+	Flavie Gufflet
+	Stu Rose
+	Duane Stinnett
+	Brenda Perdion
+
+Special Thanks
+	Blizzard North
+	Bruce Hack
+	Jean-Francois Grollemund
+	Bob & Jan Davidson
+
+Cinematic Sound Contractors
+	David Farmer
+	Paul Menichini
+	Jeff Kurtenacker
+	Michael Aarvold
+	Robert Michael Sherlock
+	Tom Brewer
+
+Additional Thanks
+	Keith Galocy & Greg James at NVIDIA
+	Celeste Aviva
+	Tracy Farr
+	The Jan Family
+	Lisa Schoner
+	John Carlson
+	The Zics
+	Jesse and Tina
+	Ken and Ryu
+	Jenifer and Charles Riggio
+	Lisa, Erin & Logan Pierce
+	Insufficient Light
+	Firefly
+	Tie Domi
+	Mindi Johnson
+	Chuck Foote
+	Britney Spears
+	Howard Rumsey
+	Jack Cheung
+	Kenny “Big Fro” Vasquez
+	David Gonzales
+	Nicole Stern
+	Bunky & Ronin
+	Da Ali G Show
+	Frisbee Golf
+	Diana Bond
+	Homestarrunner.com
+	Michelle Delgado and Aiden Bell
+	Dream Theater
+	Patrick Burke
+	Mike Stephenson
+	DKLA
+	Kim, Lenn & Sokoan
+	The Bandit
+	The Leaky Faucet
+	Andrew Brownell
+	Carol Mooney
+	Stay-Puft Marshmallow Man
+	Rachel Whittle
+	Ethan Whittle
+	Frances Lin
+	Val Margolin
+	Ben Margolin
+	The Morrisroe Family
+	Alex, Tati and my Brazilian Family
+	The Mailboxes gang and friends
+	Sandy Schneible
+	Sonya, Lily &Toby
+	beatmania IIDX
+	Grandma and Grampa Connelly
+	Landlady Yasmin
+	They Might Be Giants
+	Jeramy R. Cooke
+	In-Sun Allan Mack
+	ChennyT, Brutus and Newton
+	El Torito Grill’s Tortillas
+	The Sanders family
+	Our US Troops
+	The Oglesby Family
+	Linkin Park
+	The Shane Cube
+	Nicole Numbers
+	John and Susan Shoulet
+	Jet Blue
+	Richard Zinser
+	Gordon Walton
+	Pandemonium
+	Yuliya and Jasper Duke
+	Dietrich and the Gang
+	Jackers
+	Patsy’s
+	Grammy
+	France Salama
+	Bob & Frances Bridenbecker
+	Adam “where’s my free copy” Maxwell
+	Lauren and Mirah
+	Icculus and friends
+	705 Crew
+	Wendy Aello
+	Bill & Emily Backus
+	The New England Patriots
+	Radish Pal and Oyster Knickers
+	Mike Benjamin
+	Brittany Curtis
+	Jordan and Janeybear
+	Penny, Barry & Brie Berman
+	Yasmin
+	Randy, Mike and Robin Wood
+	Craig Harrison
+	The Kaplan Family
+	Colin and Emi Finer
+	Crystal Shif
+	The Shif/Chweh/Thomas/Morgan Family
+	The Baxters, every one of’em
+	The Bunky & The Babba
+	The A-Team of Kabald – GBBG
+	Grac’s Beta Tester All-Stars – huzzah!
+	Jackie & Larry Linemann
+	Sheila
+	Kaitlin
+	Breanna
+	Kyle & Meaghan
+	Apple Computer
+	ATI Developer Relations
+	Karlee & Paige Chadwick
+	Rob Beatie
+	Kurt Werle
+	Mike Davy
+	Peter-Pike Sloan
+	Terry Gordon
+	Amanda Panda
+	The Byrne Family
+	Sonal Patel
+	Ralph
+	David
+	Marvin
+	Larry
+	Nonno
+	Barbara
+	Audrey
+	Mumbo
+	My parents in Shanghai
+	The “Sonnys” for making me an uncle
+	Pamina Elgueta
+	Team 1
+	Stacey & Lucas Frayne
+	Mumsie
+	Nathan
+	Tim & James
+	The Griffith Clan
+	Kana
+	The Hendersons
+	Luciana
+	Giorgia & Joao Felipe De Martini
+	Wang & Li Families
+	Amy & Eugene Johnson
+	Roger & Joan Earle
+	Jin Hong An
+	Peter Pau
+	Katelynn Hassler
+	The Riva family
+	Don, Dawn & Becky Price
+	Team Empire III
+	Ryan, David, Christopher & Stephanie Samia
+	Emily McCullough
+	David
+	Adam
+	Tina
+	Chow & Chan Family
+	Liz Law
+	Mom
+	Dad
+	Kerwin
+	Tina
+	Verna
+	Collin
+	Ma
+	Jordan
+	Lowerys
+	My Ann
+	Nook
+	Mike
+	20 Silver Fir
+	Khanh
+	Tram
+	Vang
+	Chau
+	Barbara & Tilden Keller
+	Johanna & Karen Peterson
+	Kenneth Gregg
+	Javon Demetrius-Cogmon
+	Matsuba Family
+	Anthony DeFrancesco
+	Julian Feinberg
+	Dylan Cole
+	Amanda Sabo
+	Ivan Kolev
+	Frantic Films
+	Jo Anne
+	Gavin
+	Jason & David Carpenter
+	Judah Mehler
+	Jordu Schell
+	Shawn Steiner
+	Boskk
+	Ray Harryhausen
+	Orson Welles
+	Max Huggins
+	Taj Burrow
+	Kelly Slater
+	Shane Dorian
+	Barry & Jeff Deffenbaugh
+	Amber Ray
+	Tiffany and Taylor Hayes
+	Andrea Lobo
+	The Idols & Pat Morrison
+	Shane Hensley
+	Michele Henze
+	Claudia & Alanna Guerrero
+	My brother Brad... we all need heroes
+	Kim & Ashley Bridenbecker
+	Alexander K. Lee
+	The Chosen & Bill
+	Peter Milizia
+	The Petras Family
+	Rob Chacko
+	Kandice Murray
+	Michelle Delgado
+	The Thavirats & Corinna Lee
+	Kayla Hong-Tim Nguyen
+	Mike Phillips
+	Cathy Tsai and The Chow Family
+	Suzanne Di Piazza
+	Pooka
+	Kerri Jaquith Simmons
+	Patricia
+	Nate, Chris, Matt & Jenna
+	Laura Szigeti
+	Sofia Vergara
+	Sarah Arellano
+	Olivia Lee Heiberg
+	Nikita Mikros
+	April & Sofia Metzen
+	Girls of Starbucks
+	Mary,Johnny, and Joey Cash
+	Katherine & Penelope Jordan
+	Danna
+	Jessica
+	Tisa
+	Jade and Breanna
+	Gammaray Helen Mckenney
+	Bill & Kathie Blomberg
+	The Sakamoto Family
+	Nick "Blood Angel" Betteker
+	Angelista
+	Napoleon Dynamite
+	Joohyun Lee
+	April and Noah Beardslee
+	Dawn Marshall
+	Mandilynn Weygandt
+	Stephanie Keefer
+	the good people of The Daily Blab
+	Ed, May, & Sheryl Narahara
+	Arleen Powell
+	Andrew Thorson
+	Imelda & Alex Kern
+	Olivia Lee
+	Peter Jackson
+	Victoria, Garrett, & Cassandra
+	Katherine Jordan
+	Gina MacGregor
+	Karen & Julia Barris
+	The Infamous Kitt3n
+	Hilary & F.C. Carnes
+	Happy 30th to RUSH
+	Lara Lee
+	Brenda Perdion
+	Tina & Melissa Maloof
+	The Pearce Family
+	Smoove TB
+	The Bandit
+	The PUNisher
+	The Leaky Faucet
+	T. Blave
+	The Censor
+	Susan, Matthew & Michael Sams
+	Megan Wooley
+	Tina Chan
+	Haibo Li
+	Katelynn Hassler
+	Lucianna Kochnoff
+	Shelly & Ian Mead
+	Debbie Lanz
+	Jessica Ellis
+	Khana Le
+	Brian Flora
+	Chen Bin Hua
+	The Price Family
+	Deana Matarasso
+	Harminder Brar
+	The McCoy Family
+	The Yu Family
+	The Wang Family
+	The Chamberlain Family
+	The Burnett Family
+	Lisa & Haskell Family
+	The Dai Family
+	The Peterson Family
+	The Carpenter Family
+	Joe "Vargen" Biafore
+	Beverly & Shangreaux Lagrave
+	Dee Ann Fifer
+	Riley & The Sigaty Family
+	Melissa Huggins
+	Laura Clifton
+	Jason & Damian Hall
+	Koren Buckner
+	Gali Mehl
+	The Ben-Bassat Family
+	David, Cameron & Brianna Di Iorio
+	Nicole Hamelin
+	Matt, Shaun & Amanda Smiley
+	Ty, Noel & Marge Williams
+	Silvia, Kai, and Kiana Van Dusen
+	Lisa Schaefer
+	The Schaefer Family
+	Nhu Pham for her love and support
+	Kimberly Haw and our families
+	Carrie Suyeto
+	Astrid and K.C. Ross
+	Amy Clements
+	the foosball table
+	Janée Laster
+	Everyone at Hewlett-Packard
+	Everyone at Cisco
+
+
+BLIZZARD EUROPE TEAM
+
+Sales, Marketing & PR
+	Cédric Maréchal
+	Anne Bérard
+	Julia Gastaldi
+	Eric Chauveau
+	Yann Pallatier
+	Guillaume Sartre
+	Martin Leidenfrost
+	Prune Moldawan
+	Sebastien Garnault
+
+Business Development/Finance
+	Delphine Le Corre
+	Benoit Mechineau
+	Benoit Dufor
+
+Technical Team
+	Jean-Michel Courivaud
+	Julien Mariani
+	Steve Viegas
+	Philippe Peeters
+	Mathieu Chauvin
+
+Support Services
+	Frederic Menou
+	Christian Scharling
+	Emmanuel Obert
+
+
+BLIZZARD KOREA TEAM
+
+Sales, Marketing & PR
+	Richard Kwon
+	Patrick Lee
+	Christy Um
+	Hyejin Yum
+	Jinkyu Ko
+	Yungjoo Ko
+	Sam Ohn
+	Steve Kang
+
+Business Development
+	Tommy Park
+	Mac Kwon
+
+Operations
+	Jungwon Hahn
+	Taewon Yun
+	Changuk Park
+
+Network Operations
+	Sungsoo Khim
+	Sangyong Park
+	Minhong Kim
+	Manjung Ha
+
+Technical Team
+	Jiwoong Kim
+	Joonho Lee
+	Juno Kwak
+	Hyunjoo Song
+	Jonghyuk Lee
+	Hanbaek Choi
+	Sangeun Gu
+	Jean Park
+	Seungki Choi
+	Hyojin Bae
+	Dohyeong Kim
+	Eunjin Kim
+
+Support Services
+	James Kim
+	Jeongwon Min
+	Kumshim Shin
+	Bum Choi
+	Young Namgoong
+	Wonjong Lee
+	Hyunshin Lim
+	Jihun Lee
+	Jiyoon Kim
+	Eunjung Lee
+	Jinman Park
+	Yooseok Pan
+	Taehee Kang
+	Jinsun Park
+	Yongjo Choi
+	Hosung Lee
+	Eunyoung Park
+	Jaehong Jeong
+	Minsun Back
+	Yoonhee Kim
+	Dongkyun Kang
+	Kyunghyo Kim
+	Hyojin Kim
+	Kyungtae Myung
+	Sungho Eom
+	Jaebum Ahn
+	Aungoun Lee
+	Jungjun Lee
+	Sanhak Jeon
+	Chulsoo Jung
+
+Finance & Administration
+	Ahlim Kim
+	Kate Kim
+	Okyoung Lee
+	Chami Kang
+	Junghoon Kim
+	Hyunjung Noh
+
+Asia Pacific HQ
+	Hubert Larenaudie
+	Franck Villet
+	Mark Warburton
+	Chris Ansell
+	Kim Watt
+	Michael Tan
+	Steve Voorma

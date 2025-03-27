@@ -1,0 +1,3522 @@
+Game Design
+	Blizzard Entertainment
+
+Executive Producer
+	Frank Pearce
+
+Art Director
+	Chris Robinson
+
+Creative Director
+	Chris Metzen
+
+Game Director
+	Jeffrey Kaplan
+
+Lead Designer
+	Tom Chilton
+
+Technical Director
+	Mike Elliott
+
+Production Director
+	J. Allen Brack
+
+Lead Animator
+	Steve Aguilar
+
+Lead City/Dungeon Artist
+	Wendy Vetter
+
+Lead Environment Artist
+	Gary Platner
+
+Lead Prop Artist
+	Jason Morris
+
+Lead Technical Artist
+	Thomas Blue
+
+Lead Level Designer
+	Cory Stockton
+
+Lead World Designer
+	Alex Afrasiabi
+
+Lead Systems Designer
+	Greg Street
+
+Lead Exterior Level Designers
+	Aaron Keller
+	Jesse McCree
+
+Lead Exterior Artist
+	Ely Cannon
+
+Lead Encounter Designer
+	Scott Mercer
+
+Lead World Event Designer
+	Dave Maldonado
+
+Lead Engine Programmer
+	Patrick Doane
+
+Lead Gameplay Programmers
+	Sam Lantinga
+	Patrick Magruder
+
+Lead Server Programmer
+	Bryan Gibson-Winge
+
+Lead Tools Programmer
+	Monte Krol
+
+Lead UI Programmer
+	Tom Thompson
+
+Senior Producers
+	Carlos Guerrero
+	John Lagrave
+	Alex Mayberry
+
+Producers
+	James Cho
+	Robert Foote
+	Jason Hutchins
+	Jeremy Masker
+	Lee Sparks
+	Alex Tsang
+
+Animators
+	John Butkus
+	Carman Cheung
+	Jeff Gregory
+	Mauricio Hoffman
+	Mai Igarashi
+	Chris Luckenbach
+	John Scharmen
+	Jason Zirpolo
+
+Character Artists
+	Chris Ha
+	Roman Kenney
+	Hun Kevin Lee
+	Kevin Maginnis
+	Jon McConnell
+	John Polidora
+	Eddie Rainwater
+	Danny Saint-Hilaire
+	Robert Sevilla
+	Thomas Yip
+
+City/Dungeon Sub-Leads
+	Eric Browning
+	Jimmy Lo
+
+City/Dungeon Artists
+	Steve Allen
+	Jeff Chang
+	Steve Crow
+	Rutherford Gong
+	Jeremy Graves
+	Kevin K. Griffith
+	Andrew Matthews
+	Michael McInerney
+	John Staats
+	Rhett "Stash" Torgoley
+
+Environment Artists
+	Justin Kunz
+	Dion Rogers
+	Gustav Schmidt
+
+Prop Artists
+	Jamie Chang
+	Terrie Denman
+	Jon Jelinek
+	Dan Moore
+	Tiffany Sirignano
+	Holly Wilson
+
+Special Effects Artist
+	Slim Ghariani
+
+Technical Artist
+	Brett Dixon
+
+Game Designers
+	Craig Amai
+	Luis Barriga
+	Justin Z. Bartlett
+	Alexander Brazie
+	Steve Burke
+	Paul Cazarez
+	Morgan Day
+	Travis Day
+	Kristen DeMeza
+	Eric Dodds
+	Geoff Goodman
+	Kevin Jordan
+	Chris Kaleiki
+	Owen Landgren
+	Jonathan LeCraft
+	Eric Maloof
+	Pat Nagle
+	Brianna Schneider
+	Joe Shely
+	Kris Zierhut
+
+Level Designers
+	David M. Adams
+	Sarah Boulian
+	James Chadwick
+	Victor Chong
+	Jonathan Dumont
+	Ed Hanes
+	Julian Morris
+
+Programmers
+	Russell Bernau
+	Brian Birmingham
+	Jesse Blomberg
+	Joseph Cochran
+	Patrick Dawson
+	Jason De Arté
+	Alec Dun
+	Omar Gonzalez
+	Scott Hartin
+	Kevin M. Kelly
+	Marko Kylmamaa
+	Christopher MacDonald
+	Pat MacKellar
+	Collin Murray
+	Ron Nakada
+	Irena Pereira
+	Aimee Pi
+	Kyle Radue
+	Dan Reed
+	Derek Sakamoto
+	Pete Sandrene
+	Michael F. Schweitzer
+	Craig Steele
+	Jeremy Wood
+
+Macintosh Programming
+	Rob Barris
+	John Mikros
+	Daniel Pageau
+	John Stiles
+
+Technical Writer
+	Theresa Wolf
+
+Additional Art
+	Sam Didier
+	Allen Dilling
+	Kevin Griffith
+	Trent Kaniuga
+	Brian Morrisroe
+	Pior Oberson
+	Chris Ryder
+	Justin Thavirat
+
+Technical Director Emeritus
+	John Cash
+
+Additional Programming
+	Jeremy Chernobieff
+	John Lafleur
+	Michael Starich
+
+Additional Production
+	Shane Dabiri
+	Stan Wang
+
+Interns
+	Tim Jones
+	Jeffrey Macalino
+	Ryan Meier
+	Kester Robison
+	Trevor Rothman
+	Jacob Segal
+	Brian Sueyoshi
+
+Mad Scientist
+	Joe Rumsey
+
+AUDIO
+
+Director
+	Russell Brower
+
+Lead Sound Designer
+	Brian David Farr
+
+Audio Producer
+	Keith Landes
+
+Producers
+	Dennis Crabtree
+	Jay Maguire
+	Thomas Pieracci
+
+Sound Design
+	Jonas Laster
+	Joseph Lawrence
+
+Additional Sound Editing
+	Jon Graves
+
+Music
+	Russell Brower
+	Derek Duke
+	Glenn Stafford
+
+Voice Casting and Recording
+	BB Casting and Production Services
+	Casting Director – Brigitte Burdine
+	Recording Engineer – John Adair
+
+Voice Direction
+	Micky Neilson
+
+Field and Foley SFX Recording
+	Joseph Lawrence
+
+Live Sessions and Orchestrations produced by
+	Edo Guidotti
+
+Main Titles Orchestration by
+	Jason Poss
+	Russell Brower
+
+Main Titles Music Preparation provided by
+	RPM Seattle Music Preparation
+	Danita Ng-Poss
+	Jason Poss
+
+Guest Musicians
+	Pedro Eustache – Flutes and Duduk
+	Laurence Juber – Guitars
+	Cajsa Ekstav – Nychelharpa
+	Eric Rigler – Uilleann Pipes and Scottish Flute
+
+Cinematic Intro Sound Designers
+	Paul Menichini
+	David Farmer (EAD)
+
+Cinematic Intro Music
+	Neal Acree
+
+Cinematic Intro and Main Title Music
+	Recorded by the Northwest Sinfonia and Chorus, Contracted by Simon James and David Sabee
+
+Cinematic Intro Audio Mixer
+	Tom Brewer (Sound Cove)
+
+CINEMATICS
+
+Director/Writer
+	Jeff Chamberlain
+
+Senior Director of Cinematics
+	Matt Samia
+
+Creative Director
+	Nick Carpenter
+
+Lead Producer
+	Scott Abeyta
+
+Producers
+	Phillip Hillenbrand
+	Angela Blake
+
+Editor
+	Matthew Mead
+
+Supervisors
+	James McCoy
+	Jon Lanz
+	Arthur Jeppe
+	Mike Kelleher
+	Fausto De Martini
+	Jonathan Berube
+	Jared Keller
+	Steeg Haskell
+
+Leads
+	Aaron Chan
+	Sheng Jin
+
+Artists
+	Sal Arditti
+	Jason Barlow
+	Barry Berman
+	Anwar Bey-Taylor
+	Ricardo Biriba
+	Alvaro Buendia
+	Scott Campbell
+	Aaron Chan
+	Hosuk Chang
+	Steven Chen
+	Shimon Cohen
+	James Crowson
+	Sofia Vale Cruz
+	Graham Cunningham
+	Ben Dai
+	Zaza Essa
+	Hunter Grant
+	Jeremy Gritton
+	Michael Hardison
+	Jason Hill
+	Brian Huong
+	Steve Hui
+	Tyler Hunter
+	Sheng Jin
+	Jeramiah Johnson
+	Chung Kan
+	Bernie Kang
+	Jeffrey Kember
+	Ren Kikuchi
+	Ronny Kim
+	Yonghyun (Eddie) Kim
+	Jae Kim
+	Brian LaFrance
+	Mark Lai
+	Oliver Lam
+	Moonsung Lee
+	Yeon-Ho Lee
+	Dyllan Lu
+	David Luong
+	Matthew Mead
+	Marc Messenger
+	Alex Murtaza
+	Sada Namiki
+	Jeremy Nelligan
+	Tuan Ngo
+	Jae Wook Park
+	Corey Pelton
+	Zachary Podratz
+	Reo Prendergast
+	Dennis Price
+	Dominic Qwek
+	Glenn Ramos
+	Jarett Riva
+	David Savvy
+	Billy Shih
+	Kazuhito Shimada
+	Taylor Smith
+	Peter Starostin
+	Geordie Swainbank
+	Peter Swigut
+	Seth Thompson
+	Chris Thunig
+	Graven Tung
+	Mathias Verhasselt
+	Xin Wang
+	Kenson Yu
+
+Technical Artists
+	Ben Barker
+	Michael Beal
+	Leonard Chang
+	Chris Evans
+	Joe Frayne
+	Jim Jiang
+	David Keegan
+	Scott Lange
+	Hung Le
+	Dyllan Lu
+	Wei Qiao
+	Chris Rock
+	Peter Shinners
+	Nelson Wang
+	Huong Grey
+
+Studio Technical Engineers
+	Mike Kramer
+	Ramon Rodriguez
+	Sean Laverty
+
+Production Team
+	Bejan Fozdar (Modeling)
+	Janet Garcia
+	Kim Horn (Animation)
+	Bryan Langford (Tech, Animation)
+	Steve McIlwain (Finishing)
+	Noel Wolfman (Dev)
+
+Additional Production
+	Taka Yasuda
+
+Interns
+	Drew Dobernecker
+	Chay Johansson
+	Joseph Magdalena
+
+CREATIVE DEVELOPMENT
+
+Manager
+	Shawn Carnes
+
+Art Director
+	Glenn Rane
+
+Artists
+	Mark Gibbons
+	Peter C. Lee
+	Wei Wang
+
+Producers
+	Ben Brode
+	Stuart Massie
+	Justin Parker
+	Gloria Soto
+	Sean Wang
+
+Historians
+	Sean Copeland
+	Evelyn Fredericksen
+
+Librarian
+	Steven Park
+
+Curator
+	Tim Campbell
+
+Additional Writing
+	Tim Daniels
+
+DVD and VIDEO PRODUCTION
+
+Manager
+	Joeyray Hall
+
+Associate Producer
+	Jennifer Owings
+
+Editor Staff
+	Terran Gregory
+	Tristan Pope
+
+Art Staff
+	David Durand
+	Joanna Cleland-Jolly
+
+Production Assistants
+	Brandan Vanderpool
+	Larissa Bussell
+
+PLATFORM SERVICES
+
+Director
+	Michael Gilmartin
+
+Producers
+	Shane Cargilo
+	Paul Sardis
+
+Programmers
+	Evan Calder
+	Ian Combs
+	Josh Hilborn
+	Marius Jivan
+	Juno Kwak
+	Robert Martin
+	Michael Murphy
+	Daniel Weltz
+	Elaine Fu Yang
+
+PLATFORM TECHNOLOGY
+
+Team Lead
+	Brian Fitzgerald
+
+Senior Producer
+	Melissa Meyer
+
+Producer
+	Dennis Crow
+	Brian Wright
+
+Programmers
+	Jay Baxter
+	Andrew Bellinger
+	Donald Grey
+	Huong Grey
+	Nate Gross
+	Michael Hershberg
+	Aaron Hesse
+	Isaac Jeon
+	Youngsik Lee
+	Robert Lin
+	Terence Lindsey
+	JC Park
+	Stephen Whiting
+	R. Blaine Whittle
+	John Yaney
+	Casey Yelland
+
+Artist
+	Ryan A. Pearson
+
+QUALITY ASSURANCE
+
+Regional QA Managers
+	Frederic Baudet (EU)
+	Jong Hyuk Lee (KR)
+	Mark Moser
+	Yvonne Yu Hong Shi (CN)
+
+Regional Assistant QA Managers
+	Kelly Chun
+	Ivo Garcia (ES)
+	Marc Ho (FR)
+	Edward Kang
+	Jonathan Mankin
+	Nicholas Pisani
+	Shawn Su
+	Sean McCrea
+
+Regional QA Leads
+	Alexander Ipfelkofer (DE)
+	Alexander Lyubov (RU)
+
+Lead QA Analyst
+	Paul Carver
+
+Assistant Lead QA Analysts
+	Edgar Flores
+	Kurtis Paddock
+	Rian Trost
+
+QA Content Specialists
+	Justin Boehm
+	Michael Corpora
+	Meghan Dawson
+	Benjamin Elgueta
+	Dan Kramer
+	Paul Kubit
+	Serban Oprescu
+	Art Peshkov
+	Bob Richardson
+	Candace Thomas
+
+QA Analysts
+	Don Adams
+	Scott Army
+	Matthew Barrett
+	Shawn Benson
+	Nick Betteker
+	Zach Bogatz
+	Robert Boxeth
+	Brent Brewington
+	Markus Burks
+	Zach Callanan
+	Dimitri Del Castillo
+	Colton Carmine
+	Kevin Carter
+	Jack Chen
+	Joni Cheng
+	Joel Clift
+	Bret Cocking
+	Peter Cormack
+	Tim Daniels
+	Andrew Dank
+	Kyle Dates
+	Christopher Davila
+	Whitney Day
+	Chris De La Pena
+	Andrew De Sousa
+	Lynn DeVries
+	Drew Dobernecker
+	Justin Dye
+	Foster M. Elmendorf
+	Garrett Elmendorf
+	Felix Embree
+	Victor Esquivias
+	Francis Fandino
+	Daniel Favela
+	Tim Feldman
+	Duncan Field
+	Mei Dean Francis
+	Casey Fulton
+	Scott Gordon
+	Jonathan Graves
+	Ed Hanley
+	Zaven Haroutunian
+	Jeff Hicks
+	Jason W. Hill
+	Nicholas Hill
+	Timothy Ismay
+	Brandon Jacobson
+	Xing Jin
+	Mark Kamimoto
+	Scott Keenan
+	David Kerwin
+	Lawrence King
+	Aron Kirkpatrick
+	Justin Klinchuch
+	Charles Knief
+	Neal Kochhar
+	Nathan LaMusga
+	Robert Laws
+	Ben LeBar
+	Brian Lee
+	Han Lee
+	Benjamin Lilley
+	Asher Litwin
+	Michael V. Liu
+	Nicholas Louie
+	Mitch Lowery
+	John Lynch
+	Joe Magdalena
+	Jeff Manners
+	Roman Voce Marotte
+	Sean Masterson
+	Chris McLeroy
+	Christopher John Mountain
+	Jeremy Nelson
+	Danny H. Nguyen
+	Tina T. Nguyen
+	David Ortiz
+	Alfredo Padron
+	Matt M. Patterson
+	Max Peters
+	Amadeus Phanthanh
+	Brian Pierron
+	Robert Pionke
+	Daniel Polcari
+	Jennifer Powell
+	Michael Powell
+	Eric Prescott
+	Derek Rakos
+	Joseph Ransom
+	Dustin Remmel
+	Anthony Reyes
+	Brad Rhodes
+	Jared Ritter
+	Rob Rivera
+	Cynthia Robbiola
+	Andrew Rowe
+	Jacob Rodriguez
+	Andreas Rounds
+	Andrew Russell
+	Joseph Ryan
+	Gilbert Samuelian
+	David Sanchez
+	Michael Sassone
+	Michael Schwan Jr.
+	Nate Shapiro
+	Matthew S. Sherman
+	Matthew D. Sherman
+	Angela Shih
+	John Shin
+	Jeffrey Shyy
+	Shaun Smiley
+	Anthony Sierra
+	James Southall
+	Rick Spears
+	Nicholas Stallings
+	Brandy Stiles
+	Steven Swickard
+	Graig Taylor
+	Eric Thibeau
+	Stephen Thomas
+	Max Thompson
+	Jonathan Throop
+	Enrico Tolentino
+	Dustin Trimble
+	Rodney Tsing
+	Tom Twedell
+	Charles Valek
+	Lewis Villamar
+	Don Vu
+	Kevin G. Wang
+	Clint Walls
+	Valerie Watrous
+	Kevin Weaver
+	Kyle Webb
+	Taylor Westfall
+	Jordan Womack
+	Ronny Yoon
+
+TECHNICAL QUALITY ASSURANCE
+
+Manager
+	John Herndon
+
+Team Leads
+	Rie Arai
+	Michael C. Chen
+	Matt Coburn
+	Clayton Dubin
+	Jason Messinger
+	Ian S. Nelson
+	Arec Nevers
+	Jason Weng
+
+Assistant Team Leads
+	Jonathan Mason
+	Lorenzo Minaca
+
+Analysts
+	Todd Attaway
+	Trent Cline
+	Josh Hilborn
+	Alicia Kim
+	James Leaman
+	Daniel Luo
+	Shaina Ludwin
+	Jonathan Mason
+	Lorenzo Minaca
+	Albert Portillo
+	Tom Ryan
+	William E. Smith IV
+
+COMPATIBILITY
+
+Assistant Manager
+	Ted Louie
+
+Team Leads
+	Jason Kwan
+	Hector Melendres
+
+Analysts
+	Zachary Chow
+	Joslyn Field
+	Ray Laubach
+	Matthew Panepinto
+	William Roseman
+	Benj Sykes
+	Eric Szymaszek
+	Renato Yoon
+
+Mastering Technician
+	Ray Laubach
+
+LOCALIZATION
+
+Global Manager
+	Richard Mark Honeywood
+
+Producers
+	Joseph Hsu
+	Andrew Vestal
+
+Regional Managers
+	Frederic Baudet (EU)
+	Joonho Lee (KR)
+	Jeffery Qixun Tang (CN)
+
+Regional Assistant Localization Managers
+	Tristan Lhomme (FR)
+	Inés Rubio (ES)
+
+Regional Localization Leads
+	Alexander Ipfelkofer (DE)
+	Alexander Lyubov (RU)
+	Julie Song (KR)
+
+Regional Localization Engineers
+	Alexander Böning (DE)
+	Christelle Bravin (FR)
+	Irene Buesa (ES)
+	Bruno Cailloux (FR)
+	Wonyoung Choi (KR)
+	Anne-Sophie Denglos (FR)
+	Sebastian Ewald (DE)
+	Concepción González (ES)
+	Shinyong Ha (KR)
+	Maria Kokova (RU)
+	Ievgen Makarevych (RU)
+	Maxim Mizin (RU)
+	Elisa Orellana Huhn (ES)
+	Carmen Priego (ES)
+	Katja Raaf (DE)
+	Alexis Roy-Petit (FR)
+	Leticia Sáenz (ES)
+	Stefan Schmitt (DE)
+	Maria Shurukhina (RU)
+	Anne Studer (FR)
+	Andrea Tüger (DE)
+	Anne Vétillard (FR)
+	Gayeong Yoo (KR)
+
+Regional Localization Test Leads
+	Christian Decomain
+	Ikhyun Kim (KR)
+	Jin Kim (KR)
+
+Regional Localization Analysts
+	Hyunyoung Ahn
+	Cosme Alcázar (ES)
+	Carlos Godó Borrás (ES)
+	Nikolay Bytskevich (RU)
+	Thomas Chabrier (FR)
+	Ben Choi (KR)
+	James Siqi Cui (CN)
+	Victor I. Dobrovatov (RU)
+	Ricardo Duran (ES)
+	Gilles Durosay (FR)
+	Arthur Flew (FR)
+	Thomas Flöter (DE)
+	Shon-Ting Fu (CN)
+	Lætitia Georges (FR)
+	Sara Gissot (FR)
+	Jimmie Jaimes (ES)
+	Sanghak Jeon (KR)
+	Jung Hwan Kim (KR)
+	Mike Euiseung Kim (KR)
+	Anton Kochergin( RU)
+	Eunae Kong (KR)
+	Byungwoo Kwon (KR)
+	Andrey Kuzmin (RU)
+	Minjin Lee (KR)
+	Pablo Lloreda (ES)
+	Rubén López (ES)
+	Jaewoo Mo (KR)
+	Kai Moosmann (DE)
+	Elena Ovchinnikova (RU)
+	Anna Parera Bohigas (ES)
+	Heeyoung Park (KR)
+	Kenneth Pinó (ES)
+	Michael Radnitz (DE)
+	Benjamin Schmidt (FR)
+	Peter Schneider (DE)
+	Pablo Martín Siota (DE)
+	Daniil Sokolov (RU)
+	Frédéric Vasseur (FR)
+	Dean Yang (CN)
+
+ONLINE TECHNOLOGIES
+
+Vice President of Online Technologies
+	Robert Bridenbecker
+
+Senior Producer
+	Jason Leu
+
+Producers
+	Bryan Chang
+	Justin Goad
+	Matthew Hawley
+	Kim Phan
+
+Battle.net Lead
+	Matthew Versluys
+
+Battle.net Programmers
+	Micah Caldwell
+	Bryan Cleveland
+	Anne-Sophie Lefebvre
+	Jeff Mears
+	Stefan Mohler
+	Brian Morin
+	Ryan Mills
+	Nicholas Rivera
+	Andrew Spiering
+	Hanlong Wang
+
+Battle.net Research Manager
+	Greg Ashe
+
+Battle.net Research Analysts
+	Matthew Adams
+	David Carey
+	James Chao
+	Norman Harms
+	Clint Rice
+	Matt Wheeler
+	Micah L Wilson
+
+Web Team Leads
+	Mike Hein
+	Ali Vatani
+
+Web Team
+	Cord Bartlett
+	Todd Blank
+	Qi Ming Chen
+	Jeremy Craig
+	Sarah Doebler
+	Randal Dumoret
+	David Eckel
+	Geoff Fraizer
+	Vincent Francoeur
+	Victor Gonzalez Jr
+	Dohyeong Kim
+	Edward Lee
+	Martin Leidenfrost
+	Jeff Liu
+	Steve McGarrity
+	Chris Myles
+	Joonho Park
+	Bryan Rathman
+	Keith Rhee
+	Jaime Scheffler
+	Alexander Sun
+	Andy Tran
+
+Billing Software Engineers
+	Chulwoong Choi
+	Frederick Dayhee Lee
+
+Support Tools Lead
+	Stephen Nees
+
+Support Tools Programmers
+	Brian Choi
+	Neil Chopra
+	Ryan Karg
+	Kenneth Lim
+	Mark Muncy
+	Mark Nelson
+	David Nguyen
+	Teddy Pao
+	Sasha Sydoruk
+
+Mobile Team
+	Steven Gabriel
+	Tony Shih
+	Zac Pfaff
+
+EUROPE ONLINE SERVICES
+
+Online Services Manager
+	Christina McCombie
+
+Producer
+	Rainer Mayer
+
+Software Team Lead
+	Mathieu Chauvin
+
+Programmers
+	Anselmo Talotta
+	David Odiot
+	Fanny Hermant
+	Guillaume Chaput
+	Laurent Bourcier
+	Philippe Peeters
+
+Web Design Team Lead
+	Bao Tran
+
+Web Design Team
+	Christopher Deutsch
+	Fabrice Piel
+	Ian Roberts
+	Prune Moldawan
+	René Koiter
+	Sören Geier
+
+Web Editorial Team Leads
+	Pierre Rosenthal
+	Yann Pallatier
+
+Web Editorial Team
+	Avril Cater
+	Cristina Martínez Jiménez
+	Eddy Béchu
+	Edna Weissflog
+	Elina Bytskevich
+	Francisco Bolaños Santana
+	Irina Kneller
+	Kelly Lopez
+	Philip Saloga
+	Romain Dijoux
+
+KOREA ONLINE SERVICES
+
+Director
+	Jungho Kwon
+
+Project Manager
+	Jiwoong Kim
+
+Web Design Team Manager
+	Hyojin Bae
+
+Web Design Team
+	Woonchang Beck
+	Hyunsuk Cheong
+	Seonghak Jung
+	Ayoung Kim
+	Joowan Kim
+	Sangwook Kim
+	Seyong (Simon) Lee
+	Ockkyoung Leem
+	Juyoung Oh
+	Minhyouk Pack
+	Minseok Seo
+
+Web Lead
+	Seungki Choi
+
+Web Programmers
+	Jisook Baek
+	Gisang Gil
+	Kwangbum Ha
+	Ajin Kim
+
+Support Tools Lead
+	Sangyong Park
+
+Support Tools Programmer
+	Jihoon Cho
+
+INFORMATION TECHNOLOGY
+
+Senior Global Director
+	Isaac Matarasso
+
+Global Director
+	Robert Van Dusen
+
+Director
+	Jean-Michel Courivaud
+	Changuk Park
+
+Global IT Managers
+	Weonseok Choi
+	Chris Fajardo
+	Chris Glover
+	Dustin Koupal
+	Kangho Lee
+	Julien Mariani
+	Hung Nguyen
+	Yong Yoon
+
+Information Technology
+	Armando Abanilla
+	Carol Alvarez
+	Chris Antenesse
+	David Ashman
+	Jason Avakian
+	Jorge Baranda
+	Andrew Barcinski
+	Karin Baxter
+	Charlie Berman
+	Jeffrey Berube
+	Jonathan Berube
+	Travis Biegun
+	Ahren Boulanger
+	Forrest Bowling
+	Gandalf Brahm
+	Carl Brumm
+	Edward Bui
+	Robert Bustamante
+	Mike Bybee
+	Matt Carcel
+	Michael Caron
+	Joshua Caskey
+	Curtis Castrapel
+	Michael Chizewski
+	Hyungsuk Choi
+	Joseph Cochran
+	Alexander Daurskikh
+	Ryan Dean
+	Nicholas Downs
+	Maciej Drobny
+	Matthew Eagleson
+	Inés Eberhard
+	Amanda Evans
+	Stanley Fu
+	Arnold Fulmer
+	Nicolas Goulard
+	Ryan Gunst
+	Edward Harborne
+	Brian Hartsell
+	Scott Harrison
+	Dwight Harvey
+	Lutz Haunstein
+	Thomas L. Hicks
+	Brian Hill
+	Joseph Holley
+	Gichang Hong
+	Jonathan Hosmer
+	Andrew Hunt
+	Thomas Jauneault
+	Matthew Jordan
+	Mourad Kaci
+	Yan Kahlé
+	Taehee Kang
+	Rick Kennedy
+	Richie Kharrat
+	JungHoon Kim
+	Minhong Kim
+	Yoongjun Kim
+	Jaemin Ko
+	Sean Laverty
+	Changkoo Lee
+	Jay Lee
+	Sebastien Leterrier
+	Dale Lewis
+	Corey Louie
+	Randy Lovin
+	Bryan Ludwig
+	Adrian Luff
+	Matthew McEligot
+	Zak Meekins
+	Robert Meyer Jr.
+	Mike Moneymaker
+	Tamra Morgan
+	Michael Mulen
+	Brian Murillo
+	Olam Ng
+	Danny Nguyen
+	Dat Nguyen
+	Thi Nguyen
+	Nicolas Noble
+	François Noël
+	Ben Orchard
+	Mike Pearce
+	Robert Perugini
+	Christopher Peters
+	Brice Petibas
+	Fabien Poussin
+	Shay Pressler
+	Gary Reeb
+	John Robertson
+	Paulo Santos
+	Daniel Scauzillo
+	Michael Schaefer
+	Henrik Schöpel
+	Edward Silveira
+	Mathew Smiley
+	Duffy Squier
+	Thierry Sudan
+	Anthony Suh
+	Casey Suyeto
+	Alex Tan
+	Eric Thedaker
+	Stefan Thompson
+	Hugh Todd
+	Christopher Towne
+	Bill Tubbs
+	Tim Vo
+	Stefan Ward
+	David Wareham
+	Maximilian Weber
+	Anthony Williams
+	Ty Williams
+	Albert Wong
+	Jaime Wood
+	James Yen
+	Yunhwan Ahn
+	Ryan Zapanta
+	Vanness Zhou
+
+Purchasing
+	Michele Arko
+	Anant Singh
+
+OPERATIONS
+
+Guillaume Bloch (EU)
+	Jon Dvorak
+	Emy Hetherington (EU)
+	Denise Hicks
+	Dagmara Lebiedzinska (EU)
+	Lara Machado (EU)
+	Brianne Messina
+	Mark Nash (EU)
+	Anita Rice
+	Jean-Pierre Poulain (EU)
+	Inma Utrilla (EU)
+	Ann Ta
+	Constance Wang
+
+Facilities Manager
+	Henry Szekely
+
+Facilities
+	Timothy Hardy
+	Samuel Schrimsher
+	Brandon Shephard
+	Steve Stafford
+
+Management Team, Europe
+	Anne Bérard
+	Julia Gastaldi
+	Delphine Le Corre
+	Fréderic Menou
+	Jean-Michel Courivaud
+	Benoit Dufour
+	Cédric Maréchal
+	Michèle Bérot
+	Anne-Sophie Buiret
+
+Managing Director, Korea
+	Jungwon Hahn
+
+Managing Director, Greater China
+	Michael Fong
+
+Managing Director, Taiwan
+	Wayne Lee
+
+MARKETING
+
+Senior Vice President of Global Marketing
+	Neal Hubbard
+
+Global Marketing
+	John Heinecke
+	Tomas Melian
+
+Regional Marketing
+	Anne Berard
+	Kevin Carter
+	Eric Chauveau
+	Mark Clements
+	Chris Davey
+	Qimin Ding
+	Seungkyu Han
+	Marc Hutcheson
+	Ben Hsieh
+	Donghyun Kim
+	Richard Kwon
+	Michael Lawrence
+	Patrick Lee
+	Cédric Maréchal
+	Kyungin Min
+	Eric Modolin
+	Jinho Oh
+	Byungho Park
+	Stephane Perroud
+	Amanda Wang
+	Maggie Xiao
+	Chris Zhu
+	Robin Zhu
+
+Marketing Creative Services
+	Dave Amason
+	Mike Bannon
+	Zachary Hubert
+	Erik Jensen
+	Steve Parker
+	Anthony Rietta
+	Mark Sison
+	Brett Wooldridge
+	Caroline Wu
+
+PUBLIC RELATIONS
+
+Vice President of Global Public Relations
+	Lisa Jensen
+
+Director of Communication and Community
+	Julia Gastaldi (EU)
+	Youngmok Park (KR)
+
+Managers
+	Guy Cunis (EU)
+	Shon Damron
+	Christy “Mina” Um (KR)
+	Carrie Zhang (CN)
+
+Public Relations and Community Manager of Taiwan, Hong Kong and Macau
+	Chi Liu
+
+Public Relations
+	Bob Colayco
+	Kacy Dishon
+	Eunyoung “Jessie” Kim (KR)
+	Seongjung Kim (KR)
+	Ben Schroder (EU)
+	Christian Vestøl (EU)
+	Vale Yu (CN)
+
+Senior Editorial Manager
+	Gil Shif
+
+Editorial Assistant
+	Gareth Hughes
+
+COMMUNITY and eSPORTS
+
+Senior Manager, Global Community and eSPORTS
+	Paul Della Bitta
+
+eSports Manager
+	Joong Kim
+	Ken Lau (CN)
+
+eSports
+	Joshua Owyang
+	Stephen Chang
+
+Community Manager
+	Daniel Chin
+	Ramon Hermann (EU)
+	Jerry Wang (CN)
+	Jerome Wu (CN)
+	Hyejin Yum (KR)
+
+Community
+	Santiago Baranda
+	Jonathan Brown
+	Andre Buchmann (EU)
+	Marie Cabot (EU)
+	Christopher Carter (EU)
+	Nicolas Guion (EU)
+	Andrew Hsu
+	José Ignacio de Andrés (EU)
+	Jongwon Lee (KR)
+	Tobias Jahn (EU)
+	Thomas Johnsen (EU)
+	Chad Jones
+	Sunna Kim (KR)
+	Liam Knapp
+	Jinkyu Ko (KR)
+	Nicole Lorenz (EU)
+	Antonio Moreno (EU)
+	Benedikt Oehmen (EU)
+	Marc S. Olbertz (EU)
+	Yooseok Pan (KR)
+	Byunghun Park (KR)
+	Jean-Baptiste Pennes (EU)
+	Jesse Perez
+	Arron Rasmussen
+	Alejandro Riveiro de la Peña (EU)
+	Kester Robison
+	Jessica Schleder (EU)
+	Bo Selmer-Hansen (EU)
+	Danielle Vanderlip
+	Micah Whipple
+	Jino Yoo (KR)
+	Seunggook Yang (KR)
+	Kevin Yu
+	Kenny Zigler
+
+EVENTS
+	Elisha Cabrera
+	Elodie Dupuis (EU)
+	Laura Grant
+	Pauline Hammelet (EU)
+
+BUSINESS DEVELOPMENT and LICENSING
+
+Global Director
+	Cory Jones
+
+Licensing
+	Gina Pippin
+	Patrick Dillon
+	Jason Bischoff
+	Ben George
+	Elizabeth Cho
+
+Business Development
+	Steven Price
+	Sarah Tucker
+	Marc Dion
+	Paul Dowling
+	Audrey Vicenzi (EU)
+
+HUMAN RESOURCES
+
+Vice President of Global Human Resources
+	Denise Dunlap
+
+Human Resources
+	Valérie Chrétien (EU)
+	Julianna Danner
+	Juliette Durand (EU)
+	Peter Guibert (EU)
+	Christopher Kopetschek (EU)
+	Marije Korver (EU)
+	Jennifer Martin
+	Nicolette Martinez
+	Melissa Moloney (EU)
+	Laetitia Planchon (EU)
+	Lisa Pozarich
+	Gabriel Ropers (EU)
+	Erika Sayre-Smith
+	Michelle Secrest
+	Daniela Shani
+	Anne Stengel (EU)
+	Marianne Tierney (EU)
+	Sunshine Toledo
+
+Global Manager, Organizational Development and Training
+	Lisa Pearce
+
+Organizational Development and Training
+	Julie Farbaniec
+	Rosie Haubner
+
+Sr. Manager, Global Staffing and Recruitment
+	Leonard Grossi Jr.
+
+Recruitment
+	Kenny Carvalho
+	Choua Her
+	Michael Nassar
+	Sunshine Saint Onge
+	Aaron Orcino
+	Sumer Ortiz
+	Jack Sterling
+	Kriste Stull
+	Asheesh Thukral
+
+FINANCE
+
+Vice President of Global Finance
+	Mark Almeida
+
+Finance
+	Andrew Amadi
+	Tobias Beclin (EU)
+	Julia Bruder (EU)
+	Shien Chang
+	Jiyoung Chung (KR)
+	Jamie Crooks
+	Benoit Dufour (EU)
+	David Gee
+	Jaechang Kim (KR)
+	Kidae Kim (KR)
+	Sunyoung Ham (KR)
+	Mandy Lawton (EU)
+	Adam Plushner
+	Hong Sing Teh (CN)
+	Sergio Vitaliti (EU)
+	Ian Wynne
+
+Administration
+	Heather Foreman
+	Carlos Lucero
+	Ryan Schenk
+	Melinda Williams
+
+LEGAL
+
+General Counsel
+	Eric Roeder
+
+Legal
+	Kevin Crook (Global)
+	Rod Rigole (Global)
+	Jane Chen (CN)
+	Antoine Guyard (EU)
+	Satoru Hamadam (EU)
+	Fritz Kryman
+	Eddy Meng (CN)
+	James Shaw
+	Peter Ty
+
+GLOBAL CUSTOMER SERVICE
+
+Director
+	Thor Biafore
+
+Senior Manager, North America
+	Jason Stilwell
+
+International Manager
+	Michael Pierce
+
+International Support Leads
+	Pierre Braude
+	Peiji Guo
+	Michael Sun
+	Ian Ho
+
+Project Management
+	Michael Su
+	Brian Wright
+	Gary Young
+
+TECHNICAL SUPPORT
+
+Manager
+	John Hsieh
+
+Assistant Manager
+	Kyle Williams
+
+Technical Support Leads
+	Adam Slack
+	Andreas Unger
+
+Technical Support Seniors
+	Jamal Davis
+	Anton Hsin
+	Adam Koch
+	Michael Nguyen
+	Friedrich Stegmann
+	Mataio Wilson
+
+Representatives
+	Josh Black
+	Jeff Boccuzzi
+	Nathan Brown
+	Jeff Carlo
+	Sam Carne
+	David Chan
+	Evan Crawford
+	Jon Day
+	Ken DePalo
+	Derek Duhon
+	Claudio Gentilini
+	Dat Ho
+	Katt Jean
+	Philip Kim
+	James Kompare
+	Tom Lillehoff
+	Mike Lim
+	Dan Morningstar
+	Wissam Muhialddin
+	Tommy Newcomer
+	Peter Nott
+	Mike Reardon
+	Chuck Salzman
+	Matthew Simmons
+	Nick Solano
+	Marty Tande
+	Daniel Watson
+
+BILLING and ACCOUNT SERVICES
+
+Manager
+	Charlie Areson
+
+Assistant Manager
+	Alan Marti
+
+Billing Leads
+	Erynn Caldwell
+	Matthew Vineyard
+	Rory Wood
+
+Billing Seniors
+	Marcus Bishop
+	J.D. Calzada
+	Lance Kimberlin
+	Tim Maggio
+	Evan Peterson
+	Christian Reynolds
+	Ryan Reddick
+	Jason White
+
+Representatives
+	Rameses Arias
+	Jessica Barnhart
+	Anne Marie Belland
+	Jon Bias
+	Austin Cornell
+	Jason Crewse
+	Damien Currano
+	Paulino Diaz
+	Dustin Distefano
+	Austin Feeney
+	Danny Flannagan
+	James Garner
+	Leah Garner
+	Denis Genest
+	Mark Hamm
+	William Harber
+	Adam Hector
+	Christina Helbig
+	Michael Horning
+	Jacob Hurst
+	Jami Hurst
+	Mathew Kishimoto
+	Matthew Kuhn
+	Laura Lam
+	Heidi Lindsey
+	Geri Kate Macalino
+	Xuan Mai
+	Gilbert McGuire
+	Aaron Orcino
+	Sheila Perez
+	Andrew Phaneuf
+	Vernon Poling
+	Lance Powell
+	Don Prentice
+	Megan Puertas
+	Regina Ramirez
+	Antonia Ryan
+	Mark Slater
+	John Steinert
+	Chris Swoner
+	Michael Triglia
+	Justin Tritt
+	Colleen Tulley
+	Fabio Ventura
+	Steven Walker
+	Ted Wang
+	Joshua Wittge
+	Amanda Wood
+	Steven Worcester
+	John Zappulla
+
+IN-GAME SUPPORT
+
+Senior Manager
+	Bill Galey
+
+Assistant Managers
+	Richard Barham
+	James Drosche
+	Keith Duncan
+	Keith Kanneg
+
+Support Leads
+	Amber Bittenbender
+	Michael Burghart
+	Andrew Cox
+	Raven DeLara
+	Pat Feinauer
+	Cory Larson
+	Justin Liedel
+	Patrick Lorenz
+	Marcus Maczynski
+	Matthew Martin
+	Makenna Mills
+	Julio Miranda
+	Craig Pratt
+	Nicholas Ray
+	Kyle Riseling
+	Dean Shelden
+	Jason Throop
+	Ryan Treadwell
+	Miles Trumble
+	Alyson Turner
+
+Support Seniors
+	Spencer Aitken
+	Michael Alcorn
+	Fred Benson
+	Justin Chesser
+	Damien Chow
+	Andrew Clisson
+	Randy Coffman
+	Angelo Concepcion
+	Jason Copeland
+	Hunter Curren
+	Joe Currivan
+	Justin Davey
+	Eric Davis
+	Aaron Denton
+	Peter Drummond
+	Patrick Evans
+	Richard Evans
+	Thomas Farrell
+	Adam Ferguson
+	Patrick Fitzgerald
+	Theodore Gegoux
+	Andrew Glaser
+	Luis Gomez
+	Aaron Green
+	Jacob Hofeldt
+	Peter Hsu
+	Adam Hughes
+	Calleah Kaiser
+	Michael Kanneg
+	Robert Kezar
+	Dylan Kho
+	Scott Koller
+	Antonio Kontokanis
+	Alex Koreneff
+	Stephanie Krutsick
+	David LaVallee
+	Jim Leggat
+	Brian Libby
+	Jeff Luckman
+	Shannon McCartney
+	Sean O'Neil
+	Sam Park
+	Harold Pendery
+	Michael Pereira
+	Sergio Porres
+	Evan Powers
+	Bruce Prescott
+	Johnathan Raynor
+	Richard Romasanta
+	Joshua Ruch
+	William Shepard
+	Darryll Silva
+	Michael Srithapin
+	Erik Tabor
+	David Tamayo
+	Ken Tan
+	Duane Than
+	Aaron Uesugi
+	Nicholas Vineyard
+	Robert Webb
+	Keith Willingham
+	Matt Worcester
+	Aaron Yasukochi
+	James Young
+
+Representatives
+	Tyler Agee
+	Spencer Aitken
+	Lee Ake
+	Stephen Alvarado
+	Juan Alvarez
+	Neil Anderson
+	Steven Apodaca
+	Michael Archuleta
+	Ramiro Ascencio
+	Michael Aversa
+	Sean Baade
+	George Backus
+	Gregory Bahl
+	Christopher Bailey
+	Andrew Balch
+	Jennifer Balch
+	David Barney
+	Eric Baskin
+	Danai Bastin
+	Ron Beaty
+	Jerimiah Bell
+	Robert Belleville
+	Michael Belrose
+	Kenneth Benedict
+	Knute Berger
+	Michael Bernal
+	Bradley Edmund Bernhard
+	Josh Berryman
+	Nicholas Bialostosky
+	Beau Billingsley
+	Michael Billman
+	Dana Bishop
+	Howard Bishop
+	Aaron Bothne
+	Ben Bowers
+	Keaton Bracy
+	Keith Breach
+	Crystal Breaux
+	Daniel Brennecke
+	Jonathan Brockell
+	Deborah Brooks
+	Christa Buckentin
+	Stephen Buitron
+	Brian Bula
+	Dave Byer
+	David Byl
+	Amanda Canfield
+	Kyle Cannon
+	Trevor Cantrell-Paulson
+	Daniel Carpenter
+	Alan Carr
+	Daniel Carroll
+	Jim Chan
+	Michael Chauvet
+	Brandon Christenson
+	Jeremiah Clark
+	Stephen Clarkson
+	Jeff Clausen
+	Angela Cleere
+	Duncan Coe
+	Michelle Coltrin
+	Ernest Completo
+	Alexander Coons
+	Ethan Copeland
+	Ian Crawford
+	Tyler Crawford
+	Jerod Crespin
+	Nathan Crislip
+	Chris Crowson
+	Brandon Crumpler
+	Hunter Curren
+	Laura Currie
+	Chris Curtis
+	Chris Cynar
+	Kevin Daniels
+	Keven Dannenbring
+	Will Darce
+	Allen Dauphin
+	Gary Davis
+	Joshua Davis
+	Kevin Davis
+	Wesley Day
+	Neil de Soto
+	Brian Deering
+	Sebastian Delascurain
+	Ben Dickey
+	John Diers II
+	Richard Dievendorff
+	Brandon DiMaggio
+	Michael Dinger
+	Kendall Dodd
+	Gene Dodge
+	Raymond Donaldson
+	Forrest Dorsey
+	John Downing
+	Camille DuBose
+	Landry Dugan
+	Reagan Duggan
+	Oana Dumitrache
+	Daniel Dylla
+	Adam Ebmeier
+	German Echeverria
+	Andrew Eddy
+	Jonathan Estes
+	Page Evans
+	Michael Guy Ferguson
+	Joy Fields
+	Kristin Finnsson
+	Jens Fischer
+	David Fisher
+	Matt Fitzgerald
+	Peter Fivelstad
+	Tom Flint
+	Casey Foreman
+	Ryan Foreman
+	Wesley Foults
+	Ryan Fowler
+	Nick Frame
+	Anthony Franey
+	Gerald Freeman
+	Christopher Frew
+	Matthew Frisch
+	Cynthia Frushon
+	Christopher Fulgham
+	Alfred Gabriele
+	Andrew Galipeau
+	Justin Gann
+	Jerardo Garcia
+	Chris Garrett
+	Joseph Garrett
+	Aaron Gayet
+	Andrew Getting
+	Nik Gianozakos
+	Jesse Gibbons
+	Casey Glenn
+	Levi Godwin
+	Jeffrey Gondeck
+	Thomas Goodwin
+	Chris Gorman
+	Darleen Gotay
+	Desmond Gregory
+	Cody Griffith
+	Kimberly Grimes
+	Alexander Gustafson
+	Anthony Gutierrez
+	Daniel Hackel
+	Nick Hamm
+	Daniel Hammer
+	Gregory Hansen
+	Richard Hardy
+	Brian Hartsell
+	Allison Harvey
+	Brandon Harvey
+	Benny Haryadi
+	Kyle Hawkins
+	Shaun Hawkins
+	Christopher Heidick
+	Thomas Hendricks
+	Robert Henson
+	Sara Hernandez-Land
+	Jameson Hodge
+	Chad Hodgson
+	Robert Hoff
+	Sam Holder
+	Sara Holliday
+	David Hoppe
+	John Hosemann
+	Travis Howsman
+	Sam Hunt
+	Nicholas Hunter
+	Craig Hyatt
+	Shaun Ingram
+	Elizabeth Jackson
+	Ruben Jasso
+	Patricia Jennings
+	Barbara Johnson
+	Nathan Johnson
+	Stephanie Johnson
+	Ian Jolly
+	Devin Julia
+	Scott Kane
+	Daniel Kanneg
+	David Keel
+	Matt Kenemore
+	Dylan Kho
+	Grace Kim
+	Lily Kim
+	Michelle Kolano
+	Ruth Kolbeck
+	Markus Kraus
+	Stephanie Krutsick
+	Erica Kuschel
+	Shaun Kuschel
+	Jason Kwon
+	Judson Ladd
+	Jeremy Lambertson
+	Kelly Lanahan
+	John Lanier
+	Paul Lara
+	David LaRocca
+	Amber Larson
+	Robert Laws
+	Ben Lebar
+	Guillermo Ledesma
+	Jeffrey Leonhardt
+	Davis Lidiak
+	David Lim
+	Jeffrey Lim
+	Erik Lindberg
+	Justin Liquorman
+	James Logan
+	Thomas Long
+	Luke Lovett
+	Matthew Lucero
+	Jeanna Lundgren
+	Robert Lundgren
+	Travis Mansbridge
+	Jeremy Marshall
+	Jorge Mata
+	David Maxwell
+	Patricia May
+	Walter Mazza
+	Robert McBride
+	Timothy McBride
+	Daniel McClellan
+	Robert McCollum
+	Luke McCorkle
+	Max McDuffee-Smith
+	Shannon Meadors
+	Ronda Melendez
+	Nicholas Mennen
+	George Merrill
+	Keith Meves
+	Doug Miller
+	James Mills
+	Tony Misgen
+	Adam Moghaddassi
+	Mickey Molad
+	Lloyd Moore
+	Marcos Morin
+	Michael Mumford
+	Shawn Munro
+	Krystine Munshower
+	Mike Munson
+	Kirsten Murchison
+	Julian Murray
+	Steven Nabours
+	Daniel Nagel
+	Patrick Nagel
+	Ramon Navarro
+	Seth Nesenholtz
+	Michael Nichols
+	Russel Nilsson
+	Vicky Nott
+	Audra Oberloh
+	Edward Olivieri
+	Daniel Ortega
+	Aaron Ortiz-Clay
+	Kyle Otsu
+	Zachariah Owens
+	Adem Ozkum
+	Irene Pacheco
+	Andrew Palan
+	John Patenaude
+	Ian Patterson
+	Ryan Peach
+	Aaron Pemberton
+	Rachel Perey
+	Steven Pereyda
+	Erik Perez
+	Jacob Perez
+	Jesse Perez
+	Kristen Pettey
+	Terry Phelps
+	Brian Pierron
+	Anthony Piperato
+	Kaleb Placek
+	Josh Portillo
+	Shaun Potts
+	Chris Presnall
+	Timothy Preston
+	Joshua Proffitt
+	Sean Quinlan
+	Olivia Quintanilla
+	Joseph Ragsdale
+	Jesse Ramazani
+	Ignacio Ramirez
+	Henry Ramos
+	Brandon I Ramsey
+	Christiaan Rascon
+	Kristina Rathburn
+	Rafael Raudry
+	Tyler Raygoza
+	Andrew Rexroth
+	Brad Rhodes
+	John Richardson
+	Joshua Riggs
+	Preston Roberts
+	Stephen Robinson
+	Dustin Rockers
+	Jacob Rodriguez
+	John Rodriguez
+	Kenneth Rogers
+	Derek Ronzo
+	Jordan Rosales
+	Derek Rosenberg
+	Shoshanna Rubin
+	Patrick Rusche
+	Jodie Rutherford
+	Brendan Ryan
+	Michael Sacco
+	Mitchell Saenz
+	Sean Salazar
+	Jason Sampankarnpanich
+	William Sanders
+	Garett Savard
+	Jared Schiller
+	Justin Shade
+	Brandon Shelton
+	Chase Sherman
+	Timothy Shroat
+	Wayne Skarboszewski
+	Woody Skiba
+	Anthony Snow
+	Brian Snyder
+	Shant Soghomonian
+	Robert Spann
+	Matthew Spence
+	Ian Stamatedes
+	John Stapleton
+	Chad Starkey
+	Ryan Steinhoff
+	Jared Stepp
+	Evan Stoudenmire
+	Matt Stratford
+	Dallas Stringham
+	Timothy Tash
+	Victoria Thacker
+	Deana Thiem
+	Jason Thomas
+	Josh Thornton
+	Cliff Threadgold
+	Jonathan Throop
+	Chance Tijerina
+	Jason Torres
+	Jenny Towner
+	Antoine Traylor
+	Michael Trotzuk
+	Jimmy Truong
+	Thomas Van Scyoc
+	Alex Van Winkle
+	Kevin Vanderlaan
+	Richard Varga
+	Christopher Veazey
+	Devin Vink
+	Tim Voris
+	Jeffrey Walent
+	Keri Waller
+	AC Ward
+	David Warner
+	Robert Warner
+	Nicole Watkins
+	Devin Webster
+	Lucas Welch
+	Chris Whitaker
+	Steven Whitaker
+	Tracy Whitehead
+	Daniel Wiley
+	Joseph Willett
+	Aaron Williams-Mayer
+	John Wisnewski
+	Neal Wojahn
+	James Wong
+	Adam Wright
+	Justin Yandell
+	Nicole Yandell
+	Eric Yasukochi
+	Mary Yellott
+	Kea Yonni
+	Amber Young
+	James Young
+	Kacey Yucikas
+	David Zemek
+	Adam Zweig
+
+QUALITY CONTROL
+
+Manager
+	Joshua Horst
+
+Assistant Manager
+	Ryan Quinn
+
+QC Lead
+	Aaron Bamblett
+
+QC Training Lead
+	Richard Eggleston
+
+QC Seniors
+	Kara Amendola
+	Dustin Bosteder
+	Scott Busbea
+	Jeremy Chasey
+	Tom Edwards
+	Lyndsi Revis
+
+Representatives
+	Amit Bader
+	Bonnye Bauerle
+	Ryan Belanger
+	Matt Burns
+	Adrian Butts
+	Jhazmin Carnes
+	Chris Cavallo
+	Blake Chafin
+	Brandy Corbin
+	Peter DeSalvo
+	Leann Evans
+	Tim Evans
+	Manuel Gonzales
+	Keith Hall
+	Jacqueline Harrison
+	Heather Holloway
+	Kelli Johnson
+	Kevin Johnson
+	Gavin Jurgen-Fyhrie
+	Neal Kochhar
+	Darlene Kolano
+	Seth Lindner
+	Jon Loeffler
+	Michael Lukenbill
+	Matthew McKee
+	Chung Ng
+	Shawn No
+	Ari Nur
+	Bryan Nystul
+	Chelsea Olson
+	Lauren Ortiz
+	Matthew Rader
+	Jessica Ramirez
+	Victoria Rayno
+	David Richards
+	Mary Sides
+	Nicholas Smith
+	Pete Staley
+	Melissa Ullrich
+	Dustin Vail
+	Tanya Wall
+	Randall Ward
+	Thomas Watson
+	Nathan Wee
+	Benjamin Williams
+
+EUROPE CUSTOMER SERVICE
+
+Director
+	Frederic Menou
+
+Technical and Billing Support Manager
+	Marie-Hélène Atienz
+
+Ireland Site Manager
+	Robert Ashby
+
+Coordinator
+	Marlène Cervantes
+
+Back Office Manager
+	Ernst ten Bosch
+
+Documentation team
+	Serge Olivier
+	Michael Stum
+	Martin Tegner
+
+TECHNICAL SUPPORT (EU)
+
+Techical Support Lead
+	Cedryck Poitelon
+
+Technical Support Seniors
+	Claus Schumacher
+	Aidan Mc Loughlin
+	Alexandre Vallee
+
+Representatives
+	Christoph Grix
+	Mark Klang
+	Lars Kuhne
+	Holger Speckter
+	Ryan Campbell
+	Alisdair Comb
+	Barry Connell
+	Mario De Rienzo
+	Michael Graham
+	Kenneth Graulund
+	Michael Pinder
+	Andrew Robson
+	Richard Segers
+	Oyvind Sorensen
+	Jenifer Winters
+	Hernan Gonzalez
+	Alexander Mochi
+	Eric De Freslon
+	François Medaerts
+	Vincent Moitrot
+	Aymeric Pentecouteau
+	Alexis Terrasse
+	Julien Vale
+	Ian Polianskii
+
+BILLING (EU)
+
+Billing Lead
+	Johnny Ahlgren
+
+Billing Seniors
+	Alexander Berghoff
+	Sanja Peric
+	Ana Manso
+	Matteo Spataro
+	Neil Whelan
+	Gregoire Bonnafoux
+
+Representatives
+	Franck Alshut
+	Tim Denke
+	Carolin Dittman
+	Christian Eberhardt
+	Frances Fobke
+	Waldemar Fritz
+	Bandar Garski
+	Alexander Gut
+	Frank Heling
+	Brenika Janiszewski
+	Markus Kaldenbach
+	Konrad Kirchgassner
+	Jens Kirchhoff
+	Christian Konigstein
+	Sascha Leopold
+	André Linnemann
+	Maria Loy
+	Geir Mjosund
+	Francesco Reinboldt
+	Volker Stabler
+	Stephan Wolf
+	Judith Zachariae
+	Sandra Milena Alarcon Ruiz
+	Julia Bedell
+	Tina Crook
+	Noemi Cugudda
+	Julie Foster
+	Laura Godfrey
+	Nicolas Harding
+	Kathryn Hyder
+	Joanne Ingham
+	Matthijs Jansen
+	Laila Mnad
+	Christopher Purvis
+	Thomas Schoeneburg
+	Sanjay Shinh
+	Charles Smith
+	Kurt Smith
+	Vinh Tran
+	Maria Victoria Martin Briasco
+	Francisco Sanchez Campos
+	Pierre Marc Arnaud
+	Olivier Grassini
+	Timur Kocaurlu
+	Ludivine Le Rouge
+	Christophe Monteiro
+	David Remy Zephir
+	Hadrien Rudich
+	Arnaud Schwarz
+	Ismaël Villeger
+	Romain Mardot
+
+ACCOUNT SERVICES (EU)
+
+Account Services Lead
+	Thomas Lenglet
+
+Account Services Seniors
+	Paul Oltmanns
+	Marios Aziz
+	Carine Fiorani
+	Guillaume Richard
+	Britta Riess
+
+IN-GAME SUPPORT (EU)
+
+Managers
+	Rinaldo Andreolli
+	Emmanuel Obert
+	Christian Scharling
+
+Leads
+	Erin Johanson
+	Gaetan Martens
+	Frank Keienburg
+	Philip Thiede
+	Sophie Bellegarde
+	Cedric Gallins
+	Peter Rothlisberger
+	Linus Fink
+	Jason Adams
+	Hansjörg Brandt
+	Clemens Krainer
+	Mikhail Shiryaev
+
+Seniors
+	Kasper Giehm
+	Kim Jensen
+	Neal Kingston
+	Jean-Christophe Bouchet
+	Ronnie Hansson
+	Gurpreet Wahla
+	Alexander Bradburn
+	Fredrik Svantes
+	Rob Kuczynski
+	Steven Dwyer
+	Ben Noskeau
+	Sylvan Lynn
+	Cristiano Pereira
+	Huw Gower
+	Paul Horrel
+	Thomas Hemingway
+	Iwan De Kleine
+	Sverre Rasmussen
+	Emma Lorking
+	Thommy Jerneskorg
+	Alexander Becker
+	Lucas Christophe
+	Silvio Clausen
+	Dennis Czybulka
+	Göran Gauruder
+	Florian Mentl
+	Alexander Otto
+	Elisabeth Astl
+	Henning Kaiser
+	Mirko Bayer
+	Florian Bläsche
+	Lars Weiler
+	Thomas Röthemeyer
+	Heidi Wanner
+	Mario Berndt
+	Falk Schwiefert
+	Sascha Giese
+	Markus Schill
+	Robin Höse
+	Navid Akbari
+	Andreas Liebau
+	Kim Chaing
+	Gaël Company
+	Vincent Kaufmann
+	Elodie Choliere
+	Sebastien Hoareau
+	Serge Pincon
+	Nicolas Passemard
+	Frédéric Rochet
+	Miguel Izquierdo
+	Sergi Berjano
+	Isidro Tellez
+
+Representatives
+
+GERMAN
+	Marco Alemanno
+	Stefan Bahr
+	Björn Bartholome
+	Gregor Beck
+	Sebastian Beer
+	Julius Beiner
+	Jens Bekemeier
+	Benjamin Berghäuser
+	Christian Berwind
+	Michael Blumenthal
+	Stefan Böhme
+	Patrick Bohrer
+	Dirk Bömelburg
+	Bianca Braun
+	Daniel Brockdorff
+	Daniel Bromand
+	Anton Brumme
+	Matthias Butter
+	Mads Carstens
+	Stefan Christ
+	Martin Dammers
+	Oliver Danckers
+	Patrick Dekoepper
+	Christian Döbel
+	Martin Doll
+	Dennis Drabinski
+	Stefan Duffner-Hansmann
+	Alexander Düsseldorf
+	JanKonrad Ebermann
+	Björn Ebner
+	Stephan Einecke
+	Thomas-Christian Endres
+	Jens Fehr
+	Jörg Franck
+	Kai Frankenberg
+	Martin Franz
+	Eva-Maria Fritsche
+	Jens Fünfkirchler
+	Mathias Gabel
+	Krystian Gawron
+	Silvio Geisenhainer
+	Sonja Göden
+	Marco Golüke
+	Christopher Göttfert
+	Lorenz Graf
+	Robin Graf
+	Markus Graffe
+	Frerk Güntzler
+	Steffen Gutzeit
+	AndrewGordon Haefs
+	Tobias Hänseler
+	Patrick Happel
+	Marc Hartmann
+	Alexander Haselbacherm
+	Marcel Haug
+	Roman Häusler
+	Sandra Heide
+	Christian Heidrich
+	Eugen Heller
+	Johannes Hilgert
+	Nicolas Hodapp
+	Michael Hoffmann
+	Julia Hopf
+	Dennis Horn
+	Martin Jagla
+	JanMichael Jahnke
+	Markus Jorissen
+	Sven Jost
+	Marc Jung
+	Matthias Kiesel
+	Markus Kintrup
+	Sören Klein
+	Harald Kneissl
+	Matthias Koch
+	Sonja Köck
+	Sebastian Kolodzik
+	Viktor König
+	Albert Konrad
+	Stefan Krannich
+	Max Kreisel
+	Christian Kröger
+	Nina Kroner
+	Sven Kruse
+	Thomas Küppers
+	Matthias Labitzke
+	Rene Langhans
+	Gordon Lathan
+	Tim Laufenberg
+	Johannes Läuffer
+	Martin Leipold
+	Wilko Lennartz
+	Torsten Lill
+	Björn Löhrer
+	Oliver Lötscher
+	Michael Lueth
+	Mike Lütjens
+	Marc Luttecke
+	Sebastian Magnus
+	Gaetan Mahon
+	Marco Manig
+	Bernhard Mann
+	Stephan Marek
+	Thomas Marquardt
+	Steve Martens
+	Thomas Marx
+	Nils Matern
+	Paul Mazu
+	Kathrin McCain
+	Christian Meinert
+	Florian Meister
+	Julia Mertens
+	Patrick Metzger
+	Caspar Michel
+	Stefan Mond
+	Frank Müller
+	Moritz Müller
+	David Navarro
+	Filip Nogowski
+	Cornelia Nolte
+	Sebastian Oldenettel
+	Sebastian Oliva
+	Mathias Ortner
+	Björn Passow
+	Raik Patze
+	Mathias Pelz
+	Stefan-Marcus Peter
+	Mike Piepenstock
+	Harald Prem
+	Patrick Pulfer
+	Michael Radnitz
+	Daniel Radschun
+	Fabian Rauch
+	Sandra Raum
+	Alexander Redeker
+	Steffen Reinke
+	Gerd Ridder
+	Christian Riegger
+	Henning Roese
+	Frank Roesel
+	Andreas Rohr
+	Frank Rolle
+	Nico Roos
+	Sebastian Roth
+	Wolfram Sack
+	Carsten Schedding
+	Esther Scheeren
+	Christian Schilling
+	David Schlamp
+	Andre Schlegelmilch
+	Christopher Schmale
+	Dirk Schmid
+	Torsten Schmidt
+	Sascha Schneider
+	Marcus Schoeberl
+	Fabian Schrader
+	Frank Schulze
+	Christopher Simonis
+	Victoria Spanier
+	Andreas Stiebert
+	Patric Stolpe
+	Artur Strak
+	David Strammerjohann
+	Jochen Stutzkeitz
+	Sascha Szopko
+	Janina Taab
+	Doris Tatzgern
+	Christian Traute
+	Marco Vogt
+	Marion Wacker
+	Benny Waldenmaier
+	Marion Weißenborn
+	Olaf Wendorff
+	Sandra Wernicke
+	Peter Wetzel
+	Dennis Wollmann
+	Hagen Zawany
+	Steffen Zietz
+	Thomas Zimmer
+	Christian Zirpner
+
+ENGLISH
+	Krister Aavikko
+	Aleski Airaksinen
+	Per Antonsson
+	Roland Ayliffe
+	Sjir Bagmeijer
+	David Baines
+	Alex Bebbington
+	Kevin Blanche
+	Robert Bland
+	Nick Blokker
+	Thomas Boertien
+	Sigurd Bengtson Borge
+	Khristopher Boulton
+	Mei Frank Buckle
+	David Burlinson
+	Allan Campbell
+	David Chadwick
+	Martin Anthony Colling
+	Jason Courtney
+	Robert Dale
+	Patrick Deschamps
+	Barry Downs
+	Patrick Dunford
+	Barry Ellis
+	Keith Ennis
+	Christopher Fawcett
+	Paul Finn
+	Doug Fitchett
+	Jamie Alexander Foreman
+	Wayne Freer
+	Jay Greenham
+	Christian Guest
+	Paul Halliwell
+	Sanna Hanskala
+	Henrik Hedstrom
+	Kjell Arvid Helgeneseth
+	Robin High
+	Iqbal Hussain
+	Lars Peter Lohm Jensen
+	Craig Andrew Jobling
+	Robin Johansson
+	Aled Jones
+	Devon Robert Kelly
+	Claude Keogh
+	Michael Khoo
+	Alexander James Klontzas
+	Kristian Koivisto Kokko
+	Johan Kooijman
+	Maarten Alexand Kuijpers
+	Martin Langsted
+	Pelle Lingsell
+	Bruno Loncke
+	Jonathan Lydall
+	Konstantinos Markogiannakis
+	Robert Mathews
+	Christopher Mathieson
+	Christopher Mc Hale
+	Richard Mc Keon
+	Carl Mc Neill
+	Edward Mcdonald
+	Douglas Midgley
+	Stefan Modh
+	Oliver Moore
+	Olivier Mouvet
+	Graham Murphy
+	Matthew Neumann
+	Katharina Nord
+	Olli Oja
+	Simon Parment
+	Steven Paton
+	Michael Arleth Pedersen
+	George Penman
+	Graeme Rafferty
+	David Ribeiro
+	Jonathan Robinson
+	Henrique Rodrigues
+	Henning Roest
+	Sanu Satheesababu
+	Wouter Schrijnemakers
+	Siri Ellefsen Selvnes
+	Craig Shrewsbury
+	Kenneth Standbridge
+	Stephen Stanley
+	Alexander Lione Stark
+	Patrik Svantes
+	Mads Taanquist
+	Stephen Tadman
+	Jason Teixeira Babo
+	Joseph Toaff
+	Oskari Turkia
+	Craig Turner
+	Christopher Twite
+	Liam Andrew Tye
+	Anders Valum
+	Marijke Vanhees
+	Martin Gunderse Vea
+	Leo Wakelin
+	Gijs Johan Maur Waverijn
+	Ben Werbner
+	Andrew John Whitmarsh
+	James Whittall
+	Klaus Wichmand
+	Christopher Woodcock
+	Monty Yeates
+	Emma Stott
+	Leonie McKewan
+	Jonathan Horrocks
+	Michael Lenton
+	Mark Furniss
+	Craig Bland
+	Jay Xealous
+	Andrew Priestnall
+	Colin McShane
+	Michael Seppala
+	Daniel Mooney
+	Victor Sefastsson
+	Marc Behar
+	Dean Lillywhite
+	Nils Odlund
+	John Petersen
+	Kevin O'Regan
+	Martin Mason
+	Kenneth Mellamphy
+	Alanna Quigley
+	Gareth Barry
+	Jonathan Douglas
+	Daniel Ryan
+	Emil Jannesson
+	Jonathan Hall
+	Nicola Creedon
+	Cian Creed-Healy
+	Keith Barron
+	Robert Allan
+	Nils Berggren
+	Keith Boardman
+	Stephan Cosgrove
+	Des Gordon
+	Kieran Hayes
+	Michael Heffernan
+	Adam Lloyd
+	Richard Bennett
+	Henry Davis
+	Henrik Eriksson
+	David Hollingbery
+	Robert Holloway
+	David Horrocks
+	Matthew Jones
+	Adam Morris
+	Gareth Roberts
+	Diogo Silva
+	Richard Nicholls
+	Nicolaj Adriansen
+	Richard Bartram
+	Nicola Booyens
+	Jennifer Brett
+	Ian Coleman
+	Paul Cox
+	Philip Doogan
+	Soren Kirkager
+	Mark Stanners
+	Wayne Armstrong
+	Victoria Bennett-Keenan
+	Lukasz Bialk
+	Andrea Birkhahn
+	Victor Borjesson
+	Sarah Brady
+	Jason Devine
+	Ilona Dolejsi
+	Gareth Donaghey
+	Ben Hellis
+	Guus Hoogendoorn
+	Daniel Johnson
+	Istvan Kakasi
+	Anton Karanov
+	Philip Kerins
+	Mariusz Leszczynski
+	Sean Lyons
+	Martin Machovec
+	David Malach
+	David McGrath
+	Alan McNevin
+	Alastair Morris
+	Kevin O'Brien
+	Paul O'Neill
+	Conor O'Shea
+	Pierre Passet
+	Michael Pepper
+	Austin Purcell
+	Sebastian Ranta
+	Wesley Smith
+	Amy Taylor
+	Wendy Yang
+	Pawel Zukowski
+	Adam Lee
+	John Warwicker
+	Jeffrey Bridges
+	Christian Arvidsson
+	Kim Frandsen
+	Andrew Meaney
+	Cian Yates
+	Stephen O'Donnell
+	Peter Hadaszi
+	Rachel James
+	Cheryl Hoggins
+	Peter Mc Donald
+	David Rowell
+	Barry Hayles
+	Robin Blackborow
+	Ben Haywood
+	Cornelia Nolte
+	Stefan Mark
+	Oliver Lockyer
+	Sandor Dobsa
+	Denis Walsh
+	Brendan Cavanagh
+
+SPANISH
+	Alvaro Aguilar Tormo
+	Ricardo Aranguren Gassis
+	David Church Rodriguez
+	Juan José De La Torre
+	Miguel Garcia Gomez
+	Angel Martin Ayuso
+	Inigo Moleres Apilluelo
+	Pedro Moreno Garcia
+	Raul Romero Fuentes
+	Isaac Sanchez
+	Maria Dolors Sanchez Carnice
+	Yolanda Serrano Llamas
+	Anna Sort Gonzalez
+	Marc Tormo Carulla
+	Enrique Gonzales de Vallejo
+	Jose Javier Suarez Perdomo
+	Diego Valero Suarez
+
+FRENCH
+	Karim Adala
+	Olivier Mouvet
+	Magalie Blaizot
+	Mickaël Bohin
+	Aurélien Bovis
+	Soufyane Brahimi
+	Juan Caria
+	Cédric Coret
+	Ugo Croci
+	Alexandre Duckman Lebrun
+	Gilles Durosay
+	Céline Guise
+	Guillaume Jegu
+	Pascaline Jibert
+	Frédéric Kubiakowski
+	Mathieu Laugle
+	Mathieu Laurent
+	Rémi Le Thery
+	Bastien Lebourg
+	Xavier Lepage
+	Julien Litrico
+	Christel Malbrancq
+	Olivier Martel
+	Jessica Milleville
+	Bonna Mom
+	Pierre Nicolas Moreau
+	Sébastien Musquin
+	Mathieu Orjebin
+	Antoine Pezzo
+	Jean-Louis Phan Tran
+	Julien Pillay
+	Josfred Poinsot
+	Philippe Prince
+	Nicolas Pruvost
+	Sébastien Pusset
+	Berenger Queune
+	Sandra Ragot
+	Cédrik Razafimamantsoa
+	Richard Robinson
+	Aliocha Segard
+	Audrey Selnet
+	Genséric Sohier
+	Isabelle Soupault
+	Frédéric Tabard
+	François Trani
+	Cyndie Varin
+	Audrey Wozniak
+	Romain Wuillaume
+	Vincent Zaccheo
+	Julien Benatar
+	Romain Joffre
+	Erwan Bargain
+	Lucien Bui
+	Maxime Berjot
+	Vincent Mesnard
+	Philippe Motheron
+	Maxime Ledonge
+	Louis Vincent
+	Grégory Garcia
+	Brice Russeil
+	Stéphane Lam
+	Umberto Lopes
+	Robin Berquet
+	Guillaume Lachambre
+	Blandine Pronost
+	Marianne Pilote
+	Jaoued Karim
+	Jeremy Jacquemin
+	François Pinturault
+	Yoann Gonedec
+	Céline Choliere
+
+QUALITY CONTROL (EU)
+
+QC Lead
+	Stefan Mai
+
+QC Seniors
+	Antonio Achuccaro
+	Andrea Della Noce
+	Patrick Knoll
+
+Representatives
+	Marco Baier
+	Heiko Dieregsweiler
+	Lena Drevermann
+	Stefan Frei
+	Christoph Gembe
+	Bernd Gottsmann
+	Oliver Kurth
+	Oliver Lorek
+	Philippe Miguet
+	Sebastian Mottschall
+	Michael Pauli
+	Michael Pietrucha
+	Christoph Thann
+	Ashok Viswanathan
+	Carl Bone
+	Miguel Budesca Dykes
+	Jonathan Hankey
+	Dean Jones
+	Jihène Khessouma
+	Benjamin Klinkhamer
+	Fredrik Kurki
+	Alexander Mc Hugh
+	Bo Mejdahl
+	Alexander Ion Naya Sanchez
+	Andrea Opimitti
+	John Pombo
+	Hansa Sawami
+	Allan Stellakis
+	Stuart White
+	Cristian Martin Nieto
+	Rémi Aumeunier
+	Elodie Bastide
+	Jean Christophe Berger
+	Thibaud Bertin
+	Laurent Cuvier
+	Cédric David
+	Pietro Gobbato
+	Pascale Roncin
+	Bartosz Posluszny
+	James O’Connor
+	Andrew Naudi
+	Wouter Van Der Veen
+
+AA Agents
+	Anne Bargemann
+	Michael Broek
+	Raul Burgos Mayer
+	Robert Busch
+	Tobias Franke
+	Anselm Hempel
+	Georg Hirschauer
+	Mario Janus
+	Malte Maehlmann
+	Marcus Ryndycz
+	Andre Schickhoff
+	Michael Schneider
+	Christian Sperber
+	Lukas Wozniak
+	Neil Banks
+	Ben Corbey
+	Tom Ellis
+	Eirik Fjeldal
+	Stephen Grantham
+	Robert Groeneveld
+	Amanda Kate Harris
+	Lucy Hindson
+	Ruben Holen
+	Jon Kenny
+	Douglas Liljekvist
+	Niklas Lingsell
+	Hannah Mcarthur
+	Lee Middleton
+	Vincent Moulin
+	Barry Murphy
+	Minh Nhat Nguyen
+	Goran Parnen
+	David Potter
+	Tommy Sabri
+	Andy Salwey
+	Patrick André Seidler
+	Stian Skjondal
+	Sebastiaan Van Doornspeek
+	Ryan Vowler
+	Thomas Chartrain
+	Lucia Suarez Porta
+	Arnaud Ameele
+	William Bezou
+	Jean-Claude Cipriani
+	Denis Courtin
+	John Harry De Lara
+	Sylvain Enjalbert
+	Céline Etcheberry
+	Antoine Guyard
+	Graziella Marie
+	Grégory Sevin
+
+KOREA CUSTOMER SERVICE
+
+Director
+	Richard Choi
+
+TECHNICAL SUPPORT (KR)
+
+Manager
+	Jaeyang Kwak
+
+Technical Support Seniors
+	Sungjoon Lee
+
+Representatives
+	Seungho Kim
+	Yunbai Kim
+	Hyungjun Kim
+	Joohong Pan
+	Jaeyong Choi
+
+BILLING and ACCOUNT SERVICES (KR)
+
+Manager
+	Yoonhee Kim
+
+Billing Leads
+	Kyungmee Kim
+	Jihyun Song
+	Jiyoung Kim
+
+Billing Seniors
+	Eunbom Park
+	Sehwa An
+	Jinsu Lee
+
+Representatives
+	Jihye Yun
+	Kyunghwa Yu
+	Jungran Lee
+	Min Yang
+	Dongho Chang
+	Jina Baek
+	Cholong Han
+	Hyoju Gou
+	Yunho Bae
+
+IN-GAME SUPPORT (KR)
+
+Manager
+	Beom Choi
+
+Support Leads
+	Wonjong Lee
+	Young Namgoong
+	Jinman Park
+	Jungwoo Kim
+	Hyunsin “Durty” Lim
+
+Support Seniors
+	Joonbin Lee
+	Seonmean Kim
+	Changhoon Lee
+	Jaewon Lim
+	Hyojin Kim
+	Jungjun Lee
+	Jaiki Song
+	Jungmin Song
+	Byungkwan Chung
+	Aungoun Lee
+	Sungho Eom
+	Jaekwang Han
+	Kyunghyo Kim
+	Eunjung Lee
+	Jaehyun Ahn
+	Wonjae Jeong
+
+Representatives
+	Yoojin Yang
+	Jiyoun Lee
+	Woonki Cho
+	Geobo Shim
+	Sookhee Bae
+	Jinsuk Park
+	Myoungjin Kim
+	Eunsun Hong
+	Bora Park
+	Suhyun Kim
+	Bogyu Kim
+	Seunghoon Baeg
+	Woosung Lee
+	Sinhee Kim
+	Seoyeon Kim
+	Byoungjin Lim
+	Seolhee Cho
+	Yeri Cho
+	Inkyoung Sim
+	Kyunghee Lee
+	Hyojin An
+	Seungsoo Kim
+	Jungho Han
+	Junghun Kwag
+	Soo Lee
+	Sejin Choi
+	Sunmin Lim
+	Juhee Seo
+	Youngki Kim
+	Changhyun An
+	Sukil Jo
+	Kyueun Lee
+	Eunkyung Jang
+	Jeongho Kook
+	Kyungmin Lee
+	Youngjin Park
+	Deokhoi Kim
+	Chulho Chang
+	Sooil Kim
+	Namsuk Kim
+	Sowon Lee
+	Sungpyo Hong
+	Junghyun Lee
+	Sujhon Jhong
+	Jihye Lee
+	Sungju Yu
+	Doyeon Kim
+	Jaehui Kim
+	Kyungtae Myung
+	Hyunbum Lim
+	Hyeyoung Jung
+	Boram Lee
+	Dohyun Lee
+	Insik Lee
+	Hyosung Kim
+	Doohyun Bae
+	Jaeeun Lee
+	Hosang Yu
+	Jisub Han
+	Jongwon Park
+	Moonyoung Baik
+	Soohye Lee
+	Kihoon Yang
+	Jaegoo moon
+	Jungyi Roh
+	Sojung Lee
+	Seunghyuk Lee
+	Chungseok Han
+	Youngnan Park
+	Yongteak Im
+	Hyekyung Lee
+	Kyoungjoon Kim
+	Minkyu Park
+	Minkyung Cho
+	Jimin Kwon
+	Hwajun Song
+	Kwansoon Hwang
+	Yangrae Kim
+	Yoora Oh
+
+QUALITY CONTROL (KR)
+
+Lead
+	Yongjo Choi
+
+Training Lead
+	Jaehong “Big J” Jeong
+
+Training Seniors
+	Keunjeong You
+	Hyeyoung Park
+	Jinsun Park
+
+Representatives
+	Sumi Jeong
+	Chuljo Yun
+	Inchaul Bae
+	Wonjang Cho
+	Mihyun Kim
+	Yunsil Choi
+	Hana Lee
+	Myeonghun Choi
+
+President and CEO of Blizzard Entertainment
+	Mike Morhaime
+
+Chief Operating Officer
+	Paul Sams
+
+Executive Vice President, Game Design
+	Rob Pardo
+
+Vice President and Executive Managing Director, International Operations
+	Michael Ryder
+
+Director of Special Projects
+	Hamilton Chu
+
+Thanks To:
+	Mary Massie
+	Ultra Bad Dudes
+	Sun Bee Knee
+	KPNS
+	Kevin Baik Chooooooooooona
+	Eric Fredericksen
+	Gretchen Short
+	Tiffany Neilson
+	Tatiana Neilson
+	Sprocket lovers everywhere
+	Our great AddOn community
+	Madison and my family
+	To Mehley, Abraham and my
+	wife Grace and my entire
+	Bielski and Baxter clan
+	My incredible wife, Kim
+	My parents, I miss you dad
+	Angelista
+	Colin, Emi, Kitz and Bunnie
+	The Kaplan family
+	Stefanie Rainwater
+	Sydney Rainwater
+	Ryan Rainwater
+	Jessica and Lily-Rainbow
+	Ryan Strickland
+	Marc Vitagliano
+	Brack Dad - I can’t thank
+	you enough for your
+	council and guidance.
+	Brack Bro - You are always
+	there for me in ways you
+	will never know.
+	Thanks for putting up
+	with all the crunch time,
+	Mumper!
+	Thanks Pooka!
+	Be Patient John Coppersmith
+	Mark Levin
+	Chad Verrall
+	To my parents, Jay and Shu
+	My sisters, Peg and Melissa
+	Doobie, the best dog ever
+	Rita Wang
+	Randy and Marlene Sakamoto
+	Heidi and our families, God
+	Irvine 4th Ward, BYU, LCAD
+	McClellan’s, Critchfield’s
+	Mindi Foote
+	The Foote Clan
+	The Rally Monkey
+	Ensemble Studios
+	Fully Rested
+	James “Ulmaas” Street
+	Larry and Sue Blount
+	Sandra Webb
+	Lou and Lisa Adesso
+	Anna Hartwell
+	Lydia Barriga
+	Agapito Barriga
+	John and Jennifer Vestal
+	Charles Vestal
+	Asobi Seksu
+	Minu, the cuddle bug~
+	Fiji Bottled Water
+	The Graves family
+	The DeMeza family
+	Vic and his pigs
+	Mountain Dew
+	Wild Goose
+	Pandora Radio
+	The Lemur of Shame
+	Mom, Dad and Lil’ Sis
+	Ann and Kaylie
+	Audra Rice
+	Jordan Thomas
+	Marke Pedersen
+	Dawn Radue
+	Jennifer McCree
+	Jane and Kate
+	Curry House
+	Noto
+	Cory and Yvonne
+	Neil, Mildred, Mia and Doc
+	Will and Laura: Thx for Soup
+	Brynda,Seamus and Tungsten
+	De Arte for their support
+	HanSolo for shooting first
+	Nicole Bartlett
+	Kisu Kang
+	Mish Mish (pre-Maginnis)
+	Oso “The Crunch Dog”
+	Inventor of the audiobook
+	Mugen, Logan, and Mochi
+	Savor <3 Sai
+	Mommy and Daddy Denman
+	Buhpee, I love you <3
+	Erica Burke
+	Don Shelkey
+	My wife Paula
+	and my daughters
+	Jasmine and Stacey
+	Samantha LeCraft
+	The Sellers Family
+	Bova the Spartan Warlord
+	Katrina Spoor, in aeternum
+	Elysabethe Greyrose,Hi Mom
+	Ikriti, Sorata, and TAF
+	Giulia Lawrence
+	Lisa P Diddy
+	Enzo
+	Rosella, Taryn and Claire
+	Rally Vincent-Miyake
+	Mike Chapman
+	Dalwhinnie Distillery
+	Cris and Chuck Chambers
+	Bob and Linda Dixon
+	Karlee and Paige Chadwick
+	You’ve blessed me more
+	Then you could ever know!
+	Aimee, Eli, and Ringo
+	Thanks to my family
+	Abra, Grant, Madison,
+	Wednesday
+	My Wife Claudia
+	My Daughter Alanna
+	My Son Carlos
+	Ferre Akbarpour
+	Afrasiabi Family
+	Akbarpour Family
+	Mindy and Georgie =)
+	Danny Mandel <3
+	Layla Tilly Darian and Jack
+	RBRBRBRBRBRBRBRBRBRBB!!
+	My amazing wife, Brooke
+	My family
+	…and my dog, JJ
+	My incredible wife,
+	Teresa L. S. Bernau
+	Pins Fall Down
+	Best gf ever, my Doris
+	A.W.W
+	Holly: I love you!
+	Matt, DaveM, John, Mark
+	Brad, DaveJ, Jim, Steve
+	Gale and Ilene Gregory
+	Bruce Ferriz (Animator)
+	Lan-Fang Chang (Evilchoco)
+	Gary, Trudy, Dan, Dom,
+	Pops and Irene Sparks
+	Jean and George Matthews
+	Kacy <3
+	Goat Hill
+	Adam and Michelle Hossack
+	Matt “Pooky” Chaput
+	Monika “Momo” Burman
+	To my Fiancée Michelle,
+	And my mother and father
+	Thanks for being there
+	Frances Lin and family
+	Clark, Lois, and Buttercup
+	Manchester United F.C.
+	I want to thank my family
+	and my boyfriend Genesis
+	for always supporting me
+	Melissa Maloof
+	Lisa Ortega for listening
+	De/Vision
+	My family, my sis Molly,
+	my loving Steph, and all
+	the support from Support
+	To the “Supreme Overlady”
+	Rhonda and the Chaos Twins
+	Ruth and Max. Hey Sierra.K
+	Linda Chen and JEND
+	Mom and Dad, for letting
+	me play games as a kid!
+	Beverly and Shangreaux
+	Izabel and Charles Rainwater
+	Dena Fitzgerald
+	Luke and Leia,
+	For snuggling on the couch
+	Celeste Aviva, bunches
+	Constance Wang
+	Matt Hodges
+	Thanks to Johanne, Juliette
+	and Raphael for being there
+	I love you
+	Jon and Faye McConnell
+	Lester and Angela Whitacre
+	Amanda Ellsion
+	Joo Hye Lee
+	Hun’s Family
+	Ragnaros INSOMNIA
+	Katherine, Penelope,
+	Charlotte and Lola Jordan
+	Karen and Julia Barris
+	My favorite family:
+	Susie, Joel, and Gina
+	( with Smokey + Sadie :)
+	John “Wraithbane” Trokair
+	Tom Cadwell
+	David Hsia
+	Luke Morgan
+	Monica, Maximus, Maisie,
+	Margaret, Dale and Dale
+	Adams. No isha fishy!
+	Cairenn, Iriel and UI folks
+	Lauren, Mirah and Stella
+	John “Wraithbane” Trokair
+	Jen and Athena
+	Sugar Free Bawls
+	BPFF Adam
+	Wednesday
+	No Options
+	Becky Dawson
+	MM OLOL
+	My Moon Pie
+	Doug Oster
+	Matt Kelly
+	Corey, Carman and Danny
+	Daisy, Domingo and Domeisy
+	Tito, Nego, Pili, Nana, Mary
+	Kdogz, Vincent M, Saba, O
+	To my amazing wife, Kelly
+	and daughter, Dylan
+	I love you both
+	Sulan Dun
+	Randy Bullis
+	Kyung-Hyun Noh
+	Mussles from Brussels
+	FM Radio
+	SuperMom and JAZ
+	Pepe, The Blood Elf
+	The Bride of Pinbot
+	Dr Nhu Quynh “Queenie” Ly
+	The Ly clan’s “Epic Kails”
+	Lana Lee
+	The Sirignano’s
+	The Sheets
+	Mary Wakabayashi
+	Google
+	Monkey Robots
+	Jess Gurr, Lubbins
+	Beautiful Nici for your
+	love Our Sweet Billie Girl
+	we miss and love you forever
+	Much love to Mom and Dad!
+	I love you Kristin! =)
+	Kern Rivah and C- 4life!
+	David Smith
+	Kelly Stevenson
+	William A. Schneider III
+	Ma, Ba, and Jie
+	Ohohoh
+	Tina, Karen and Mom
+	Edo and Shelly Guidotti
+	Beag and Tiggeria
+	The Crabtree Family
+	Jen Rosenfeld
+	Aaron Stafford
+	Ethan and Quinn Stafford
+	Susan Stafford and Aggie
+	Tracy and Garrett Farr
+	Greg Landes
+	Andrea Landes
+	Yulia and Jasper Duke
+	Duke and Shyskin family
+	Bob and Kay Gates
+	Joshua Menichini
+	Connor Menichini
+	My insane parrot, Nibby
+	Bradford C. Bridenbecker
+	R.I.P, 6.18.2007
+	Catherine the Diva of Data
+	Steven and Elizabeth
+	The Loons
+	Susan, Noah, and Lily Krol
+	Admiral William Adama
+	Number Six
+	Ethan Starich
+	Jake Fuentes
+	Michael and Wyatt Stanley
+	<3 Stephanie and Olivia
+	Mick Maguire and Family
+	Jesse Mitcham
+	John and Ling Cho
+	Cho’s Kitchen
+	Cao Cao
+	Jenny Qian Liu
+	Karna Nelson
+	Deana Matarasso
+	Dacy Matarasso
+	Harminder Brar
+	Vivian, Raelyn, Raiya and Evan
+	Ty and Munky
+	Steve "Zartson" Jones
+	Susan Jones
+	Susan, Matthew, and Michael Sams
+	Megan Wooley
+	Mom, Dad, Ako, Bko, Klar, Grey, and Katarie
+
+Very Special Thanks
+	Bruce Hack
+	Bob and Jan Davidson
