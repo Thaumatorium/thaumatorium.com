@@ -597,35 +597,3 @@ Battle.net Hosting Partners
 	AT&T
 	DACOM
 	Telia
-
-Bubble Boy Dunsel
-	Mark Kern
-
-Special Thanks
-	Blizzard North
-	Bob & Jan Davidson
-	Luc Vanhal
-
-Special thanks to all our customers for your continued support and feedback, which help make our games great.
-
-Very special thanks to all our loved ones for continuing to endure the long hours.
-
-(c) 2002-2003 Blizzard Entertainment. All rights reserved.
-Reign of Chaos and The Frozen Throne are trademarks and Battle.net, Blizzard Entertainment, Diablo, StarCraft and Warcraft are trademarks or registered trademarks of Blizzard Entertainment in the U.S. and/or other countries.
-
-Windows is a registered trademark of Microsoft Corporation. Pentium is a registered trademark of Intel Corporation. Macintosh is a registered trademark of Apple Computer, Inc. Dolby and the double-D symbol are trademarks of Dolby Laboratory.
-
-Uses the Thorndale font. Thorndale is a trademark of Agfa Monotype Corporation. DFK Gothic, DF Li Hei, DF Maru Gothic, DF Song, and Ang Thong are trademarks or registered trademarks of Bitstream, Inc. or DynaLab, Inc. All other trademarks are the property of their respective owners.
-
-Uses Miles Sound System. Copyright (c) 1991-2002 by RAD Game Tools, Inc. All rights reserved.
-
-Uses high-quality DivX video. Copyright (c) 1999-2002 by DivXNetworks, Inc. DivX is a trademark of DivXNetworks, Inc. All rights reserved.
-
-Uses the FreeType 2.0 library. The FreeType Project is copyrighted (c) 1996-2002 by David Turner, Robert Wilhelm, and Werner Lemberg. All rights reserved.
-
-Uses 'zlib' general-purpose compression library. Copyright (c) 1995-2002 Jean-loup Gailly and Mark Adler. All rights reserved.
-
-No sheep were harmed during the making of this game.
-...
-...
-Honest!
