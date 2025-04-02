@@ -1,10 +1,11 @@
+from pathlib import Path
 from bs4 import BeautifulSoup
 import yaml
 import sys
 
 
-def main(input_file: str, output_file: str) -> None:
-    with open(input_file) as file:
+def main(input_file: Path, output_folder: Path) -> None:
+    with input_file.open() as file:
         html_content = file.read()
     # Parse the HTML
     soup = BeautifulSoup(html_content, "html.parser")
@@ -101,20 +102,18 @@ def main(input_file: str, output_file: str) -> None:
         data, sort_keys=False, allow_unicode=True, default_flow_style=False, width=1000
     )  # Increased width to reduce wrapping
 
-    # Print the resulting YAML
-    print(yaml_output)
-
     # Optional: Save to a file
-    with open(output_file, 'w', encoding='utf-8') as f:
+    output_file = f"{input_file.stem}.yaml"
+    with open(output_folder / output_file, "w", encoding="utf-8") as f:
         f.write(yaml_output)
 
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         input_file = sys.argv[1]
-        output_file = sys.argv[2]
+        output_folder = sys.argv[2]
     else:
         raise ValueError(
             "Please provide the input HTML file as a command line argument."
         )
-    main(input_file, output_file)
+    main(Path(input_file), Path(output_folder))

@@ -22,3 +22,5 @@ We're removing:
 
 TODO:
 * remove `<p>` tags - not sure what they were for...
+* lowercase `Dal Loc Mult. SL`, and `Qloc S.A.` titles (otherwise my script
+  breaks).
