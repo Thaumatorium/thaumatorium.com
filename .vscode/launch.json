@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "args": [
-                "D:/dev/thaumatorium.com/content/experimentations/warcraft_credits/3_base_zone/WoW_6_Legion.html",
+                "D:/dev/thaumatorium.com/content/experimentations/warcraft_credits/3_base_zone/WoW_0.html",
                 "D:/dev/thaumatorium.com/content/experimentations/warcraft_credits/4_preparation_zone/",
             ],
             "console": "integratedTerminal",
