@@ -33,3 +33,15 @@ TODO:
   * `Featured Musicians`, from `BfA`.
   * `Featured Musicians`, from `Shadowlands`.
   * `Featured Musicians`, from `Dragonflight`.
+
+Renames:
+
+Note that I'll tend to pick whatever they went by as last.
+
+* renamed `Michael Morhaime` to `Mike Morhaime`
+* `Brian "Doc" Love` got his middle name dropped
+* `David "deltree" Hale` -> `Dave Hale`
+* `Yonghyun (Eddie) Kim` -> `Eddie Yonghyun Kim`
+* `Seyong (Simon) Lee` -> `Seyong Lee`
+* `Michael (Cliff) Threadgold` (and variations) -> `Cliff Threadgold`
+* `Jeffery Qixun Tang` -> `Tang Qi Xun (Jeffrey)`
