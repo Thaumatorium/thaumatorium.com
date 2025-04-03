@@ -71,8 +71,7 @@ def main(input_file: Path, output_folder: Path) -> None:
                     # Use regex for splitting by comma possibly surrounded by whitespace
                     # parts = [p.strip() for p in re.split(r'\s*,\s*', line_stripped) if p.strip()]
                     # Simpler split and strip:
-                    parts = [p.strip() for p in line_stripped.split(",") if p.strip()]
-                    names.extend(parts)
+                    names.extend([line_stripped])
 
                 if names:  # Only add if names were found
                     # print(f"    NAMES: {names} for {current_role}") # Debugging

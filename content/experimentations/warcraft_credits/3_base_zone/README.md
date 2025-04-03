@@ -24,3 +24,12 @@ TODO:
 * remove `<p>` tags - not sure what they were for...
 * lowercase `Dal Loc Mult. SL`, and `Qloc S.A.` titles (otherwise my script
   breaks).
+* removed `Third Party Credits` from `Legion`, as it was a duplicate of `Voice
+  Over Cast - Brazil`
+* removed instruments for:
+  * `Guest Musicians`, from `WotLK`
+  * `Featured Musicians`, from `Cata`
+  * `Featured Musicians`, from `MoP`
+  * `Featured Musicians`, from `BfA`.
+  * `Featured Musicians`, from `Shadowlands`.
+  * `Featured Musicians`, from `Dragonflight`.

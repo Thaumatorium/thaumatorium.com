@@ -6,7 +6,6 @@ GAME DESIGN:
     - Tom Chilton
   Production Director:
     - J. Allen Brack
-    - Dan Elggren
   Art Director:
     - Chris Robinson
   Technical Director:
@@ -59,30 +58,6 @@ GAME DESIGN:
     - Thomas Pieracci
     - John Shin
     - Alex Tsang
-    - Erin Ali
-    - Sangeon Bae
-    - Shane Cargilo
-    - Kevin Carter
-    - Bryan Chang
-    - Dennis Crow
-    - Damien Currano
-    - Eric Del Priore
-    - Jeremy Dela Rosa
-    - Romain Dijoux
-    - Sean Flinn
-    - Dan Hernberg
-    - Andrew Hunt
-    - Ty Julian
-    - Sunyoung Kim
-    - Ben Lam
-    - Jenny C.Liu
-    - Dan Maas
-    - Rainer Mayer
-    - Rebecca Orozco
-    - Stephanie Paddock
-    - Maria Page
-    - Russell Pippin
-    - Yong Woo
   Animators:
     - John Butkus
     - Carman Cheung
@@ -279,11 +254,6 @@ GAME DESIGN:
     - Jessica Dinh
     - Marie Lazar
     - Peter K. Lee
-    - Justin Britch
-    - Kevin Gent
-    - Daniel Kutz
-    - Zak Rubin
-    - Alex Wong
   Strike Team Lead:
     - Kevin Martens
   Strike Team:
@@ -299,11 +269,13 @@ GAME DESIGN:
     - Stephanie Paddock
     - Stephen Wong
     - Jay Wilson
-  Battle.net: []
+BATTLE.NET:
   Vice President, Battle.net:
     - Robert Bridenbecker
   Design Director:
     - Mike Hein
+  Production Director:
+    - Dan Elggren
   Technical Directors:
     - Brian Fitzgerald
     - Ali Vatani
@@ -431,6 +403,31 @@ GAME DESIGN:
     - Casey Yelland
     - Christopher Yim
     - Christopher Yu
+  Producers:
+    - Erin Ali
+    - Sangeon Bae
+    - Shane Cargilo
+    - Kevin Carter
+    - Bryan Chang
+    - Dennis Crow
+    - Damien Currano
+    - Eric Del Priore
+    - Jeremy Dela Rosa
+    - Romain Dijoux
+    - Sean Flinn
+    - Dan Hernberg
+    - Andrew Hunt
+    - Ty Julian
+    - Sunyoung Kim
+    - Ben Lam
+    - Jenny C.Liu
+    - Dan Maas
+    - Rainer Mayer
+    - Rebecca Orozco
+    - Stephanie Paddock
+    - Maria Page
+    - Russell Pippin
+    - Yong Woo
   Technical Writers:
     - Sabina Horigan
     - Simeon Vincent
@@ -441,6 +438,25 @@ GAME DESIGN:
     - Otavio Lessa
     - Ryan Quinn
     - Jaime Scheffler
+  Interns:
+    - Justin Britch
+    - Kevin Gent
+    - Daniel Kutz
+    - Zak Rubin
+    - Alex Wong
+BATTLE.NET - EUROPE TEAM:
+  Regional Manager:
+    - Yann Pallatier
+  Project Managers:
+    - Nathalie Beauguerlange
+    - Olivier Fourel
+    - Oliver Kurth
+  Web Designers:
+    - Sören Geier
+    - Mathieu Magrez
+    - Prune Moldawan
+    - Alix Nguyen
+  Web Editors:
     - Eddy Béchu
     - Thibaud Bertin
     - Roberto Crispo
@@ -453,25 +469,7 @@ GAME DESIGN:
     - Joseph Toaff
     - Alena Yakavets
     - Tomasz Zabczynski
-    - Ayoung Kim
-    - Jieun Kim
-  Battle.net - EUROPE TEAM: []
-  Regional Manager:
-    - Yann Pallatier
-  Project Managers:
-    - Nathalie Beauguerlange
-    - Olivier Fourel
-    - Oliver Kurth
-  Web Designers:
-    - Sören Geier
-    - Mathieu Magrez
-    - Prune Moldawan
-    - Alix Nguyen
-    - Hyunsuk Cheong
-    - Sangwook Kim
-    - Andy Jin
-    - Wang Wei
-  Battle.net - KOREA TEAM: []
+BATTLE.NET - KOREA TEAM:
   Web Producers:
     - Dayeong Oh
     - Minhyouk Pack
@@ -481,16 +479,26 @@ GAME DESIGN:
     - Jungeun Lee
     - Dooyong Oh
     - One Yoon
-    - Huang Xiaoqiang
-    - Yang Yanping
-    - Yu Yaodong
+  Web Designers:
+    - Hyunsuk Cheong
+    - Sangwook Kim
   Web Service Designer:
     - Eunjin Nam
-  Battle.net - CHINA TEAM: []
+  Web Editors:
+    - Ayoung Kim
+    - Jieun Kim
+BATTLE.NET - CHINA TEAM:
   Senior Web Services Manager:
     - Bee Ai Chua
   Web Producer:
     - Tang Yanfeng
+  Web Engineers:
+    - Huang Xiaoqiang
+    - Yang Yanping
+    - Yu Yaodong
+  Web Designers:
+    - Andy Jin
+    - Wang Wei
   Web Content Editors:
     - Chu Ching
     - Jay Zhang
@@ -503,8 +511,7 @@ CINEMATICS:
     - Chris Thunig
     - Fausto De Martini
   Sr. Project Producer:
-    - Phillip Hillenbrand
-    - Jr.
+    - Phillip Hillenbrand, Jr.
   Cinematic Script:
     - Marc Messenger
     - Chris Metzen
@@ -670,8 +677,7 @@ CINEMATICS:
     - Yun-Chen Sung
     - Robert Thomas
     - Theresa Wolf
-    - Tom Craigen
-    - Jr.
+    - Tom Craigen, Jr.
   Production Team:
     - Patricia L. Adams
     - Tok Braun
@@ -802,9 +808,9 @@ MUSIC:
     - Northwest Sinfonia and Chorus
     - Contracted by Simon James and David Sabee
   Featured Musicians:
-    - Erhu solos by Jiebing Chen
-    - Guzheng solos by Cynthia Hsiang
-    - Dizi solos by Chris Bleth
+    - Jiebing Chen
+    - Cynthia Hsiang
+    - Chris Bleth
   Orchestration:
     - M.W. Alexander
     - Kurt Bestor
@@ -819,17 +825,14 @@ MUSIC:
   Live Sessions and Orchestration Produced By:
     - Edo Guidotti
   Music Preparation:
-    - Robert Puff
-    - PRM Seattle Music Preparation
+    - Robert Puff, PRM Seattle Music Preparation
   Orchestra and Choir Stems Mixed at:
     - Atlantis Group
     - John Kurlander
   Pro Tools Operator/Editor:
     - Jorge Velasco
   Original Soundtrack Mastered By:
-    - Patricia Sullivan at Bernie Grundman Mastering
-    - Hollywood
-    - CA
+    - Patricia Sullivan at Bernie Grundman Mastering, Hollywood, CA
 VOICE OVER:
   Casting and Voice Director:
     - Andrea Toyias
@@ -1817,7 +1820,7 @@ ADDITIONAL LOCALIZATION:
     - Elcio Romar
     - Erick Bougleux
     - Erika Menezes
-    - Ettore zuim
+    - Ettore Zuim
     - Fabiola Martins
     - Felipe Drummond
     - Flávia Fontenelle
@@ -1896,7 +1899,7 @@ TRAINING AND DEPARTMENTAL DEVELOPMENT:
     - Michael Schembari
   Intern:
     - Julien Roy
-  Creative Development: []
+CREATIVE DEVELOPMENT:
   Director:
     - Jason Stilwell
   Art Lead:
@@ -2161,11 +2164,11 @@ INFORMATION TECHNOLOGY:
     - Michael Lim
     - Richard Reischman
     - Tim Vo
-    - Site Security
+  Site Security:
     - Richie Kharrat
     - Michael Muscarella
     - Emmanuel Pedro
-    - Compliance
+  Compliance:
     - Robert Perugini
     - Bill Preston
     - Chris Voss
@@ -2173,7 +2176,6 @@ INFORMATION TECHNOLOGY:
     - Eric Thedaker
   Administrative Assistant:
     - Sonal Patel
-INTERNATIONAL OPERATIONS: {}
 GREATER CHINA:
   Regional Managing Director:
     - Alex Tai (CN & TW)
@@ -2315,17 +2317,13 @@ PUBLIC RELATIONS:
   Senior Public Relations Manager:
     - Guy Cunis (EU)
   Public Relations Managers:
-    - Christian Beer (DE
-    - CH
-    - AT)
-    - Jonnie Bryant (UK
-    - IE)
+    - Christian Beer (DE, CH, AT)
+    - Jonnie Bryant (UK, IE)
     - Bob Colayco
     - Luca Cominelli (IT)
     - Shon Damron
     - Chris Davey (ANZ)
-    - Sara Fernandez (ES
-    - PT)
+    - Sara Fernandez (ES, PT)
     - Alexandre Lennuyeux (FR)
     - Tom Lindgren (Nordic)
     - Ana Luisa Mota (LatAm)

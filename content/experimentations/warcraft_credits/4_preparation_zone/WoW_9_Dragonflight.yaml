@@ -2445,8 +2445,7 @@ INFORMATION TECHNOLOGY:
     - Alexander Martin
     - Andrew Newcomb
     - Theresa Nguyen
-    - Rodney Nissen
-    - III
+    - Rodney Nissen, III
     - Michael Prigmore
     - Kenny Shiu
     - Jay Uttanoor
@@ -4048,14 +4047,13 @@ LOCALIZATION STUDIOS:
     - Reiche & Drefs Partnerschaft von Übersetzern
     - Synthesis Global Solutions S.A.
     - Logrus IT
-    - DAL LOC MULT SL
+    - Dal Loc Mult. SL
     - Keywords International SAS
     - Latis Global Communications
     - Pole To Win International
     - 擎天信使GTXS音樂製作有限公司
     - Cowbay Entertainment
-    - EC Innovations (Shenyang)
-    - Inc
+    - EC Innovations (Shenyang), Inc
     - President Translation Service (Shanghai) Co. Ltd
 VOICE OVER RECORDING:
   Sound in Words:
@@ -4090,8 +4088,15 @@ VOICE OVER RECORDING:
     - Michael Torunsky
     - Folker Seipelt
     - Aaron Hoffman
-DAL LOC MULT SL: {}
-QLOC S.A.:
+  Dal Loc Mult. SL:
+    - "AD: Alfredo Martínez"
+    - "Casting Director: Alfredo Martínez, Rodrigo Martín, Paqui Horcajo"
+    - "Audio Engineers: Rodrigo Robles, Carolina Montagut"
+  Qloc S.A.:
+    - Ekaterina Shuvalova
+    - Irina Petrosyants
+    - Mikhail Zakharov
+    - Oleg Eremchuk
   Regional Audio Recording Studios:
     - Studio Maximal
     - Studio Nova Onda
@@ -4106,7 +4111,7 @@ QLOC S.A.:
     - m&s music Tonstudio
     - Synthesis Global Solutions S.A
     - Fonema Studio
-    - DAL LOC MULT SL
+    - Dal Loc Mult. SL
     - GTXS Sound Group
     - Voice 119
     - Spring Media

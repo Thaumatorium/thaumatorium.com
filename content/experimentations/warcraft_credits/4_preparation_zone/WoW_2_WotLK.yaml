@@ -145,7 +145,7 @@ GAME DESIGN:
     - Jesse Blomberg
     - Joseph Cochran
     - Patrick Dawson
-    - Jason De Art�
+    - Jason De Arté
     - Alec Dun
     - Omar Gonzalez
     - Scott Hartin
@@ -237,10 +237,10 @@ AUDIO:
     - Danita Ng-Poss
     - Jason Poss
   Guest Musicians:
-    - Pedro Eustache – Flutes and Duduk
-    - Laurence Juber – Guitars
-    - Cajsa Ekstav – Nychelharpa
-    - Eric Rigler – Uilleann Pipes and Scottish Flute
+    - Pedro Eustache
+    - Laurence Juber
+    - Cajsa Ekstav
+    - Eric Rigler
   Cinematic Intro Sound Designers:
     - Paul Menichini
     - David Farmer (EAD)
@@ -368,8 +368,8 @@ CINEMATICS:
     - Bejan Fozdar (Modeling)
     - Janet Garcia
     - Kim Horn (Animation)
-    - Bryan Langford (Tech
-    - Animation) Steve McIlwain (Finishing)
+    - Bryan Langford (Tech, Animation)
+    - Steve McIlwain (Finishing)
     - Noel Wolfman (Dev)
   Additional Production:
     - Taka Yasuda
@@ -380,7 +380,6 @@ CINEMATICS:
 CREATIVE DEVELOPMENT:
   Manager:
     - Shawn Carnes
-    - Joeyray Hall
   Art Director:
     - Glenn Rane
   Artists:
@@ -402,7 +401,9 @@ CREATIVE DEVELOPMENT:
     - Tim Campbell
   Additional Writing:
     - Tim Daniels
-  DVD and VIDEO PRODUCTION: []
+DVD AND VIDEO PRODUCTION:
+  Manager:
+    - Joeyray Hall
   Associate Producer:
     - Jennifer Owings
   Editor Staff:
@@ -687,13 +688,13 @@ LOCALIZATION:
     - Jeffery Qixun Tang (CN)
   Regional Assistant Localization Managers:
     - Tristan Lhomme (FR)
-    - In�s Rubio (ES)
+    - Inés Rubio (ES)
   Regional Localization Leads:
     - Alexander Ipfelkofer (DE)
     - Alexander Lyubov (RU)
     - Julie Song (KR)
   Regional Localization Engineers:
-    - Alexander B�ning (DE)
+    - Alexander Böning (DE)
     - Christelle Bravin (FR)
     - Irene Buesa (ES)
     - Bruno Cailloux (FR)
@@ -709,12 +710,12 @@ LOCALIZATION:
     - Carmen Priego (ES)
     - Katja Raaf (DE)
     - Alexis Roy-Petit (FR)
-    - Leticia S�enz (ES)
+    - Leticia Sáenz (ES)
     - Stefan Schmitt (DE)
     - Maria Shurukhina (RU)
     - Anne Studer (FR)
-    - Andrea T�ger (DE)
-    - Anne V�tillard (FR)
+    - Andrea Tüger (DE)
+    - Anne Vétillard (FR)
     - Gayeong Yoo (KR)
   Regional Localization Test Leads:
     - Christian Decomain
@@ -722,8 +723,8 @@ LOCALIZATION:
     - Jin Kim (KR)
   Regional Localization Analysts:
     - Hyunyoung Ahn
-    - Cosme Alc�zar (ES)
-    - Carlos God� Borr�s (ES)
+    - Cosme Alcázar (ES)
+    - Carlos Godó Borrás (ES)
     - Nikolay Bytskevich (RU)
     - Thomas Chabrier (FR)
     - Ben Choi (KR)
@@ -732,9 +733,9 @@ LOCALIZATION:
     - Ricardo Duran (ES)
     - Gilles Durosay (FR)
     - Arthur Flew (FR)
-    - Thomas Fl�ter (DE)
+    - Thomas Flöter (DE)
     - Shon-Ting Fu (CN)
-    - L�titia Georges (FR)
+    - Lætitia Georges (FR)
     - Sara Gissot (FR)
     - Jimmie Jaimes (ES)
     - Sanghak Jeon (KR)
@@ -746,19 +747,19 @@ LOCALIZATION:
     - Andrey Kuzmin (RU)
     - Minjin Lee (KR)
     - Pablo Lloreda (ES)
-    - Rub�n L�pez (ES)
+    - Rubén López (ES)
     - Jaewoo Mo (KR)
     - Kai Moosmann (DE)
     - Elena Ovchinnikova (RU)
     - Anna Parera Bohigas (ES)
     - Heeyoung Park (KR)
-    - Kenneth Pin� (ES)
+    - Kenneth Pinó (ES)
     - Michael Radnitz (DE)
     - Benjamin Schmidt (FR)
     - Peter Schneider (DE)
-    - Pablo Mart�n Siota (DE)
+    - Pablo Martín Siota (DE)
     - Daniil Sokolov (RU)
-    - Fr�d�ric Vasseur (FR)
+    - Frédéric Vasseur (FR)
     - Dean Yang (CN)
 ONLINE TECHNOLOGIES:
   Vice President of Online Technologies:
@@ -859,18 +860,18 @@ EUROPE ONLINE SERVICES:
     - Fabrice Piel
     - Ian Roberts
     - Prune Moldawan
-    - Ren� Koiter
-    - S�ren Geier
+    - René Koiter
+    - Sören Geier
   Web Editorial Team Leads:
     - Pierre Rosenthal
     - Yann Pallatier
   Web Editorial Team:
     - Avril Cater
-    - Cristina Mart�nez Jim�nez
-    - Eddy B�chu
+    - Cristina Martínez Jiménez
+    - Eddy Béchu
     - Edna Weissflog
     - Elina Bytskevich
-    - Francisco Bola�os Santana
+    - Francisco Bolaños Santana
     - Irina Kneller
     - Kelly Lopez
     - Philip Saloga
@@ -954,7 +955,7 @@ INFORMATION TECHNOLOGY:
     - Nicholas Downs
     - Maciej Drobny
     - Matthew Eagleson
-    - In�s Eberhard
+    - Inés Eberhard
     - Amanda Evans
     - Stanley Fu
     - Arnold Fulmer
@@ -974,7 +975,7 @@ INFORMATION TECHNOLOGY:
     - Thomas Jauneault
     - Matthew Jordan
     - Mourad Kaci
-    - Yan Kahl�
+    - Yan Kahlé
     - Taehee Kang
     - Rick Kennedy
     - Richie Kharrat
@@ -1003,7 +1004,7 @@ INFORMATION TECHNOLOGY:
     - Dat Nguyen
     - Thi Nguyen
     - Nicolas Noble
-    - Fran�ois No�l
+    - François Noël
     - Ben Orchard
     - Mike Pearce
     - Robert Perugini
@@ -1016,7 +1017,7 @@ INFORMATION TECHNOLOGY:
     - Paulo Santos
     - Daniel Scauzillo
     - Michael Schaefer
-    - Henrik Sch�pel
+    - Henrik Schöpel
     - Edward Silveira
     - Mathew Smiley
     - Duffy Squier
@@ -1050,7 +1051,8 @@ INFORMATION TECHNOLOGY:
     - Emy Hetherington (EU)
     - Denise Hicks
     - Dagmara Lebiedzinska (EU)
-    - Lara Machado (EU) Brianne Messina
+    - Lara Machado (EU)
+    - Brianne Messina
     - Mark Nash (EU)
     - Anita Rice
     - Jean-Pierre Poulain (EU)
@@ -1065,14 +1067,14 @@ INFORMATION TECHNOLOGY:
     - Brandon Shephard
     - Steve Stafford
   Management Team, Europe:
-    - Anne B�rard
+    - Anne Bérard
     - Julia Gastaldi
     - Delphine Le Corre
-    - Fr�deric Menou
+    - Fréderic Menou
     - Jean-Michel Courivaud
     - Benoit Dufour
-    - C�dric Mar�chal
-    - Mich�le B�rot
+    - Cédric Maréchal
+    - Michèle Bérot
     - Anne-Sophie Buiret
   Managing Director, Korea:
     - Jungwon Hahn
@@ -1100,7 +1102,7 @@ MARKETING:
     - Richard Kwon
     - Michael Lawrence
     - Patrick Lee
-    - C�dric Mar�chal
+    - Cédric Maréchal
     - Kyungin Min
     - Eric Modolin
     - Jinho Oh
@@ -1145,7 +1147,7 @@ PUBLIC RELATIONS:
     - Gil Shif
   Editorial Assistant:
     - Gareth Hughes
-  COMMUNITY and eSPORTS: []
+COMMUNITY AND ESPORTS:
   Senior Manager, Global Community and eSPORTS:
     - Paul Della Bitta
   eSports Manager:
@@ -1168,7 +1170,7 @@ PUBLIC RELATIONS:
     - Christopher Carter (EU)
     - Nicolas Guion (EU)
     - Andrew Hsu
-    - Jos� Ignacio de Andr�s (EU)
+    - José Ignacio de Andrés (EU)
     - Jongwon Lee (KR)
     - Tobias Jahn (EU)
     - Thomas Johnsen (EU)
@@ -1185,7 +1187,7 @@ PUBLIC RELATIONS:
     - Jean-Baptiste Pennes (EU)
     - Jesse Perez
     - Arron Rasmussen
-    - Alejandro Riveiro de la Pe�a (EU)
+    - Alejandro Riveiro de la Peña (EU)
     - Kester Robison
     - Jessica Schleder (EU)
     - Bo Selmer-Hansen (EU)
@@ -1200,7 +1202,7 @@ PUBLIC RELATIONS:
     - Elodie Dupuis (EU)
     - Laura Grant
     - Pauline Hammelet (EU)
-  Business Development and Licensing: []
+BUSINESS DEVELOPMENT AND LICENSING:
   Global Director:
     - Cory Jones
   Licensing:
@@ -1219,7 +1221,7 @@ HUMAN RESOURCES:
   Vice President of Global Human Resources:
     - Denise Dunlap
   Human Resources:
-    - Val�rie Chr�tien (EU)
+    - Valérie Chrétien (EU)
     - Julianna Danner
     - Juliette Durand (EU)
     - Peter Guibert (EU)
@@ -1311,10 +1313,8 @@ GLOBAL CUSTOMER SERVICE:
 TECHNICAL SUPPORT:
   Manager:
     - John Hsieh
-    - Charlie Areson
   Assistant Manager:
     - Kyle Williams
-    - Alan Marti
   Technical Support Leads:
     - Adam Slack
     - Andreas Unger
@@ -1353,6 +1353,25 @@ TECHNICAL SUPPORT:
     - Nick Solano
     - Marty Tande
     - Daniel Watson
+BILLING AND ACCOUNT SERVICES:
+  Manager:
+    - Charlie Areson
+  Assistant Manager:
+    - Alan Marti
+  Billing Leads:
+    - Erynn Caldwell
+    - Matthew Vineyard
+    - Rory Wood
+  Billing Seniors:
+    - Marcus Bishop
+    - J.D. Calzada
+    - Lance Kimberlin
+    - Tim Maggio
+    - Evan Peterson
+    - Christian Reynolds
+    - Ryan Reddick
+    - Jason White
+  Representatives:
     - Rameses Arias
     - Jessica Barnhart
     - Anne Marie Belland
@@ -1403,20 +1422,6 @@ TECHNICAL SUPPORT:
     - Amanda Wood
     - Steven Worcester
     - John Zappulla
-  BILLING and ACCOUNT SERVICES: []
-  Billing Leads:
-    - Erynn Caldwell
-    - Matthew Vineyard
-    - Rory Wood
-  Billing Seniors:
-    - Marcus Bishop
-    - J.D. Calzada
-    - Lance Kimberlin
-    - Tim Maggio
-    - Evan Peterson
-    - Christian Reynolds
-    - Ryan Reddick
-    - Jason White
 IN-GAME SUPPORT:
   Senior Manager:
     - Bill Galey
@@ -1962,11 +1967,11 @@ EUROPE CUSTOMER SERVICE:
   Director:
     - Frederic Menou
   Technical and Billing Support Manager:
-    - Marie-H�l�ne Atienz
+    - Marie-Hélène Atienz
   Ireland Site Manager:
     - Robert Ashby
   Coordinator:
-    - Marl�ne Cervantes
+    - Marlène Cervantes
   Back Office Manager:
     - Ernst ten Bosch
   Documentation team:
@@ -1999,7 +2004,7 @@ TECHNICAL SUPPORT (EU):
     - Hernan Gonzalez
     - Alexander Mochi
     - Eric De Freslon
-    - Fran�ois Medaerts
+    - François Medaerts
     - Vincent Moitrot
     - Aymeric Pentecouteau
     - Alexis Terrasse
@@ -2031,7 +2036,7 @@ BILLING (EU):
     - Jens Kirchhoff
     - Christian Konigstein
     - Sascha Leopold
-    - Andr� Linnemann
+    - André Linnemann
     - Maria Loy
     - Geir Mjosund
     - Francesco Reinboldt
@@ -2065,7 +2070,7 @@ BILLING (EU):
     - David Remy Zephir
     - Hadrien Rudich
     - Arnaud Schwarz
-    - Isma�l Villeger
+    - Ismaël Villeger
     - Romain Mardot
 ACCOUNT SERVICES (EU):
   Account Services Lead:
@@ -2091,7 +2096,7 @@ IN-GAME SUPPORT (EU):
     - Peter Rothlisberger
     - Linus Fink
     - Jason Adams
-    - Hansj�rg Brandt
+    - Hansjörg Brandt
     - Clemens Krainer
     - Mikhail Shiryaev
   Seniors:
@@ -2119,49 +2124,49 @@ IN-GAME SUPPORT (EU):
     - Lucas Christophe
     - Silvio Clausen
     - Dennis Czybulka
-    - G�ran Gauruder
+    - Göran Gauruder
     - Florian Mentl
     - Alexander Otto
     - Elisabeth Astl
     - Henning Kaiser
     - Mirko Bayer
-    - Florian Bl�sche
+    - Florian Bläsche
     - Lars Weiler
-    - Thomas R�themeyer
+    - Thomas Röthemeyer
     - Heidi Wanner
     - Mario Berndt
     - Falk Schwiefert
     - Sascha Giese
     - Markus Schill
-    - Robin H�se
+    - Robin Höse
     - Navid Akbari
     - Andreas Liebau
     - Kim Chaing
-    - Ga�l Company
+    - Gaël Company
     - Vincent Kaufmann
     - Elodie Choliere
     - Sebastien Hoareau
     - Serge Pincon
     - Nicolas Passemard
-    - Fr�d�ric Rochet
+    - Frédéric Rochet
     - Miguel Izquierdo
     - Sergi Berjano
     - Isidro Tellez
-  Representatives: []
+REPRESENTATIVES:
   German:
     - Marco Alemanno
     - Stefan Bahr
-    - Bj�rn Bartholome
+    - Björn Bartholome
     - Gregor Beck
     - Sebastian Beer
     - Julius Beiner
     - Jens Bekemeier
-    - Benjamin Bergh�user
+    - Benjamin Berghäuser
     - Christian Berwind
     - Michael Blumenthal
-    - Stefan B�hme
+    - Stefan Böhme
     - Patrick Bohrer
-    - Dirk B�melburg
+    - Dirk Bömelburg
     - Bianca Braun
     - Daniel Brockdorff
     - Daniel Bromand
@@ -2172,39 +2177,39 @@ IN-GAME SUPPORT (EU):
     - Martin Dammers
     - Oliver Danckers
     - Patrick Dekoepper
-    - Christian D�bel
+    - Christian Döbel
     - Martin Doll
     - Dennis Drabinski
     - Stefan Duffner-Hansmann
-    - Alexander D�sseldorf
+    - Alexander Düsseldorf
     - JanKonrad Ebermann
-    - Bj�rn Ebner
+    - Björn Ebner
     - Stephan Einecke
     - Thomas-Christian Endres
     - Jens Fehr
-    - J�rg Franck
+    - Jörg Franck
     - Kai Frankenberg
     - Martin Franz
     - Eva-Maria Fritsche
-    - Jens F�nfkirchler
+    - Jens Fünfkirchler
     - Mathias Gabel
     - Krystian Gawron
     - Silvio Geisenhainer
-    - Sonja G�den
-    - Marco Gol�ke
-    - Christopher G�ttfert
+    - Sonja Göden
+    - Marco Golüke
+    - Christopher Göttfert
     - Lorenz Graf
     - Robin Graf
     - Markus Graffe
-    - Frerk G�ntzler
+    - Frerk Güntzler
     - Steffen Gutzeit
     - AndrewGordon Haefs
-    - Tobias H�nseler
+    - Tobias Hänseler
     - Patrick Happel
     - Marc Hartmann
     - Alexander Haselbacherm
     - Marcel Haug
-    - Roman H�usler
+    - Roman Häusler
     - Sandra Heide
     - Christian Heidrich
     - Eugen Heller
@@ -2220,31 +2225,31 @@ IN-GAME SUPPORT (EU):
     - Marc Jung
     - Matthias Kiesel
     - Markus Kintrup
-    - S�ren Klein
+    - Sören Klein
     - Harald Kneissl
     - Matthias Koch
-    - Sonja K�ck
+    - Sonja Köck
     - Sebastian Kolodzik
-    - Viktor K�nig
+    - Viktor König
     - Albert Konrad
     - Stefan Krannich
     - Max Kreisel
-    - Christian Kr�ger
+    - Christian Kröger
     - Nina Kroner
     - Sven Kruse
-    - Thomas K�ppers
+    - Thomas Küppers
     - Matthias Labitzke
     - Rene Langhans
     - Gordon Lathan
     - Tim Laufenberg
-    - Johannes L�uffer
+    - Johannes Läuffer
     - Martin Leipold
     - Wilko Lennartz
     - Torsten Lill
-    - Bj�rn L�hrer
-    - Oliver L�tscher
+    - Björn Löhrer
+    - Oliver Lötscher
     - Michael Lueth
-    - Mike L�tjens
+    - Mike Lütjens
     - Marc Luttecke
     - Sebastian Magnus
     - Gaetan Mahon
@@ -2263,15 +2268,15 @@ IN-GAME SUPPORT (EU):
     - Patrick Metzger
     - Caspar Michel
     - Stefan Mond
-    - Frank M�ller
-    - Moritz M�ller
+    - Frank Müller
+    - Moritz Müller
     - David Navarro
     - Filip Nogowski
     - Cornelia Nolte
     - Sebastian Oldenettel
     - Sebastian Oliva
     - Mathias Ortner
-    - Bj�rn Passow
+    - Björn Passow
     - Raik Patze
     - Mathias Pelz
     - Stefan-Marcus Peter
@@ -2319,7 +2324,7 @@ IN-GAME SUPPORT (EU):
     - Marco Vogt
     - Marion Wacker
     - Benny Waldenmaier
-    - Marion Wei�enborn
+    - Marion Weißenborn
     - Olaf Wendorff
     - Sandra Wernicke
     - Peter Wetzel
@@ -2548,7 +2553,7 @@ IN-GAME SUPPORT (EU):
     - Alvaro Aguilar Tormo
     - Ricardo Aranguren Gassis
     - David Church Rodriguez
-    - Juan Jos� De La Torre
+    - Juan José De La Torre
     - Miguel Garcia Gomez
     - Angel Martin Ayuso
     - Inigo Moleres Apilluelo
@@ -2566,21 +2571,21 @@ IN-GAME SUPPORT (EU):
     - Karim Adala
     - Olivier Mouvet
     - Magalie Blaizot
-    - Micka�l Bohin
-    - Aur�lien Bovis
+    - Mickaël Bohin
+    - Aurélien Bovis
     - Soufyane Brahimi
     - Juan Caria
-    - C�dric Coret
+    - Cédric Coret
     - Ugo Croci
     - Alexandre Duckman Lebrun
     - Gilles Durosay
-    - C�line Guise
+    - Céline Guise
     - Guillaume Jegu
     - Pascaline Jibert
-    - Fr�d�ric Kubiakowski
+    - Frédéric Kubiakowski
     - Mathieu Laugle
     - Mathieu Laurent
-    - R�mi Le Thery
+    - Rémi Le Thery
     - Bastien Lebourg
     - Xavier Lepage
     - Julien Litrico
@@ -2589,7 +2594,7 @@ IN-GAME SUPPORT (EU):
     - Jessica Milleville
     - Bonna Mom
     - Pierre Nicolas Moreau
-    - S�bastien Musquin
+    - Sébastien Musquin
     - Mathieu Orjebin
     - Antoine Pezzo
     - Jean-Louis Phan Tran
@@ -2597,17 +2602,17 @@ IN-GAME SUPPORT (EU):
     - Josfred Poinsot
     - Philippe Prince
     - Nicolas Pruvost
-    - S�bastien Pusset
+    - Sébastien Pusset
     - Berenger Queune
     - Sandra Ragot
-    - C�drik Razafimamantsoa
+    - Cédrik Razafimamantsoa
     - Richard Robinson
     - Aliocha Segard
     - Audrey Selnet
-    - Gens�ric Sohier
+    - Genséric Sohier
     - Isabelle Soupault
-    - Fr�d�ric Tabard
-    - Fran�ois Trani
+    - Frédéric Tabard
+    - François Trani
     - Cyndie Varin
     - Audrey Wozniak
     - Romain Wuillaume
@@ -2621,9 +2626,9 @@ IN-GAME SUPPORT (EU):
     - Philippe Motheron
     - Maxime Ledonge
     - Louis Vincent
-    - Gr�gory Garcia
+    - Grégory Garcia
     - Brice Russeil
-    - St�phane Lam
+    - Stéphane Lam
     - Umberto Lopes
     - Robin Berquet
     - Guillaume Lachambre
@@ -2631,9 +2636,9 @@ IN-GAME SUPPORT (EU):
     - Marianne Pilote
     - Jaoued Karim
     - Jeremy Jacquemin
-    - Fran�ois Pinturault
+    - François Pinturault
     - Yoann Gonedec
-    - C�line Choliere
+    - Céline Choliere
 QUALITY CONTROL (EU):
   QC Lead:
     - Stefan Mai
@@ -2720,7 +2725,7 @@ QUALITY CONTROL (EU):
     - David Potter
     - Tommy Sabri
     - Andy Salwey
-    - Patrick Andr� Seidler
+    - Patrick André Seidler
     - Stian Skjondal
     - Sebastiaan Van Doornspeek
     - Ryan Vowler
@@ -2732,17 +2737,16 @@ QUALITY CONTROL (EU):
     - Denis Courtin
     - John Harry De Lara
     - Sylvain Enjalbert
-    - C�line Etcheberry
+    - Céline Etcheberry
     - Antoine Guyard
     - Graziella Marie
-    - Gr�gory Sevin
+    - Grégory Sevin
 KOREA CUSTOMER SERVICE:
   Director:
     - Richard Choi
 TECHNICAL SUPPORT (KR):
   Manager:
     - Jaeyang Kwak
-    - Yoonhee Kim
   Technical Support Seniors:
     - Sungjoon Lee
   Representatives:
@@ -2751,6 +2755,18 @@ TECHNICAL SUPPORT (KR):
     - Hyungjun Kim
     - Joohong Pan
     - Jaeyong Choi
+BILLING AND ACCOUNT SERVICES (KR):
+  Manager:
+    - Yoonhee Kim
+  Billing Leads:
+    - Kyungmee Kim
+    - Jihyun Song
+    - Jiyoung Kim
+  Billing Seniors:
+    - Eunbom Park
+    - Sehwa An
+    - Jinsu Lee
+  Representatives:
     - Jihye Yun
     - Kyunghwa Yu
     - Jungran Lee
@@ -2760,15 +2776,6 @@ TECHNICAL SUPPORT (KR):
     - Cholong Han
     - Hyoju Gou
     - Yunho Bae
-  BILLING and ACCOUNT SERVICES (KR): []
-  Billing Leads:
-    - Kyungmee Kim
-    - Jihyun Song
-    - Jiyoung Kim
-  Billing Seniors:
-    - Eunbom Park
-    - Sehwa An
-    - Jinsu Lee
 IN-GAME SUPPORT (KR):
   Manager:
     - Beom Choi

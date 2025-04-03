@@ -221,7 +221,7 @@ AUDIO:
     - Russell Brower
   Sound Supervisor:
     - Jonas Laster
-  Sound Effects: []
+SOUND EFFECTS:
   Sound Design:
     - Chris De La Pena
     - Brian Farr
@@ -230,32 +230,25 @@ AUDIO:
     - Mike Johnson
     - Jonas Laster
     - Paul Menichini
-    - David Farmer
-    - Tim Nielson
-    - David Whitehead
   Additional Sound Design:
     - David Farmer
     - Tim Nielsen
     - Jeff Schmidt
     - David Whitehead
-    - Gametracks
-    - a subsidiary of Danetracks
-    - Inc.
+    - Gametracks, a subsidiary of Danetracks, Inc.
     - Caron Weidner - Lead Sound Designer
-    - Dane A. Davis
-    - MPSE
+    - Dane A. Davis, MPSE
     - Michael C. Schapiro
     - Roland Thai
     - Rommel Molina
-    - Bill R. Dean
-    - MPSE
+    - Bill R. Dean, MPSE
     - Pam Aronoff
     - Chuck Russom
     - Charles Maynes
     - Stuart Provine
     - Tom Ozanich
     - Lance Brown
-  Music: []
+MUSIC:
   Composers:
     - Russell Brower
     - Derek Duke
@@ -269,38 +262,26 @@ AUDIO:
     - Robert Puff
   Live Sessions and Orchestrations produced by:
     - Edo Guidotti
-  Featured Musicians: []
-  Vocal Solo:
+  Featured Musicians:
     - Laurie Ann Haus
-  Flute Solo:
     - Susan Craig Winsberg
-  ? Cinematic and Main Title scores performed by the Northwest Sinfonia Orchestra and Chorus, contracted by Simon James & David Sabee
-  : []
-  Orchestral Scoring Mixer:
     - John Kurlander
-  Orchestral Sub-Mixes:
     - John Rodd
     - John Kurlander
-  Voiceover: []
+VOICEOVER:
   Casting and Voiceover Director:
     - Andrea Toyias
   Talent Coordinator:
     - Melanie Hanson
-  Additional Casting Assistance: []
-  Los Angeles: []
-  BB Casting & Production Services, Inc: []
+ADDITIONAL CASTING ASSISTANCE:
   Casting Director:
     - Brigitte Burdine
-    - Jen Rudin
-    - CSA
+    - Jen Rudin, CSA
   Casting Associate:
     - Keith Clark
-    - Bess Fifer
-    - CSA
+    - Bess Fifer, CSA
   Recording Engineer:
     - John Adair
-  New York: []
-  Just Voices Casting New York: []
   Executive Casting Director:
     - Roger Becker
   President/Owner:
@@ -312,12 +293,16 @@ AUDIO:
     - Chris De La Pena
     - Jon Graves
     - Paul Menichini
-  Cinematic Sound: []
+CINEMATIC SOUND:
   Supervising Sound Design:
     - Paul Menichini
+  Sound Design:
+    - David Farmer
+    - Tim Nielson
+    - David Whitehead
   Cinematic Mixer:
     - Thomas C. Brewer
-  Audio Production: []
+AUDIO PRODUCTION:
   Producers:
     - Thomas Pieracci
     - Dennis Crabtree
@@ -342,8 +327,7 @@ CINEMATICS:
     - Scott Abeyta
     - Noel Wolfman
   Project Producer:
-    - Phillip Hillenbrand
-    - Jr.
+    - Phillip Hillenbrand, Jr.
   Cinematic Art Directors:
     - Jonathan Berube
     - Fausto De Martini
@@ -1006,7 +990,7 @@ LOCALIZATION:
     - Chu Ching (Peggy)
     - Hao Yuan (Garfield)
     - Jiang Pu (Jump)
-  Localization Engineers: []
+LOCALIZATION ENGINEERS:
   Castilian Spanish:
     - M. Ermitas Barrasa Rodríguez
     - Irene Buesa García
@@ -1018,13 +1002,6 @@ LOCALIZATION:
     - Carmen Priego
     - M. Ángeles Rodríguez Marrero
     - Paula del Valle Sánchez
-    - Diego J. Díaz Gutiérrez
-    - Carlos Godó Borrás
-    - Rubén López González
-    - Pablo Lloreda Fernández
-    - Marta Pérez García
-    - Kenneth Pinó Llach
-    - Isidro Téllez de Gregorio
   French:
     - Claire Bajard
     - Christelle Bravin
@@ -1035,16 +1012,6 @@ LOCALIZATION:
     - Alexis Roy-Petit
     - Anne Studer
     - Anne Vétillard
-    - Thomas Chabrier
-    - Antoine Dulac
-    - Gilles Durosay
-    - Maxence Fleury
-    - Lætitia Georges
-    - Sara Gissot
-    - Benjamin Schmidt
-    - Arnaud Schwarz
-    - Frédéric Tabard
-    - Frédéric Vasseur
   German:
     - Alexander Böning
     - Florian Descher
@@ -1054,17 +1021,6 @@ LOCALIZATION:
     - Katharina Reiche
     - Stefan Schmitt
     - Andrea Tüger
-    - Marco Baier
-    - Jan Becker
-    - Ben Choi
-    - Stefan Christ
-    - Christian Decomain
-    - Thomas Flöter
-    - Kai Moosmann
-    - Markus Peters
-    - Michael Radnitz
-    - Kathrin Renneberg
-    - Peter Schneider
   Korean:
     - Wonyoung Choi
     - Shinyong Ha
@@ -1074,18 +1030,6 @@ LOCALIZATION:
     - Harry Park
     - Yooshin Yang
     - Gayeong Yoo
-    - Jeehyun Hwang
-    - Sanghak Jeon
-    - Brian Euiyoul Kim
-    - Jung Hwan Kim
-    - Mike Euiseung Kim
-    - Eunae Kong
-    - Byungwoo Kwon
-    - Kyungjoon Lee
-    - Sowon Lee
-    - Jaewoo Mo
-    - Hyunyoung Moser
-    - Heeyoung Park
   Russian:
     - Maria Kokova
     - Ekaterina Krasnikova
@@ -1095,41 +1039,17 @@ LOCALIZATION:
     - Igor Sobolevsky
     - Maria Vakulenko
     - Alena Yakavets
-    - Nikolay Bytskevich
-    - Victor Dobrovatov
-    - Natalia Goncharova
-    - Anton Kochergin
-    - Andrey Kuzmin
-    - Maria Maisenovich
-    - Elena Ovchinnikova
-    - Alexey Pyatikhatka
-    - Aliaksei Sedzin
   Simplified Chinese:
     - Li Bo (Hawk)
     - Li Lei
     - Liu Yuan (Gabriel)
     - Wu Zhao Xiang (Maverick)
-    - Guo Naiyi (Jack)
-    - Shi Zuhao (Stephen)
-    - Wang Juelin (William)
-    - Wang Zhiliang (Calvin)
-    - Wu Huan (Marvin)
-    - Xu Xinyi (Andy)
-    - Zhang Zhipeng (Fran)
   Traditional Chinese:
     - Hsu Wenta
     - Huang Tzuan
     - Lin Kuei Han (Jessie)
     - Tan William
     - Tung Jen-Chien
-    - Chung Chao Chun (Michael)
-    - Lee Mei Suen (Michelle)
-    - Liu Chen An (Andy)
-    - Huang Chun Yao (Daniel)
-    - Lin Yi (Eric)
-    - Qiao Qi (Emily)
-    - Sung Wei Lun (Allen)
-    - Yang Dean-Chia (Dean)
   Latin American Spanish (Babel Media, Ltd.):
     - Emiliano Domenech (Translator)
     - Ivan Rotondo (Editor)
@@ -1152,7 +1072,78 @@ LOCALIZATION:
     - Minjin Lee
     - Jenny Q. Liu
     - Xia Siyi
-  Localization QA Analysts: []
+LOCALIZATION QA ANALYSTS:
+  Castilian Spanish:
+    - Diego J. Díaz Gutiérrez
+    - Carlos Godó Borrás
+    - Rubén López González
+    - Pablo Lloreda Fernández
+    - Marta Pérez García
+    - Kenneth Pinó Llach
+    - Isidro Téllez de Gregorio
+  French:
+    - Thomas Chabrier
+    - Antoine Dulac
+    - Gilles Durosay
+    - Maxence Fleury
+    - Lætitia Georges
+    - Sara Gissot
+    - Benjamin Schmidt
+    - Arnaud Schwarz
+    - Frédéric Tabard
+    - Frédéric Vasseur
+  German:
+    - Marco Baier
+    - Jan Becker
+    - Ben Choi
+    - Stefan Christ
+    - Christian Decomain
+    - Thomas Flöter
+    - Kai Moosmann
+    - Markus Peters
+    - Michael Radnitz
+    - Kathrin Renneberg
+    - Peter Schneider
+  Korean:
+    - Jeehyun Hwang
+    - Sanghak Jeon
+    - Brian Euiyoul Kim
+    - Jung Hwan Kim
+    - Mike Euiseung Kim
+    - Eunae Kong
+    - Byungwoo Kwon
+    - Kyungjoon Lee
+    - Sowon Lee
+    - Jaewoo Mo
+    - Hyunyoung Moser
+    - Heeyoung Park
+  Russian:
+    - Nikolay Bytskevich
+    - Victor Dobrovatov
+    - Natalia Goncharova
+    - Anton Kochergin
+    - Andrey Kuzmin
+    - Maria Maisenovich
+    - Elena Ovchinnikova
+    - Alexey Pyatikhatka
+    - Aliaksei Sedzin
+  Simplified Chinese:
+    - Guo Naiyi (Jack)
+    - Shi Zuhao (Stephen)
+    - Wang Juelin (William)
+    - Wang Zhiliang (Calvin)
+    - Wu Huan (Marvin)
+    - Xu Xinyi (Andy)
+    - Zhang Zhipeng (Fran)
+  Traditional Chinese:
+    - Chung Chao Chun (Michael)
+    - Lee Mei Suen (Michelle)
+    - Liu Chen An (Andy)
+    - Huang Chun Yao (Daniel)
+    - Lin Yi (Eric)
+    - Qiao Qi (Emily)
+    - Sung Wei Lun (Allen)
+    - Yang Dean-Chia (Dean)
   Latin American Spanish:
     - Ricardo Durán
     - Jimmie Jaimes
@@ -1805,20 +1796,20 @@ COMMUNITY AND ESPORTS:
     - Nik Gianozakos (SEA)
     - Nicolas Guion (EU)
     - Stefanie Gwinner (EU)
-    - Jungho.Han (KR)
+    - Jungho Han (KR)
     - Bo Selmer Hansen (EU)
     - Ash Harman (EU)
-    - Junghoon.Heo (KR)
+    - Junghoon Heo (KR)
     - Leonidas Hsu (TW)
     - Tobias Jahn (EU)
     - Thomas Johnsen (EU)
     - Stephanie Johnson (NA)
-    - Sunna.Kim (KR)
+    - Sunna Kim (KR)
     - Marina Kiupa (EU)
     - Liam Knapp (NA)
     - Albert Konrad (EU)
     - Kimberly LeCrone (NA)
-    - Jongwon.Lee (KR)
+    - Jongwon Lee (KR)
     - Marino Lee (KR)
     - Jaclyn Lo (SEA)
     - Nicole Lorenz (EU)
@@ -1826,8 +1817,8 @@ COMMUNITY AND ESPORTS:
     - Susana Monroy (LA)
     - Chung Ng (NA)
     - Benedikt Oehmen (EU)
-    - Yooseok.Pan (KR)
-    - Byunghun.Park (KR)
+    - Yooseok Pan (KR)
+    - Byunghun Park (KR)
     - Jesse Perez (LA)
     - Rafael Raudry (NA)
     - Cédrik Razafimanantsoa (EU)
@@ -1841,9 +1832,9 @@ COMMUNITY AND ESPORTS:
     - Micah Whipple (NA)
     - Chad Wingerd (NA)
     - Jerome Wu (CN)
-    - Seunggook.Yang (KR)
+    - Seunggook Yang (KR)
     - Eric Yco (NA)
-    - Jino.Yoo (KR)
+    - Jino Yoo (KR)
     - Kevin Yu (NA)
     - Kenny Zigler (NA)
   Global eSports:
@@ -1872,17 +1863,12 @@ LEGAL:
     - Jane Chen
     - Hyukjoon Choi
     - Lynda Do
-    - Satoru Hamada
-    - Esq.
-    - Fritz Kryman
-    - Esq.
+    - Satoru Hamada, Esq.
+    - Fritz Kryman, Esq.
     - Hosung Lee
-    - James Riordan
-    - Esq.
-    - Colleen Ryan
-    - Esq.
-    - Tracy Sargent
-    - Esq.
+    - James Riordan, Esq.
+    - Colleen Ryan, Esq.
+    - Tracy Sargent, Esq.
     - Sylvia Whiteshield
     - Sungkye Yi
 BUSINESS DEVELOPMENT & LICENSING:
@@ -2046,7 +2032,6 @@ FACILITIES:
     - Brandon Shephard
     - Steve Stafford
     - Michael Triglia
-GLOBAL CUSTOMER SUPPORT: {}
 EUROPE CUSTOMER SUPPORT:
   Customer Support Representatives:
     - George Abbott
@@ -3310,7 +3295,7 @@ KOREA CUSTOMER SUPPORT:
     - Youngwoo Nam
     - Joohoon Oh
     - Sunga Park
-    - Haeyoung park
+    - Haeyoung Park
     - Jinsuk Park
     - Minkyu Park
     - Sairom Park
@@ -3326,7 +3311,8 @@ KOREA CUSTOMER SUPPORT:
     - Jisub Han
     - Jeongho Kook
     - Jiyoun Lee
-    - Joonbin Lee Jungran Lee
+    - Joonbin Lee
+    - Jungran Lee
     - Kyueun Lee
     - Sunmin Lim
     - Bora Park
@@ -3403,7 +3389,8 @@ CHINA CUSTOMER SUPPORT:
     - Peiji Guo
   Customer Service Manager:
     - Sam Yu
-CHINA CUSTOMER SERVICE AND OPERATIONS: {}
+  China Customer Service and Operations:
+    - NetEase Team
 NORTH/SOUTH AMERICAN CUSTOMER SUPPORT:
   Customer Support Representatives:
     - Robert Abbey
@@ -4561,7 +4548,7 @@ GLOBAL LEARNING AND DEVELOPMENT:
     - Landry Dugan
     - Tom Edwards
     - Royce Higbee
-    - Gavin J.Jurgens-Fyhrie
+    - Gavin J. Jurgens-Fyhrie
     - Paul Meyer
     - Jasmine Monteith
     - Karri Phillips
@@ -4593,7 +4580,7 @@ GLOBAL PLANNING AND SUPPORT SERVICES TEAM:
     - Eric Wu
   Global Policy Council Manager:
     - Marcus Maczynski
-  Process Improvement Analyst:
+  Process Improvement Analysts:
     - Richard Hardy
     - Trish Lee
     - John Hsieh
