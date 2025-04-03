@@ -45,3 +45,4 @@ Note that I'll tend to pick whatever they went by as last.
 * `Seyong (Simon) Lee` -> `Seyong Lee`
 * `Michael (Cliff) Threadgold` (and variations) -> `Cliff Threadgold`
 * `Jeffery Qixun Tang` -> `Tang Qi Xun (Jeffrey)`
+* A whole buch more (mostly Korean and Chinese)
