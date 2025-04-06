@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Credits Graph Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Game Credits Graph Visualizer</h1>
+    <!-- ... other body elements ... -->
+    <div class="controls">
+        <div> <label for="fileSelect1">Select JSON File 1:</label> <select id="fileSelect1"></select> </div>
+        <div> <label for="fileSelect2">Select JSON File 2:</label> <select id="fileSelect2"></select> </div>
+    </div>
+    <div id="loadingMessage" style="display: none;">Loading and processing...</div>
+    <div id="errorMessage" style="color: red;"></div>
+    <div id="cy"></div>
+    <div id="tooltip" style="display: none; position: absolute; /* ... */">Tooltip content</div>
+
+    <!-- Load Cytoscape.js library FIRST (deferred) -->
+    <script src="https://unpkg.com/cytoscape@3.31.2/dist/cytoscape.min.js"></script>
+
+    <!-- Load cose-bilkent layout dependencies SECOND (synchronously AFTER cytoscape finishes) -->
+    <script src="https://unpkg.com/layout-base@2.0.1/layout-base.js"></script>
+    <script src="https://unpkg.com/cose-base@2.2.0/cose-base.js"></script>
+
+    <!-- Load the cose-bilkent layout extension THIRD (synchronously AFTER dependencies finish) -->
+    <script src="https://unpkg.com/cytoscape-cose-bilkent@4.1.0/cytoscape-cose-bilkent.js"></script>
+
+    <!-- Load custom script as a module LAST (deferred) -->
+    <script type="module" src="main.js" defer></script>
+</body>
+
+</html>
