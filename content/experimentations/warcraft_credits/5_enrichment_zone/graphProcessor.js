@@ -75,7 +75,8 @@ export function processGraphData(data1, data2, isSameGame, personRolesMap) {
                     currentGameId = node.id;
                     if (fileIndex === 1) identifiedGameId1 = currentGameId;
                     else identifiedGameId2 = currentGameId;
-                    cytoscapeNodeData.category = CATEGORY_GAME; // Mark as a game node
+                    cytoscapeNodeData.category = CATEGORY_GAME;
+                    cytoscapeNodeData.gameIndex = fileIndex;
                     break;
                 case NODE_TYPE_ROLE:
                     rolesTempMap.set(node.id, nodeLabel); // Store Role ID -> Role Name mapping
@@ -87,18 +88,20 @@ export function processGraphData(data1, data2, isSameGame, personRolesMap) {
 
             // Add/update node in our central map if it's a Game or Person
             if (nodeType === NODE_TYPE_GAME || nodeType === NODE_TYPE_PERSON) {
-                 if (!nodesMap.has(nodeId)) {
-                     nodesMap.set(nodeId, { data: cytoscapeNodeData, classes: classes });
-                 }
-                 // Update existing node if needed (e.g., ensure game category is set)
-                 else if (nodeType === NODE_TYPE_GAME) {
-                      nodesMap.get(nodeId).data.category = CATEGORY_GAME;
-                 }
+                if (!nodesMap.has(nodeId)) {
+                    nodesMap.set(nodeId, { data: cytoscapeNodeData, classes: classes });
+                }
+                // Update existing node if needed
+                else if (nodeType === NODE_TYPE_GAME) {
+                    const existingNode = nodesMap.get(nodeId);
+                    existingNode.data.category = CATEGORY_GAME;
+                    existingNode.data.gameIndex = fileIndex;
+                }
             }
         });
 
         if (!currentGameId) {
-             console.warn(`No '${NODE_TYPE_GAME}' node found in data source ${fileIndex}. Comparisons might be affected.`);
+            console.warn(`No '${NODE_TYPE_GAME}' node found in data source ${fileIndex}. Comparisons might be affected.`);
         }
 
 
@@ -164,7 +167,11 @@ export function processGraphData(data1, data2, isSameGame, personRolesMap) {
     if (!isSameGame) {
         processDataSource(data2, 2);
     } else {
-        identifiedGameId2 = identifiedGameId1; // If same game, IDs are the same
+        identifiedGameId2 = identifiedGameId1;
+        // Ensure gameIndex is set correctly for single game view
+        if (identifiedGameId1 && nodesMap.has(identifiedGameId1)) {
+            nodesMap.get(identifiedGameId1).data.gameIndex = 1; // Assign index 1 for single view
+        }
     }
 
     // --- Assemble Final Nodes and Edges for Cytoscape ---
@@ -222,15 +229,15 @@ export function processGraphData(data1, data2, isSameGame, personRolesMap) {
             }
         } else if (node.type === NODE_TYPE_GAME) {
             // Only add the game nodes that were actually selected/identified
-            if (nodeId === identifiedGameId1 || nodeId === identifiedGameId2) {
-                 // Assign Game nodes to appropriate parent (simplifies layout slightly)
-                 if (!isSameGame) {
-                      if (nodeId === identifiedGameId1) node.parent = parentG1Id;
-                      if (nodeId === identifiedGameId2) node.parent = parentG2Id;
-                 } else {
-                      node.parent = parentBothId; // Center the single game node
-                 }
-                 finalNodes.push(nodeData);
+            if (nodeId === identifiedGameId1 || (!isSameGame && nodeId === identifiedGameId2)) {
+                // Parent assignment logic remains the same...
+                if (!isSameGame) {
+                    if (nodeId === identifiedGameId1) node.parent = parentG1Id;
+                    if (nodeId === identifiedGameId2) node.parent = parentG2Id;
+                } else {
+                    node.parent = parentBothId; // Center the single game node parent
+                }
+                finalNodes.push(nodeData);
             }
         }
         // Other node types (like Role) are processed but not added directly

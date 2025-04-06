@@ -5,6 +5,8 @@ import { gameTitleMap } from './config.js';
 
 /**
  * Populates a <select> dropdown element with game options.
+ * The options are sorted alphabetically by their filename (the key in titleMap).
+ *
  * @param {HTMLSelectElement} selectElement - The dropdown element to populate.
  * @param {Object<string, string>} titleMap - An object mapping filenames (values) to display titles (text).
  */
@@ -15,7 +17,8 @@ export function populateDropdown(selectElement, titleMap) {
     }
     selectElement.innerHTML = ''; // Clear any existing options
 
-    const filenames = Object.keys(titleMap).sort((a, b) => titleMap[a].localeCompare(titleMap[b])); // Sort by title
+    // Get the filenames (keys) and sort them directly (alphabetically by filename)
+    const filenames = Object.keys(titleMap).sort();
 
     if (filenames.length === 0) {
         const option = document.createElement('option');
@@ -35,11 +38,11 @@ export function populateDropdown(selectElement, titleMap) {
     placeholder.selected = true; // Make it the default visible option
     selectElement.appendChild(placeholder);
 
-    // Add options for each game
+    // Add options for each game, using the filename-sorted list
     filenames.forEach(filename => {
         const option = document.createElement('option');
         option.value = filename; // The value will be the filename
-        option.textContent = titleMap[filename]; // The displayed text is the title
+        option.textContent = titleMap[filename]; // The displayed text is the title from the map
         selectElement.appendChild(option);
     });
 
@@ -105,7 +108,8 @@ export function createHandleSelectionChange(elements, state, loadAndVisualizeCal
 
 /**
  * Sets initial default selections for the dropdowns and triggers the initial data load.
- * Selects the first two available games by default. If only one game exists, selects it for both.
+ * Selects the first two available games based on the filename sort order.
+ * If only one game exists, selects it for both.
  *
  * @param {Object} elements - Object containing required DOM elements { fileSelect1, fileSelect2, errorMessage }.
  * @param {Function} handleSelectionChangeCallback - The event handler function (created by createHandleSelectionChange)
@@ -126,21 +130,22 @@ export function setDefaultSelections(elements, handleSelectionChangeCallback) {
         return;
     }
 
-    // Get available game filenames (excluding the placeholder)
+    // Get available game filenames (excluding the placeholder), already sorted by filename
+    // because populateDropdown sorts them that way now.
     const availableFiles = Array.from(fileSelect1.options)
         .map(opt => opt.value)
         .filter(val => val !== ""); // Filter out empty placeholder value
 
     if (availableFiles.length >= 2) {
-        // Select first two distinct files
+        // Select first two distinct files (based on filename sort order)
         fileSelect1.value = availableFiles[0];
         fileSelect2.value = availableFiles[1];
-        console.log(`Default selections set: ${availableFiles[0]}, ${availableFiles[1]}`);
+        console.log(`Default selections set (by filename): ${availableFiles[0]}, ${availableFiles[1]}`);
     } else if (availableFiles.length === 1) {
         // Select the single available file for both dropdowns
         fileSelect1.value = availableFiles[0];
         fileSelect2.value = availableFiles[0];
-        console.log(`Single game available. Default selections set: ${availableFiles[0]}, ${availableFiles[0]}`);
+        console.log(`Single game available. Default selections set (by filename): ${availableFiles[0]}, ${availableFiles[0]}`);
     } else {
         // This case should ideally be handled by populateDropdown, but added as safety
         errorMessage.textContent = 'No game data available to select.';
