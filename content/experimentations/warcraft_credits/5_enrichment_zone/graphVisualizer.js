@@ -1,18 +1,20 @@
 // graphVisualizer.js
 // Handles the initialization and rendering of the Cytoscape graph.
+// Uses cose-bilkent layout with high nestingFactor to group nodes within parents.
+// Game nodes are NOT locked or manually positioned.
 
-import { setupTooltips } from './tooltips.js'; // Import tooltip setup (assuming tap-only version)
+import { setupTooltips } from './tooltips.js'; // Import tooltip setup (assuming tap-only, selectable text version)
 import {
     NODE_TYPE_PARENT, NODE_TYPE_GAME, NODE_TYPE_PERSON, CLASS_COMPOUND_PARENT,
-    CATEGORY_GAME1_ONLY, CATEGORY_GAME2_ONLY, CATEGORY_BOTH, CATEGORY_SINGLE_GAME // Ensure categories are available if needed by styles/logic
+    // Categories might not be directly used here but are part of the data structure
+    CATEGORY_GAME1_ONLY, CATEGORY_GAME2_ONLY, CATEGORY_BOTH, CATEGORY_SINGLE_GAME
 } from './config.js';
 
 /**
  * Initializes and renders the graph using the globally available Cytoscape instance.
- * Positions Game nodes statically on the same horizontal line and uses layout
- * options with animation to group Person nodes around them via compound parents.
- * Assumes Cytoscape core and necessary layout extensions (e.g., cose-bilkent)
- * have been loaded via script tags in the HTML before this module runs.
+ * Relies on the cose-bilkent layout algorithm and a high nestingFactor to
+ * position nodes, grouping Person nodes within their compound parents.
+ * Assumes Cytoscape core and necessary layout extensions are loaded.
  *
  * @param {Object} graphElements - Object containing { nodes: Array, edges: Array }.
  * @param {Object} domElements - Object containing references to key DOM elements
@@ -27,40 +29,58 @@ export function visualizeGraph(graphElements, domElements, personRolesMap) {
     // --- Initial Data Validation ---
     errorMessageElement.textContent = '';
     errorMessageElement.style.display = 'none';
+    // Check if graphElements or nodes are missing, or if nodes array exists but is empty
     if (!graphElements?.nodes || graphElements.nodes.length === 0) {
         const nonParentNodesCheck = graphElements?.nodes?.filter(n => n.data.type !== NODE_TYPE_PARENT) || [];
-        if (nonParentNodesCheck.length === 0) { /* ... handle error ... */ return null; }
+        if (nonParentNodesCheck.length === 0) {
+            errorMessageElement.textContent = baseErrorMessage;
+            errorMessageElement.style.display = 'block';
+            cyContainer.innerHTML = '';
+            tooltipElement.style.display = 'none';
+            console.log("Validation failed: No nodes or only parent nodes found (initial check).");
+            return null;
+        }
     } else {
+        // Check specifically if only parent nodes exist (e.g., length 3 but all are parents)
         const nonParentNodesCheck = graphElements.nodes.filter(n => n.data.type !== NODE_TYPE_PARENT);
-        if (nonParentNodesCheck.length === 0 && graphElements.nodes.length > 0) { /* ... handle error ... */ return null; }
+        // Check if nonParentNodesCheck is empty *AND* the original array wasn't (meaning it only had parents)
+        if (nonParentNodesCheck.length === 0) {
+            errorMessageElement.textContent = baseErrorMessage;
+            errorMessageElement.style.display = 'block';
+            cyContainer.innerHTML = '';
+            tooltipElement.style.display = 'none';
+            console.log("Validation failed: Graph contains only parent nodes.");
+            return null;
+        }
     }
 
 
     // --- Layout Options ---
+    // These options will be passed directly to the Cytoscape constructor
     const layoutOptions = {
         name: 'cose-bilkent',
         // General settings
-        fit: true, // We lock games and fit after layout finishes
-        padding: 70,
+        fit: true, // Fit the graph to the viewport after layout
+        padding: 60, // Padding around the fitted graph
 
         // Animation Settings
-        animate: 'end',
+        animate: 'end', // Animate node movement
         animationDuration: 800,
         animationEasing: 'ease-out',
 
-        // Parameters to Encourage Grouping
-        nestingFactor: 0.9,
-        gravity: 0.4,
-        idealEdgeLength: 70,
-        nodeRepulsion: 60000,
+        // Parameters to Encourage Grouping WITHIN PARENTS
+        nestingFactor: 0.9,   // KEEP HIGH: Strong pull towards parent boundaries
+        gravity: 0.25,        // Lower gravity might allow groups to spread more naturally
+        idealEdgeLength: 100, // Increase edge length slightly to allow more space
+        nodeRepulsion: 55000, // Adjust repulsion as needed
 
         // Other Cose-Bilkent settings
         quality: 'default',
         edgeElasticity: 0.45,
         numIter: 2500,
-        randomize: true,
+        randomize: true, // Start nodes at random positions
         nodeDimensionsIncludeLabels: true,
-        packComponents: true,
+        packComponents: true, // Important to keep the 3 groups somewhat together if disconnected
     };
 
     // --- Cytoscape Styles ---
@@ -120,10 +140,11 @@ export function visualizeGraph(graphElements, domElements, personRolesMap) {
         {
             selector: `.${CLASS_COMPOUND_PARENT}`, style: {
                 'background-opacity': 0,
-                'border-width': 2,      // Make border slightly visible for DEBUGGING? Set to 0 for production.
-                'border-color': '#ddd', // Light grey border for DEBUGGING?
-                'border-style': 'dashed',// Dashed border for DEBUGGING?
                 'label': '',
+                // debug settings:
+                'border-width': 0,
+                // 'border-color': '#ddd',
+                // 'border-style': 'dashed',
             }
         },
         // Edge style
@@ -149,85 +170,36 @@ export function visualizeGraph(graphElements, domElements, personRolesMap) {
         if (typeof window.cytoscape === 'undefined') {
             throw new Error("Cytoscape core library (window.cytoscape) not found.");
         }
-        console.log("Attempting to initialize Cytoscape instance...");
+        console.log("Attempting to initialize Cytoscape instance with layout...");
 
-        // Create instance WITHOUT running the layout immediately
+        // Create instance AND run layout immediately using constructor options
         const cyInstance = window.cytoscape({
             container: cyContainer,
             elements: graphElements,
-            style: styles, // Apply corrected styles
+            style: styles,
+            layout: layoutOptions, // Pass layout options here
             minZoom: 0.1,
             maxZoom: 3,
             wheelSensitivity: 0.2,
         });
-        console.log("Cytoscape instance created.");
+        console.log("Cytoscape instance created and layout initiated.");
 
-        // --- Position and Lock Game Nodes ---
-        const gameNodes = cyInstance.nodes(`node[type="${NODE_TYPE_GAME}"]`);
-        const width = cyInstance.width();
-        const height = cyInstance.height();
-        const yPosition = height * 0.45; // Games slightly above vertical center
-        const xPadding = Math.max(80, Math.min(width / 3.5, 250));
-
-        if (gameNodes.length === 1) {
-            const gameNode = gameNodes[0];
-            const position = { x: width / 2, y: height * 0.15 };
-            gameNode.position(position);
-            // gameNode.lock();
-            console.log(`Locked single game node ${gameNode.id()} at model position`, position);
-        } else if (gameNodes.length === 2) {
-            gameNodes.forEach(node => {
-                const gameIndex = node.data('gameIndex');
-                let position;
-                if (gameIndex === 1) {
-                    position = { x: xPadding, y: yPosition };
-                } else if (gameIndex === 2) {
-                    position = { x: width - xPadding, y: yPosition };
-                } else {
-                    console.warn(`Game node ${node.id()} missing gameIndex, placing randomly.`);
-                    position = { x: Math.random() * 1000, y: Math.random() * 1000 };
-                }
-                node.position(position);
-                // node.lock();
-                console.log(`Locked Game ${gameIndex} (${node.id()}) at model position`, position);
-            });
-        } else {
-            console.log("No game nodes found to position and lock.");
-        }
-
-
-        // --- Run the Layout ---
-        console.log("Initiating cose-bilkent layout run (animation)...");
-        const layout = cyInstance.layout(layoutOptions);
-
-        layout.promiseOn('layoutstart').then(() => {
-            console.log("Layout animation started (nodes moving to final positions)...");
+        cyInstance.one('layoutstop', () => {
+            console.log("Layout animation stopped.");
+            // Any actions needed AFTER layout finishes can go here (e.g., extra analysis)
         });
 
-        layout.promiseOn('layoutstop').then(() => {
-            if (cyInstance.destroyed()) return;
-            console.log("Layout animation stopped (nodes reached final positions).");
-            // Fit the view AFTER the layout animation has finished
-            cyInstance.animate({
-                fit: { padding: 70 } // Use same padding as layout option
-            }, { duration: 400 });
-            console.log("Fitting view to final layout.");
-        }).catch(err => {
-            console.error("Layout execution failed:", err);
-            errorMessageElement.textContent = `Layout Error: ${err.message}`;
-            errorMessageElement.style.display = 'block';
-        });
-
-        layout.run(); // Start the layout process (including animation)
 
         // --- Setup Tooltips ---
+        // Setup happens concurrently while layout might still be animating
         setupTooltips(cyInstance, tooltipElement, personRolesMap);
         console.log("Tooltips setup complete.");
 
         return cyInstance; // Success
 
     } catch (error) {
-        console.error("Cytoscape initialization or pre-layout failed:", error);
+        // Catch errors during initialization or the initial layout run
+        console.error("Cytoscape initialization or layout failed:", error);
         errorMessageElement.textContent = `Graph Initialization/Layout Error: ${error.message}`;
         errorMessageElement.style.display = 'block';
         tooltipElement.style.display = 'none';
