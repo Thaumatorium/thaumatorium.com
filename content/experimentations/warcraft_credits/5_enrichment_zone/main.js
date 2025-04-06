@@ -1,9 +1,10 @@
 // main.js
-// Main application entry point. Orchestrates UI, data fetching, processing, and visualization.
+// Main application entry point. Orchestrates UI, data fetching (via worker), processing (via worker), and visualization.
 
 import { gameTitleMap } from './config.js';
-import { fetchJsonFile } from './dataUtils.js';
-import { processGraphData } from './graphProcessor.js';
+// fetchJsonFile and processGraphData are now mainly used by the worker
+// import { fetchJsonFile } from './dataUtils.js';
+// import { processGraphData } from './graphProcessor.js';
 import { visualizeGraph } from './graphVisualizer.js';
 import { populateDropdown, createHandleSelectionChange, setDefaultSelections } from './ui.js';
 
@@ -35,24 +36,32 @@ document.addEventListener('DOMContentLoaded', () => {
         cy: null, // Holds the current Cytoscape instance
         lastFile1: null, // Tracks the last selected filename for comparison
         lastFile2: null,
-        personRolesMap: new Map() // Shared map for person roles, populated by processor
+        personRolesMap: new Map(), // Shared map for person roles, populated by worker result
+        activeWorker: null // Keep track of the active worker
     };
 
     // --- 3. Core Application Logic ---
 
     /**
-     * Orchestrates fetching data, processing it, and visualizing the graph.
+     * Orchestrates fetching data, processing it (using a Web Worker), and visualizing the graph.
      * Handles loading states, errors, and cleans up previous instances.
      * @param {string} filename1 - The filename for the first selected game.
      * @param {string} filename2 - The filename for the second selected game.
      */
     async function loadAndVisualize(filename1, filename2) {
-        console.log(`Attempting to load: ${filename1}, ${filename2}`);
+        console.log(`Main: Attempting to load via worker: ${filename1}, ${filename2}`);
         // Reset UI state
         elements.errorMessage.textContent = '';
-        elements.errorMessage.style.display = 'none'; // Hide error message area initially
+        elements.errorMessage.style.display = 'none';
         elements.loadingMessage.style.display = 'block';
-        elements.tooltip.style.display = 'none'; // Ensure tooltip is hidden
+        elements.tooltip.style.display = 'none';
+
+        // Terminate any previous worker still running
+        if (state.activeWorker) {
+            console.log("Main: Terminating previous worker.");
+            state.activeWorker.terminate();
+            state.activeWorker = null;
+        }
 
         // Destroy previous Cytoscape instance if it exists
         if (state.cy) {
@@ -62,79 +71,112 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.cyContainer.innerHTML = ''; // Clear the container
 
         try {
-            // --- Check Cytoscape CORE Availability (Essential Pre-check) ---
-            // We perform this check early. The layout extension availability check
-            // is implicitly handled by the try...catch block within visualizeGraph,
-            // as timing issues with deferred scripts can make early checks unreliable here.
+            // --- Check Cytoscape Core Availability (Essential Pre-check) ---
             if (typeof window.cytoscape === 'undefined') {
                 throw new Error("Cytoscape core library is not available (window.cytoscape is undefined). Check script loading in HTML.");
             }
-            console.log("Cytoscape core confirmed.");
+            console.log("Main: Cytoscape core confirmed.");
 
-            // --- Fetch Data ---
-            const isSameGame = (filename1 === filename2);
-            let data1, data2;
-            if (isSameGame) {
-                data1 = await fetchJsonFile(filename1);
-                data2 = data1; // Avoid fetching the same file twice
-            } else {
-                // Fetch in parallel for potentially faster loading
-                [data1, data2] = await Promise.all([
-                    fetchJsonFile(filename1),
-                    fetchJsonFile(filename2)
-                ]);
-            }
+            // --- Initialize and Start Web Worker ---
+            // Ensure your worker file exists and path is correct
+            // Use { type: 'module' } if your worker uses import/export syntax
+            const worker = new Worker('./worker.js', { type: 'module' });
+            state.activeWorker = worker; // Store reference to the current worker
 
-            // --- Process Data ---
-            // The processGraphData function modifies state.personRolesMap directly
-            const graphDataForVis = processGraphData(data1, data2, isSameGame, state.personRolesMap);
+            worker.onmessage = (event) => {
+                // Make sure this message is from the currently active worker
+                if (worker !== state.activeWorker) {
+                    console.log("Main: Received message from outdated worker, ignoring.");
+                    return;
+                }
 
-            // --- Visualize Graph ---
-            const visualizerDomElements = { // Pass only necessary elements
-                cyContainer: elements.cyContainer,
-                tooltipElement: elements.tooltip,
-                errorMessageElement: elements.errorMessage
+                const { status, graphData, personRolesMapData, message } = event.data;
+
+                if (status === 'success') {
+                    console.log("Main: Worker finished successfully.");
+                    // Reconstruct the roles Map on the main thread from the worker data
+                    // The worker converts the Map to an array for transport
+                    state.personRolesMap = new Map(personRolesMapData || []); // Handle case where map might be empty
+
+                    // --- Visualize Graph (using data from worker) ---
+                    const visualizerDomElements = {
+                        cyContainer: elements.cyContainer,
+                        tooltipElement: elements.tooltip,
+                        errorMessageElement: elements.errorMessage
+                    };
+                    // visualizeGraph uses window.cytoscape implicitly
+                    state.cy = visualizeGraph(graphData, visualizerDomElements, state.personRolesMap);
+
+                    if (!state.cy) {
+                        // visualizeGraph should have set an error message if it failed internally
+                        console.warn("Main: visualizeGraph returned null or failed.");
+                        if (!elements.errorMessage.textContent) {
+                             elements.errorMessage.textContent = "Graph visualization failed.";
+                             elements.errorMessage.style.display = 'block';
+                        }
+                    } else {
+                        console.log("Main: Graph visualization successful.");
+                    }
+
+                } else { // status === 'error'
+                    console.error("Main: Worker reported error:", message);
+                    elements.errorMessage.textContent = `Error processing data: ${message}`;
+                    elements.errorMessage.style.display = 'block';
+                    state.lastFile1 = state.lastFile2 = null; // Reset selection tracking on error
+                }
+
+                // Hide loading and clean up worker AFTER processing message
+                elements.loadingMessage.style.display = 'none';
+                if (state.activeWorker === worker) { // Check again before terminating
+                     worker.terminate();
+                     state.activeWorker = null;
+                     console.log("Main: Worker terminated after processing message.");
+                }
             };
 
-            // visualizeGraph uses window.cytoscape implicitly and will throw an error
-            // internally if the specified layout (e.g., 'cose-bilkent') isn't registered yet.
-            // This error will be caught by the catch block below.
-            state.cy = visualizeGraph(graphDataForVis, visualizerDomElements, state.personRolesMap);
-
-            // Check if visualization succeeded (visualizeGraph returns null on failure OR throws error)
-            if (!state.cy) {
-                 // If visualizeGraph returned null without throwing (e.g., no data),
-                 // it should have set an error message. Log a warning just in case.
-                 console.warn("visualizeGraph returned null or failed, indicating visualization failure.");
-                 if (elements.errorMessage.textContent) {
-                     elements.errorMessage.style.display = 'block';
-                 } else if (!errorOccurred) { // Check if an error was already caught
-                    // Only set fallback if no specific error was caught and message is empty
-                    elements.errorMessage.textContent = "Graph visualization failed: No data or configuration issue.";
-                    elements.errorMessage.style.display = 'block';
+            worker.onerror = (error) => {
+                 if (worker !== state.activeWorker) {
+                     console.log("Main: Received error from outdated worker, ignoring.");
+                     return;
                  }
-            } else {
-                console.log("Graph visualization successful.");
-            }
+                 console.error("Main: Worker onerror event:", error);
+                 // Display a generic worker error, as specific details might be limited
+                 elements.errorMessage.textContent = `Worker failed unexpectedly. Check console for details. (${error.message})`;
+                 elements.errorMessage.style.display = 'block';
+                 elements.loadingMessage.style.display = 'none';
+                 state.lastFile1 = state.lastFile2 = null; // Reset selection tracking
+                 if (state.activeWorker === worker) {
+                      worker.terminate();
+                      state.activeWorker = null;
+                      console.log("Main: Worker terminated after onerror.");
+                 }
+            };
 
-        } catch (error) {
-            // This catch block will handle errors from fetchJsonFile, processGraphData,
-            // AND errors thrown by visualizeGraph (including layout not found).
-            console.error("Error during load/process/visualize:", error);
-            // Display user-friendly error message
-            elements.errorMessage.textContent = `Error: ${error.message}`; // The error message from visualizeGraph will be shown here if it failed
+            // Send filenames to worker to start processing
+            worker.postMessage({ filename1, filename2 });
+            console.log("Main: Sent job to worker.");
+
+            // NOTE: loadAndVisualize now finishes here. The actual graph rendering
+            // happens asynchronously when the worker sends back the result.
+            // The loading indicator remains visible until the worker responds.
+
+        } catch (error) { // Catch errors during worker setup or core checks
+            console.error("Main: Error setting up worker or pre-check:", error);
+            elements.errorMessage.textContent = `Initialization Error: ${error.message}`;
             elements.errorMessage.style.display = 'block';
-            elements.tooltip.style.display = 'none'; // Hide tooltip on error
+            elements.loadingMessage.style.display = 'none'; // Hide loading on setup error
             // Reset state fully on critical error
             state.lastFile1 = null;
             state.lastFile2 = null;
+            if (state.activeWorker) {
+                 state.activeWorker.terminate();
+                 state.activeWorker = null;
+            }
             if (state.cy) { state.cy.destroy(); state.cy = null; }
             elements.cyContainer.innerHTML = '';
-            // errorOccurred = true; // Signal that an error was caught
-        } finally {
-            // Always hide loading message when done (success or error)
-            elements.loadingMessage.style.display = 'none';
         }
+        // Removed 'finally' block for loading message; it's handled by worker message/error handlers.
+
     } // --- End of loadAndVisualize ---
 
     // --- 4. Setup UI Interactions ---
@@ -143,6 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         populateDropdown(elements.fileSelect2, gameTitleMap);
 
         // Create the event handler using a closure to pass dependencies
+        // The handler now just needs to call loadAndVisualize
         const handleSelectionChange = createHandleSelectionChange(elements, state, loadAndVisualize);
 
         // Attach the handler to both dropdowns
@@ -150,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.fileSelect2.addEventListener('change', handleSelectionChange);
 
         // --- 5. Initial Load ---
-        // Set default selections and trigger the first load sequence
+        // Set default selections and trigger the first load sequence via the handler
         setDefaultSelections(elements, handleSelectionChange);
 
     } catch(uiError) {
