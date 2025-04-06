@@ -1,38 +1,42 @@
 // dataUtils.js
-// Contains utility functions for fetching data and generating IDs
+// Utility functions for data fetching and ID generation.
 
 /**
- * Asynchronously fetches and parses a JSON file.
+ * Asynchronously fetches and parses a JSON file from a given path.
  * @param {string} filename - The path to the JSON file.
- * @returns {Promise<Object>} A promise that resolves with the parsed JSON data.
- * @throws {Error} If fetching or parsing fails.
+ * @returns {Promise<Object>} A promise resolving with the parsed JSON data.
+ * @throws {Error} If the filename is missing, fetching fails, or parsing fails.
  */
 export async function fetchJsonFile(filename) {
-    if (!filename) {
-        throw new Error("No filename provided for fetching.");
+    if (!filename || typeof filename !== 'string') {
+        throw new Error("No valid filename provided for fetching.");
     }
     try {
         const response = await fetch(filename);
         if (!response.ok) {
-            throw new Error(`HTTP error ${response.status} while loading ${filename}`);
+            throw new Error(`HTTP ${response.status} loading ${filename}`);
         }
         return await response.json();
     } catch (error) {
-        console.error(`Fetch or parse failed for ${filename}:`, error);
-        throw new Error(`Could not load or parse ${filename}. (${error.message})`);
+        console.error(`Fetch or parse error for ${filename}:`, error);
+        // Re-throw a more specific error for upstream handling
+        throw new Error(`Failed to load/parse ${filename}: ${error.message}`);
     }
 }
 
 /**
- * Generates a consistent ID for a person node based on their name.
- * Handles potential missing or non-string names.
+ * Generates a consistent, sanitized ID for a person node based on their name.
+ * Provides a fallback for invalid input.
  * @param {string} name - The name of the person.
  * @returns {string} A generated ID string (e.g., "person_johnsmith").
  */
 export function generatePersonId(name) {
     if (!name || typeof name !== 'string') {
-        console.warn("Attempted to generate ID for invalid name:", name);
-        return `person_unknown_${Math.random().toString(16).slice(2)}`; // Fallback
+        console.warn("Generating ID for invalid name:", name);
+        // Provide a more predictable fallback than random
+        return `person_invalid_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
     }
-    return `person_${name.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
+    // Normalize: lowercase, remove non-alphanumeric chars
+    const sanitizedName = name.toLowerCase().replace(/[^a-z0-9]/g, '');
+    return `person_${sanitizedName}`;
 }

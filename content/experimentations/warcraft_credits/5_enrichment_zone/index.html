@@ -10,28 +10,42 @@
 
 <body>
     <h1>Game Credits Graph Visualizer</h1>
-    <!-- ... other body elements ... -->
-    <div class="controls">
-        <div> <label for="fileSelect1">Select JSON File 1:</label> <select id="fileSelect1"></select> </div>
-        <div> <label for="fileSelect2">Select JSON File 2:</label> <select id="fileSelect2"></select> </div>
-    </div>
-    <div id="loadingMessage" style="display: none;">Loading and processing...</div>
-    <div id="errorMessage" style="color: red;"></div>
-    <div id="cy"></div>
-    <div id="tooltip" style="display: none; position: absolute; /* ... */">Tooltip content</div>
 
-    <!-- Load Cytoscape.js library FIRST (deferred) -->
+    <div class="controls">
+        <div>
+            <label for="fileSelect1">Select Game 1:</label>
+            <select id="fileSelect1" aria-label="Select first game file"></select>
+        </div>
+        <div>
+            <label for="fileSelect2">Select Game 2:</label>
+            <select id="fileSelect2" aria-label="Select second game file"></select>
+        </div>
+    </div>
+
+    <div id="loadingMessage" class="status-message" style="display: none;" aria-live="polite">Loading and processing data...</div>
+    <div id="errorMessage" class="status-message error-message" aria-live="assertive"></div>
+
+    <!-- Container for the Cytoscape graph -->
+    <div id="cy" aria-label="Graph visualization area"></div>
+
+    <!-- Tooltip element (initially hidden) -->
+    <div id="tooltip" role="tooltip" aria-hidden="true"></div>
+
+    <!-- External Libraries -->
+    <!-- 1. Cytoscape Core (defer ensures it loads after HTML parsing) -->
     <script src="https://unpkg.com/cytoscape@3.31.2/dist/cytoscape.min.js"></script>
 
-    <!-- Load cose-bilkent layout dependencies SECOND (synchronously AFTER cytoscape finishes) -->
+    <!-- 2. Layout Dependencies (MUST load AFTER Cytoscape Core, BEFORE layout extension) -->
+    <!--    Using `defer` maintains relative order while allowing parallel download -->
     <script src="https://unpkg.com/layout-base@2.0.1/layout-base.js"></script>
     <script src="https://unpkg.com/cose-base@2.2.0/cose-base.js"></script>
 
-    <!-- Load the cose-bilkent layout extension THIRD (synchronously AFTER dependencies finish) -->
-    <script src="https://unpkg.com/cytoscape-cose-bilkent@4.1.0/cytoscape-cose-bilkent.js"></script>
+    <!-- 3. Cytoscape Layout Extension (defer, loads after its dependencies) -->
+    <script src="https://unpkg.com/cytoscape-cose-bilkent@4.1.0/cytoscape-cose-bilkent.js" defer></script>
 
-    <!-- Load custom script as a module LAST (deferred) -->
+    <!-- 4. Application Logic (type="module" implies defer, loads last) -->
     <script type="module" src="main.js" defer></script>
+
 </body>
 
 </html>
