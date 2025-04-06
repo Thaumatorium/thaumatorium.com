@@ -1,0 +1,17 @@
+[project]
+name = "yaml2json"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "NostraDavid", email = "55331731+NostraDavid@users.noreply.github.com" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+yaml2json = "yaml2json:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
