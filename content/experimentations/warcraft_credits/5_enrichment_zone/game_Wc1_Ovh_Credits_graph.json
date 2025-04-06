@@ -1,0 +1,1260 @@
+{
+  "nodes": [
+    {
+      "id": "game_Wc1_Ovh_Credits",
+      "label": "Game",
+      "properties": {
+        "name": "Wc1 Ovh Credits"
+      }
+    },
+    {
+      "id": "dept_GAME_DESIGN",
+      "label": "Department",
+      "properties": {
+        "name": "GAME DESIGN"
+      }
+    },
+    {
+      "id": "org_Blizzard_Entertainment",
+      "label": "Organization",
+      "properties": {
+        "name": "Blizzard Entertainment"
+      }
+    },
+    {
+      "id": "role_Producer",
+      "label": "Role",
+      "properties": {
+        "name": "Producer"
+      }
+    },
+    {
+      "id": "person_Patrick_Wyatt",
+      "label": "Person",
+      "properties": {
+        "name": "Patrick Wyatt"
+      }
+    },
+    {
+      "id": "role_Executive_Producer",
+      "label": "Role",
+      "properties": {
+        "name": "Executive Producer"
+      }
+    },
+    {
+      "id": "person_Allen_Adham",
+      "label": "Person",
+      "properties": {
+        "name": "Allen Adham"
+      }
+    },
+    {
+      "id": "role_Programmers",
+      "label": "Role",
+      "properties": {
+        "name": "Programmers"
+      }
+    },
+    {
+      "id": "person_Bob_Fitch",
+      "label": "Person",
+      "properties": {
+        "name": "Bob Fitch"
+      }
+    },
+    {
+      "id": "person_Mike_Morhaime",
+      "label": "Person",
+      "properties": {
+        "name": "Mike Morhaime"
+      }
+    },
+    {
+      "id": "person_Jesse_McReynolds",
+      "label": "Person",
+      "properties": {
+        "name": "Jesse McReynolds"
+      }
+    },
+    {
+      "id": "role_Artists",
+      "label": "Role",
+      "properties": {
+        "name": "Artists"
+      }
+    },
+    {
+      "id": "person_Stu_Rose",
+      "label": "Person",
+      "properties": {
+        "name": "Stu Rose"
+      }
+    },
+    {
+      "id": "person_Samwise_Didier",
+      "label": "Person",
+      "properties": {
+        "name": "Samwise Didier"
+      }
+    },
+    {
+      "id": "person_Ron_Millar",
+      "label": "Person",
+      "properties": {
+        "name": "Ron Millar"
+      }
+    },
+    {
+      "id": "person_Mickey_Neilson",
+      "label": "Person",
+      "properties": {
+        "name": "Mickey Neilson"
+      }
+    },
+    {
+      "id": "person_Brian_Sousa",
+      "label": "Person",
+      "properties": {
+        "name": "Brian Sousa"
+      }
+    },
+    {
+      "id": "person_David_Berggren",
+      "label": "Person",
+      "properties": {
+        "name": "David Berggren"
+      }
+    },
+    {
+      "id": "person_Roman_Kenney",
+      "label": "Person",
+      "properties": {
+        "name": "Roman Kenney"
+      }
+    },
+    {
+      "id": "role_3D_Artists",
+      "label": "Role",
+      "properties": {
+        "name": "3D Artists"
+      }
+    },
+    {
+      "id": "person_Joeyray_Hall",
+      "label": "Person",
+      "properties": {
+        "name": "Joeyray Hall"
+      }
+    },
+    {
+      "id": "person_Duane_Stinnett",
+      "label": "Person",
+      "properties": {
+        "name": "Duane Stinnett"
+      }
+    },
+    {
+      "id": "role_Music__Sound",
+      "label": "Role",
+      "properties": {
+        "name": "Music & Sound"
+      }
+    },
+    {
+      "id": "person_Glenn_Stafford",
+      "label": "Person",
+      "properties": {
+        "name": "Glenn Stafford"
+      }
+    },
+    {
+      "id": "person_Gregory_Alper",
+      "label": "Person",
+      "properties": {
+        "name": "Gregory Alper"
+      }
+    },
+    {
+      "id": "person_Rick_Jackson",
+      "label": "Person",
+      "properties": {
+        "name": "Rick Jackson"
+      }
+    },
+    {
+      "id": "person_Chris_Palmer",
+      "label": "Person",
+      "properties": {
+        "name": "Chris Palmer"
+      }
+    },
+    {
+      "id": "role_Voices",
+      "label": "Role",
+      "properties": {
+        "name": "Voices"
+      }
+    },
+    {
+      "id": "person_Bill_Roper",
+      "label": "Person",
+      "properties": {
+        "name": "Bill Roper"
+      }
+    },
+    {
+      "id": "role_Manual_Design__Layout",
+      "label": "Role",
+      "properties": {
+        "name": "Manual Design & Layout"
+      }
+    },
+    {
+      "id": "role_Manual_Illustrations",
+      "label": "Role",
+      "properties": {
+        "name": "Manual Illustrations"
+      }
+    },
+    {
+      "id": "person_Chris_Metzen",
+      "label": "Person",
+      "properties": {
+        "name": "Chris Metzen"
+      }
+    },
+    {
+      "id": "person_Nick_Carpenter",
+      "label": "Person",
+      "properties": {
+        "name": "Nick Carpenter"
+      }
+    },
+    {
+      "id": "role_Public_Relations",
+      "label": "Role",
+      "properties": {
+        "name": "Public Relations"
+      }
+    },
+    {
+      "id": "person_Susan_Wooley",
+      "label": "Person",
+      "properties": {
+        "name": "Susan Wooley"
+      }
+    },
+    {
+      "id": "person_Linda_Duttenhaver",
+      "label": "Person",
+      "properties": {
+        "name": "Linda Duttenhaver"
+      }
+    },
+    {
+      "id": "role_Marketing",
+      "label": "Role",
+      "properties": {
+        "name": "Marketing"
+      }
+    },
+    {
+      "id": "person_Kathy_Carter",
+      "label": "Person",
+      "properties": {
+        "name": "Kathy Carter"
+      }
+    },
+    {
+      "id": "person_Steve_Huot",
+      "label": "Person",
+      "properties": {
+        "name": "Steve Huot"
+      }
+    },
+    {
+      "id": "person_Burkley_Hanes",
+      "label": "Person",
+      "properties": {
+        "name": "Burkley Hanes"
+      }
+    },
+    {
+      "id": "person_Debbie_Caton",
+      "label": "Person",
+      "properties": {
+        "name": "Debbie Caton"
+      }
+    },
+    {
+      "id": "person_Fernando_Paez",
+      "label": "Person",
+      "properties": {
+        "name": "Fernando Paez"
+      }
+    },
+    {
+      "id": "role_Sales",
+      "label": "Role",
+      "properties": {
+        "name": "Sales"
+      }
+    },
+    {
+      "id": "person_Russell_Nishida",
+      "label": "Person",
+      "properties": {
+        "name": "Russell Nishida"
+      }
+    },
+    {
+      "id": "person_Aprile_Penhall",
+      "label": "Person",
+      "properties": {
+        "name": "Aprile Penhall"
+      }
+    },
+    {
+      "id": "person_Helen_Moriyama",
+      "label": "Person",
+      "properties": {
+        "name": "Helen Moriyama"
+      }
+    },
+    {
+      "id": "role_Quality_Assurance",
+      "label": "Role",
+      "properties": {
+        "name": "Quality Assurance"
+      }
+    },
+    {
+      "id": "person_Robert_Louden",
+      "label": "Person",
+      "properties": {
+        "name": "Robert Louden"
+      }
+    },
+    {
+      "id": "person_Tymothi_Loving",
+      "label": "Person",
+      "properties": {
+        "name": "Tymothi Loving"
+      }
+    },
+    {
+      "id": "person_Mark_Menter",
+      "label": "Person",
+      "properties": {
+        "name": "Mark Menter"
+      }
+    },
+    {
+      "id": "person_Larry_Smith",
+      "label": "Person",
+      "properties": {
+        "name": "Larry Smith"
+      }
+    },
+    {
+      "id": "role_Registered_Beta_Testers",
+      "label": "Role",
+      "properties": {
+        "name": "Registered Beta Testers"
+      }
+    },
+    {
+      "id": "person_Derek_Arasi",
+      "label": "Person",
+      "properties": {
+        "name": "Derek Arasi"
+      }
+    },
+    {
+      "id": "person_David_Bevik",
+      "label": "Person",
+      "properties": {
+        "name": "David Bevik"
+      }
+    },
+    {
+      "id": "person_Jeff_Cassens",
+      "label": "Person",
+      "properties": {
+        "name": "Jeff Cassens"
+      }
+    },
+    {
+      "id": "person_Shane_Dabiri",
+      "label": "Person",
+      "properties": {
+        "name": "Shane Dabiri"
+      }
+    },
+    {
+      "id": "person_Robert_Djorjevich",
+      "label": "Person",
+      "properties": {
+        "name": "Robert Djorjevich"
+      }
+    },
+    {
+      "id": "person_Doug_Gauss",
+      "label": "Person",
+      "properties": {
+        "name": "Doug Gauss"
+      }
+    },
+    {
+      "id": "person_Sina_Ghaboussi",
+      "label": "Person",
+      "properties": {
+        "name": "Sina Ghaboussi"
+      }
+    },
+    {
+      "id": "person_Tim_Gossard",
+      "label": "Person",
+      "properties": {
+        "name": "Tim Gossard"
+      }
+    },
+    {
+      "id": "person_Mark_Pearce",
+      "label": "Person",
+      "properties": {
+        "name": "Mark Pearce"
+      }
+    },
+    {
+      "id": "person_Vic_Larson",
+      "label": "Person",
+      "properties": {
+        "name": "Vic Larson"
+      }
+    },
+    {
+      "id": "person_Issac_Matarasso",
+      "label": "Person",
+      "properties": {
+        "name": "Issac Matarasso"
+      }
+    },
+    {
+      "id": "person_John_Teichrow",
+      "label": "Person",
+      "properties": {
+        "name": "John Teichrow"
+      }
+    },
+    {
+      "id": "person_Andy_Thorson",
+      "label": "Person",
+      "properties": {
+        "name": "Andy Thorson"
+      }
+    },
+    {
+      "id": "person_Stuart_Venable_Jr",
+      "label": "Person",
+      "properties": {
+        "name": "Stuart Venable Jr."
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "org_Blizzard_Entertainment",
+      "target": "dept_GAME_DESIGN",
+      "label": "MENTIONED_IN_DEPT",
+      "properties": {}
+    },
+    {
+      "source": "org_Blizzard_Entertainment",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "CONTRIBUTED_TO",
+      "properties": {}
+    },
+    {
+      "source": "role_Producer",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Patrick_Wyatt",
+      "target": "role_Producer",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Patrick_Wyatt",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Executive_Producer",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Allen_Adham",
+      "target": "role_Executive_Producer",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Allen_Adham",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Programmers",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Patrick_Wyatt",
+      "target": "role_Programmers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Patrick_Wyatt",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Bob_Fitch",
+      "target": "role_Programmers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Bob_Fitch",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Mike_Morhaime",
+      "target": "role_Programmers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Mike_Morhaime",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Jesse_McReynolds",
+      "target": "role_Programmers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Jesse_McReynolds",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Artists",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Stu_Rose",
+      "target": "role_Artists",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Stu_Rose",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Samwise_Didier",
+      "target": "role_Artists",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Samwise_Didier",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Ron_Millar",
+      "target": "role_Artists",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Ron_Millar",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Mickey_Neilson",
+      "target": "role_Artists",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Mickey_Neilson",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Brian_Sousa",
+      "target": "role_Artists",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Brian_Sousa",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_David_Berggren",
+      "target": "role_Artists",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_David_Berggren",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Roman_Kenney",
+      "target": "role_Artists",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Roman_Kenney",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_3D_Artists",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Joeyray_Hall",
+      "target": "role_3D_Artists",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Joeyray_Hall",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Ron_Millar",
+      "target": "role_3D_Artists",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Ron_Millar",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Duane_Stinnett",
+      "target": "role_3D_Artists",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Duane_Stinnett",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Music__Sound",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Glenn_Stafford",
+      "target": "role_Music__Sound",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Glenn_Stafford",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Gregory_Alper",
+      "target": "role_Music__Sound",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Gregory_Alper",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Rick_Jackson",
+      "target": "role_Music__Sound",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Rick_Jackson",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Chris_Palmer",
+      "target": "role_Music__Sound",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Chris_Palmer",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Voices",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Bill_Roper",
+      "target": "role_Voices",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Bill_Roper",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Manual_Design__Layout",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Bill_Roper",
+      "target": "role_Manual_Design__Layout",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Bill_Roper",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Manual_Illustrations",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Stu_Rose",
+      "target": "role_Manual_Illustrations",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Stu_Rose",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Samwise_Didier",
+      "target": "role_Manual_Illustrations",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Samwise_Didier",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Roman_Kenney",
+      "target": "role_Manual_Illustrations",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Roman_Kenney",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Brian_Sousa",
+      "target": "role_Manual_Illustrations",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Brian_Sousa",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Mickey_Neilson",
+      "target": "role_Manual_Illustrations",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Mickey_Neilson",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_David_Berggren",
+      "target": "role_Manual_Illustrations",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_David_Berggren",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Chris_Metzen",
+      "target": "role_Manual_Illustrations",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Chris_Metzen",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Nick_Carpenter",
+      "target": "role_Manual_Illustrations",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Nick_Carpenter",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Public_Relations",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Susan_Wooley",
+      "target": "role_Public_Relations",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Susan_Wooley",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Linda_Duttenhaver",
+      "target": "role_Public_Relations",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Linda_Duttenhaver",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Marketing",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Kathy_Carter",
+      "target": "role_Marketing",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Kathy_Carter",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Steve_Huot",
+      "target": "role_Marketing",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Steve_Huot",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Burkley_Hanes",
+      "target": "role_Marketing",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Burkley_Hanes",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Debbie_Caton",
+      "target": "role_Marketing",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Debbie_Caton",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Fernando_Paez",
+      "target": "role_Marketing",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Fernando_Paez",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Sales",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Russell_Nishida",
+      "target": "role_Sales",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Russell_Nishida",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Aprile_Penhall",
+      "target": "role_Sales",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Aprile_Penhall",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Helen_Moriyama",
+      "target": "role_Sales",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Helen_Moriyama",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Quality_Assurance",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Robert_Louden",
+      "target": "role_Quality_Assurance",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Robert_Louden",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Tymothi_Loving",
+      "target": "role_Quality_Assurance",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Tymothi_Loving",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Mark_Menter",
+      "target": "role_Quality_Assurance",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Mark_Menter",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Larry_Smith",
+      "target": "role_Quality_Assurance",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Larry_Smith",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Registered_Beta_Testers",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Derek_Arasi",
+      "target": "role_Registered_Beta_Testers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Derek_Arasi",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_David_Bevik",
+      "target": "role_Registered_Beta_Testers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_David_Bevik",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Jeff_Cassens",
+      "target": "role_Registered_Beta_Testers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Jeff_Cassens",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Shane_Dabiri",
+      "target": "role_Registered_Beta_Testers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Shane_Dabiri",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Robert_Djorjevich",
+      "target": "role_Registered_Beta_Testers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Robert_Djorjevich",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Doug_Gauss",
+      "target": "role_Registered_Beta_Testers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Doug_Gauss",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Sina_Ghaboussi",
+      "target": "role_Registered_Beta_Testers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Sina_Ghaboussi",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Tim_Gossard",
+      "target": "role_Registered_Beta_Testers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Tim_Gossard",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Mark_Pearce",
+      "target": "role_Registered_Beta_Testers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Mark_Pearce",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Vic_Larson",
+      "target": "role_Registered_Beta_Testers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Vic_Larson",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Issac_Matarasso",
+      "target": "role_Registered_Beta_Testers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Issac_Matarasso",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_John_Teichrow",
+      "target": "role_Registered_Beta_Testers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_John_Teichrow",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Andy_Thorson",
+      "target": "role_Registered_Beta_Testers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Andy_Thorson",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Stuart_Venable_Jr",
+      "target": "role_Registered_Beta_Testers",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Stuart_Venable_Jr",
+      "target": "game_Wc1_Ovh_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    }
+  ]
+}

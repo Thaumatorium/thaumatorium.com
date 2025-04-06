@@ -1,0 +1,1996 @@
+{
+  "nodes": [
+    {
+      "id": "game_Wc2_Btdp_Credits",
+      "label": "Game",
+      "properties": {
+        "name": "Wc2 Btdp Credits"
+      }
+    },
+    {
+      "id": "dept_GAME_DESIGN",
+      "label": "Department",
+      "properties": {
+        "name": "GAME DESIGN"
+      }
+    },
+    {
+      "id": "org_Cyberlore_Studios",
+      "label": "Organization",
+      "properties": {
+        "name": "Cyberlore Studios"
+      }
+    },
+    {
+      "id": "role_Producer",
+      "label": "Role",
+      "properties": {
+        "name": "Producer"
+      }
+    },
+    {
+      "id": "person_Joe_Minton",
+      "label": "Person",
+      "properties": {
+        "name": "Joe Minton"
+      }
+    },
+    {
+      "id": "role_Executive_Producer",
+      "label": "Role",
+      "properties": {
+        "name": "Executive Producer"
+      }
+    },
+    {
+      "id": "person_Bill_Roper",
+      "label": "Person",
+      "properties": {
+        "name": "Bill Roper"
+      }
+    },
+    {
+      "id": "role_Program_Enhancements",
+      "label": "Role",
+      "properties": {
+        "name": "Program Enhancements"
+      }
+    },
+    {
+      "id": "person_Ken_Grey",
+      "label": "Person",
+      "properties": {
+        "name": "Ken Grey"
+      }
+    },
+    {
+      "id": "role_Art_Direction",
+      "label": "Role",
+      "properties": {
+        "name": "Art Direction"
+      }
+    },
+    {
+      "id": "person_Seth_Spaulding",
+      "label": "Person",
+      "properties": {
+        "name": "Seth Spaulding"
+      }
+    },
+    {
+      "id": "role_Campaign_Design",
+      "label": "Role",
+      "properties": {
+        "name": "Campaign Design"
+      }
+    },
+    {
+      "id": "person_Jim_DuBois",
+      "label": "Person",
+      "properties": {
+        "name": "Jim DuBois"
+      }
+    },
+    {
+      "id": "person_Jesse_King",
+      "label": "Person",
+      "properties": {
+        "name": "Jesse King"
+      }
+    },
+    {
+      "id": "role_3D_Art",
+      "label": "Role",
+      "properties": {
+        "name": "3D Art"
+      }
+    },
+    {
+      "id": "person_Pete_Lawson",
+      "label": "Person",
+      "properties": {
+        "name": "Pete Lawson"
+      }
+    },
+    {
+      "id": "role_2D_Art",
+      "label": "Role",
+      "properties": {
+        "name": "2D Art"
+      }
+    },
+    {
+      "id": "person_Rob_Caswell",
+      "label": "Person",
+      "properties": {
+        "name": "Rob Caswell"
+      }
+    },
+    {
+      "id": "person_Keith_Kellogg",
+      "label": "Person",
+      "properties": {
+        "name": "Keith Kellogg"
+      }
+    },
+    {
+      "id": "role_PUD_Design",
+      "label": "Role",
+      "properties": {
+        "name": "PUD Design"
+      }
+    },
+    {
+      "id": "role_Additional_Design",
+      "label": "Role",
+      "properties": {
+        "name": "Additional Design"
+      }
+    },
+    {
+      "id": "role_Playtesting",
+      "label": "Role",
+      "properties": {
+        "name": "Playtesting"
+      }
+    },
+    {
+      "id": "person_Rendall_Koski",
+      "label": "Person",
+      "properties": {
+        "name": "Rendall Koski"
+      }
+    },
+    {
+      "id": "person_Dmitri_Nishman",
+      "label": "Person",
+      "properties": {
+        "name": "Dmitri Nishman"
+      }
+    },
+    {
+      "id": "role_Design_Consultant",
+      "label": "Role",
+      "properties": {
+        "name": "Design Consultant"
+      }
+    },
+    {
+      "id": "person_Ron_Millar",
+      "label": "Person",
+      "properties": {
+        "name": "Ron Millar"
+      }
+    },
+    {
+      "id": "role_Storyline_Consultant",
+      "label": "Role",
+      "properties": {
+        "name": "Storyline Consultant"
+      }
+    },
+    {
+      "id": "person_Chris_Metzen",
+      "label": "Person",
+      "properties": {
+        "name": "Chris Metzen"
+      }
+    },
+    {
+      "id": "role_2D_Art_Direction",
+      "label": "Role",
+      "properties": {
+        "name": "2D Art Direction"
+      }
+    },
+    {
+      "id": "person_Samwise_Didier",
+      "label": "Person",
+      "properties": {
+        "name": "Samwise Didier"
+      }
+    },
+    {
+      "id": "role_Additional_2D_Artwork",
+      "label": "Role",
+      "properties": {
+        "name": "Additional 2D Artwork"
+      }
+    },
+    {
+      "id": "person_Roman_Kenney",
+      "label": "Person",
+      "properties": {
+        "name": "Roman Kenney"
+      }
+    },
+    {
+      "id": "role_3D_Art_Direction",
+      "label": "Role",
+      "properties": {
+        "name": "3D Art Direction"
+      }
+    },
+    {
+      "id": "person_Duane_Stinnett",
+      "label": "Person",
+      "properties": {
+        "name": "Duane Stinnett"
+      }
+    },
+    {
+      "id": "role_Additional_3D_Artwork",
+      "label": "Role",
+      "properties": {
+        "name": "Additional 3D Artwork"
+      }
+    },
+    {
+      "id": "person_Trevor_Jacobs",
+      "label": "Person",
+      "properties": {
+        "name": "Trevor Jacobs"
+      }
+    },
+    {
+      "id": "person_Justin_Thavirat",
+      "label": "Person",
+      "properties": {
+        "name": "Justin Thavirat"
+      }
+    },
+    {
+      "id": "role_Additional_PUDs_by",
+      "label": "Role",
+      "properties": {
+        "name": "Additional PUDs by"
+      }
+    },
+    {
+      "id": "person_Kerry_Bischoff",
+      "label": "Person",
+      "properties": {
+        "name": "Kerry Bischoff"
+      }
+    },
+    {
+      "id": "person_Dave_Hale",
+      "label": "Person",
+      "properties": {
+        "name": "Dave Hale"
+      }
+    },
+    {
+      "id": "person_Tony_Hardy",
+      "label": "Person",
+      "properties": {
+        "name": "Tony Hardy"
+      }
+    },
+    {
+      "id": "person_Chris_Millar",
+      "label": "Person",
+      "properties": {
+        "name": "Chris Millar"
+      }
+    },
+    {
+      "id": "person_Brian_Reed",
+      "label": "Person",
+      "properties": {
+        "name": "Brian Reed"
+      }
+    },
+    {
+      "id": "person_John_Schwartz",
+      "label": "Person",
+      "properties": {
+        "name": "John Schwartz"
+      }
+    },
+    {
+      "id": "person_Walter_Takata",
+      "label": "Person",
+      "properties": {
+        "name": "Walter Takata"
+      }
+    },
+    {
+      "id": "person_Tymothi_Loving",
+      "label": "Person",
+      "properties": {
+        "name": "Tymothi Loving"
+      }
+    },
+    {
+      "id": "role_Music_and_SFX",
+      "label": "Role",
+      "properties": {
+        "name": "Music and SFX"
+      }
+    },
+    {
+      "id": "person_Glenn_Stafford",
+      "label": "Person",
+      "properties": {
+        "name": "Glenn Stafford"
+      }
+    },
+    {
+      "id": "role_Excerpt_from_Warcraft_I",
+      "label": "Role",
+      "properties": {
+        "name": "Excerpt from Warcraft I"
+      }
+    },
+    {
+      "id": "person_Gregor_Alper",
+      "label": "Person",
+      "properties": {
+        "name": "Gregor Alper"
+      }
+    },
+    {
+      "id": "role_Additional_Music",
+      "label": "Role",
+      "properties": {
+        "name": "Additional Music"
+      }
+    },
+    {
+      "id": "person_Matt_Samia",
+      "label": "Person",
+      "properties": {
+        "name": "Matt Samia"
+      }
+    },
+    {
+      "id": "role_Narration",
+      "label": "Role",
+      "properties": {
+        "name": "Narration"
+      }
+    },
+    {
+      "id": "role_Character_Voices",
+      "label": "Role",
+      "properties": {
+        "name": "Character Voices"
+      }
+    },
+    {
+      "id": "person_Dawn_Caddel",
+      "label": "Person",
+      "properties": {
+        "name": "Dawn Caddel"
+      }
+    },
+    {
+      "id": "org_Director_of_Support_Services",
+      "label": "Organization",
+      "properties": {
+        "name": "Director of Support Services"
+      }
+    },
+    {
+      "id": "person_Shane_Dabiri",
+      "label": "Person",
+      "properties": {
+        "name": "Shane Dabiri"
+      }
+    },
+    {
+      "id": "role_Lead_Tester",
+      "label": "Role",
+      "properties": {
+        "name": "Lead Tester"
+      }
+    },
+    {
+      "id": "org_QA_Assault_Team",
+      "label": "Organization",
+      "properties": {
+        "name": "QA Assault Team"
+      }
+    },
+    {
+      "id": "person_Rob_Beatie",
+      "label": "Person",
+      "properties": {
+        "name": "Rob Beatie"
+      }
+    },
+    {
+      "id": "person_Christopher_Cross",
+      "label": "Person",
+      "properties": {
+        "name": "Christopher Cross"
+      }
+    },
+    {
+      "id": "person_Chris_Sigaty",
+      "label": "Person",
+      "properties": {
+        "name": "Chris Sigaty"
+      }
+    },
+    {
+      "id": "person_Ian_Welke",
+      "label": "Person",
+      "properties": {
+        "name": "Ian Welke"
+      }
+    },
+    {
+      "id": "role_Additional_Playtesting",
+      "label": "Role",
+      "properties": {
+        "name": "Additional Playtesting"
+      }
+    },
+    {
+      "id": "person_Cristina_Cade",
+      "label": "Person",
+      "properties": {
+        "name": "Cristina Cade"
+      }
+    },
+    {
+      "id": "person_Eric_Flannum",
+      "label": "Person",
+      "properties": {
+        "name": "Eric Flannum"
+      }
+    },
+    {
+      "id": "person_Brian_Sousa",
+      "label": "Person",
+      "properties": {
+        "name": "Brian Sousa"
+      }
+    },
+    {
+      "id": "person_David_Pursley",
+      "label": "Person",
+      "properties": {
+        "name": "David Pursley"
+      }
+    },
+    {
+      "id": "person_Ron_Smorynski",
+      "label": "Person",
+      "properties": {
+        "name": "Ron Smorynski"
+      }
+    },
+    {
+      "id": "person_James_Shipley",
+      "label": "Person",
+      "properties": {
+        "name": "James Shipley"
+      }
+    },
+    {
+      "id": "person_Dean_Shipley",
+      "label": "Person",
+      "properties": {
+        "name": "Dean Shipley"
+      }
+    },
+    {
+      "id": "person_Jorge_Rivero",
+      "label": "Person",
+      "properties": {
+        "name": "Jorge Rivero"
+      }
+    },
+    {
+      "id": "person_Russel_Miller",
+      "label": "Person",
+      "properties": {
+        "name": "Russel Miller"
+      }
+    },
+    {
+      "id": "person_Vic_Larson",
+      "label": "Person",
+      "properties": {
+        "name": "Vic Larson"
+      }
+    },
+    {
+      "id": "person_Rich_Amtower",
+      "label": "Person",
+      "properties": {
+        "name": "Rich Amtower"
+      }
+    },
+    {
+      "id": "person_Steve_Pabst",
+      "label": "Person",
+      "properties": {
+        "name": "Steve Pabst"
+      }
+    },
+    {
+      "id": "person_Dave_Berggren",
+      "label": "Person",
+      "properties": {
+        "name": "Dave Berggren"
+      }
+    },
+    {
+      "id": "person_Mike_Morhaime",
+      "label": "Person",
+      "properties": {
+        "name": "Mike Morhaime"
+      }
+    },
+    {
+      "id": "person_Sam_Didier",
+      "label": "Person",
+      "properties": {
+        "name": "Sam Didier"
+      }
+    },
+    {
+      "id": "person_Micky_Neilson",
+      "label": "Person",
+      "properties": {
+        "name": "Micky Neilson"
+      }
+    },
+    {
+      "id": "person_Dan_Moore",
+      "label": "Person",
+      "properties": {
+        "name": "Dan Moore"
+      }
+    },
+    {
+      "id": "person_Sam_Moore",
+      "label": "Person",
+      "properties": {
+        "name": "Sam Moore"
+      }
+    },
+    {
+      "id": "person_Michael_Yanko",
+      "label": "Person",
+      "properties": {
+        "name": "Michael Yanko"
+      }
+    },
+    {
+      "id": "person_Jamie_Wiggs",
+      "label": "Person",
+      "properties": {
+        "name": "Jamie Wiggs"
+      }
+    },
+    {
+      "id": "person_Collin_Smith",
+      "label": "Person",
+      "properties": {
+        "name": "Collin Smith"
+      }
+    },
+    {
+      "id": "person_Mark_Phiffer",
+      "label": "Person",
+      "properties": {
+        "name": "Mark Phiffer"
+      }
+    },
+    {
+      "id": "person_Kim_Farrington",
+      "label": "Person",
+      "properties": {
+        "name": "Kim Farrington"
+      }
+    },
+    {
+      "id": "person_Collin_Murray",
+      "label": "Person",
+      "properties": {
+        "name": "Collin Murray"
+      }
+    },
+    {
+      "id": "person_Todd_Kurihara",
+      "label": "Person",
+      "properties": {
+        "name": "Todd Kurihara"
+      }
+    },
+    {
+      "id": "person_Andrew_Edwards",
+      "label": "Person",
+      "properties": {
+        "name": "Andrew Edwards"
+      }
+    },
+    {
+      "id": "person_Brian_Love",
+      "label": "Person",
+      "properties": {
+        "name": "Brian Love"
+      }
+    },
+    {
+      "id": "person_Jeff_Vaughn",
+      "label": "Person",
+      "properties": {
+        "name": "Jeff Vaughn"
+      }
+    },
+    {
+      "id": "person_Steve_Skolos",
+      "label": "Person",
+      "properties": {
+        "name": "Steve Skolos"
+      }
+    },
+    {
+      "id": "person_Craig_Norton",
+      "label": "Person",
+      "properties": {
+        "name": "Craig Norton"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "org_Cyberlore_Studios",
+      "target": "dept_GAME_DESIGN",
+      "label": "MENTIONED_IN_DEPT",
+      "properties": {}
+    },
+    {
+      "source": "org_Cyberlore_Studios",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "CONTRIBUTED_TO",
+      "properties": {}
+    },
+    {
+      "source": "role_Producer",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Joe_Minton",
+      "target": "role_Producer",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Joe_Minton",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Executive_Producer",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Bill_Roper",
+      "target": "role_Executive_Producer",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Bill_Roper",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Program_Enhancements",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Ken_Grey",
+      "target": "role_Program_Enhancements",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Ken_Grey",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Art_Direction",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Seth_Spaulding",
+      "target": "role_Art_Direction",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Seth_Spaulding",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Campaign_Design",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Jim_DuBois",
+      "target": "role_Campaign_Design",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Jim_DuBois",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Jesse_King",
+      "target": "role_Campaign_Design",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Jesse_King",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Joe_Minton",
+      "target": "role_Campaign_Design",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Joe_Minton",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_3D_Art",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Seth_Spaulding",
+      "target": "role_3D_Art",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Seth_Spaulding",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Pete_Lawson",
+      "target": "role_3D_Art",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Pete_Lawson",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_2D_Art",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Rob_Caswell",
+      "target": "role_2D_Art",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Rob_Caswell",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Seth_Spaulding",
+      "target": "role_2D_Art",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Seth_Spaulding",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Keith_Kellogg",
+      "target": "role_2D_Art",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Keith_Kellogg",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Pete_Lawson",
+      "target": "role_2D_Art",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Pete_Lawson",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_PUD_Design",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Jim_DuBois",
+      "target": "role_PUD_Design",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Jim_DuBois",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Jesse_King",
+      "target": "role_PUD_Design",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Jesse_King",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Rob_Caswell",
+      "target": "role_PUD_Design",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Rob_Caswell",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Joe_Minton",
+      "target": "role_PUD_Design",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Joe_Minton",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Additional_Design",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Rob_Caswell",
+      "target": "role_Additional_Design",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Rob_Caswell",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Pete_Lawson",
+      "target": "role_Additional_Design",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Pete_Lawson",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Playtesting",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Jesse_King",
+      "target": "role_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Jesse_King",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Jim_DuBois",
+      "target": "role_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Jim_DuBois",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Rendall_Koski",
+      "target": "role_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Rendall_Koski",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Pete_Lawson",
+      "target": "role_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Pete_Lawson",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Dmitri_Nishman",
+      "target": "role_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Dmitri_Nishman",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Design_Consultant",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Ron_Millar",
+      "target": "role_Design_Consultant",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Ron_Millar",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Storyline_Consultant",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Chris_Metzen",
+      "target": "role_Storyline_Consultant",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Chris_Metzen",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Bill_Roper",
+      "target": "role_Storyline_Consultant",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Bill_Roper",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_2D_Art_Direction",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Samwise_Didier",
+      "target": "role_2D_Art_Direction",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Samwise_Didier",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Additional_2D_Artwork",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Samwise_Didier",
+      "target": "role_Additional_2D_Artwork",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Samwise_Didier",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Roman_Kenney",
+      "target": "role_Additional_2D_Artwork",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Roman_Kenney",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_3D_Art_Direction",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Duane_Stinnett",
+      "target": "role_3D_Art_Direction",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Duane_Stinnett",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Additional_3D_Artwork",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Trevor_Jacobs",
+      "target": "role_Additional_3D_Artwork",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Trevor_Jacobs",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Justin_Thavirat",
+      "target": "role_Additional_3D_Artwork",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Justin_Thavirat",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Additional_PUDs_by",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Kerry_Bischoff",
+      "target": "role_Additional_PUDs_by",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Kerry_Bischoff",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Dave_Hale",
+      "target": "role_Additional_PUDs_by",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Dave_Hale",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Tony_Hardy",
+      "target": "role_Additional_PUDs_by",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Tony_Hardy",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Chris_Millar",
+      "target": "role_Additional_PUDs_by",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Chris_Millar",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Brian_Reed",
+      "target": "role_Additional_PUDs_by",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Brian_Reed",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_John_Schwartz",
+      "target": "role_Additional_PUDs_by",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_John_Schwartz",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Walter_Takata",
+      "target": "role_Additional_PUDs_by",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Walter_Takata",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Tymothi_Loving",
+      "target": "role_Additional_PUDs_by",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Tymothi_Loving",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Music_and_SFX",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Glenn_Stafford",
+      "target": "role_Music_and_SFX",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Glenn_Stafford",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Excerpt_from_Warcraft_I",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Gregor_Alper",
+      "target": "role_Excerpt_from_Warcraft_I",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Gregor_Alper",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Additional_Music",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Matt_Samia",
+      "target": "role_Additional_Music",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Matt_Samia",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Narration",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Bill_Roper",
+      "target": "role_Narration",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Bill_Roper",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Character_Voices",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Bill_Roper",
+      "target": "role_Character_Voices",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Bill_Roper",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Glenn_Stafford",
+      "target": "role_Character_Voices",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Glenn_Stafford",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Chris_Metzen",
+      "target": "role_Character_Voices",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Chris_Metzen",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Ron_Millar",
+      "target": "role_Character_Voices",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Ron_Millar",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Dawn_Caddel",
+      "target": "role_Character_Voices",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Dawn_Caddel",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "org_Director_of_Support_Services",
+      "target": "dept_GAME_DESIGN",
+      "label": "MENTIONED_IN_DEPT",
+      "properties": {}
+    },
+    {
+      "source": "org_Director_of_Support_Services",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "CONTRIBUTED_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Shane_Dabiri",
+      "target": "org_Director_of_Support_Services",
+      "label": "MEMBER_OF",
+      "properties": {}
+    },
+    {
+      "source": "person_Shane_Dabiri",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Lead_Tester",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Walter_Takata",
+      "target": "role_Lead_Tester",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Walter_Takata",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "org_QA_Assault_Team",
+      "target": "dept_GAME_DESIGN",
+      "label": "MENTIONED_IN_DEPT",
+      "properties": {}
+    },
+    {
+      "source": "org_QA_Assault_Team",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "CONTRIBUTED_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Rob_Beatie",
+      "target": "org_QA_Assault_Team",
+      "label": "MEMBER_OF",
+      "properties": {}
+    },
+    {
+      "source": "person_Rob_Beatie",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Christopher_Cross",
+      "target": "org_QA_Assault_Team",
+      "label": "MEMBER_OF",
+      "properties": {}
+    },
+    {
+      "source": "person_Christopher_Cross",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Dave_Hale",
+      "target": "org_QA_Assault_Team",
+      "label": "MEMBER_OF",
+      "properties": {}
+    },
+    {
+      "source": "person_Dave_Hale",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Tymothi_Loving",
+      "target": "org_QA_Assault_Team",
+      "label": "MEMBER_OF",
+      "properties": {}
+    },
+    {
+      "source": "person_Tymothi_Loving",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Brian_Reed",
+      "target": "org_QA_Assault_Team",
+      "label": "MEMBER_OF",
+      "properties": {}
+    },
+    {
+      "source": "person_Brian_Reed",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_John_Schwartz",
+      "target": "org_QA_Assault_Team",
+      "label": "MEMBER_OF",
+      "properties": {}
+    },
+    {
+      "source": "person_John_Schwartz",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Chris_Sigaty",
+      "target": "org_QA_Assault_Team",
+      "label": "MEMBER_OF",
+      "properties": {}
+    },
+    {
+      "source": "person_Chris_Sigaty",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Ian_Welke",
+      "target": "org_QA_Assault_Team",
+      "label": "MEMBER_OF",
+      "properties": {}
+    },
+    {
+      "source": "person_Ian_Welke",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "role_Additional_Playtesting",
+      "target": "dept_GAME_DESIGN",
+      "label": "BELONGS_TO",
+      "properties": {}
+    },
+    {
+      "source": "person_Chris_Millar",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Chris_Millar",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Cristina_Cade",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Cristina_Cade",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Kerry_Bischoff",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Kerry_Bischoff",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Eric_Flannum",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Eric_Flannum",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Brian_Sousa",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Brian_Sousa",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_David_Pursley",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_David_Pursley",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Ron_Smorynski",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Ron_Smorynski",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Dawn_Caddel",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Dawn_Caddel",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_James_Shipley",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_James_Shipley",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Dean_Shipley",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Dean_Shipley",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Jorge_Rivero",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Jorge_Rivero",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Russel_Miller",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Russel_Miller",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Tony_Hardy",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Tony_Hardy",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Vic_Larson",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Vic_Larson",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Rich_Amtower",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Rich_Amtower",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Roman_Kenney",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Roman_Kenney",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Steve_Pabst",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Steve_Pabst",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Dave_Berggren",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Dave_Berggren",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Mike_Morhaime",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Mike_Morhaime",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Sam_Didier",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Sam_Didier",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Micky_Neilson",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Micky_Neilson",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Dan_Moore",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Dan_Moore",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Sam_Moore",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Sam_Moore",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Michael_Yanko",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Michael_Yanko",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Jamie_Wiggs",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Jamie_Wiggs",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Collin_Smith",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Collin_Smith",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Mark_Phiffer",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Mark_Phiffer",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Trevor_Jacobs",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Trevor_Jacobs",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Kim_Farrington",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Kim_Farrington",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Collin_Murray",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Collin_Murray",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Todd_Kurihara",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Todd_Kurihara",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Andrew_Edwards",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Andrew_Edwards",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Brian_Love",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Brian_Love",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Jeff_Vaughn",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Jeff_Vaughn",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Steve_Skolos",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Steve_Skolos",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    },
+    {
+      "source": "person_Craig_Norton",
+      "target": "role_Additional_Playtesting",
+      "label": "HAS_ROLE",
+      "properties": {}
+    },
+    {
+      "source": "person_Craig_Norton",
+      "target": "game_Wc2_Btdp_Credits",
+      "label": "WORKED_ON",
+      "properties": {}
+    }
+  ]
+}
