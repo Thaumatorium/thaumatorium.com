@@ -7,38 +7,34 @@
  * @throws {Error} If the filename argument itself is missing or invalid (programmer error).
  */
 export async function fetchJsonFile(filename) {
-  if (!filename || typeof filename !== "string" || filename.trim() === "") {
-    throw new Error("fetchJsonFile: No valid filename provided.");
-  }
+	if (!filename || typeof filename !== "string" || filename.trim() === "") {
+		throw new Error("fetchJsonFile: No valid filename provided.");
+	}
 
-  try {
-    const request = new Request(filename, {
-      method: "GET",
-      headers: { Accept: "application/json" },
-    });
-    const response = await fetch(request);
+	try {
+		const request = new Request(filename, {
+			method: "GET",
+			headers: { Accept: "application/json" },
+		});
+		const response = await fetch(request);
 
-    if (!response.ok) {
-      console.error(
-        `HTTP Error ${response.status} (${response.statusText}) while fetching ${filename}`
-      );
-      return null;
-    }
+		if (!response.ok) {
+			console.error(`HTTP Error ${response.status} (${response.statusText}) while fetching ${filename}`);
+			return null;
+		}
 
-    const contentType = response.headers.get("content-type");
-    if (!contentType || !contentType.includes("application/json")) {
-      console.warn(
-        `Received non-JSON Content-Type "${contentType}" for ${filename}. Attempting to parse anyway.`
-      );
-    }
+		const contentType = response.headers.get("content-type");
+		if (!contentType || !contentType.includes("application/json")) {
+			console.warn(`Received non-JSON Content-Type "${contentType}" for ${filename}. Attempting to parse anyway.`);
+		}
 
-    const data = await response.json();
+		const data = await response.json();
 
-    return data;
-  } catch (error) {
-    console.error(`Fetch or JSON parse error for ${filename}:`, error);
-    return null;
-  }
+		return data;
+	} catch (error) {
+		console.error(`Fetch or JSON parse error for ${filename}:`, error);
+		return null;
+	}
 }
 
 let invalidIdCounter = 0;
@@ -53,37 +49,26 @@ let invalidIdCounter = 0;
  * @returns {string} A generated ID string (e.g., "person_john_smith", "person_홍진욱", "person_佐藤_太郎", "person_invalid_1").
  */
 export function generatePersonId(name) {
-  if (!name || typeof name !== "string" || name.trim() === "") {
-    invalidIdCounter++;
-    const fallbackId = `person_invalid_${invalidIdCounter}`;
-    console.warn(
-      `Generating fallback ID "${fallbackId}" for invalid/empty name input:`,
-      name
-    );
-    return fallbackId;
-  }
+	if (!name || typeof name !== "string" || name.trim() === "") {
+		invalidIdCounter++;
+		const fallbackId = `person_invalid_${invalidIdCounter}`;
+		console.warn(`Generating fallback ID "${fallbackId}" for invalid/empty name input:`, name);
+		return fallbackId;
+	}
 
-  const sanitizedName = name
-    .trim()
-    .replace(/[\s_-]+/g, "_")
-    .replace(
-      /[^a-zA-Z0-9_\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\uAC00-\uD7A3]+/g,
-      ""
-    )
-    .replace(/^_+|_+$/g, "");
+	const sanitizedName = name
+		.trim()
+		.replace(/[\s_-]+/g, "_")
+		.replace(/[^a-zA-Z0-9_\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\uAC00-\uD7A3]+/g, "")
+		.replace(/^_+|_+$/g, "");
 
-  if (sanitizedName === "") {
-    invalidIdCounter++;
-    const originalSimplified =
-      name.trim().replace(/[^a-zA-Z0-9]/g, "") ||
-      `original_empty_${invalidIdCounter}`;
-    const fallbackId = `person_${originalSimplified}_sanitized_empty_${invalidIdCounter}`;
-    console.warn(
-      `Generating fallback ID "${fallbackId}" because name sanitized to empty:`,
-      name
-    );
-    return fallbackId.substring(0, 60);
-  }
+	if (sanitizedName === "") {
+		invalidIdCounter++;
+		const originalSimplified = name.trim().replace(/[^a-zA-Z0-9]/g, "") || `original_empty_${invalidIdCounter}`;
+		const fallbackId = `person_${originalSimplified}_sanitized_empty_${invalidIdCounter}`;
+		console.warn(`Generating fallback ID "${fallbackId}" because name sanitized to empty:`, name);
+		return fallbackId.substring(0, 60);
+	}
 
-  return `person_${sanitizedName}`.substring(0, 100);
+	return `person_${sanitizedName}`.substring(0, 100);
 }
