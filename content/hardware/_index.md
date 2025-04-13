@@ -2,12 +2,28 @@
 title: "NostraDavid's Computer hardware and general setup"
 description: "No idea anymore why I'm sharing this"
 publishDate: 2020-08-03T22:31:44+01:00
-lastmod: 2020-08-03T22:31:44+01:00
+lastmod: 2025-04-09T21:15:00+01:00
 ---
 
 <!-- https://lowko.tv/setup/ -->
 
-## Zeus (2019)
+## Project NG (2025)
+
+My next machine (nameless for now). It's an absolute monster (even compared to how fast Zeus was in its day)
+
+| Attributes | NL                                                  |
+| ---------- | --------------------------------------------------- |
+| CPU        | AMD Ryzen 9 9950X3D                                 |
+| Cooler     | Noctua NH-D15 chromax.black                         |
+| GPU        | Nvidia 4070 Ti                                      |
+| MB         | MSI MAG X870E TOMAHAWK WIFI                         |
+| RAM        | 2x 96GB, G.Skill Trident Z5 RGB DIMM DDR5 6800 CL34 |
+| PSU        | Corsair HX1200i                                     |
+| Case       | Fractal Design Define 7                             |
+| SSD        | Samsung 990 Pro 4TB                                 |
+| OS         | Linux                                               |
+
+## Zeus (2018)
 
 Zeus (the strongest of gods) is my current computer and main machine.
 
@@ -15,7 +31,7 @@ I currently use it for programming this site and playing vidya gaems.
 
 | Attributes | Zeus                                                  |
 | ---------- | ----------------------------------------------------- |
-| CPU        | 8700k                                                 |
+| CPU        | Intel i7 8700k                                        |
 | Cooler     | Noctua NH-D15                                         |
 | GPU        | Nvidia 1070 Ti                                        |
 | MB         | Asus ROG Maximus X Hero                               |

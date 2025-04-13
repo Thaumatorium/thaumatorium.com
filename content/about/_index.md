@@ -2,7 +2,7 @@
 title: "About"
 description: "About NostraDavid and the Thaumatorium"
 publishDate: 2020-08-03T22:31:44+01:00
-lastmod: 2020-08-03T22:31:44+01:00
+lastmod: 2025-04-09T20:08:00+02:00
 ---
 
 ## NostraDavid; the author
@@ -11,7 +11,7 @@ I'm someone who's sick of the state of the web and you know what they say:
 
 > Improve the world, start with yourself - [Bond Zonder Naam](https://nl.wikipedia.org/wiki/Bond_zonder_Naam)
 
-This is why I started with the basics: HTML, CSS and JS. Anything else is deemed _bloat_
+This is why I started with the basics: HTML, CSS and JS. Anything else is deemed _bloat_. Then, over the years of HTML growth, I eventually switched to GoHugo as the basis of my website, so I could reduce a mass amount of duplicate HTML (mostly around the website's menu)
 
 ## Thaumatorium
 
@@ -39,10 +39,4 @@ In doing so - splitting the site, but mostly handling things like a PWA - I brok
 
 In the end I decided in writing just separate HTML pages, which means I have a bunch of duplicate HTML, but I'm OK with that, as I know enough REGEX to edit _all_ HTML headers in one fell swoop!
 
-### The cure
-
-Great minds discuss ideas, average minds discuss events, small minds discuss people. – Eleanor Roosevelt
-
-We (the internet at large) are too busy with discussing people, not even events. I want to see the internet move _back_ to discussing ideas. That was more the case on Reddit back in the days - [Reddit on 2008-12-29](https://web.archive.org/web/20081229163556/https://reddit.com/) was much more about ideas, not events or people.
-
-The normies have invaded the internet. That's not necessarily bad, but what is is that they came in such numbers they did not need to adapt to our netizenship and changed our internet culture. _For the worse_, mind you. I hope to one day have enough influence to change that, for the betterment of humanity.
+After about two years of building this site I ended up switching to GoHugo as a site generator that would let me write stuff in Markdown, or HTML, depending on my needs. If I just want a regular-ass looking article, I can just write Markdown, but if I want to I can just write HTML (either inside the Markdown, or just straight up).
