@@ -1,6 +1,5 @@
-# 
 # run commands for this file:
-# nix develop .#impure
+# nix develop
 # file inspiration: https://pyproject-nix.github.io/uv2nix/usage/hello-world.html
 {
   description = "Development shell for NostraDavid Hugo";
@@ -14,30 +13,58 @@
     nixpkgs,
     ...
   }: let
-    # This example is only using x86_64-linux
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+    serve = pkgs.writeShellApplication {
+      name = "serve";
+      runtimeInputs = [ pkgs.hugo ];
+      text = ''
+        set -eu
+        hugo server --buildDrafts --port 1313 --noHTTPCache --disableFastRender "$@"
+      '';
+    };
+
+    format-public = pkgs.writeShellApplication {
+      name = "format-public";
+      # nodePackages.prettier includes the Node runtime
+      runtimeInputs = [ pkgs.nodePackages.prettier ];
+      text = ''
+        set -eu
+        prettier --ignore-path .prettierignore --write "public/**/*"
+      '';
+    };
   in {
-    # Make hello runnable with `nix run`
     apps.x86_64-linux = {
-      default = {
+      serve = {
         type = "app";
-        program = "${self.packages.x86_64-linux.default}/bin/hello";
+        program = "${self.packages.x86_64-linux.serve}/bin/serve";
+      };
+
+      format-public = {
+        type = "app";
+        program = "${self.packages.x86_64-linux.format-public}/bin/format-public";
       };
     };
 
-    # This example provides two different modes of development:
-    # - Impurely using uv to manage virtual environments
-    # - Pure development using uv2nix to manage virtual environments
-    devShells.x86_64-linux = {
-      # It is of course perfectly OK to keep using an impure virtualenv workflow and only use uv2nix to build packages.
-      # This devShell simply adds Python and undoes the dependency leakage done by Nixpkgs Python infrastructure.
-      impure = pkgs.mkShell {
-        SOME_VAR = "some val";
+    packages.x86_64-linux = {
+      # provide a default so the example app keeps working
+      default = pkgs.hello;
+      serve = serve;
+      format-public = format-public;
+    };
 
-        packages = [
-          pkgs.hugo
+    devShells.x86_64-linux = {
+      default = pkgs.mkShell {
+        packages = with pkgs; [
+          hugo
+          nodePackages.prettier
+          pre-commit
         ];
+
         shellHook = ''
+          alias serve='${self.packages.x86_64-linux.serve}/bin/serve'
+          alias fmt-public='${self.packages.x86_64-linux.format-public}/bin/format-public'
+          echo "Aliases available: serve, fmt-public"
         '';
       };
     };
