@@ -1,8 +1,8 @@
 ---
 title: "Dutch murders between 2017-2021"
 description: "An analysis of the relationships between perpetrators and victims in Dutch murder cases from 2017 to 2021"
-publishDate: 2025-08-21T22:58:00+01:00
-lastmod: 2025-08-21T22:58:00+01:00
+publishDate: 2025-08-21T23:28:52+02:00
+lastmod: 2025-08-21T23:28:52+02:00
 layout: article
 ---
 The Dutch government (OCW - Onderwijs, Cultuur en Wetenschap) has been making [this one chart](https://www.ocwincijfers.nl/sectoren/emancipatie/sociale-veiligheid/sociale-veiligheid) available, which bothers me.
