@@ -1,24 +1,29 @@
 ---
-title: "Programming Logic Is Quaternary Not Binary"
+title: "Programming Logic Is Quaternary Not Binary (Tony Hoare did nothing wrong)"
 publishDate: 2025-08-23T14:31:07+02:00
 lastmod: 2025-08-23T14:31:07+02:00
 draft: true
 ---
-## Or, Tony Hoare did nothing wrong - in fact, he didn't go far enough
 
-* [How to pronounce "Quaternary"?](https://en.wiktionary.org/wiki/quaternary) (I prefer the "Audio (General Australian)"
+Alternative titles:
+
+- "Tony Hoare did nothing wrong - in fact, he didn't go far enough"
+- "E.F. 'The Coddfather' Codd was right all along"
+
+> [How to pronounce "Quaternary"?](https://en.wiktionary.org/wiki/quaternary) (I prefer the "Audio (General Australian)"
   version)
 
 I've been programming since 2009, professionally since 2021, and I've written programs in Python (my current go-to due
-to professional reasons), C (my first language - can highly recommend), C++, C#, Java, Haskell (my first FP language -
-[highly recommend](https://learnyouahaskell.github.io/chapters.html)), Typescript (ew), Javascript (ew), PowerShell,
-Bash, and have dipped my toes in Rust, Go, Elm, Lisp, Visual Basic (ew), Lua.
+to professional reasons), C (my first language - can highly recommend as beginner language), C++, C#, Java, Haskell (my
+first FP language - [can also highly recommend (Primeagen pls read)](https://learnyouahaskell.github.io/chapters.html)),
+Typescript (ew), Javascript (ew), PowerShell, Bash, and have dipped my toes in Rust, Go, Elm, Lisp, Visual Basic (ew),
+and last but not least Lua.
 
-I'm telling you this to explain that I have a very broad knowledge of programming, with a deep one in Python - I won't
-claim to be an expert in any other language, and even in Python there's plenty I've barely touched due to a lack of
-necessity.
+I'm telling you this to explain that I have a very *broad* knowledge of programming, with a *deep* one in Python - I
+won't claim to be an expert in any other language besides Python, and even in Python there's plenty I've barely touched
+due to a lack of necessity.
 
-In all this time the only two languages that broke my brain out of existing paradigms were Haskell and SQL.
+In all this time the only two languages that broke my brain out of learned paradigms were Haskell and SQL.
 
 Haskell for its Functional Programming paradigm, clearly, but SQL I did not expect.
 
