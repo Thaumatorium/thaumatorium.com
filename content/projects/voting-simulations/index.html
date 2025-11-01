@@ -86,6 +86,43 @@ lastmod: 2025-11-01T12:59:17+01:00
 			gap: 16px;
 		}
 
+		.hero-actions {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 16px;
+			margin-top: 12px;
+		}
+
+		.hero-actions button {
+			background: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(59, 130, 246, 0.7));
+			color: rgba(248, 250, 252, 0.96);
+			border: 1px solid rgba(37, 99, 235, 0.6);
+			border-radius: 999px;
+			padding: 12px 22px;
+			font-size: 1rem;
+			font-weight: 600;
+			cursor: pointer;
+			box-shadow: 0 12px 24px rgba(37, 99, 235, 0.35);
+			transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+		}
+
+		.hero-actions button:hover:not([disabled]) {
+			transform: translateY(-1px);
+			box-shadow: 0 14px 28px rgba(37, 99, 235, 0.42);
+		}
+
+		.hero-actions button:disabled {
+			opacity: 0.65;
+			cursor: default;
+			box-shadow: none;
+		}
+
+		.hero-actions span {
+			font-size: 0.92rem;
+			color: rgba(148, 163, 184, 0.88);
+		}
+
 		.hero-step {
 			background: rgba(15, 23, 42, 0.55);
 			border-radius: 14px;
@@ -123,6 +160,16 @@ lastmod: 2025-11-01T12:59:17+01:00
 			gap: 16px;
 			position: relative;
 			overflow: hidden;
+		}
+
+		.score-card[data-winner="blue"] {
+			border-color: rgba(37, 99, 235, 0.55);
+			box-shadow: 0 18px 34px rgba(37, 99, 235, 0.28);
+		}
+
+		.score-card[data-winner="red"] {
+			border-color: rgba(220, 38, 38, 0.55);
+			box-shadow: 0 18px 34px rgba(220, 38, 38, 0.28);
 		}
 
 		.score-card h2 {
@@ -288,6 +335,13 @@ lastmod: 2025-11-01T12:59:17+01:00
 			box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
 		}
 
+		.panel-switcher button:disabled {
+			opacity: 0.55;
+			cursor: default;
+			pointer-events: none;
+			box-shadow: none;
+		}
+
 		.panel-switcher button[data-role="reset"] {
 			margin-left: auto;
 			background: rgba(15, 23, 42, 0.5);
@@ -329,6 +383,26 @@ lastmod: 2025-11-01T12:59:17+01:00
 			gap: 14px;
 			position: relative;
 			transition: border 0.2s ease, transform 0.2s ease, background 0.2s ease;
+		}
+
+		.state-card.revealing {
+			border-color: rgba(245, 158, 11, 0.65);
+			box-shadow: 0 18px 32px rgba(245, 158, 11, 0.22);
+			animation: revealPulse 1.2s ease-in-out;
+		}
+
+		@keyframes revealPulse {
+			0% {
+				transform: scale(1);
+			}
+
+			40% {
+				transform: scale(1.01);
+			}
+
+			100% {
+				transform: scale(1);
+			}
 		}
 
 		.state-card:hover {
@@ -406,6 +480,11 @@ lastmod: 2025-11-01T12:59:17+01:00
 			box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
 		}
 
+		select:disabled {
+			opacity: 0.6;
+			cursor: not-allowed;
+		}
+
 		.toggle-row {
 			display: flex;
 			gap: 8px;
@@ -445,6 +524,12 @@ lastmod: 2025-11-01T12:59:17+01:00
 			color: rgba(248, 250, 252, 0.92);
 		}
 
+		.toggle-row button:disabled {
+			opacity: 0.55;
+			cursor: default;
+			pointer-events: none;
+		}
+
 		.slider-block {
 			display: grid;
 			gap: 8px;
@@ -474,6 +559,11 @@ lastmod: 2025-11-01T12:59:17+01:00
 			background: var(--blue);
 			cursor: pointer;
 			border: 2px solid rgba(255, 255, 255, 0.8);
+		}
+
+		input[type="range"]:disabled {
+			opacity: 0.55;
+			cursor: not-allowed;
 		}
 
 		.slider-label {
@@ -611,14 +701,18 @@ lastmod: 2025-11-01T12:59:17+01:00
 					<strong>Step 1 · Voters</strong>
 					<span>People cast ballots under state-specific rules for registration, ID, and ballot access.</span>
 				</div>
-				<div class="hero-step">
-					<strong>Step 2 · States</strong>
-					<span>States certify winners. For president they send a slate of pledged electors; for Congress they certify each winning candidate directly.</span>
-				</div>
+			<div class="hero-step">
+				<strong>Step 2 · States</strong>
+				<span>States certify winners. For president they send a slate of pledged electors; for Congress they certify each winning candidate directly.</span>
+			</div>
 				<div class="hero-step">
 					<strong>Step 3 · National tally</strong>
 					<span>The Electoral College meets to choose the president (270 of 538 needed). Congress counts electoral votes and seats its members.</span>
 				</div>
+			</div>
+			<div class="hero-actions">
+				<button type="button" data-role="start-sim">Start election night</button>
+				<span data-role="sim-status">Waiting for polls to close.</span>
 			</div>
 		</section>
 
@@ -889,6 +983,10 @@ lastmod: 2025-11-01T12:59:17+01:00
 			panelButtons: document.querySelectorAll("[data-sim-target]"),
 			panels: document.querySelectorAll(".sim-panel"),
 			resetButton: document.querySelector('[data-role="reset"]'),
+			animation: {
+				startButton: document.querySelector('[data-role="start-sim"]'),
+				status: document.querySelector('[data-role="sim-status"]')
+			},
 			grids: {
 				presidential: document.querySelector('[data-grid="presidential"]'),
 				senate: document.querySelector('[data-grid="senate"]'),
@@ -896,6 +994,7 @@ lastmod: 2025-11-01T12:59:17+01:00
 			},
 			score: {
 				electoral: {
+					card: document.getElementById("score-electoral"),
 					blue: document.querySelector('[data-score="electoral-blue"]'),
 					red: document.querySelector('[data-score="electoral-red"]'),
 					allocated: document.querySelector('[data-allocated="electoral"]'),
@@ -907,6 +1006,7 @@ lastmod: 2025-11-01T12:59:17+01:00
 					threshold: document.querySelector('[data-threshold="electoral"]')
 				},
 				senate: {
+					card: document.getElementById("score-senate"),
 					blue: document.querySelector('[data-score="senate-blue"]'),
 					red: document.querySelector('[data-score="senate-red"]'),
 					allocated: document.querySelector('[data-allocated="senate"]'),
@@ -918,6 +1018,7 @@ lastmod: 2025-11-01T12:59:17+01:00
 					threshold: document.querySelector('[data-threshold="senate"]')
 				},
 				house: {
+					card: document.getElementById("score-house"),
 					blue: document.querySelector('[data-score="house-blue"]'),
 					red: document.querySelector('[data-score="house-red"]'),
 					allocated: document.querySelector('[data-allocated="house"]'),
@@ -936,6 +1037,161 @@ lastmod: 2025-11-01T12:59:17+01:00
 		};
 
 		const stateDom = new Map();
+		const startButtonDefaultLabel = dom.animation.startButton ? dom.animation.startButton.textContent.trim() : "Start election night";
+
+		const blueStrongholds = new Set([
+			"CA",
+			"OR",
+			"WA",
+			"HI",
+			"NM",
+			"CO",
+			"MN",
+			"IL",
+			"NY",
+			"NJ",
+			"CT",
+			"RI",
+			"MA",
+			"VT",
+			"NH",
+			"MD",
+			"DE",
+			"DC",
+			"VA"
+		]);
+
+		const blueBattlegrounds = new Set(["AZ", "GA", "MI", "PA", "WI", "NV", "ME"]);
+		const redBattlegrounds = new Set(["NC", "FL", "TX"]);
+
+		const revealOrder = [
+			"VT",
+			"NH",
+			"ME",
+			"MA",
+			"RI",
+			"CT",
+			"NJ",
+			"DE",
+			"DC",
+			"MD",
+			"VA",
+			"NC",
+			"SC",
+			"GA",
+			"FL",
+			"AL",
+			"MS",
+			"PA",
+			"OH",
+			"MI",
+			"IN",
+			"KY",
+			"TN",
+			"WV",
+			"NY",
+			"IL",
+			"MO",
+			"WI",
+			"LA",
+			"AR",
+			"OK",
+			"TX",
+			"MN",
+			"IA",
+			"ND",
+			"SD",
+			"NE",
+			"KS",
+			"CO",
+			"NM",
+			"AZ",
+			"WY",
+			"MT",
+			"ID",
+			"UT",
+			"NV",
+			"CA",
+			"WA",
+			"OR",
+			"AK",
+			"HI"
+		];
+
+		const totalSimulationDuration = 180000; // 3 minutes
+		const electorSequenceDelay = 6000;
+
+		const electionAnimation = {
+			running: false,
+			queue: [],
+			timeouts: []
+		};
+
+		const scenarioPlan = stateData.reduce(
+			(plan, state) => {
+				const code = state.code;
+				let presidentialWinner = "red";
+
+				if (blueStrongholds.has(code) || blueBattlegrounds.has(code)) {
+					presidentialWinner = "blue";
+				}
+
+				plan.presidential[code] = presidentialWinner;
+
+				let senateResult = "";
+				if (state.senateSeats) {
+					if (blueStrongholds.has(code)) {
+						senateResult = "blue";
+					} else if (blueBattlegrounds.has(code)) {
+						senateResult = "split";
+					} else if (redBattlegrounds.has(code)) {
+						senateResult = "red";
+					} else {
+						senateResult = "red";
+					}
+
+					if (code === "ME") {
+						senateResult = "split";
+					}
+
+					if (code === "AK") {
+						senateResult = "split";
+					}
+				}
+
+				plan.senate[code] = senateResult;
+
+				if (!state.houseSeats) {
+					plan.house[code] = 0;
+				} else {
+					let share = 0.5;
+					if (blueStrongholds.has(code)) {
+						share = 0.68;
+					} else if (blueBattlegrounds.has(code)) {
+						share = 0.56;
+					} else if (redBattlegrounds.has(code)) {
+						share = 0.42;
+					} else {
+						share = 0.3;
+					}
+
+					if (code === "CA" || code === "NY") {
+						share = 0.75;
+					}
+
+					if (code === "TX" || code === "FL") {
+						share = 0.38;
+					}
+
+					plan.house[code] = Math.min(state.houseSeats, Math.max(0, Math.round(state.houseSeats * share)));
+				}
+
+				return plan;
+			},
+			{ presidential: {}, senate: {}, house: {} }
+		);
+
+		const stateLookup = new Map(stateData.map((state) => [state.code, state]));
 
 		function setThresholdPositions() {
 			Object.entries(dom.score).forEach(([key, cfg]) => {
@@ -1223,6 +1479,279 @@ lastmod: 2025-11-01T12:59:17+01:00
 			if (cfg.segments.neutral) {
 				cfg.segments.neutral.style.flexBasis = `${Math.max(0, Math.min(100, neutralPercent))}%`;
 			}
+
+			if (cfg.card) {
+				if (blueTotal >= thresholds[key]) {
+					cfg.card.dataset.winner = "blue";
+				} else if (redTotal >= thresholds[key]) {
+					cfg.card.dataset.winner = "red";
+				} else {
+					cfg.card.removeAttribute("data-winner");
+				}
+
+				if (electionAnimation.running) {
+					cfg.card.dataset.live = "true";
+				} else {
+					delete cfg.card.dataset.live;
+				}
+			}
+		}
+
+		function lockInterface(disabled) {
+			dom.panelButtons.forEach((button) => {
+				button.disabled = disabled;
+			});
+
+			stateDom.forEach((entry) => {
+				if (entry.presidential?.select) {
+					entry.presidential.select.disabled = disabled;
+				}
+
+				if (entry.senate?.buttons) {
+					entry.senate.buttons.forEach((btn) => {
+						btn.disabled = disabled;
+					});
+				}
+
+				if (entry.house?.slider) {
+					entry.house.slider.disabled = disabled;
+				}
+			});
+		}
+
+		function updateSimStatus(message) {
+			if (!dom.animation.status) return;
+			dom.animation.status.textContent = message;
+		}
+
+		function removeRevealHighlights() {
+			stateDom.forEach((entry) => {
+				["presidential", "senate", "house"].forEach((key) => {
+					const card = entry[key]?.card;
+					if (card) {
+						card.classList.remove("revealing");
+					}
+				});
+			});
+		}
+
+		function pulseStateCards(entry) {
+			if (!entry) return;
+
+			["presidential", "senate", "house"].forEach((key) => {
+				const card = entry[key]?.card;
+				if (!card) return;
+				card.classList.add("revealing");
+				const timeoutId = setTimeout(() => {
+					card.classList.remove("revealing");
+				}, 1100);
+				electionAnimation.timeouts.push(timeoutId);
+			});
+		}
+
+		function updateHouseLabel(entry, state) {
+			if (!entry?.house?.label || !state) return;
+			const blueSeats = Number(stateSelections[state.code].houseBlue);
+			const redSeats = Math.max(0, (state.houseSeats || 0) - blueSeats);
+			entry.house.label.innerHTML = `<span>Blue districts: <strong>${blueSeats}</strong></span><span>Red districts: <strong>${redSeats}</strong></span>`;
+		}
+
+		function applySenateButtons(entry, result) {
+			if (!entry?.senate?.buttons) return;
+			entry.senate.buttons.forEach((btn) => {
+				btn.classList.remove("active", "blue", "red", "split");
+				if (btn.dataset.choice === result) {
+					const theme = btn.dataset.theme;
+					btn.classList.add("active");
+					if (theme) {
+						btn.classList.add(theme);
+					}
+				}
+			});
+		}
+
+		function composeProgressMessage(state, winner, progress) {
+			if (!state) return "";
+			const coalition = winner === "blue" ? "the Blue coalition" : "the Red coalition";
+
+			if (progress < 0.34) {
+				return `East Coast projections: ${state.name} backs ${coalition}.`;
+			}
+
+			if (progress < 0.68) {
+				return `Heartland votes are in—${state.name} sides with ${coalition}.`;
+			}
+
+			if (progress < 0.95) {
+				return `Western states report: ${state.name} moves to ${coalition}.`;
+			}
+
+			return `${state.name} completes the map. Electors are assembling next.`;
+		}
+
+		function calculateHouseWinner(state) {
+			if (!state || !state.houseSeats) return "";
+			const blueSeats = stateSelections[state.code].houseBlue;
+			const redSeats = state.houseSeats - blueSeats;
+			if (blueSeats > redSeats) return "blue";
+			if (redSeats > blueSeats) return "red";
+			return "";
+		}
+
+		function revealStateResult(state, index, total) {
+			if (!state) return;
+
+			const entry = stateDom.get(state.code);
+			const presidentialWinner = scenarioPlan.presidential[state.code] || "";
+			stateSelections[state.code].presidential = presidentialWinner;
+			if (entry?.presidential?.select) {
+				entry.presidential.select.value = presidentialWinner;
+			}
+			updateCardAppearance(entry?.presidential?.card, presidentialWinner);
+
+			const senateResult = scenarioPlan.senate[state.code] || (state.senateSeats ? "split" : "");
+			stateSelections[state.code].senate = senateResult;
+			applySenateButtons(entry, senateResult);
+
+			if (entry?.senate?.card) {
+				const senateWinner = senateResult === "split" ? "" : senateResult;
+				updateCardAppearance(entry.senate.card, senateWinner);
+			}
+
+			const houseTarget = scenarioPlan.house[state.code];
+			if (typeof houseTarget === "number") {
+				stateSelections[state.code].houseBlue = houseTarget;
+				if (entry?.house?.slider) {
+					entry.house.slider.value = houseTarget;
+				}
+				updateHouseLabel(entry, state);
+				if (entry?.house?.card) {
+					const houseWinner = calculateHouseWinner(state);
+					updateCardAppearance(entry.house.card, houseWinner);
+				}
+			}
+
+			pulseStateCards(entry);
+			updateScoreboards();
+
+			const message = composeProgressMessage(state, presidentialWinner, (index + 1) / total);
+			updateSimStatus(message);
+		}
+
+		function buildRevealQueue() {
+			const ordered = revealOrder
+				.map((code) => stateLookup.get(code))
+				.filter(Boolean);
+			const remaining = stateData.filter((state) => !revealOrder.includes(state.code));
+			return [...ordered, ...remaining];
+		}
+
+		function scheduleReveals(queue) {
+			const total = queue.length;
+			let cumulativeDelay = 0;
+			const baseDelay = totalSimulationDuration / Math.max(total, 1);
+
+			queue.forEach((state, index) => {
+				const multiplier = 0.75 + Math.random() * 0.6;
+				cumulativeDelay += baseDelay * multiplier;
+				const timeoutId = setTimeout(() => {
+					revealStateResult(state, index, total);
+				}, cumulativeDelay);
+				electionAnimation.timeouts.push(timeoutId);
+			});
+
+			const electorTimeout = setTimeout(() => {
+				updateSimStatus("States certify results and electors gather in their capitals…");
+				runElectoralCollege();
+			}, cumulativeDelay + electorSequenceDelay);
+			electionAnimation.timeouts.push(electorTimeout);
+		}
+
+		function computeElectoralTotals() {
+			return stateData.reduce(
+				(totalsAcc, state) => {
+					const winner = stateSelections[state.code].presidential;
+					if (winner) {
+						totalsAcc[winner] += state.electoralVotes;
+					}
+					return totalsAcc;
+				},
+				{ blue: 0, red: 0 }
+			);
+		}
+
+		function concludeElectionNight() {
+			const totalsResult = computeElectoralTotals();
+			let message = "The Electoral College adjourns without a majority—contingent election triggered in the House.";
+
+			if (totalsResult.blue >= thresholds.electoral) {
+				message = `The Electoral College ballots are counted: the Blue coalition secures the presidency ${totalsResult.blue} to ${totalsResult.red}.`;
+			} else if (totalsResult.red >= thresholds.electoral) {
+				message = `The Electoral College ballots are counted: the Red coalition secures the presidency ${totalsResult.red} to ${totalsResult.blue}.`;
+			}
+
+			updateSimStatus(message);
+			electionAnimation.running = false;
+			lockInterface(false);
+
+			if (dom.animation.startButton) {
+				dom.animation.startButton.disabled = false;
+				dom.animation.startButton.textContent = "Run election night again";
+			}
+
+			electionAnimation.timeouts = [];
+			electionAnimation.queue = [];
+			updateScoreboards();
+		}
+
+		function runElectoralCollege() {
+			const timeoutId = setTimeout(() => {
+				updateSimStatus("Electors cast their votes and Congress counts the ballots…");
+				concludeElectionNight();
+			}, 4200);
+
+			electionAnimation.timeouts.push(timeoutId);
+		}
+
+		function stopElectionNight(quiet = false) {
+			if (electionAnimation.timeouts.length) {
+				electionAnimation.timeouts.forEach((id) => clearTimeout(id));
+			}
+
+			electionAnimation.timeouts = [];
+			electionAnimation.queue = [];
+			electionAnimation.running = false;
+			removeRevealHighlights();
+			lockInterface(false);
+
+			if (dom.animation.startButton) {
+				dom.animation.startButton.disabled = false;
+				dom.animation.startButton.textContent = startButtonDefaultLabel;
+			}
+
+			if (!quiet) {
+				updateSimStatus("Election night animation stopped.");
+			}
+
+			updateScoreboards();
+		}
+
+		function startElectionNight() {
+			if (electionAnimation.running) return;
+
+			resetSimulation();
+
+			electionAnimation.running = true;
+			electionAnimation.queue = buildRevealQueue();
+
+			if (dom.animation.startButton) {
+				dom.animation.startButton.disabled = true;
+				dom.animation.startButton.textContent = "Election night in progress…";
+			}
+
+			updateSimStatus("Polls are closing—results are beginning to arrive.");
+			lockInterface(true);
+			scheduleReveals(electionAnimation.queue);
 		}
 
 		function updateScoreboards() {
@@ -1287,6 +1816,9 @@ lastmod: 2025-11-01T12:59:17+01:00
 		}
 
 		function resetSimulation() {
+			stopElectionNight(true);
+			updateSimStatus("Waiting for polls to close.");
+
 			stateData.forEach((state) => {
 				const defaults = defaultState();
 				defaults.houseBlue = Math.round(state.houseSeats / 2);
@@ -1308,16 +1840,13 @@ lastmod: 2025-11-01T12:59:17+01:00
 							btn.classList.add("active", "split");
 						}
 					});
+					updateCardAppearance(entry.senate.card, "");
 				}
 
 				if (entry.house && entry.house.slider) {
 					entry.house.slider.value = defaults.houseBlue;
-					const label = entry.house.label;
-					if (label) {
-						const blueSeats = defaults.houseBlue;
-						const redSeats = state.houseSeats - blueSeats;
-						label.innerHTML = `<span>Blue districts: <strong>${blueSeats}</strong></span><span>Red districts: <strong>${redSeats}</strong></span>`;
-					}
+					updateHouseLabel(entry, state);
+					updateCardAppearance(entry.house.card, "");
 				}
 			});
 
@@ -1353,6 +1882,10 @@ lastmod: 2025-11-01T12:59:17+01:00
 				handlePanelSwitch(target);
 			});
 		});
+
+		if (dom.animation.startButton) {
+			dom.animation.startButton.addEventListener("click", startElectionNight);
+		}
 
 		if (dom.resetButton) {
 			dom.resetButton.addEventListener("click", resetSimulation);
