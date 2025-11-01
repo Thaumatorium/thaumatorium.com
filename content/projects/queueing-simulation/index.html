@@ -213,6 +213,13 @@ lastmod: 2020-07-14T00:00:00+01:00
       box-shadow: 0 0 14px rgba(56, 189, 248, 0.8);
     }
 
+    .customer-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
     .pipe {
       flex: 1;
       display: flex;
@@ -245,7 +252,7 @@ lastmod: 2020-07-14T00:00:00+01:00
       background: rgba(15, 23, 42, 0.65);
       border-radius: 14px;
       padding: 14px;
-      min-height: 110px;
+      min-height: 160px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -263,11 +270,12 @@ lastmod: 2020-07-14T00:00:00+01:00
       display: flex;
       align-items: center;
       gap: 10px;
-      min-height: 54px;
+      min-height: 80px;
       flex-wrap: wrap;
     }
 
     .customer {
+      position: absolute;
       width: 36px;
       height: 36px;
       border-radius: 12px;
@@ -280,8 +288,30 @@ lastmod: 2020-07-14T00:00:00+01:00
       font-weight: 700;
       letter-spacing: 0.04em;
       box-shadow: 0 12px 16px -14px rgba(99, 102, 241, 0.8);
-      position: relative;
-      transition: transform 0.25s ease, opacity 0.25s ease;
+      transition: transform 0.65s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.35s ease, filter 0.35s ease;
+      opacity: 0;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .customer.visible {
+      opacity: 1;
+    }
+
+    .customer[data-state="queue"] {
+      filter: saturate(0.9);
+    }
+
+    .customer[data-state="server"] {
+      filter: saturate(1.2);
+      box-shadow: 0 20px 26px -20px rgba(56, 189, 248, 0.9);
+    }
+
+    .customer[data-state="exit"] {
+      filter: saturate(0.7);
+    }
+
+    .customer[data-state="dropped"] {
+      filter: saturate(1.1);
     }
 
     .customer.rejected {
@@ -473,6 +503,7 @@ lastmod: 2020-07-14T00:00:00+01:00
             <span>Departures</span>
           </div>
         </div>
+        <div class="customer-layer" id="customerLayer"></div>
       </div>
 
       <div class="panel timeline">
@@ -605,8 +636,37 @@ lastmod: 2020-07-14T00:00:00+01:00
           util2: document.getElementById("util2"),
         };
 
+        this.canvas = document.querySelector(".canvas");
+        this.layer = document.getElementById("customerLayer");
+        this.entryAnchor = document.querySelector(".cloud .arrow");
+        this.exitAnchor = document.querySelector(".exit .arrow");
+
+        this.customerElements = new Map();
+        this.customerSize = 36;
+        this.queueSpacing = 44;
+        this.queueRowHeight = 44;
+
         this.running = false;
+
+        this.handleResize = this.handleResize.bind(this);
+        window.addEventListener("resize", this.handleResize);
+
+        this.refreshLayout();
         this.reset();
+      }
+
+      refreshLayout() {
+        if (!this.canvas) return;
+        this.canvasRect = this.canvas.getBoundingClientRect();
+        this.queueRect = this.elements.queue.getBoundingClientRect();
+        this.serverRects = this.elements.serverSlots.map(slot => slot.getBoundingClientRect());
+        this.entryRect = this.entryAnchor.getBoundingClientRect();
+        this.exitRect = this.exitAnchor.getBoundingClientRect();
+      }
+
+      handleResize() {
+        this.refreshLayout();
+        this.updateAllPositions(true);
       }
 
       reset() {
@@ -615,6 +675,12 @@ lastmod: 2020-07-14T00:00:00+01:00
         this.queue = [];
         this.systemCount = 0;
         this.customerId = 1;
+
+        this.customerElements.forEach(el => el.remove());
+        this.customerElements.clear();
+        if (this.layer) {
+          this.layer.innerHTML = "";
+        }
 
         this.nextArrival = {
           time: randomExponential(this.config.arrivalRate)
@@ -640,6 +706,7 @@ lastmod: 2020-07-14T00:00:00+01:00
           lastSystemLen: 0
         };
 
+        this.updateAllPositions(true);
         this.render();
       }
 
@@ -732,23 +799,31 @@ lastmod: 2020-07-14T00:00:00+01:00
           departureTime: null
         };
 
+        this.createCustomerElement(customer);
+
         if (this.systemCount >= this.config.capacity) {
           this.metrics.dropped += 1;
-          this.flashDrop(customer);
+          this.rejectCustomer(customer);
         } else {
           this.systemCount += 1;
           const freeServerIndex = this.servers.findIndex(s => !s.busy);
-          if (freeServerIndex >= 0) {
-            this.startService(freeServerIndex, customer);
+          if (freeServerIndex >= 0 && this.queue.length === 0) {
+            this.startService(freeServerIndex, customer, true);
           } else {
             this.queue.push(customer);
+            this.updateQueuePositions();
+            if (freeServerIndex >= 0) {
+              const nextCustomer = this.queue.shift();
+              this.startService(freeServerIndex, nextCustomer);
+              this.updateQueuePositions();
+            }
           }
         }
 
         this.nextArrival.time = this.simTime + randomExponential(this.config.arrivalRate);
       }
 
-      startService(serverIndex, customer) {
+      startService(serverIndex, customer, directFromArrival = false) {
         const server = this.servers[serverIndex];
         server.busy = true;
         server.customer = customer;
@@ -756,7 +831,22 @@ lastmod: 2020-07-14T00:00:00+01:00
 
         const serviceTime = this.generateServiceTime();
         server.nextDeparture = this.simTime + serviceTime;
+        if (directFromArrival) {
+          this.animateDirectService(customer, serverIndex);
+        } else {
+          this.moveCustomerToServer(customer, serverIndex);
+        }
         this.renderServers();
+      }
+
+      animateDirectService(customer, serverIndex) {
+        const element = this.createCustomerElement(customer);
+        element.dataset.state = "queue";
+        const queueFront = this.getQueuePosition(0);
+        this.setElementPosition(element, queueFront);
+        setTimeout(() => {
+          this.moveCustomerToServer(customer, serverIndex);
+        }, 220);
       }
 
       handleDeparture(serverIndex) {
@@ -769,15 +859,16 @@ lastmod: 2020-07-14T00:00:00+01:00
         this.metrics.systemTimeSum += (customer.departureTime - customer.arrivalTime);
 
         this.systemCount -= 1;
+        this.sendCustomerToExit(customer.id);
         if (this.queue.length > 0) {
           const nextCustomer = this.queue.shift();
           this.startService(serverIndex, nextCustomer);
+          this.updateQueuePositions();
         } else {
           server.busy = false;
           server.customer = null;
           server.nextDeparture = Infinity;
         }
-        this.renderQueue();
         this.renderServers();
       }
 
@@ -796,58 +887,158 @@ lastmod: 2020-07-14T00:00:00+01:00
         return randomGamma(shape, scale);
       }
 
-      flashDrop(customer) {
-        const element = document.createElement("div");
-        element.className = "customer rejected";
+      createCustomerElement(customer) {
+        let element = this.customerElements.get(customer.id);
+        if (element) {
+          return element;
+        }
+        this.refreshLayout();
+        element = document.createElement("div");
+        element.className = "customer";
+        element.dataset.id = customer.id;
         element.textContent = customer.id;
-        element.style.opacity = "0.15";
-        this.elements.queue.appendChild(element);
+
+        const spawn = this.getEntryPosition();
+        const jitterX = (Math.random() * 12) - 6;
+        const jitterY = (Math.random() * 10) - 5;
+        this.setElementPosition(element, { x: spawn.x + jitterX, y: spawn.y + jitterY }, true);
+        this.layer.appendChild(element);
+        requestAnimationFrame(() => element.classList.add("visible"));
+        this.customerElements.set(customer.id, element);
+        return element;
+      }
+
+      moveCustomerToQueue(customer, index, immediate = false) {
+        const element = this.createCustomerElement(customer);
+        element.dataset.state = "queue";
+        const position = this.getQueuePosition(index);
+        this.setElementPosition(element, position, immediate);
+      }
+
+      moveCustomerToServer(customer, serverIndex, immediate = false) {
+        const server = this.servers[serverIndex];
+        if (!server || server.customer !== customer) {
+          return;
+        }
+        const element = this.createCustomerElement(customer);
+        element.dataset.state = "server";
+        const position = this.getServerPosition(serverIndex);
+        this.setElementPosition(element, position, immediate);
+      }
+
+      sendCustomerToExit(customerId) {
+        const element = this.customerElements.get(customerId);
+        if (!element) return;
+        element.dataset.state = "exit";
+        const target = this.getExitPosition();
+        this.setElementPosition(element, target);
         requestAnimationFrame(() => {
           element.style.opacity = "0";
-          element.style.transform = "translateY(-12px)";
         });
-        setTimeout(() => element.remove(), 420);
+        setTimeout(() => this.removeCustomerElement(customerId), 700);
+      }
+
+      rejectCustomer(customer) {
+        const element = this.createCustomerElement(customer);
+        element.classList.add("rejected");
+        element.dataset.state = "dropped";
+        const entry = this.getEntryPosition();
+        this.setElementPosition(element, { x: entry.x + 28, y: entry.y - 52 });
+        requestAnimationFrame(() => {
+          element.style.opacity = "0";
+        });
+        setTimeout(() => this.removeCustomerElement(customer.id), 520);
+      }
+
+      removeCustomerElement(customerId) {
+        const element = this.customerElements.get(customerId);
+        if (element) {
+          element.remove();
+          this.customerElements.delete(customerId);
+        }
+      }
+
+      updateQueuePositions(options = {}) {
+        this.refreshLayout();
+        if (!this.queue.length) return;
+        const immediate = !!options.immediate;
+        this.queue.forEach((customer, index) => {
+          this.moveCustomerToQueue(customer, index, immediate);
+        });
+      }
+
+      updateAllPositions(immediate = false) {
+        this.refreshLayout();
+        this.queue.forEach((customer, index) => {
+          this.moveCustomerToQueue(customer, index, immediate);
+        });
+        this.servers.forEach((server, index) => {
+          if (server.busy && server.customer) {
+            this.moveCustomerToServer(server.customer, index, immediate);
+          }
+        });
+      }
+
+      getEntryPosition() {
+        return {
+          x: this.entryRect.left - this.canvasRect.left - this.customerSize * 1.4,
+          y: this.entryRect.top - this.canvasRect.top + this.entryRect.height / 2 - this.customerSize / 2
+        };
+      }
+
+      getQueuePosition(index) {
+        const padding = 12;
+        const availableWidth = Math.max(this.queueRect.width - padding * 2, this.queueSpacing);
+        const perRow = Math.max(Math.floor(availableWidth / this.queueSpacing), 1);
+        const col = index % perRow;
+        const row = Math.floor(index / perRow);
+        const startX = this.queueRect.left - this.canvasRect.left + this.queueRect.width - padding - this.customerSize;
+        const minX = this.queueRect.left - this.canvasRect.left + padding;
+        const x = Math.max(minX, startX - col * this.queueSpacing);
+        return {
+          x: x,
+          y: this.queueRect.top - this.canvasRect.top + padding + row * this.queueRowHeight
+        };
+      }
+
+      getServerPosition(index) {
+        const rect = this.serverRects[index];
+        if (!rect) {
+          return this.getQueuePosition(0);
+        }
+        return {
+          x: rect.left - this.canvasRect.left + rect.width / 2 - this.customerSize / 2,
+          y: rect.top - this.canvasRect.top + rect.height / 2 - this.customerSize / 2
+        };
+      }
+
+      getExitPosition() {
+        return {
+          x: this.exitRect.left - this.canvasRect.left + this.exitRect.width + 36,
+          y: this.exitRect.top - this.canvasRect.top + this.exitRect.height / 2 - this.customerSize / 2
+        };
+      }
+
+      setElementPosition(element, position, immediate = false) {
+        if (immediate) {
+          element.style.transition = "none";
+          element.style.transform = `translate3d(${position.x}px, ${position.y}px, 0)`;
+          element.offsetHeight;
+          element.style.transition = "";
+        } else {
+          element.style.transform = `translate3d(${position.x}px, ${position.y}px, 0)`;
+        }
       }
 
       render() {
-        this.renderQueue();
         this.renderServers();
         this.renderStats();
-      }
-
-      renderQueue() {
-        const queueEl = this.elements.queue;
-        const ids = this.queue.map(c => c.id.toString());
-        const existing = Array.from(queueEl.children);
-        for (const el of existing) {
-          if (!ids.includes(el.dataset.id)) {
-            el.remove();
-          }
-        }
-        for (const customer of this.queue) {
-          let el = queueEl.querySelector(`[data-id="${customer.id}"]`);
-          if (!el) {
-            el = document.createElement("div");
-            el.className = "customer";
-            el.dataset.id = customer.id;
-            el.textContent = customer.id;
-            queueEl.appendChild(el);
-          }
-        }
       }
 
       renderServers() {
         this.servers.forEach((server, index) => {
           const panel = this.elements.serverPanels[index];
-          const slot = this.elements.serverSlots[index];
           panel.classList.toggle("busy", server.busy);
-          slot.innerHTML = "";
-          if (server.customer) {
-            const el = document.createElement("div");
-            el.className = "customer";
-            el.textContent = server.customer.id;
-            slot.appendChild(el);
-          }
         });
       }
 
@@ -859,7 +1050,7 @@ lastmod: 2020-07-14T00:00:00+01:00
         const avgSystem = served > 0 ? systemTimeSum / served : 0;
         const util1 = (this.servers[0].busyTime / simSeconds) * 100;
         const util2 = (this.servers[1].busyTime / simSeconds) * 100;
-        const queueLen = Math.max(this.systemCount - this.busyServerCount(), 0);
+        const queueLen = this.queue.length;
 
         this.elements.simTime.textContent = `${formatNumber(this.simTime, 1)}s`;
         this.elements.inSystem.textContent = this.systemCount;
