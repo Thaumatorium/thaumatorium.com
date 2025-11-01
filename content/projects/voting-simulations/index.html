@@ -1,0 +1,1380 @@
+---
+title: "Voting Simulations"
+description: "Workspace for interactive election and voting system visuals."
+publishDate: 2025-11-01T12:59:17+01:00
+lastmod: 2025-11-01T12:59:17+01:00
+---
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>US Voting Simulations | The Thaumatorium</title>
+	<style>
+		:root {
+			color-scheme: dark;
+			--bg: #030712;
+			--surface: rgba(15, 23, 42, 0.75);
+			--surface-solid: #111827;
+			--border: rgba(255, 255, 255, 0.08);
+			--text: rgba(241, 245, 249, 0.92);
+			--muted: rgba(148, 163, 184, 0.85);
+			--blue: #2563eb;
+			--red: #dc2626;
+			--gold: #f59e0b;
+			--green: #22c55e;
+			--panel-radius: 18px;
+			--card-radius: 16px;
+			--shadow: 0 24px 48px rgba(15, 15, 40, 0.45);
+		}
+
+		*,
+		*::before,
+		*::after {
+			box-sizing: border-box;
+		}
+
+		html,
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+			background: radial-gradient(circle at top, rgba(37, 99, 235, 0.18), transparent 45%), var(--bg);
+			color: var(--text);
+		}
+
+		body {
+			min-height: 100vh;
+		}
+
+		main {
+			max-width: 1180px;
+			margin: 0 auto;
+			padding: 64px 24px 120px;
+			display: flex;
+			flex-direction: column;
+			gap: 56px;
+		}
+
+		.page-hero {
+			background: linear-gradient(140deg, rgba(37, 99, 235, 0.4), rgba(15, 23, 42, 0.8));
+			padding: 48px;
+			border-radius: var(--panel-radius);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			box-shadow: var(--shadow);
+			display: grid;
+			gap: 24px;
+		}
+
+		.page-hero h1 {
+			margin: 0;
+			font-size: clamp(2.4rem, 4vw, 3.4rem);
+			line-height: 1.05;
+		}
+
+		.page-hero p {
+			margin: 0;
+			font-size: 1.05rem;
+			color: var(--muted);
+			max-width: 60ch;
+		}
+
+		.hero-steps {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+			gap: 16px;
+		}
+
+		.hero-step {
+			background: rgba(15, 23, 42, 0.55);
+			border-radius: 14px;
+			padding: 18px 20px;
+			border: 1px solid rgba(37, 99, 235, 0.18);
+			display: grid;
+			gap: 6px;
+		}
+
+		.hero-step strong {
+			font-size: 0.95rem;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			color: rgba(248, 250, 252, 0.85);
+		}
+
+		.hero-step span {
+			color: var(--muted);
+			font-size: 0.92rem;
+		}
+
+		.scoreboards {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+			gap: 20px;
+		}
+
+		.score-card {
+			background: rgba(15, 23, 42, 0.7);
+			border-radius: var(--card-radius);
+			padding: 24px 24px 28px;
+			border: 1px solid var(--border);
+			box-shadow: 0 10px 26px rgba(8, 14, 28, 0.32);
+			display: grid;
+			gap: 16px;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.score-card h2 {
+			margin: 0;
+			font-size: 1.35rem;
+			line-height: 1.2;
+		}
+
+		.score-card p {
+			margin: 0;
+			color: var(--muted);
+			font-size: 0.95rem;
+		}
+
+		.score-pills {
+			display: flex;
+			gap: 12px;
+			flex-wrap: wrap;
+			align-items: center;
+		}
+
+		.score-pill {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			font-size: 0.92rem;
+			padding: 8px 14px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.06);
+			border: 1px solid rgba(255, 255, 255, 0.04);
+		}
+
+		.score-pill::before {
+			content: "";
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			border-radius: 999px;
+		}
+
+		.score-pill.blue::before {
+			background: var(--blue);
+		}
+
+		.score-pill.red::before {
+			background: var(--red);
+		}
+
+		.score-pill .value {
+			font-weight: 600;
+			color: rgba(248, 250, 252, 0.92);
+			font-size: 1rem;
+			min-width: 32px;
+			text-align: right;
+		}
+
+		.score-bar {
+			position: relative;
+			display: flex;
+			gap: 0;
+			width: 100%;
+			height: 28px;
+			border-radius: 999px;
+			overflow: hidden;
+			background: rgba(15, 23, 42, 0.9);
+		}
+
+		.bar-segment {
+			height: 100%;
+			transition: flex-basis 0.24s ease;
+		}
+
+		.bar-segment.blue {
+			background: linear-gradient(135deg, rgba(37, 99, 235, 0.95), rgba(37, 99, 235, 0.72));
+		}
+
+		.bar-segment.red {
+			background: linear-gradient(135deg, rgba(220, 38, 38, 0.95), rgba(220, 38, 38, 0.7));
+		}
+
+		.bar-segment.neutral {
+			background: rgba(148, 163, 184, 0.16);
+		}
+
+		.threshold-line {
+			position: absolute;
+			top: -6px;
+			width: 2px;
+			height: 40px;
+			background: var(--gold);
+			box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+		}
+
+		.threshold-line::after {
+			content: attr(data-label);
+			position: absolute;
+			top: 44px;
+			left: 50%;
+			transform: translateX(-50%);
+			font-size: 0.75rem;
+			color: rgba(245, 158, 11, 0.85);
+			white-space: nowrap;
+		}
+
+		.score-footnote {
+			display: flex;
+			justify-content: space-between;
+			gap: 12px;
+			color: var(--muted);
+			font-size: 0.85rem;
+			flex-wrap: wrap;
+		}
+
+		.panel {
+			background: rgba(15, 23, 42, 0.65);
+			padding: 32px;
+			border-radius: var(--panel-radius);
+			border: 1px solid var(--border);
+			box-shadow: 0 16px 40px rgba(8, 14, 28, 0.35);
+			display: grid;
+			gap: 26px;
+		}
+
+		.panel h2 {
+			margin: 0;
+			font-size: 1.8rem;
+		}
+
+		.panel p {
+			margin: 0;
+			color: var(--muted);
+			font-size: 0.98rem;
+		}
+
+		.panel-switcher {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 12px;
+			align-items: center;
+		}
+
+		.panel-switcher button {
+			background: rgba(37, 99, 235, 0.12);
+			color: rgba(226, 232, 240, 0.85);
+			border: 1px solid rgba(37, 99, 235, 0.28);
+			border-radius: 999px;
+			padding: 10px 18px;
+			font-size: 0.95rem;
+			font-weight: 600;
+			cursor: pointer;
+			transition: background 0.2s ease, transform 0.2s ease, border 0.2s ease;
+		}
+
+		.panel-switcher button:hover {
+			transform: translateY(-1px);
+			border-color: rgba(37, 99, 235, 0.45);
+		}
+
+		.panel-switcher button.active {
+			background: rgba(37, 99, 235, 0.35);
+			color: rgba(255, 255, 255, 0.94);
+			border-color: rgba(37, 99, 235, 0.75);
+			box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+		}
+
+		.panel-switcher button[data-role="reset"] {
+			margin-left: auto;
+			background: rgba(15, 23, 42, 0.5);
+			border-color: rgba(148, 163, 184, 0.25);
+			color: rgba(226, 232, 240, 0.75);
+		}
+
+		.panel-switcher button[data-role="reset"]:hover {
+			border-color: rgba(148, 163, 184, 0.4);
+			background: rgba(148, 163, 184, 0.12);
+		}
+
+		.simulation-panels {
+			display: grid;
+			gap: 30px;
+		}
+
+		.sim-panel {
+			display: none;
+			gap: 24px;
+		}
+
+		.sim-panel.active {
+			display: grid;
+		}
+
+		.state-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+			gap: 16px;
+		}
+
+		.state-card {
+			background: rgba(9, 15, 31, 0.75);
+			border-radius: var(--card-radius);
+			padding: 18px 18px 20px;
+			border: 1px solid rgba(255, 255, 255, 0.06);
+			display: grid;
+			gap: 14px;
+			position: relative;
+			transition: border 0.2s ease, transform 0.2s ease, background 0.2s ease;
+		}
+
+		.state-card:hover {
+			transform: translateY(-2px);
+			border-color: rgba(255, 255, 255, 0.14);
+		}
+
+		.state-card[data-winner="blue"] {
+			border-color: rgba(37, 99, 235, 0.55);
+			background: rgba(37, 99, 235, 0.18);
+		}
+
+		.state-card[data-winner="red"] {
+			border-color: rgba(220, 38, 38, 0.6);
+			background: rgba(220, 38, 38, 0.18);
+		}
+
+		.state-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: baseline;
+			gap: 10px;
+		}
+
+		.state-name {
+			margin: 0;
+			font-size: 1.1rem;
+			font-weight: 600;
+			color: rgba(248, 250, 252, 0.9);
+		}
+
+		.state-code {
+			font-size: 0.85rem;
+			color: rgba(148, 163, 184, 0.7);
+			letter-spacing: 0.06em;
+			text-transform: uppercase;
+		}
+
+		.state-facts {
+			display: grid;
+			gap: 6px;
+			font-size: 0.88rem;
+			color: rgba(226, 232, 240, 0.7);
+		}
+
+		.state-facts span {
+			display: flex;
+			gap: 8px;
+			align-items: center;
+		}
+
+		.state-facts strong {
+			color: rgba(248, 250, 252, 0.92);
+		}
+
+		select,
+		.sim-button,
+		input[type="range"] {
+			width: 100%;
+		}
+
+		select {
+			background: rgba(15, 23, 42, 0.7);
+			border-radius: 10px;
+			border: 1px solid rgba(255, 255, 255, 0.12);
+			padding: 8px 12px;
+			font-size: 0.95rem;
+			color: rgba(226, 232, 240, 0.88);
+			transition: border 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		select:focus {
+			outline: none;
+			border-color: rgba(37, 99, 235, 0.6);
+			box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+		}
+
+		.toggle-row {
+			display: flex;
+			gap: 8px;
+		}
+
+		.toggle-row button {
+			flex: 1;
+			border-radius: 10px;
+			padding: 9px 10px;
+			border: 1px solid rgba(148, 163, 184, 0.25);
+			background: rgba(15, 23, 42, 0.7);
+			color: rgba(226, 232, 240, 0.78);
+			font-size: 0.88rem;
+			cursor: pointer;
+			transition: background 0.2s ease, border 0.2s ease, color 0.2s ease;
+		}
+
+		.toggle-row button:hover {
+			border-color: rgba(148, 163, 184, 0.45);
+		}
+
+		.toggle-row button.active.blue {
+			background: rgba(37, 99, 235, 0.28);
+			border-color: rgba(37, 99, 235, 0.6);
+			color: rgba(248, 250, 252, 0.92);
+		}
+
+		.toggle-row button.active.red {
+			background: rgba(220, 38, 38, 0.25);
+			border-color: rgba(220, 38, 38, 0.6);
+			color: rgba(248, 250, 252, 0.92);
+		}
+
+		.toggle-row button.active.split {
+			background: rgba(229, 231, 235, 0.12);
+			border-color: rgba(229, 231, 235, 0.35);
+			color: rgba(248, 250, 252, 0.92);
+		}
+
+		.slider-block {
+			display: grid;
+			gap: 8px;
+		}
+
+		input[type="range"] {
+			-webkit-appearance: none;
+			height: 4px;
+			background: rgba(148, 163, 184, 0.3);
+			border-radius: 999px;
+		}
+
+		input[type="range"]::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			width: 18px;
+			height: 18px;
+			border-radius: 50%;
+			background: var(--blue);
+			cursor: pointer;
+			border: 2px solid rgba(255, 255, 255, 0.8);
+		}
+
+		input[type="range"]::-moz-range-thumb {
+			width: 18px;
+			height: 18px;
+			border-radius: 50%;
+			background: var(--blue);
+			cursor: pointer;
+			border: 2px solid rgba(255, 255, 255, 0.8);
+		}
+
+		.slider-label {
+			display: flex;
+			justify-content: space-between;
+			font-size: 0.85rem;
+			color: rgba(226, 232, 240, 0.75);
+		}
+
+		.state-note {
+			font-size: 0.78rem;
+			color: rgba(250, 204, 21, 0.9);
+		}
+
+		.rules-section {
+			display: grid;
+			gap: 20px;
+		}
+
+		.rules-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+			gap: 16px;
+		}
+
+		.rule-card {
+			background: rgba(9, 12, 24, 0.78);
+			border-radius: var(--card-radius);
+			border: 1px solid rgba(148, 163, 184, 0.18);
+			padding: 20px;
+			display: grid;
+			gap: 10px;
+		}
+
+		.rule-card h3 {
+			margin: 0;
+			font-size: 1.05rem;
+			color: rgba(248, 250, 252, 0.9);
+		}
+
+		.rule-card p {
+			font-size: 0.9rem;
+			color: var(--muted);
+			margin: 0;
+		}
+
+		.policy-viewer {
+			background: rgba(9, 15, 31, 0.75);
+			border-radius: var(--card-radius);
+			border: 1px solid rgba(37, 99, 235, 0.2);
+			padding: 24px;
+			display: grid;
+			gap: 18px;
+		}
+
+		.policy-viewer header {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 12px;
+			align-items: center;
+		}
+
+		.policy-viewer header h3 {
+			margin: 0;
+			font-size: 1.15rem;
+		}
+
+		.policy-list {
+			display: grid;
+			gap: 12px;
+		}
+
+		.policy-item {
+			display: grid;
+			gap: 4px;
+			padding: 10px 14px;
+			border-radius: 12px;
+			background: rgba(15, 23, 42, 0.7);
+			border: 1px solid rgba(148, 163, 184, 0.2);
+		}
+
+		.policy-item strong {
+			color: rgba(248, 250, 252, 0.9);
+			font-size: 0.92rem;
+		}
+
+		.policy-item span {
+			color: rgba(148, 163, 184, 0.85);
+			font-size: 0.85rem;
+		}
+
+		@media (max-width: 960px) {
+			main {
+				padding: 48px 20px 80px;
+			}
+
+			.page-hero {
+				padding: 36px;
+			}
+
+			.panel {
+				padding: 28px;
+			}
+		}
+
+		@media (max-width: 640px) {
+			.page-hero {
+				padding: 28px 24px;
+			}
+
+			.panel {
+				padding: 22px;
+			}
+
+			.panel-switcher button[data-role="reset"] {
+				margin-left: 0;
+				width: 100%;
+			}
+
+			.score-footnote {
+				flex-direction: column;
+				align-items: flex-start;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<main>
+		<section class="page-hero">
+			<h1>Simulate how the United States elects presidents and members of Congress</h1>
+			<p>Use this interactive workspace to experiment with how the Electoral College, the Senate, and the House of Representatives translate votes into seats. Explore why 270 electoral votes wins the presidency, how statewide Senate races differ from district-based House races, and how state rules shape the voter experience.</p>
+			<div class="hero-steps">
+				<div class="hero-step">
+					<strong>Step 1 · Voters</strong>
+					<span>People cast ballots under state-specific rules for registration, ID, and ballot access.</span>
+				</div>
+				<div class="hero-step">
+					<strong>Step 2 · States</strong>
+					<span>States certify winners. For president they send a slate of pledged electors; for Congress they certify each winning candidate directly.</span>
+				</div>
+				<div class="hero-step">
+					<strong>Step 3 · National tally</strong>
+					<span>The Electoral College meets to choose the president (270 of 538 needed). Congress counts electoral votes and seats its members.</span>
+				</div>
+			</div>
+		</section>
+
+		<section class="scoreboards">
+			<div class="score-card" id="score-electoral">
+				<h2>Presidential: Electoral College</h2>
+				<p>States appoint electors equal to their representation in Congress (senators + representatives). Most states award all electors to the statewide winner.</p>
+				<div class="score-pills">
+					<div class="score-pill blue">Blue electors<span class="value" data-score="electoral-blue">0</span></div>
+					<div class="score-pill red">Red electors<span class="value" data-score="electoral-red">0</span></div>
+				</div>
+				<div class="score-bar" data-bar="electoral">
+					<div class="threshold-line" data-threshold="electoral" data-label="270"></div>
+					<div class="bar-segment blue" data-segment="electoral-blue"></div>
+					<div class="bar-segment neutral" data-segment="electoral-neutral"></div>
+					<div class="bar-segment red" data-segment="electoral-red"></div>
+				</div>
+				<div class="score-footnote">
+					<span>Needed to win: 270 of 538.</span>
+					<span>Electors allocated so far: <strong data-allocated="electoral">0</strong>.</span>
+				</div>
+			</div>
+			<div class="score-card" id="score-senate">
+				<h2>Senate: Statewide Seats</h2>
+				<p>Each state elects two senators to staggered six-year terms. Voters choose individuals directly; states are weighted equally.</p>
+				<div class="score-pills">
+					<div class="score-pill blue">Blue seats<span class="value" data-score="senate-blue">0</span></div>
+					<div class="score-pill red">Red seats<span class="value" data-score="senate-red">0</span></div>
+				</div>
+				<div class="score-bar" data-bar="senate">
+					<div class="threshold-line" data-threshold="senate" data-label="51"></div>
+					<div class="bar-segment blue" data-segment="senate-blue"></div>
+					<div class="bar-segment neutral" data-segment="senate-neutral"></div>
+					<div class="bar-segment red" data-segment="senate-red"></div>
+				</div>
+				<div class="score-footnote">
+					<span>Simple majority: 51 of 100 seats.</span>
+					<span>Seats modeled here: <strong data-allocated="senate">0</strong>.</span>
+				</div>
+			</div>
+			<div class="score-card" id="score-house">
+				<h2>House: District Elections</h2>
+				<p>States are divided into districts based on population. Voters in each district elect one member to a two-year term.</p>
+				<div class="score-pills">
+					<div class="score-pill blue">Blue seats<span class="value" data-score="house-blue">0</span></div>
+					<div class="score-pill red">Red seats<span class="value" data-score="house-red">0</span></div>
+				</div>
+				<div class="score-bar" data-bar="house">
+					<div class="threshold-line" data-threshold="house" data-label="218"></div>
+					<div class="bar-segment blue" data-segment="house-blue"></div>
+					<div class="bar-segment neutral" data-segment="house-neutral"></div>
+					<div class="bar-segment red" data-segment="house-red"></div>
+				</div>
+				<div class="score-footnote">
+					<span>Majority control: 218 of 435 seats.</span>
+					<span>Seats allocated here: <strong data-allocated="house">0</strong>.</span>
+				</div>
+			</div>
+		</section>
+
+		<section class="panel">
+			<div class="panel-header">
+				<h2>Build a scenario</h2>
+				<p>Select winners in each state to see how presidential, Senate, and House outcomes diverge.</p>
+			</div>
+			<div class="panel-switcher">
+				<button class="active" data-sim-target="presidential">Presidential electors</button>
+				<button data-sim-target="senate">Senate seats</button>
+				<button data-sim-target="house">House districts</button>
+				<button data-role="reset">Reset all</button>
+			</div>
+			<div class="simulation-panels">
+				<div class="sim-panel active" data-panel="presidential">
+					<p>Winner-take-all statewide in 48 states. Maine and Nebraska can split electors by congressional district; use the House sliders to mimic that behavior.</p>
+					<div class="state-grid" data-grid="presidential"></div>
+				</div>
+				<div class="sim-panel" data-panel="senate">
+					<p>Choose which party wins each statewide Senate seat. A “split” outcome represents one senator from each party.</p>
+					<div class="state-grid" data-grid="senate"></div>
+				</div>
+				<div class="sim-panel" data-panel="house">
+					<p>Drag the slider to assign each state’s House districts. House seats determine a state’s share of electors alongside its two senators.</p>
+					<div class="state-grid" data-grid="house"></div>
+				</div>
+			</div>
+		</section>
+
+		<section class="rules-section">
+			<h2>State control of election rules</h2>
+			<p>Because states run elections, the experience of voting can be very different. Registration deadlines, ID requirements, mail ballot access, and the availability of early in-person voting all vary by state.</p>
+			<div class="rules-grid">
+				<div class="rule-card">
+					<h3>Registration</h3>
+					<p>Some states offer automatic or same-day registration. Others close registration weeks beforehand, limiting last-minute participation.</p>
+				</div>
+				<div class="rule-card">
+					<h3>Voter ID</h3>
+					<p>Strict photo ID states require government-issued identification at the polls. Others accept non-photo documents or use signature matching.</p>
+				</div>
+				<div class="rule-card">
+					<h3>Mail ballots</h3>
+					<p>A handful of states mail ballots to all voters, while others require an approved excuse to vote absentee.</p>
+				</div>
+				<div class="rule-card">
+					<h3>Early voting</h3>
+					<p>Early in-person voting can range from nearly a month to zero days, affecting how easily people can cast a ballot.</p>
+				</div>
+			</div>
+			<div class="policy-viewer">
+				<header>
+					<h3>Compare example state policies</h3>
+					<select data-policy-selector>
+						<option value="CA">California</option>
+						<option value="CO">Colorado</option>
+						<option value="GA">Georgia</option>
+						<option value="ND">North Dakota</option>
+						<option value="NY">New York</option>
+						<option value="TX">Texas</option>
+					</select>
+				</header>
+				<div class="policy-list" data-policy-output></div>
+				<p style="margin:0;color:rgba(148,163,184,0.8);font-size:0.8rem;">Policy snapshots are simplified summaries for illustration. Real-world rules can change quickly.</p>
+			</div>
+		</section>
+	</main>
+
+	<script>
+		const stateData = [
+			{ code: "AL", name: "Alabama", electoralVotes: 9, houseSeats: 7, senateSeats: 2 },
+			{ code: "AK", name: "Alaska", electoralVotes: 3, houseSeats: 1, senateSeats: 2 },
+			{ code: "AZ", name: "Arizona", electoralVotes: 11, houseSeats: 9, senateSeats: 2 },
+			{ code: "AR", name: "Arkansas", electoralVotes: 6, houseSeats: 4, senateSeats: 2 },
+			{ code: "CA", name: "California", electoralVotes: 54, houseSeats: 52, senateSeats: 2 },
+			{ code: "CO", name: "Colorado", electoralVotes: 10, houseSeats: 8, senateSeats: 2 },
+			{ code: "CT", name: "Connecticut", electoralVotes: 7, houseSeats: 5, senateSeats: 2 },
+			{ code: "DE", name: "Delaware", electoralVotes: 3, houseSeats: 1, senateSeats: 2 },
+			{ code: "DC", name: "District of Columbia", electoralVotes: 3, houseSeats: 0, senateSeats: 0, note: "No senators and no voting House member, but receives three presidential electors." },
+			{ code: "FL", name: "Florida", electoralVotes: 30, houseSeats: 28, senateSeats: 2 },
+			{ code: "GA", name: "Georgia", electoralVotes: 16, houseSeats: 14, senateSeats: 2 },
+			{ code: "HI", name: "Hawaii", electoralVotes: 4, houseSeats: 2, senateSeats: 2 },
+			{ code: "ID", name: "Idaho", electoralVotes: 4, houseSeats: 2, senateSeats: 2 },
+			{ code: "IL", name: "Illinois", electoralVotes: 19, houseSeats: 17, senateSeats: 2 },
+			{ code: "IN", name: "Indiana", electoralVotes: 11, houseSeats: 9, senateSeats: 2 },
+			{ code: "IA", name: "Iowa", electoralVotes: 6, houseSeats: 4, senateSeats: 2 },
+			{ code: "KS", name: "Kansas", electoralVotes: 6, houseSeats: 4, senateSeats: 2 },
+			{ code: "KY", name: "Kentucky", electoralVotes: 8, houseSeats: 6, senateSeats: 2 },
+			{ code: "LA", name: "Louisiana", electoralVotes: 8, houseSeats: 6, senateSeats: 2 },
+			{ code: "ME", name: "Maine", electoralVotes: 4, houseSeats: 2, senateSeats: 2, note: "Maine can split electors by congressional district." },
+			{ code: "MD", name: "Maryland", electoralVotes: 10, houseSeats: 8, senateSeats: 2 },
+			{ code: "MA", name: "Massachusetts", electoralVotes: 11, houseSeats: 9, senateSeats: 2 },
+			{ code: "MI", name: "Michigan", electoralVotes: 15, houseSeats: 13, senateSeats: 2 },
+			{ code: "MN", name: "Minnesota", electoralVotes: 10, houseSeats: 8, senateSeats: 2 },
+			{ code: "MS", name: "Mississippi", electoralVotes: 6, houseSeats: 4, senateSeats: 2 },
+			{ code: "MO", name: "Missouri", electoralVotes: 10, houseSeats: 8, senateSeats: 2 },
+			{ code: "MT", name: "Montana", electoralVotes: 4, houseSeats: 2, senateSeats: 2 },
+			{ code: "NE", name: "Nebraska", electoralVotes: 5, houseSeats: 3, senateSeats: 2, note: "Nebraska can split electors by congressional district." },
+			{ code: "NV", name: "Nevada", electoralVotes: 6, houseSeats: 4, senateSeats: 2 },
+			{ code: "NH", name: "New Hampshire", electoralVotes: 4, houseSeats: 2, senateSeats: 2 },
+			{ code: "NJ", name: "New Jersey", electoralVotes: 14, houseSeats: 12, senateSeats: 2 },
+			{ code: "NM", name: "New Mexico", electoralVotes: 5, houseSeats: 3, senateSeats: 2 },
+			{ code: "NY", name: "New York", electoralVotes: 28, houseSeats: 26, senateSeats: 2 },
+			{ code: "NC", name: "North Carolina", electoralVotes: 16, houseSeats: 14, senateSeats: 2 },
+			{ code: "ND", name: "North Dakota", electoralVotes: 3, houseSeats: 1, senateSeats: 2 },
+			{ code: "OH", name: "Ohio", electoralVotes: 17, houseSeats: 15, senateSeats: 2 },
+			{ code: "OK", name: "Oklahoma", electoralVotes: 7, houseSeats: 5, senateSeats: 2 },
+			{ code: "OR", name: "Oregon", electoralVotes: 8, houseSeats: 6, senateSeats: 2 },
+			{ code: "PA", name: "Pennsylvania", electoralVotes: 19, houseSeats: 17, senateSeats: 2 },
+			{ code: "RI", name: "Rhode Island", electoralVotes: 4, houseSeats: 2, senateSeats: 2 },
+			{ code: "SC", name: "South Carolina", electoralVotes: 9, houseSeats: 7, senateSeats: 2 },
+			{ code: "SD", name: "South Dakota", electoralVotes: 3, houseSeats: 1, senateSeats: 2 },
+			{ code: "TN", name: "Tennessee", electoralVotes: 11, houseSeats: 9, senateSeats: 2 },
+			{ code: "TX", name: "Texas", electoralVotes: 40, houseSeats: 38, senateSeats: 2 },
+			{ code: "UT", name: "Utah", electoralVotes: 6, houseSeats: 4, senateSeats: 2 },
+			{ code: "VT", name: "Vermont", electoralVotes: 3, houseSeats: 1, senateSeats: 2 },
+			{ code: "VA", name: "Virginia", electoralVotes: 13, houseSeats: 11, senateSeats: 2 },
+			{ code: "WA", name: "Washington", electoralVotes: 12, houseSeats: 10, senateSeats: 2 },
+			{ code: "WV", name: "West Virginia", electoralVotes: 4, houseSeats: 2, senateSeats: 2 },
+			{ code: "WI", name: "Wisconsin", electoralVotes: 10, houseSeats: 8, senateSeats: 2 },
+			{ code: "WY", name: "Wyoming", electoralVotes: 3, houseSeats: 1, senateSeats: 2 }
+		];
+
+		const policyData = {
+			CA: {
+				title: "California",
+				items: [
+					{ label: "Registration", description: "Automatic DMV registration plus same-day registration during early voting." },
+					{ label: "Voter ID", description: "No photo ID for in-person voting; signature verification used for mail ballots." },
+					{ label: "Mail ballots", description: "Ballots mailed to every active voter with prepaid return postage." },
+					{ label: "Early voting", description: "In-person voting available for at least 10 days before Election Day." }
+				]
+			},
+			CO: {
+				title: "Colorado",
+				items: [
+					{ label: "Registration", description: "Online registration closes 8 days before Election Day; same-day registration at vote centers." },
+					{ label: "Voter ID", description: "Photo ID or a wide range of documents accepted; mail ballots verified with signature." },
+					{ label: "Mail ballots", description: "All active voters receive a mail ballot; drop boxes across the state." },
+					{ label: "Early voting", description: "Vote centers open 8 days before Election Day." }
+				]
+			},
+			GA: {
+				title: "Georgia",
+				items: [
+					{ label: "Registration", description: "Deadline 29 days before Election Day; automatic registration via DMV." },
+					{ label: "Voter ID", description: "Photo ID required for in-person voting; ID number must be provided for absentee ballots." },
+					{ label: "Mail ballots", description: "No excuse needed, but voters must request a ballot and provide ID information." },
+					{ label: "Early voting", description: "At least 17 days of in-person early voting, including mandatory Saturdays." }
+				]
+			},
+			ND: {
+				title: "North Dakota",
+				items: [
+					{ label: "Registration", description: "No voter registration; voters show residency ID at the polls." },
+					{ label: "Voter ID", description: "State-issued ID with address required; supplemental documents permitted to show address." },
+					{ label: "Mail ballots", description: "Excuse not required, but ID copy or number must be included with the application." },
+					{ label: "Early voting", description: "Counties may offer up to 15 days of early voting; availability varies." }
+				]
+			},
+			NY: {
+				title: "New York",
+				items: [
+					{ label: "Registration", description: "Deadline 10 days before Election Day; online registration launching statewide in 2025." },
+					{ label: "Voter ID", description: "No photo ID required for most voters; signature verification used." },
+					{ label: "Mail ballots", description: "No-excuse absentee voting with online tracking introduced in 2024." },
+					{ label: "Early voting", description: "9 days of early voting including two weekends." }
+				]
+			},
+			TX: {
+				title: "Texas",
+				items: [
+					{ label: "Registration", description: "Deadline 30 days before Election Day; no same-day registration." },
+					{ label: "Voter ID", description: "Strict photo ID required; limited alternatives with supporting documentation." },
+					{ label: "Mail ballots", description: "Excuse-only absentee voting; signature and ID number verification required." },
+					{ label: "Early voting", description: "In-person early voting usually runs 10 days before Election Day." }
+				]
+			}
+		};
+
+		const totals = {
+			electoral: 538,
+			senate: 100,
+			house: 435
+		};
+
+		const thresholds = {
+			electoral: 270,
+			senate: 51,
+			house: 218
+		};
+
+		const defaultState = () => ({
+			presidential: "",
+			senate: "split",
+			houseBlue: 0
+		});
+
+		const stateSelections = {};
+		stateData.forEach((state) => {
+			const base = defaultState();
+			base.houseBlue = Math.round(state.houseSeats / 2);
+			if (!state.senateSeats) {
+				base.senate = "";
+			}
+			stateSelections[state.code] = base;
+		});
+
+		const dom = {
+			panelButtons: document.querySelectorAll("[data-sim-target]"),
+			panels: document.querySelectorAll(".sim-panel"),
+			resetButton: document.querySelector('[data-role="reset"]'),
+			grids: {
+				presidential: document.querySelector('[data-grid="presidential"]'),
+				senate: document.querySelector('[data-grid="senate"]'),
+				house: document.querySelector('[data-grid="house"]')
+			},
+			score: {
+				electoral: {
+					blue: document.querySelector('[data-score="electoral-blue"]'),
+					red: document.querySelector('[data-score="electoral-red"]'),
+					allocated: document.querySelector('[data-allocated="electoral"]'),
+					segments: {
+						blue: document.querySelector('[data-segment="electoral-blue"]'),
+						neutral: document.querySelector('[data-segment="electoral-neutral"]'),
+						red: document.querySelector('[data-segment="electoral-red"]')
+					},
+					threshold: document.querySelector('[data-threshold="electoral"]')
+				},
+				senate: {
+					blue: document.querySelector('[data-score="senate-blue"]'),
+					red: document.querySelector('[data-score="senate-red"]'),
+					allocated: document.querySelector('[data-allocated="senate"]'),
+					segments: {
+						blue: document.querySelector('[data-segment="senate-blue"]'),
+						neutral: document.querySelector('[data-segment="senate-neutral"]'),
+						red: document.querySelector('[data-segment="senate-red"]')
+					},
+					threshold: document.querySelector('[data-threshold="senate"]')
+				},
+				house: {
+					blue: document.querySelector('[data-score="house-blue"]'),
+					red: document.querySelector('[data-score="house-red"]'),
+					allocated: document.querySelector('[data-allocated="house"]'),
+					segments: {
+						blue: document.querySelector('[data-segment="house-blue"]'),
+						neutral: document.querySelector('[data-segment="house-neutral"]'),
+						red: document.querySelector('[data-segment="house-red"]')
+					},
+					threshold: document.querySelector('[data-threshold="house"]')
+				}
+			},
+			policies: {
+				select: document.querySelector("[data-policy-selector]"),
+				output: document.querySelector("[data-policy-output]")
+			}
+		};
+
+		const stateDom = new Map();
+
+		function setThresholdPositions() {
+			Object.entries(dom.score).forEach(([key, cfg]) => {
+				if (!cfg.threshold) return;
+				const percent = (thresholds[key] / totals[key]) * 100;
+				cfg.threshold.style.left = `${percent}%`;
+			});
+		}
+
+		function buildPresidentialGrid() {
+			const fragment = document.createDocumentFragment();
+			stateData.forEach((state) => {
+				const card = document.createElement("article");
+				card.className = "state-card";
+				card.dataset.state = state.code;
+
+				const header = document.createElement("div");
+				header.className = "state-header";
+
+				const name = document.createElement("h3");
+				name.className = "state-name";
+				name.textContent = state.name;
+
+				const code = document.createElement("span");
+				code.className = "state-code";
+				code.textContent = state.code;
+
+				header.append(name, code);
+
+				const facts = document.createElement("div");
+				facts.className = "state-facts";
+
+				const electors = document.createElement("span");
+				electors.innerHTML = `<strong>${state.electoralVotes}</strong> electoral votes`;
+
+				const breakdown = document.createElement("span");
+				const repText = state.houseSeats === 1 ? "representative" : "representatives";
+				breakdown.textContent = `${state.senateSeats} senators + ${state.houseSeats} ${repText}`;
+
+				facts.append(electors, breakdown);
+
+				const pickerLabel = document.createElement("label");
+				pickerLabel.textContent = "Statewide winner:";
+
+				const select = document.createElement("select");
+				select.dataset.role = "presidential-select";
+				select.innerHTML = `
+					<option value="">Uncalled</option>
+					<option value="blue">Blue slate</option>
+					<option value="red">Red slate</option>
+				`;
+				select.value = stateSelections[state.code].presidential;
+				select.addEventListener("change", () => {
+					stateSelections[state.code].presidential = select.value;
+					updateCardAppearance(card, select.value);
+					updateScoreboards();
+				});
+
+				pickerLabel.append(select);
+				card.append(header, facts, pickerLabel);
+
+				if (state.note) {
+					const note = document.createElement("div");
+					note.className = "state-note";
+					note.textContent = state.note;
+					card.append(note);
+				}
+
+				fragment.append(card);
+
+				const domEntry = stateDom.get(state.code) || {};
+				domEntry.presidential = { card, select };
+				stateDom.set(state.code, domEntry);
+			});
+			dom.grids.presidential.append(fragment);
+		}
+
+		function buildSenateGrid() {
+			const fragment = document.createDocumentFragment();
+			stateData.forEach((state) => {
+				const card = document.createElement("article");
+				card.className = "state-card";
+				card.dataset.state = state.code;
+
+				const header = document.createElement("div");
+				header.className = "state-header";
+
+				const name = document.createElement("h3");
+				name.className = "state-name";
+				name.textContent = state.name;
+
+				const code = document.createElement("span");
+				code.className = "state-code";
+				code.textContent = state.code;
+
+				header.append(name, code);
+
+				const facts = document.createElement("div");
+				facts.className = "state-facts";
+
+				const seats = document.createElement("span");
+				seats.innerHTML = `<strong>${state.senateSeats}</strong> Senate seats`;
+
+				facts.append(seats);
+
+				card.append(header, facts);
+
+				if (!state.senateSeats) {
+					const note = document.createElement("div");
+					note.className = "state-note";
+					note.textContent = "No senators vote in the Electoral College.";
+					card.append(note);
+				} else {
+					const row = document.createElement("div");
+					row.className = "toggle-row";
+
+					const choices = [
+						{ value: "blue", label: "Blue wins 2", className: "blue" },
+						{ value: "split", label: "Split 1 / 1", className: "split" },
+						{ value: "red", label: "Red wins 2", className: "red" }
+					];
+
+					const current = stateSelections[state.code].senate;
+
+					choices.forEach((choice) => {
+						const btn = document.createElement("button");
+						btn.type = "button";
+						btn.textContent = choice.label;
+						btn.dataset.choice = choice.value;
+						btn.dataset.state = state.code;
+						if (choice.className) {
+							btn.dataset.theme = choice.className;
+						}
+
+						if (choice.value === current) {
+							btn.classList.add("active", choice.className);
+						} else if (!current && choice.value === "split") {
+							btn.classList.add("active", choice.className);
+						}
+
+						btn.addEventListener("click", () => {
+							stateSelections[state.code].senate = choice.value;
+							row.querySelectorAll("button").forEach((b) => b.classList.remove("active", "blue", "red", "split"));
+							btn.classList.add("active", choice.className);
+							updateScoreboards();
+						});
+
+						row.append(btn);
+					});
+
+					card.append(row);
+				}
+
+				if (state.note && !state.senateSeats) {
+					const note = document.createElement("div");
+					note.className = "state-note";
+					note.textContent = state.note;
+					card.append(note);
+				}
+
+				fragment.append(card);
+
+				const domEntry = stateDom.get(state.code) || {};
+				domEntry.senate = { card, buttons: card.querySelectorAll(".toggle-row button") };
+				stateDom.set(state.code, domEntry);
+			});
+			dom.grids.senate.append(fragment);
+		}
+
+		function buildHouseGrid() {
+			const fragment = document.createDocumentFragment();
+			stateData.forEach((state) => {
+				const card = document.createElement("article");
+				card.className = "state-card";
+				card.dataset.state = state.code;
+
+				const header = document.createElement("div");
+				header.className = "state-header";
+
+				const name = document.createElement("h3");
+				name.className = "state-name";
+				name.textContent = state.name;
+
+				const code = document.createElement("span");
+				code.className = "state-code";
+				code.textContent = state.code;
+
+				header.append(name, code);
+
+				const facts = document.createElement("div");
+				facts.className = "state-facts";
+
+				const districts = document.createElement("span");
+				const repText = state.houseSeats === 1 ? "district" : "districts";
+				districts.innerHTML = `<strong>${state.houseSeats}</strong> House ${repText}`;
+
+				facts.append(districts);
+
+				card.append(header, facts);
+
+				if (!state.houseSeats) {
+					const note = document.createElement("div");
+					note.className = "state-note";
+					note.textContent = "No voting representative in Congress.";
+					card.append(note);
+				} else {
+					const sliderBlock = document.createElement("div");
+					sliderBlock.className = "slider-block";
+
+					const slider = document.createElement("input");
+					slider.type = "range";
+					slider.min = 0;
+					slider.max = state.houseSeats;
+					slider.value = stateSelections[state.code].houseBlue;
+
+					const label = document.createElement("div");
+					label.className = "slider-label";
+
+					const updateLabel = () => {
+						const blueSeats = Number(slider.value);
+						const redSeats = state.houseSeats - blueSeats;
+						label.innerHTML = `<span>Blue districts: <strong>${blueSeats}</strong></span><span>Red districts: <strong>${redSeats}</strong></span>`;
+					};
+
+					updateLabel();
+
+					slider.addEventListener("input", () => {
+						stateSelections[state.code].houseBlue = Number(slider.value);
+						updateLabel();
+						updateScoreboards();
+					});
+
+					sliderBlock.append(slider, label);
+					card.append(sliderBlock);
+				}
+
+				if (state.note && !state.houseSeats) {
+					const note = document.createElement("div");
+					note.className = "state-note";
+					note.textContent = state.note;
+					card.append(note);
+				}
+
+				fragment.append(card);
+
+				const domEntry = stateDom.get(state.code) || {};
+				domEntry.house = { card, slider: card.querySelector('input[type="range"]'), label: card.querySelector(".slider-label") };
+				stateDom.set(state.code, domEntry);
+			});
+			dom.grids.house.append(fragment);
+		}
+
+		function updateCardAppearance(card, winner) {
+			if (!card) return;
+			if (!winner) {
+				card.removeAttribute("data-winner");
+			} else {
+				card.dataset.winner = winner;
+			}
+		}
+
+		function renderScoreboard(key, totalsResult, allocated) {
+			const cfg = dom.score[key];
+			if (!cfg) return;
+
+			const blueTotal = Math.round(totalsResult.blue);
+			const redTotal = Math.round(totalsResult.red);
+
+			cfg.blue.textContent = blueTotal;
+			cfg.red.textContent = redTotal;
+			cfg.allocated.textContent = allocated;
+
+			const bluePercent = (totalsResult.blue / totals[key]) * 100;
+			const redPercent = (totalsResult.red / totals[key]) * 100;
+			const neutralPercent = Math.max(0, 100 - bluePercent - redPercent);
+
+			if (cfg.segments.blue) {
+				cfg.segments.blue.style.flexBasis = `${Math.max(0, Math.min(100, bluePercent))}%`;
+			}
+
+			if (cfg.segments.red) {
+				cfg.segments.red.style.flexBasis = `${Math.max(0, Math.min(100, redPercent))}%`;
+			}
+
+			if (cfg.segments.neutral) {
+				cfg.segments.neutral.style.flexBasis = `${Math.max(0, Math.min(100, neutralPercent))}%`;
+			}
+		}
+
+		function updateScoreboards() {
+			const electoralTotals = { blue: 0, red: 0 };
+			let electoralAllocated = 0;
+
+			stateData.forEach((state) => {
+				const winner = stateSelections[state.code].presidential;
+				if (winner) {
+					electoralTotals[winner] += state.electoralVotes;
+					electoralAllocated += state.electoralVotes;
+				}
+			});
+
+			renderScoreboard("electoral", electoralTotals, electoralAllocated);
+
+			const senateTotals = { blue: 0, red: 0 };
+			let senateAllocated = 0;
+
+			stateData.forEach((state) => {
+				if (!state.senateSeats) return;
+				const result = stateSelections[state.code].senate;
+				if (result === "blue") {
+					senateTotals.blue += state.senateSeats;
+					senateAllocated += state.senateSeats;
+				} else if (result === "red") {
+					senateTotals.red += state.senateSeats;
+					senateAllocated += state.senateSeats;
+				} else if (result === "split") {
+					const half = state.senateSeats / 2;
+					senateTotals.blue += half;
+					senateTotals.red += half;
+					senateAllocated += state.senateSeats;
+				}
+			});
+
+			renderScoreboard("senate", senateTotals, senateAllocated);
+
+			const houseTotals = { blue: 0, red: 0 };
+			let houseAllocated = 0;
+
+			stateData.forEach((state) => {
+				const blueSeats = stateSelections[state.code].houseBlue;
+				const redSeats = state.houseSeats - blueSeats;
+				houseTotals.blue += blueSeats;
+				houseTotals.red += redSeats;
+				houseAllocated += state.houseSeats;
+			});
+
+			renderScoreboard("house", houseTotals, houseAllocated);
+		}
+
+		function handlePanelSwitch(target) {
+			dom.panelButtons.forEach((button) => {
+				const isTarget = button.dataset.simTarget === target;
+				button.classList.toggle("active", isTarget);
+			});
+
+			dom.panels.forEach((panel) => {
+				panel.classList.toggle("active", panel.dataset.panel === target);
+			});
+		}
+
+		function resetSimulation() {
+			stateData.forEach((state) => {
+				const defaults = defaultState();
+				defaults.houseBlue = Math.round(state.houseSeats / 2);
+				if (!state.senateSeats) defaults.senate = "";
+				stateSelections[state.code] = defaults;
+
+				const entry = stateDom.get(state.code);
+				if (!entry) return;
+
+				if (entry.presidential) {
+					entry.presidential.select.value = "";
+					updateCardAppearance(entry.presidential.card, "");
+				}
+
+				if (entry.senate && entry.senate.buttons) {
+					entry.senate.buttons.forEach((btn) => {
+						btn.classList.remove("active", "blue", "red", "split");
+						if (btn.dataset.choice === defaults.senate) {
+							btn.classList.add("active", "split");
+						}
+					});
+				}
+
+				if (entry.house && entry.house.slider) {
+					entry.house.slider.value = defaults.houseBlue;
+					const label = entry.house.label;
+					if (label) {
+						const blueSeats = defaults.houseBlue;
+						const redSeats = state.houseSeats - blueSeats;
+						label.innerHTML = `<span>Blue districts: <strong>${blueSeats}</strong></span><span>Red districts: <strong>${redSeats}</strong></span>`;
+					}
+				}
+			});
+
+			updateScoreboards();
+		}
+
+		function populatePolicies() {
+			const { select, output } = dom.policies;
+			const selected = policyData[select.value];
+			if (!selected) return;
+
+			output.innerHTML = "";
+
+			selected.items.forEach((item) => {
+				const policy = document.createElement("div");
+				policy.className = "policy-item";
+
+				const title = document.createElement("strong");
+				title.textContent = item.label;
+
+				const detail = document.createElement("span");
+				detail.textContent = item.description;
+
+				policy.append(title, detail);
+				output.append(policy);
+			});
+		}
+
+		dom.panelButtons.forEach((button) => {
+			button.addEventListener("click", () => {
+				const target = button.dataset.simTarget;
+				if (!target) return;
+				handlePanelSwitch(target);
+			});
+		});
+
+		if (dom.resetButton) {
+			dom.resetButton.addEventListener("click", resetSimulation);
+		}
+
+		if (dom.policies.select) {
+			dom.policies.select.addEventListener("change", populatePolicies);
+		}
+
+		function init() {
+			buildPresidentialGrid();
+			buildSenateGrid();
+			buildHouseGrid();
+			setThresholdPositions();
+			updateScoreboards();
+			populatePolicies();
+			console.info("Total electors", stateData.reduce((sum, state) => sum + state.electoralVotes, 0));
+			console.info("Total representatives", stateData.reduce((sum, state) => sum + state.houseSeats, 0));
+		}
+
+		init();
+	</script>
+</body>
+
+</html>
