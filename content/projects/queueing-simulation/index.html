@@ -1,0 +1,956 @@
+---
+title: "Queueing Simulation"
+description: "Simulating Computer Systems: Interactive M/G/2/K Queueing Model Simulation"
+publishDate: 2020-07-14T00:00:00+01:00
+lastmod: 2020-07-14T00:00:00+01:00
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>M/G/2/K Queueing Simulation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --bg: #0f172a;
+      --panel: rgba(15, 23, 42, 0.8);
+      --accent: #38bdf8;
+      --accent-muted: rgba(56, 189, 248, 0.28);
+      --text: #e2e8f0;
+      --grid-gap: 1.5rem;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, #1e293b 0%, var(--bg) 55%, #020617 100%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px clamp(16px, 4vw, 48px);
+      box-sizing: border-box;
+    }
+
+    .app {
+      width: min(1200px, 100%);
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      grid-auto-rows: auto;
+      gap: var(--grid-gap);
+    }
+
+    h1 {
+      grid-column: 1 / -1;
+      margin: 0;
+      font-size: clamp(1.6rem, 2.4vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(226, 232, 240, 0.8);
+    }
+
+    .panel {
+      background: var(--panel);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.12);
+      border-radius: 18px;
+      padding: clamp(16px, 2vw, 24px);
+      box-shadow: 0 24px 40px -28px rgba(15, 23, 42, 0.9);
+    }
+
+    .controls, .metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    label {
+      display: grid;
+      grid-template-columns: 1fr minmax(80px, 120px);
+      gap: 10px;
+      align-items: center;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(226, 232, 240, 0.72);
+    }
+
+    input[type="number"] {
+      appearance: textfield;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 10px;
+      padding: 6px 10px;
+      color: inherit;
+      font-size: 0.9rem;
+      transition: border 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input[type="number"]:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-muted);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    .range-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .range-label {
+      min-width: 80px;
+      text-align: right;
+      font-size: 0.85rem;
+      color: rgba(226, 232, 240, 0.6);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    button {
+      flex: 1;
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      color: #0f172a;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      box-shadow: 0 16px 32px -20px rgba(56, 189, 248, 0.8);
+    }
+
+    button.secondary {
+      background: rgba(148, 163, 184, 0.15);
+      color: rgba(226, 232, 240, 0.85);
+      box-shadow: none;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    #speedValue {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .visual {
+      grid-column: 2 / -1;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 16px;
+    }
+
+    .canvas {
+      position: relative;
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 18px;
+      padding: 24px 32px;
+      overflow: hidden;
+    }
+
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .cloud, .exit {
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(226, 232, 240, 0.75);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cloud::before {
+      content: "";
+      width: 70px;
+      height: 46px;
+      border-radius: 35px;
+      border: 2px dashed rgba(226, 232, 240, 0.45);
+      position: relative;
+      box-shadow: inset 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+
+    .exit::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.8);
+    }
+
+    .pipe {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .arrow {
+      width: 32px;
+      height: 4px;
+      background: rgba(148, 163, 184, 0.45);
+      position: relative;
+    }
+
+    .arrow::after {
+      content: "";
+      position: absolute;
+      top: -5px;
+      right: -2px;
+      width: 0;
+      height: 0;
+      border-left: 9px solid rgba(148, 163, 184, 0.6);
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+    }
+
+    .queue-container {
+      flex: 1;
+      border: 2px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.65);
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+
+    .queue-title {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.8rem;
+      color: rgba(226, 232, 240, 0.7);
+    }
+
+    .queue-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 54px;
+      flex-wrap: wrap;
+    }
+
+    .customer {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #38bdf8, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0f172a;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      box-shadow: 0 12px 16px -14px rgba(99, 102, 241, 0.8);
+      position: relative;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .customer.rejected {
+      background: linear-gradient(135deg, #f97316, #fb7185);
+      box-shadow: 0 12px 24px -16px rgba(248, 113, 113, 0.65);
+    }
+
+    .server-bank {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .server {
+      flex: 1;
+      min-width: 120px;
+      border-radius: 18px;
+      border: 2px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.65);
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .server-title {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.78rem;
+      color: rgba(226, 232, 240, 0.7);
+    }
+
+    .server .slot {
+      height: 46px;
+      border-radius: 12px;
+      border: 1px dashed rgba(148, 163, 184, 0.26);
+      background: rgba(15, 23, 42, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .server.busy .slot {
+      border-color: var(--accent);
+      box-shadow: inset 0 0 0 2px rgba(56, 189, 248, 0.28);
+    }
+
+    .timeline {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      color: rgba(226, 232, 240, 0.75);
+    }
+
+    .timeline span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat {
+      background: rgba(15, 23, 42, 0.52);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(226, 232, 240, 0.6);
+    }
+
+    .stat-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: rgba(226, 232, 240, 0.92);
+    }
+
+    @media (max-width: 960px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .visual {
+        grid-column: 1 / -1;
+      }
+
+      .server-bank {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1>M/G/2/K Queue Simulation</h1>
+
+    <section class="panel controls">
+      <h2>Controls</h2>
+
+      <label>
+        Arrival rate λ (customers/sec)
+        <input type="number" id="arrivalRate" min="0.1" step="0.1" value="1.2">
+      </label>
+
+      <label>
+        Mean service time μ (sec)
+        <input type="number" id="meanService" min="0.1" step="0.1" value="0.7">
+      </label>
+
+      <div class="range-row">
+        <div>
+          <div class="range-label">Service variability (CV)</div>
+          <input type="range" id="serviceCv" min="0" max="2" value="0.8" step="0.1">
+        </div>
+        <span id="cvValue">0.8</span>
+      </div>
+
+      <label>
+        System capacity K
+        <input type="number" id="capacity" min="2" max="40" step="1" value="10">
+      </label>
+
+      <div class="range-row">
+        <div>
+          <div class="range-label">Simulation speed</div>
+          <input type="range" id="speed" min="1" max="40" step="1" value="10">
+        </div>
+        <span id="speedValue">10×</span>
+      </div>
+
+      <div class="button-group">
+        <button id="startBtn">Start</button>
+        <button id="pauseBtn" class="secondary">Pause</button>
+        <button id="resetBtn" class="secondary">Reset</button>
+      </div>
+    </section>
+
+    <section class="visual">
+      <div class="canvas panel">
+        <div class="flow">
+          <div class="cloud">
+            <span>Customers</span>
+            <div class="arrow"></div>
+          </div>
+
+          <div class="pipe">
+            <div class="queue-container">
+              <span class="queue-title">Queue</span>
+              <div class="queue-area" id="queueArea"></div>
+            </div>
+
+            <div class="server-bank">
+              <div class="server" data-server="0">
+                <span class="server-title">Server 1</span>
+                <div class="slot" data-slot="0"></div>
+              </div>
+              <div class="server" data-server="1">
+                <span class="server-title">Server 2</span>
+                <div class="slot" data-slot="1"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="exit">
+            <div class="arrow"></div>
+            <span>Departures</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel timeline">
+        <span>Sim time: <strong id="simTime">0.0s</strong></span>
+        <span>In system: <strong id="inSystem">0</strong></span>
+        <span>In queue: <strong id="inQueue">0</strong></span>
+        <span>Busy servers: <strong id="busyServers">0</strong></span>
+      </div>
+    </section>
+
+    <section class="panel metrics">
+      <h2>Performance Metrics</h2>
+      <div class="stats-grid">
+        <div class="stat">
+          <span class="stat-label">Arrivals</span>
+          <span class="stat-value" id="arrivals">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Served</span>
+          <span class="stat-value" id="served">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Dropped</span>
+          <span class="stat-value" id="dropped">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Throughput</span>
+          <span class="stat-value" id="throughput">0.00/s</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Avg wait</span>
+          <span class="stat-value" id="avgWait">0.00s</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Avg system</span>
+          <span class="stat-value" id="avgSystem">0.00s</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Util S1</span>
+          <span class="stat-value" id="util1">0%</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Util S2</span>
+          <span class="stat-value" id="util2">0%</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const randomExponential = rate => -Math.log(1 - Math.random()) / rate;
+
+    // Marsaglia and Tsang method for Gamma(k, theta). Handles k >= 1; uses augmentation for k < 1.
+    function randomGamma(shape, scale) {
+      if (shape === 1) {
+        return randomExponential(1 / scale);
+      }
+      if (shape < 1) {
+        const u = Math.random();
+        return randomGamma(shape + 1, scale) * Math.pow(u, 1 / shape);
+      }
+      const d = shape - 1 / 3;
+      const c = 1 / Math.sqrt(9 * d);
+      while (true) {
+        let x, v;
+        do {
+          x = normalRandom();
+          v = 1 + c * x;
+        } while (v <= 0);
+        v = v * v * v;
+        const u = Math.random();
+        if (u < 1 - 0.0331 * x * x * x * x) {
+          return scale * d * v;
+        }
+        if (Math.log(u) < 0.5 * x * x + d * (1 - v + Math.log(v))) {
+          return scale * d * v;
+        }
+      }
+    }
+
+    // Box-Muller transform for standard normal variates.
+    let spareNormal = null;
+    function normalRandom() {
+      if (spareNormal !== null) {
+        const value = spareNormal;
+        spareNormal = null;
+        return value;
+      }
+      let u, v, s;
+      do {
+        u = Math.random() * 2 - 1;
+        v = Math.random() * 2 - 1;
+        s = u * u + v * v;
+      } while (s === 0 || s >= 1);
+      const mul = Math.sqrt(-2 * Math.log(s) / s);
+      spareNormal = v * mul;
+      return u * mul;
+    }
+
+    function formatNumber(value, digits = 2) {
+      return Number.isFinite(value) ? value.toFixed(digits) : "0.00";
+    }
+
+    class QueueSimulation {
+      constructor() {
+        this.config = {
+          servers: 2,
+          capacity: 10,
+          arrivalRate: 1.2,
+          meanService: 0.7,
+          serviceCv: 0.8,
+          speed: 10
+        };
+
+        this.elements = {
+          queue: document.getElementById("queueArea"),
+          serverSlots: Array.from(document.querySelectorAll(".slot")),
+          serverPanels: Array.from(document.querySelectorAll(".server")),
+          simTime: document.getElementById("simTime"),
+          inSystem: document.getElementById("inSystem"),
+          inQueue: document.getElementById("inQueue"),
+          busyServers: document.getElementById("busyServers"),
+          arrivals: document.getElementById("arrivals"),
+          served: document.getElementById("served"),
+          dropped: document.getElementById("dropped"),
+          throughput: document.getElementById("throughput"),
+          avgWait: document.getElementById("avgWait"),
+          avgSystem: document.getElementById("avgSystem"),
+          util1: document.getElementById("util1"),
+          util2: document.getElementById("util2"),
+        };
+
+        this.running = false;
+        this.reset();
+      }
+
+      reset() {
+        this.simTime = 0;
+        this.lastRealTime = null;
+        this.queue = [];
+        this.systemCount = 0;
+        this.customerId = 1;
+
+        this.nextArrival = {
+          time: randomExponential(this.config.arrivalRate)
+        };
+
+        this.servers = Array.from({ length: this.config.servers }, () => ({
+          busy: false,
+          customer: null,
+          nextDeparture: Infinity,
+          busyTime: 0
+        }));
+
+        this.metrics = {
+          arrivals: 0,
+          served: 0,
+          dropped: 0,
+          waitTimeSum: 0,
+          systemTimeSum: 0,
+          lastUpdate: 0,
+          queueArea: 0,
+          systemArea: 0,
+          lastQueueLen: 0,
+          lastSystemLen: 0
+        };
+
+        this.render();
+      }
+
+      updateConfig(newConfig) {
+        Object.assign(this.config, newConfig);
+        this.reset();
+      }
+
+      start() {
+        if (this.running) return;
+        this.running = true;
+        this.lastRealTime = performance.now();
+        this.animationFrame = requestAnimationFrame(() => this.tick());
+      }
+
+      pause() {
+        if (!this.running) return;
+        this.running = false;
+        cancelAnimationFrame(this.animationFrame);
+        this.animationFrame = null;
+      }
+
+      tick() {
+        if (!this.running) return;
+        const now = performance.now();
+        const realDelta = (now - this.lastRealTime) / 1000;
+        this.lastRealTime = now;
+        const targetSimTime = this.simTime + realDelta * this.config.speed;
+
+        this.advanceTo(targetSimTime);
+        this.render();
+
+        this.animationFrame = requestAnimationFrame(() => this.tick());
+      }
+
+      advanceTo(targetTime) {
+        while (true) {
+          const nextEvent = this.nextEventTime();
+          if (nextEvent > targetTime) break;
+          this.advanceClock(nextEvent);
+          if (nextEvent === this.nextArrival.time) {
+            this.handleArrival();
+          } else {
+            const serverIndex = this.servers.findIndex(s => s.nextDeparture === nextEvent);
+            if (serverIndex >= 0) {
+              this.handleDeparture(serverIndex);
+            } else {
+              break;
+            }
+          }
+        }
+        this.advanceClock(targetTime);
+      }
+
+      nextEventTime() {
+        let minTime = this.nextArrival.time;
+        for (const server of this.servers) {
+          if (server.nextDeparture < minTime) {
+            minTime = server.nextDeparture;
+          }
+        }
+        return minTime;
+      }
+
+      advanceClock(newTime) {
+        const dt = newTime - this.simTime;
+        if (dt <= 0) {
+          this.simTime = newTime;
+          return;
+        }
+
+        const queueLen = Math.max(this.systemCount - this.busyServerCount(), 0);
+        this.metrics.queueArea += queueLen * dt;
+        this.metrics.systemArea += this.systemCount * dt;
+        for (const server of this.servers) {
+          if (server.busy) {
+            server.busyTime += dt;
+          }
+        }
+        this.simTime = newTime;
+      }
+
+      handleArrival() {
+        this.metrics.arrivals += 1;
+        const id = this.customerId++;
+        const customer = {
+          id,
+          arrivalTime: this.simTime,
+          serviceStart: null,
+          departureTime: null
+        };
+
+        if (this.systemCount >= this.config.capacity) {
+          this.metrics.dropped += 1;
+          this.flashDrop(customer);
+        } else {
+          this.systemCount += 1;
+          const freeServerIndex = this.servers.findIndex(s => !s.busy);
+          if (freeServerIndex >= 0) {
+            this.startService(freeServerIndex, customer);
+          } else {
+            this.queue.push(customer);
+          }
+        }
+
+        this.nextArrival.time = this.simTime + randomExponential(this.config.arrivalRate);
+      }
+
+      startService(serverIndex, customer) {
+        const server = this.servers[serverIndex];
+        server.busy = true;
+        server.customer = customer;
+        customer.serviceStart = this.simTime;
+
+        const serviceTime = this.generateServiceTime();
+        server.nextDeparture = this.simTime + serviceTime;
+        this.renderServers();
+      }
+
+      handleDeparture(serverIndex) {
+        const server = this.servers[serverIndex];
+        const customer = server.customer;
+        if (!customer) return;
+        customer.departureTime = this.simTime;
+        this.metrics.served += 1;
+        this.metrics.waitTimeSum += (customer.serviceStart - customer.arrivalTime);
+        this.metrics.systemTimeSum += (customer.departureTime - customer.arrivalTime);
+
+        this.systemCount -= 1;
+        if (this.queue.length > 0) {
+          const nextCustomer = this.queue.shift();
+          this.startService(serverIndex, nextCustomer);
+        } else {
+          server.busy = false;
+          server.customer = null;
+          server.nextDeparture = Infinity;
+        }
+        this.renderQueue();
+        this.renderServers();
+      }
+
+      busyServerCount() {
+        return this.servers.filter(s => s.busy).length;
+      }
+
+      generateServiceTime() {
+        const mean = this.config.meanService;
+        const cv = this.config.serviceCv;
+        if (cv === 0) {
+          return mean;
+        }
+        const shape = 1 / (cv * cv);
+        const scale = mean / shape;
+        return randomGamma(shape, scale);
+      }
+
+      flashDrop(customer) {
+        const element = document.createElement("div");
+        element.className = "customer rejected";
+        element.textContent = customer.id;
+        element.style.opacity = "0.15";
+        this.elements.queue.appendChild(element);
+        requestAnimationFrame(() => {
+          element.style.opacity = "0";
+          element.style.transform = "translateY(-12px)";
+        });
+        setTimeout(() => element.remove(), 420);
+      }
+
+      render() {
+        this.renderQueue();
+        this.renderServers();
+        this.renderStats();
+      }
+
+      renderQueue() {
+        const queueEl = this.elements.queue;
+        const ids = this.queue.map(c => c.id.toString());
+        const existing = Array.from(queueEl.children);
+        for (const el of existing) {
+          if (!ids.includes(el.dataset.id)) {
+            el.remove();
+          }
+        }
+        for (const customer of this.queue) {
+          let el = queueEl.querySelector(`[data-id="${customer.id}"]`);
+          if (!el) {
+            el = document.createElement("div");
+            el.className = "customer";
+            el.dataset.id = customer.id;
+            el.textContent = customer.id;
+            queueEl.appendChild(el);
+          }
+        }
+      }
+
+      renderServers() {
+        this.servers.forEach((server, index) => {
+          const panel = this.elements.serverPanels[index];
+          const slot = this.elements.serverSlots[index];
+          panel.classList.toggle("busy", server.busy);
+          slot.innerHTML = "";
+          if (server.customer) {
+            const el = document.createElement("div");
+            el.className = "customer";
+            el.textContent = server.customer.id;
+            slot.appendChild(el);
+          }
+        });
+      }
+
+      renderStats() {
+        const { arrivals, served, dropped, waitTimeSum, systemTimeSum } = this.metrics;
+        const simSeconds = Math.max(this.simTime, 1e-9);
+        const throughput = served / simSeconds;
+        const avgWait = served > 0 ? waitTimeSum / served : 0;
+        const avgSystem = served > 0 ? systemTimeSum / served : 0;
+        const util1 = (this.servers[0].busyTime / simSeconds) * 100;
+        const util2 = (this.servers[1].busyTime / simSeconds) * 100;
+        const queueLen = Math.max(this.systemCount - this.busyServerCount(), 0);
+
+        this.elements.simTime.textContent = `${formatNumber(this.simTime, 1)}s`;
+        this.elements.inSystem.textContent = this.systemCount;
+        this.elements.inQueue.textContent = queueLen;
+        this.elements.busyServers.textContent = this.busyServerCount();
+        this.elements.arrivals.textContent = arrivals;
+        this.elements.served.textContent = served;
+        this.elements.dropped.textContent = dropped;
+        this.elements.throughput.textContent = `${formatNumber(throughput, 2)}/s`;
+        this.elements.avgWait.textContent = `${formatNumber(avgWait, 2)}s`;
+        this.elements.avgSystem.textContent = `${formatNumber(avgSystem, 2)}s`;
+        this.elements.util1.textContent = `${formatNumber(util1, 1)}%`;
+        this.elements.util2.textContent = `${formatNumber(util2, 1)}%`;
+      }
+    }
+
+    const simulation = new QueueSimulation();
+
+    const arrivalRateInput = document.getElementById("arrivalRate");
+    const meanServiceInput = document.getElementById("meanService");
+    const serviceCvInput = document.getElementById("serviceCv");
+    const capacityInput = document.getElementById("capacity");
+    const speedInput = document.getElementById("speed");
+    const cvValue = document.getElementById("cvValue");
+    const speedValue = document.getElementById("speedValue");
+    const startBtn = document.getElementById("startBtn");
+    const pauseBtn = document.getElementById("pauseBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    function clampNumber(value, min, max, fallback) {
+      const num = Number(value);
+      if (!Number.isFinite(num)) return fallback;
+      return Math.min(Math.max(num, min), max);
+    }
+
+    function applyFormConfig() {
+      const arrivalRate = clampNumber(arrivalRateInput.value, 0.05, 8, 1.2);
+      const meanService = clampNumber(meanServiceInput.value, 0.05, 5, 0.7);
+      const capacity = Math.round(clampNumber(capacityInput.value, 2, 60, 10));
+      const serviceCv = clampNumber(serviceCvInput.value, 0, 2, 0.8);
+      const speed = Math.round(clampNumber(speedInput.value, 1, 50, 10));
+      arrivalRateInput.value = arrivalRate;
+      meanServiceInput.value = meanService;
+      capacityInput.value = capacity;
+      serviceCvInput.value = serviceCv;
+      speedInput.value = speed;
+      cvValue.textContent = serviceCv.toFixed(1);
+      speedValue.textContent = `${speed}×`;
+
+      simulation.updateConfig({
+        arrivalRate,
+        meanService,
+        capacity,
+        serviceCv,
+        speed
+      });
+    }
+
+    arrivalRateInput.addEventListener("change", applyFormConfig);
+    meanServiceInput.addEventListener("change", applyFormConfig);
+    capacityInput.addEventListener("change", applyFormConfig);
+    serviceCvInput.addEventListener("input", () => {
+      cvValue.textContent = Number(serviceCvInput.value).toFixed(1);
+    });
+    serviceCvInput.addEventListener("change", applyFormConfig);
+    speedInput.addEventListener("input", () => {
+      speedValue.textContent = `${speedInput.value}×`;
+      simulation.config.speed = Number(speedInput.value);
+    });
+
+    startBtn.addEventListener("click", () => {
+      simulation.start();
+    });
+
+    pauseBtn.addEventListener("click", () => {
+      if (simulation.running) {
+        simulation.pause();
+        pauseBtn.textContent = "Resume";
+      } else {
+        simulation.start();
+        pauseBtn.textContent = "Pause";
+      }
+    });
+
+    resetBtn.addEventListener("click", () => {
+      simulation.pause();
+      simulation.reset();
+      pauseBtn.textContent = "Pause";
+    });
+
+    applyFormConfig();
+  </script>
+</body>
+</html>
