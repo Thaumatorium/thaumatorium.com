@@ -172,6 +172,15 @@ lastmod: 2025-11-01T12:59:17+01:00
 			box-shadow: 0 18px 34px rgba(220, 38, 38, 0.28);
 		}
 
+		.score-card[data-live="true"] {
+			animation: liveGlow 2s ease-in-out infinite;
+		}
+
+		@keyframes liveGlow {
+			0%, 100% { box-shadow: 0 10px 26px rgba(8, 14, 28, 0.32); }
+			50% { box-shadow: 0 10px 32px rgba(245, 158, 11, 0.18); }
+		}
+
 		.score-card h2 {
 			margin: 0;
 			font-size: 1.35rem;
@@ -224,6 +233,7 @@ lastmod: 2025-11-01T12:59:17+01:00
 			font-size: 1rem;
 			min-width: 32px;
 			text-align: right;
+			font-variant-numeric: tabular-nums;
 		}
 
 		.score-bar {
@@ -281,6 +291,231 @@ lastmod: 2025-11-01T12:59:17+01:00
 			color: var(--muted);
 			font-size: 0.85rem;
 			flex-wrap: wrap;
+			font-variant-numeric: tabular-nums;
+		}
+
+		.sim-progress {
+			width: 100%;
+			height: 4px;
+			border-radius: 999px;
+			background: rgba(148, 163, 184, 0.15);
+			overflow: hidden;
+			display: none;
+		}
+
+		.sim-progress.active {
+			display: block;
+		}
+
+		.sim-progress-fill {
+			height: 100%;
+			width: 0%;
+			background: linear-gradient(90deg, var(--blue), var(--gold));
+			border-radius: 999px;
+			transition: width 0.3s ease;
+		}
+
+		.sim-controls {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 14px;
+			align-items: center;
+			padding: 14px 18px;
+			background: rgba(15, 23, 42, 0.55);
+			border: 1px solid rgba(37, 99, 235, 0.15);
+			border-radius: 14px;
+		}
+
+		.sim-controls label {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			font-size: 0.85rem;
+			color: rgba(226, 232, 240, 0.75);
+			white-space: nowrap;
+		}
+
+		.sim-controls input[type="range"] {
+			width: 120px;
+		}
+
+		.sim-controls .speed-value {
+			min-width: 28px;
+			font-variant-numeric: tabular-nums;
+			font-size: 0.85rem;
+			color: rgba(248, 250, 252, 0.9);
+		}
+
+		.sim-controls .kbd-hint {
+			margin-left: auto;
+			font-size: 0.78rem;
+			color: rgba(148, 163, 184, 0.6);
+		}
+
+		.sim-controls .kbd-hint kbd {
+			padding: 2px 6px;
+			border-radius: 4px;
+			background: rgba(148, 163, 184, 0.12);
+			border: 1px solid rgba(148, 163, 184, 0.2);
+			font-family: inherit;
+			font-size: 0.75rem;
+		}
+
+		.batch-controls {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			align-items: center;
+		}
+
+		.batch-controls span {
+			font-size: 0.82rem;
+			color: rgba(226, 232, 240, 0.65);
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+		}
+
+		.batch-controls button {
+			padding: 6px 14px;
+			border-radius: 999px;
+			font-size: 0.82rem;
+			font-weight: 600;
+			cursor: pointer;
+			transition: transform 0.15s ease, background 0.15s ease;
+			border: 1px solid rgba(148, 163, 184, 0.25);
+			background: rgba(15, 23, 42, 0.6);
+			color: rgba(226, 232, 240, 0.85);
+		}
+
+		.batch-controls button:hover {
+			transform: translateY(-1px);
+		}
+
+		.batch-controls button.blue-action {
+			border-color: rgba(37, 99, 235, 0.4);
+			background: rgba(37, 99, 235, 0.15);
+		}
+
+		.batch-controls button.red-action {
+			border-color: rgba(220, 38, 38, 0.4);
+			background: rgba(220, 38, 38, 0.12);
+		}
+
+		.state-filter {
+			position: relative;
+		}
+
+		.state-filter input {
+			width: 100%;
+			padding: 8px 14px 8px 34px;
+			border-radius: 10px;
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			background: rgba(15, 23, 42, 0.6);
+			color: rgba(226, 232, 240, 0.9);
+			font-size: 0.9rem;
+			transition: border 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		.state-filter input::placeholder {
+			color: rgba(148, 163, 184, 0.5);
+		}
+
+		.state-filter input:focus {
+			outline: none;
+			border-color: rgba(37, 99, 235, 0.5);
+			box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+		}
+
+		.state-filter::before {
+			content: "\1F50D";
+			position: absolute;
+			left: 10px;
+			top: 50%;
+			transform: translateY(-50%);
+			font-size: 0.82rem;
+			pointer-events: none;
+			opacity: 0.5;
+		}
+
+		.state-card.filtered-out {
+			display: none;
+		}
+
+		.scenario-controls {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			align-items: center;
+		}
+
+		.scenario-controls span {
+			font-size: 0.82rem;
+			color: rgba(226, 232, 240, 0.65);
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+		}
+
+		.scenario-controls button {
+			padding: 6px 14px;
+			border-radius: 999px;
+			font-size: 0.82rem;
+			font-weight: 600;
+			cursor: pointer;
+			transition: transform 0.15s ease, background 0.15s ease;
+			border: 1px solid rgba(148, 163, 184, 0.25);
+			background: rgba(15, 23, 42, 0.6);
+			color: rgba(226, 232, 240, 0.85);
+		}
+
+		.scenario-controls button:hover {
+			transform: translateY(-1px);
+			border-color: rgba(245, 158, 11, 0.5);
+		}
+
+		.tab-badge {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			min-width: 20px;
+			height: 20px;
+			padding: 0 5px;
+			border-radius: 999px;
+			font-size: 0.72rem;
+			font-weight: 700;
+			font-variant-numeric: tabular-nums;
+			background: rgba(37, 99, 235, 0.35);
+			color: rgba(248, 250, 252, 0.85);
+			margin-left: 6px;
+			vertical-align: middle;
+		}
+
+		.confetti-canvas {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			pointer-events: none;
+			z-index: 9999;
+		}
+
+		@media (max-width: 640px) {
+			.sim-controls {
+				flex-direction: column;
+				align-items: flex-start;
+			}
+
+			.sim-controls .kbd-hint {
+				margin-left: 0;
+			}
+
+			.scenario-controls {
+				justify-content: center;
+			}
+
+			.batch-controls {
+				justify-content: center;
+			}
 		}
 
 		.panel {
@@ -537,6 +772,7 @@ lastmod: 2025-11-01T12:59:17+01:00
 
 		input[type="range"] {
 			-webkit-appearance: none;
+			appearance: none;
 			height: 4px;
 			background: rgba(148, 163, 184, 0.3);
 			border-radius: 999px;
@@ -701,10 +937,10 @@ lastmod: 2025-11-01T12:59:17+01:00
 					<strong>Step 1 · Voters</strong>
 					<span>People cast ballots under state-specific rules for registration, ID, and ballot access.</span>
 				</div>
-			<div class="hero-step">
-				<strong>Step 2 · States</strong>
-				<span>States certify winners. For president they send a slate of pledged electors; for Congress they certify each winning candidate directly.</span>
-			</div>
+				<div class="hero-step">
+					<strong>Step 2 · States</strong>
+					<span>States certify winners. For president they send a slate of pledged electors; for Congress they certify each winning candidate directly.</span>
+				</div>
 				<div class="hero-step">
 					<strong>Step 3 · National tally</strong>
 					<span>The Electoral College meets to choose the president (270 of 538 needed). Congress counts electoral votes and seats its members.</span>
@@ -712,7 +948,26 @@ lastmod: 2025-11-01T12:59:17+01:00
 			</div>
 			<div class="hero-actions">
 				<button type="button" data-role="start-sim">Start election night</button>
+				<button type="button" data-role="skip-sim" style="display:none">Skip to results</button>
 				<span data-role="sim-status">Waiting for polls to close.</span>
+			</div>
+			<div class="sim-progress" data-role="sim-progress">
+				<div class="sim-progress-fill" data-role="sim-progress-fill"></div>
+			</div>
+			<div class="sim-controls">
+				<label>
+					Speed
+					<input type="range" data-role="speed-slider" min="1" max="9" step="1" value="3">
+					<span class="speed-value" data-role="speed-display">1×</span>
+				</label>
+				<span class="kbd-hint"><kbd>Esc</kbd> stop · <kbd>Space</kbd> start</span>
+			</div>
+			<div class="scenario-controls">
+				<span>Presets:</span>
+				<button type="button" data-scenario="blue-wave">Blue wave</button>
+				<button type="button" data-scenario="red-wave">Red wave</button>
+				<button type="button" data-scenario="razor-thin">Razor-thin</button>
+				<button type="button" data-scenario="random">Randomize</button>
 			</div>
 		</section>
 
@@ -724,7 +979,7 @@ lastmod: 2025-11-01T12:59:17+01:00
 					<div class="score-pill blue">Blue electors<span class="value" data-score="electoral-blue">0</span></div>
 					<div class="score-pill red">Red electors<span class="value" data-score="electoral-red">0</span></div>
 				</div>
-				<div class="score-bar" data-bar="electoral">
+				<div class="score-bar" data-bar="electoral" role="img" aria-label="Electoral vote progress bar">
 					<div class="threshold-line" data-threshold="electoral" data-label="270"></div>
 					<div class="bar-segment blue" data-segment="electoral-blue"></div>
 					<div class="bar-segment neutral" data-segment="electoral-neutral"></div>
@@ -742,7 +997,7 @@ lastmod: 2025-11-01T12:59:17+01:00
 					<div class="score-pill blue">Blue seats<span class="value" data-score="senate-blue">0</span></div>
 					<div class="score-pill red">Red seats<span class="value" data-score="senate-red">0</span></div>
 				</div>
-				<div class="score-bar" data-bar="senate">
+				<div class="score-bar" data-bar="senate" role="img" aria-label="Senate seat progress bar">
 					<div class="threshold-line" data-threshold="senate" data-label="51"></div>
 					<div class="bar-segment blue" data-segment="senate-blue"></div>
 					<div class="bar-segment neutral" data-segment="senate-neutral"></div>
@@ -760,7 +1015,7 @@ lastmod: 2025-11-01T12:59:17+01:00
 					<div class="score-pill blue">Blue seats<span class="value" data-score="house-blue">0</span></div>
 					<div class="score-pill red">Red seats<span class="value" data-score="house-red">0</span></div>
 				</div>
-				<div class="score-bar" data-bar="house">
+				<div class="score-bar" data-bar="house" role="img" aria-label="House seat progress bar">
 					<div class="threshold-line" data-threshold="house" data-label="218"></div>
 					<div class="bar-segment blue" data-segment="house-blue"></div>
 					<div class="bar-segment neutral" data-segment="house-neutral"></div>
@@ -784,17 +1039,38 @@ lastmod: 2025-11-01T12:59:17+01:00
 				<button data-sim-target="house">House districts</button>
 				<button data-role="reset">Reset all</button>
 			</div>
+			<div class="state-filter">
+				<input type="text" data-role="state-search" placeholder="Filter states… (name or abbreviation)">
+			</div>
 			<div class="simulation-panels">
 				<div class="sim-panel active" data-panel="presidential">
 					<p>Winner-take-all statewide in 48 states. Maine and Nebraska can split electors by congressional district; use the House sliders to mimic that behavior.</p>
+					<div class="batch-controls" data-batch="presidential">
+						<span>Set all:</span>
+						<button type="button" class="blue-action" data-batch-action="blue">All Blue</button>
+						<button type="button" class="red-action" data-batch-action="red">All Red</button>
+						<button type="button" data-batch-action="clear">Clear all</button>
+					</div>
 					<div class="state-grid" data-grid="presidential"></div>
 				</div>
 				<div class="sim-panel" data-panel="senate">
 					<p>Choose which party wins each statewide Senate seat. A “split” outcome represents one senator from each party.</p>
+					<div class="batch-controls" data-batch="senate">
+						<span>Set all:</span>
+						<button type="button" class="blue-action" data-batch-action="blue">All Blue</button>
+						<button type="button" data-batch-action="split">All Split</button>
+						<button type="button" class="red-action" data-batch-action="red">All Red</button>
+					</div>
 					<div class="state-grid" data-grid="senate"></div>
 				</div>
 				<div class="sim-panel" data-panel="house">
 					<p>Drag the slider to assign each state’s House districts. House seats determine a state’s share of electors alongside its two senators.</p>
+					<div class="batch-controls" data-batch="house">
+						<span>Set all:</span>
+						<button type="button" class="blue-action" data-batch-action="all-blue">All Blue</button>
+						<button type="button" data-batch-action="even">Even split</button>
+						<button type="button" class="red-action" data-batch-action="all-red">All Red</button>
+					</div>
 					<div class="state-grid" data-grid="house"></div>
 				</div>
 			</div>
@@ -983,9 +1259,15 @@ lastmod: 2025-11-01T12:59:17+01:00
 			panelButtons: document.querySelectorAll("[data-sim-target]"),
 			panels: document.querySelectorAll(".sim-panel"),
 			resetButton: document.querySelector('[data-role="reset"]'),
+			stateSearch: document.querySelector('[data-role="state-search"]'),
 			animation: {
 				startButton: document.querySelector('[data-role="start-sim"]'),
-				status: document.querySelector('[data-role="sim-status"]')
+				skipButton: document.querySelector('[data-role="skip-sim"]'),
+				status: document.querySelector('[data-role="sim-status"]'),
+				speedSlider: document.querySelector('[data-role="speed-slider"]'),
+				speedDisplay: document.querySelector('[data-role="speed-display"]'),
+				progressBar: document.querySelector('[data-role="sim-progress"]'),
+				progressFill: document.querySelector('[data-role="sim-progress-fill"]'),
 			},
 			grids: {
 				presidential: document.querySelector('[data-grid="presidential"]'),
@@ -1120,11 +1402,19 @@ lastmod: 2025-11-01T12:59:17+01:00
 
 		const totalSimulationDuration = 180000; // 3 minutes
 		const electorSequenceDelay = 6000;
+		let simulationSpeed = 1;
+
+		const speedSteps = [0.25, 0.5, 1, 2, 4, 8, 12, 16, 20];
+
+		function speedFromSlider(val) {
+			return speedSteps[Math.min(val - 1, speedSteps.length - 1)];
+		}
 
 		const electionAnimation = {
 			running: false,
 			queue: [],
-			timeouts: []
+			timeouts: [],
+			revealedCount: 0,
 		};
 
 		const scenarioPlan = stateData.reduce(
@@ -1248,6 +1538,7 @@ lastmod: 2025-11-01T12:59:17+01:00
 					stateSelections[state.code].presidential = select.value;
 					updateCardAppearance(card, select.value);
 					updateScoreboards();
+					updateTabBadges();
 				});
 
 				pickerLabel.append(select);
@@ -1337,6 +1628,7 @@ lastmod: 2025-11-01T12:59:17+01:00
 							row.querySelectorAll("button").forEach((b) => b.classList.remove("active", "blue", "red", "split"));
 							btn.classList.add("active", choice.className);
 							updateScoreboards();
+							updateTabBadges();
 						});
 
 						row.append(btn);
@@ -1422,6 +1714,7 @@ lastmod: 2025-11-01T12:59:17+01:00
 						stateSelections[state.code].houseBlue = Number(slider.value);
 						updateLabel();
 						updateScoreboards();
+						updateTabBadges();
 					});
 
 					sliderBlock.append(slider, label);
@@ -1502,6 +1795,16 @@ lastmod: 2025-11-01T12:59:17+01:00
 				button.disabled = disabled;
 			});
 
+			document.querySelectorAll(".batch-controls button").forEach((btn) => {
+				btn.disabled = disabled;
+			});
+
+			document.querySelectorAll(".scenario-controls button").forEach((btn) => {
+				btn.disabled = disabled;
+			});
+
+			if (dom.stateSearch) dom.stateSearch.disabled = disabled;
+
 			stateDom.forEach((entry) => {
 				if (entry.presidential?.select) {
 					entry.presidential.select.disabled = disabled;
@@ -1522,6 +1825,20 @@ lastmod: 2025-11-01T12:59:17+01:00
 		function updateSimStatus(message) {
 			if (!dom.animation.status) return;
 			dom.animation.status.textContent = message;
+		}
+
+		function updateProgress(current, total) {
+			if (!dom.animation.progressBar || !dom.animation.progressFill) return;
+			const pct = Math.min(100, (current / Math.max(total, 1)) * 100);
+			dom.animation.progressFill.style.width = `${pct}%`;
+		}
+
+		function showProgress(visible) {
+			if (!dom.animation.progressBar) return;
+			dom.animation.progressBar.classList.toggle("active", visible);
+			if (!visible && dom.animation.progressFill) {
+				dom.animation.progressFill.style.width = "0%";
+			}
 		}
 
 		function removeRevealHighlights() {
@@ -1601,6 +1918,9 @@ lastmod: 2025-11-01T12:59:17+01:00
 		function revealStateResult(state, index, total) {
 			if (!state) return;
 
+			electionAnimation.revealedCount = index + 1;
+			updateProgress(index + 1, total);
+
 			const entry = stateDom.get(state.code);
 			const presidentialWinner = scenarioPlan.presidential[state.code] || "";
 			stateSelections[state.code].presidential = presidentialWinner;
@@ -1633,6 +1953,7 @@ lastmod: 2025-11-01T12:59:17+01:00
 
 			pulseStateCards(entry);
 			updateScoreboards();
+			updateTabBadges();
 
 			const message = composeProgressMessage(state, presidentialWinner, (index + 1) / total);
 			updateSimStatus(message);
@@ -1648,23 +1969,34 @@ lastmod: 2025-11-01T12:59:17+01:00
 
 		function scheduleReveals(queue) {
 			const total = queue.length;
+			const revealed = electionAnimation.revealedCount || 0;
 			let cumulativeDelay = 0;
-			const baseDelay = totalSimulationDuration / Math.max(total, 1);
+			const scaledDuration = totalSimulationDuration / simulationSpeed;
+			const baseDelay = scaledDuration / Math.max(total, 1);
 
-			queue.forEach((state, index) => {
+			for (let i = revealed; i < total; i++) {
+				const state = queue[i];
 				const multiplier = 0.75 + Math.random() * 0.6;
 				cumulativeDelay += baseDelay * multiplier;
+				const idx = i;
 				const timeoutId = setTimeout(() => {
-					revealStateResult(state, index, total);
+					revealStateResult(state, idx, total);
 				}, cumulativeDelay);
 				electionAnimation.timeouts.push(timeoutId);
-			});
+			}
 
 			const electorTimeout = setTimeout(() => {
 				updateSimStatus("States certify results and electors gather in their capitals…");
 				runElectoralCollege();
-			}, cumulativeDelay + electorSequenceDelay);
+			}, cumulativeDelay + electorSequenceDelay / simulationSpeed);
 			electionAnimation.timeouts.push(electorTimeout);
+		}
+
+		function rescheduleReveals() {
+			if (!electionAnimation.running) return;
+			electionAnimation.timeouts.forEach((id) => clearTimeout(id));
+			electionAnimation.timeouts = [];
+			scheduleReveals(electionAnimation.queue);
 		}
 
 		function computeElectoralTotals() {
@@ -1680,14 +2012,74 @@ lastmod: 2025-11-01T12:59:17+01:00
 			);
 		}
 
+		function launchConfetti(side) {
+			const canvas = document.createElement("canvas");
+			canvas.className = "confetti-canvas";
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			document.body.append(canvas);
+			const ctx = canvas.getContext("2d");
+
+			const colors = side === "blue"
+				? ["#2563eb", "#3b82f6", "#60a5fa", "#93c5fd", "#f59e0b"]
+				: ["#dc2626", "#ef4444", "#f87171", "#fca5a5", "#f59e0b"];
+
+			const pieces = Array.from({ length: 150 }, () => ({
+				x: Math.random() * canvas.width,
+				y: Math.random() * canvas.height * -1,
+				w: 4 + Math.random() * 6,
+				h: 6 + Math.random() * 10,
+				vx: (Math.random() - 0.5) * 3,
+				vy: 2 + Math.random() * 4,
+				rotation: Math.random() * 360,
+				rotSpeed: (Math.random() - 0.5) * 12,
+				color: colors[Math.floor(Math.random() * colors.length)],
+				opacity: 1,
+			}));
+
+			let frame = 0;
+			const maxFrames = 180;
+
+			function draw() {
+				if (frame >= maxFrames) {
+					canvas.remove();
+					return;
+				}
+				frame++;
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+				for (const p of pieces) {
+					p.x += p.vx;
+					p.y += p.vy;
+					p.vy += 0.06;
+					p.rotation += p.rotSpeed;
+					p.opacity = Math.max(0, 1 - frame / maxFrames);
+
+					ctx.save();
+					ctx.translate(p.x, p.y);
+					ctx.rotate((p.rotation * Math.PI) / 180);
+					ctx.globalAlpha = p.opacity;
+					ctx.fillStyle = p.color;
+					ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+					ctx.restore();
+				}
+
+				requestAnimationFrame(draw);
+			}
+
+			requestAnimationFrame(draw);
+		}
+
 		function concludeElectionNight() {
 			const totalsResult = computeElectoralTotals();
 			let message = "The Electoral College adjourns without a majority—contingent election triggered in the House.";
 
 			if (totalsResult.blue >= thresholds.electoral) {
 				message = `The Electoral College ballots are counted: the Blue coalition secures the presidency ${totalsResult.blue} to ${totalsResult.red}.`;
+				launchConfetti("blue");
 			} else if (totalsResult.red >= thresholds.electoral) {
 				message = `The Electoral College ballots are counted: the Red coalition secures the presidency ${totalsResult.red} to ${totalsResult.blue}.`;
+				launchConfetti("red");
 			}
 
 			updateSimStatus(message);
@@ -1699,16 +2091,21 @@ lastmod: 2025-11-01T12:59:17+01:00
 				dom.animation.startButton.textContent = "Run election night again";
 			}
 
+			if (dom.animation.skipButton) {
+				dom.animation.skipButton.style.display = "none";
+			}
+
 			electionAnimation.timeouts = [];
 			electionAnimation.queue = [];
 			updateScoreboards();
+			updateTabBadges();
 		}
 
 		function runElectoralCollege() {
 			const timeoutId = setTimeout(() => {
 				updateSimStatus("Electors cast their votes and Congress counts the ballots…");
 				concludeElectionNight();
-			}, 4200);
+			}, 4200 / simulationSpeed);
 
 			electionAnimation.timeouts.push(timeoutId);
 		}
@@ -1729,11 +2126,19 @@ lastmod: 2025-11-01T12:59:17+01:00
 				dom.animation.startButton.textContent = startButtonDefaultLabel;
 			}
 
+			if (dom.animation.skipButton) {
+				dom.animation.skipButton.style.display = "none";
+			}
+
+			showProgress(false);
+			electionAnimation.revealedCount = 0;
+
 			if (!quiet) {
 				updateSimStatus("Election night animation stopped.");
 			}
 
 			updateScoreboards();
+			updateTabBadges();
 		}
 
 		function startElectionNight() {
@@ -1749,8 +2154,20 @@ lastmod: 2025-11-01T12:59:17+01:00
 				dom.animation.startButton.textContent = "Election night in progress…";
 			}
 
+			if (dom.animation.skipButton) {
+				dom.animation.skipButton.style.display = "";
+			}
+
 			updateSimStatus("Polls are closing—results are beginning to arrive.");
 			lockInterface(true);
+			showProgress(true);
+			updateProgress(0, electionAnimation.queue.length);
+
+			const scoreboards = document.querySelector(".scoreboards");
+			if (scoreboards) {
+				scoreboards.scrollIntoView({ behavior: "smooth", block: "start" });
+			}
+
 			scheduleReveals(electionAnimation.queue);
 		}
 
@@ -1794,8 +2211,8 @@ lastmod: 2025-11-01T12:59:17+01:00
 			let houseAllocated = 0;
 
 			stateData.forEach((state) => {
-				const blueSeats = stateSelections[state.code].houseBlue;
-				const redSeats = state.houseSeats - blueSeats;
+				const blueSeats = Math.min(stateSelections[state.code].houseBlue, state.houseSeats);
+				const redSeats = Math.max(0, state.houseSeats - blueSeats);
 				houseTotals.blue += blueSeats;
 				houseTotals.red += redSeats;
 				houseAllocated += state.houseSeats;
@@ -1851,6 +2268,7 @@ lastmod: 2025-11-01T12:59:17+01:00
 			});
 
 			updateScoreboards();
+			updateTabBadges();
 		}
 
 		function populatePolicies() {
@@ -1858,7 +2276,7 @@ lastmod: 2025-11-01T12:59:17+01:00
 			const selected = policyData[select.value];
 			if (!selected) return;
 
-			output.innerHTML = "";
+			const fragment = document.createDocumentFragment();
 
 			selected.items.forEach((item) => {
 				const policy = document.createElement("div");
@@ -1871,8 +2289,10 @@ lastmod: 2025-11-01T12:59:17+01:00
 				detail.textContent = item.description;
 
 				policy.append(title, detail);
-				output.append(policy);
+				fragment.append(policy);
 			});
+
+			output.replaceChildren(fragment);
 		}
 
 		dom.panelButtons.forEach((button) => {
@@ -1891,9 +2311,200 @@ lastmod: 2025-11-01T12:59:17+01:00
 			dom.resetButton.addEventListener("click", resetSimulation);
 		}
 
+		if (dom.animation.skipButton) {
+			dom.animation.skipButton.addEventListener("click", () => {
+				if (!electionAnimation.running) return;
+				electionAnimation.timeouts.forEach((id) => clearTimeout(id));
+				electionAnimation.timeouts = [];
+				removeRevealHighlights();
+
+				const queue = electionAnimation.queue;
+				queue.forEach((state, index) => {
+					revealStateResult(state, index, queue.length);
+				});
+
+				updateSimStatus("States certify results and electors gather in their capitals…");
+				setTimeout(() => concludeElectionNight(), 800);
+			});
+		}
+
 		if (dom.policies.select) {
 			dom.policies.select.addEventListener("change", populatePolicies);
 		}
+
+		if (dom.animation.speedSlider) {
+			dom.animation.speedSlider.addEventListener("input", () => {
+				const val = Number(dom.animation.speedSlider.value);
+				simulationSpeed = speedFromSlider(val);
+				dom.animation.speedDisplay.textContent = `${simulationSpeed}\u00d7`;
+				rescheduleReveals();
+			});
+		}
+
+		if (dom.stateSearch) {
+			dom.stateSearch.addEventListener("input", () => {
+				const query = dom.stateSearch.value.trim().toLowerCase();
+				stateDom.forEach((entry, code) => {
+					const state = stateLookup.get(code);
+					if (!state) return;
+					const matches = !query || state.name.toLowerCase().includes(query) || state.code.toLowerCase().includes(query);
+					["presidential", "senate", "house"].forEach((key) => {
+						const card = entry[key]?.card;
+						if (card) card.classList.toggle("filtered-out", !matches);
+					});
+				});
+			});
+		}
+
+		function applyScenario(scenario) {
+			resetSimulation();
+
+			stateData.forEach((state) => {
+				const entry = stateDom.get(state.code);
+				if (!entry) return;
+
+				let pWinner, sResult, hShare;
+
+				if (scenario === "blue-wave") {
+					pWinner = (blueStrongholds.has(state.code) || blueBattlegrounds.has(state.code) || redBattlegrounds.has(state.code)) ? "blue" : "red";
+					sResult = blueStrongholds.has(state.code) || blueBattlegrounds.has(state.code) ? "blue" : redBattlegrounds.has(state.code) ? "split" : "red";
+					hShare = blueStrongholds.has(state.code) ? 0.82 : blueBattlegrounds.has(state.code) ? 0.65 : redBattlegrounds.has(state.code) ? 0.52 : 0.35;
+				} else if (scenario === "red-wave") {
+					pWinner = blueStrongholds.has(state.code) ? "blue" : "red";
+					sResult = blueStrongholds.has(state.code) ? "split" : "red";
+					hShare = blueStrongholds.has(state.code) ? 0.58 : blueBattlegrounds.has(state.code) ? 0.4 : 0.22;
+				} else if (scenario === "razor-thin") {
+					pWinner = (blueStrongholds.has(state.code) || ["PA", "MI", "WI"].includes(state.code)) ? "blue" : "red";
+					sResult = state.senateSeats ? "split" : "";
+					hShare = 0.5;
+				} else {
+					pWinner = Math.random() > 0.5 ? "blue" : "red";
+					sResult = state.senateSeats ? ["blue", "split", "red"][Math.floor(Math.random() * 3)] : "";
+					hShare = Math.random();
+				}
+
+				stateSelections[state.code].presidential = pWinner;
+				if (entry.presidential?.select) entry.presidential.select.value = pWinner;
+				updateCardAppearance(entry.presidential?.card, pWinner);
+
+				if (state.senateSeats) {
+					stateSelections[state.code].senate = sResult;
+					applySenateButtons(entry, sResult);
+					const sw = sResult === "split" ? "" : sResult;
+					updateCardAppearance(entry.senate?.card, sw);
+				}
+
+				if (state.houseSeats) {
+					const hVal = Math.min(state.houseSeats, Math.max(0, Math.round(state.houseSeats * hShare)));
+					stateSelections[state.code].houseBlue = hVal;
+					if (entry.house?.slider) entry.house.slider.value = hVal;
+					updateHouseLabel(entry, state);
+					const hw = calculateHouseWinner(state);
+					updateCardAppearance(entry.house?.card, hw);
+				}
+			});
+
+			updateScoreboards();
+			updateTabBadges();
+		}
+
+		function updateTabBadges() {
+			const counts = { presidential: { blue: 0, red: 0 }, senate: { blue: 0, red: 0 }, house: { blue: 0, red: 0 } };
+
+			stateData.forEach((state) => {
+				const sel = stateSelections[state.code];
+				if (sel.presidential === "blue") counts.presidential.blue++;
+				else if (sel.presidential === "red") counts.presidential.red++;
+
+				if (sel.senate === "blue") counts.senate.blue++;
+				else if (sel.senate === "red") counts.senate.red++;
+
+				if (state.houseSeats) {
+					const hw = calculateHouseWinner(state);
+					if (hw === "blue") counts.house.blue++;
+					else if (hw === "red") counts.house.red++;
+				}
+			});
+
+			dom.panelButtons.forEach((btn) => {
+				const target = btn.dataset.simTarget;
+				if (!target || !counts[target]) return;
+
+				let badge = btn.querySelector(".tab-badge");
+				if (!badge) {
+					badge = document.createElement("span");
+					badge.className = "tab-badge";
+					btn.append(badge);
+				}
+
+				const c = counts[target];
+				const called = c.blue + c.red;
+				badge.textContent = called > 0 ? `${c.blue}–${c.red}` : "";
+				badge.style.display = called > 0 ? "" : "none";
+			});
+		}
+
+		document.querySelectorAll(".scenario-controls [data-scenario]").forEach((btn) => {
+			btn.addEventListener("click", () => {
+				if (electionAnimation.running) return;
+				applyScenario(btn.dataset.scenario);
+			});
+		});
+
+		document.querySelectorAll(".batch-controls").forEach((container) => {
+			container.addEventListener("click", (e) => {
+				const btn = e.target.closest("[data-batch-action]");
+				if (!btn) return;
+				const panel = container.dataset.batch;
+				const action = btn.dataset.batchAction;
+
+				stateData.forEach((state) => {
+					const entry = stateDom.get(state.code);
+					if (!entry) return;
+
+					if (panel === "presidential") {
+						const value = action === "clear" ? "" : action;
+						stateSelections[state.code].presidential = value;
+						if (entry.presidential?.select) entry.presidential.select.value = value;
+						updateCardAppearance(entry.presidential?.card, value);
+					}
+
+					if (panel === "senate" && state.senateSeats) {
+						stateSelections[state.code].senate = action;
+						applySenateButtons(entry, action);
+						const winner = action === "split" ? "" : action;
+						updateCardAppearance(entry.senate?.card, winner);
+					}
+
+					if (panel === "house" && state.houseSeats) {
+						let val;
+						if (action === "all-blue") val = state.houseSeats;
+						else if (action === "all-red") val = 0;
+						else val = Math.round(state.houseSeats / 2);
+						stateSelections[state.code].houseBlue = val;
+						if (entry.house?.slider) entry.house.slider.value = val;
+						updateHouseLabel(entry, state);
+						const hw = calculateHouseWinner(state);
+					updateCardAppearance(entry.house?.card, hw);
+					}
+				});
+
+				updateScoreboards();
+				updateTabBadges();
+			});
+		});
+
+		document.addEventListener("keydown", (e) => {
+			if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+			if (e.code === "Escape" && electionAnimation.running) {
+				e.preventDefault();
+				stopElectionNight();
+			}
+			if (e.code === "Space" && !electionAnimation.running) {
+				e.preventDefault();
+				startElectionNight();
+			}
+		});
 
 		function init() {
 			buildPresidentialGrid();
@@ -1901,9 +2512,8 @@ lastmod: 2025-11-01T12:59:17+01:00
 			buildHouseGrid();
 			setThresholdPositions();
 			updateScoreboards();
+			updateTabBadges();
 			populatePolicies();
-			console.info("Total electors", stateData.reduce((sum, state) => sum + state.electoralVotes, 0));
-			console.info("Total representatives", stateData.reduce((sum, state) => sum + state.houseSeats, 0));
 		}
 
 		init();
