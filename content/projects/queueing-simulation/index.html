@@ -12,7 +12,7 @@ lastmod: 2020-07-14T00:00:00+01:00
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
-      color-scheme: light dark;
+      color-scheme: dark;
       font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --bg: #0f172a;
       --panel: rgba(15, 23, 42, 0.8);
@@ -48,6 +48,14 @@ lastmod: 2020-07-14T00:00:00+01:00
       font-size: clamp(1.6rem, 2.4vw, 2.4rem);
       font-weight: 700;
       letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      grid-column: 1 / -1;
+      margin: -0.75rem 0 0;
+      font-size: 0.85rem;
+      color: rgba(226, 232, 240, 0.55);
+      letter-spacing: 0.06em;
     }
 
     h2 {
@@ -430,6 +438,7 @@ lastmod: 2020-07-14T00:00:00+01:00
 <body>
   <main class="app">
     <h1>M/G/2/K Queue Simulation</h1>
+    <p class="subtitle">Poisson arrivals · General service times · 2 servers · Finite capacity K</p>
 
     <section class="panel controls">
       <h2>Controls</h2>
@@ -460,7 +469,7 @@ lastmod: 2020-07-14T00:00:00+01:00
       <div class="range-row">
         <div>
           <div class="range-label">Simulation speed</div>
-          <input type="range" id="speed" min="1" max="40" step="1" value="10">
+          <input type="range" id="speed" min="1" max="50" step="1" value="10">
         </div>
         <span id="speedValue">10×</span>
       </div>
@@ -511,6 +520,7 @@ lastmod: 2020-07-14T00:00:00+01:00
         <span>In system: <strong id="inSystem">0</strong></span>
         <span>In queue: <strong id="inQueue">0</strong></span>
         <span>Busy servers: <strong id="busyServers">0</strong></span>
+        <span title="Traffic intensity: λμ/c  —  ≥1 means overloaded">ρ: <strong id="rho">0.00</strong></span>
       </div>
     </section>
 
@@ -548,6 +558,14 @@ lastmod: 2020-07-14T00:00:00+01:00
         <div class="stat">
           <span class="stat-label">Util S2</span>
           <span class="stat-value" id="util2">0%</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label" title="Time-averaged number of customers waiting in queue (L_q)">Avg Queue Len</span>
+          <span class="stat-value" id="avgQueueLen">0.00</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label" title="Percentage of arrivals rejected due to full system">Drop Rate</span>
+          <span class="stat-value" id="dropRate">0.0%</span>
         </div>
       </div>
     </section>
@@ -634,6 +652,9 @@ lastmod: 2020-07-14T00:00:00+01:00
           avgSystem: document.getElementById("avgSystem"),
           util1: document.getElementById("util1"),
           util2: document.getElementById("util2"),
+          rho: document.getElementById("rho"),
+          avgQueueLen: document.getElementById("avgQueueLen"),
+          dropRate: document.getElementById("dropRate"),
         };
 
         this.canvas = document.querySelector(".canvas");
@@ -648,6 +669,7 @@ lastmod: 2020-07-14T00:00:00+01:00
 
         this.running = false;
 
+        this._resizeTimer = null;
         this.handleResize = this.handleResize.bind(this);
         window.addEventListener("resize", this.handleResize);
 
@@ -665,8 +687,11 @@ lastmod: 2020-07-14T00:00:00+01:00
       }
 
       handleResize() {
-        this.refreshLayout();
-        this.updateAllPositions(true);
+        clearTimeout(this._resizeTimer);
+        this._resizeTimer = setTimeout(() => {
+          this.refreshLayout();
+          this.updateAllPositions(true);
+        }, 100);
       }
 
       reset() {
@@ -844,8 +869,11 @@ lastmod: 2020-07-14T00:00:00+01:00
         element.dataset.state = "queue";
         const queueFront = this.getQueuePosition(0);
         this.setElementPosition(element, queueFront);
+        const cid = customer.id;
         setTimeout(() => {
-          this.moveCustomerToServer(customer, serverIndex);
+          if (this.customerElements.has(cid)) {
+            this.moveCustomerToServer(customer, serverIndex);
+          }
         }, 220);
       }
 
@@ -884,7 +912,7 @@ lastmod: 2020-07-14T00:00:00+01:00
         }
         const shape = 1 / (cv * cv);
         const scale = mean / shape;
-        return randomGamma(shape, scale);
+        return Math.max(1e-4, randomGamma(shape, scale));
       }
 
       createCustomerElement(customer) {
@@ -1064,6 +1092,19 @@ lastmod: 2020-07-14T00:00:00+01:00
         this.elements.avgSystem.textContent = `${formatNumber(avgSystem, 2)}s`;
         this.elements.util1.textContent = `${formatNumber(util1, 1)}%`;
         this.elements.util2.textContent = `${formatNumber(util2, 1)}%`;
+
+        const avgQueueLen = this.metrics.queueArea / simSeconds;
+        const dropRatePct = arrivals > 0 ? (dropped / arrivals) * 100 : 0;
+        this.elements.avgQueueLen.textContent = formatNumber(avgQueueLen);
+        this.elements.dropRate.textContent = `${formatNumber(dropRatePct, 1)}%`;
+
+        const rho = (this.config.arrivalRate * this.config.meanService) / this.config.servers;
+        this.elements.rho.textContent = formatNumber(rho);
+        const rhoSpan = this.elements.rho.closest("span");
+        if (rhoSpan) {
+          rhoSpan.style.borderColor = rho >= 1 ? "rgba(248, 113, 113, 0.5)" : "";
+          rhoSpan.style.background = rho >= 1 ? "rgba(248, 113, 113, 0.18)" : "";
+        }
       }
     }
 
@@ -1142,6 +1183,32 @@ lastmod: 2020-07-14T00:00:00+01:00
     });
 
     applyFormConfig();
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && simulation.running) {
+        simulation.pause();
+        pauseBtn.textContent = "Resume";
+        simulation._pausedByVisibility = true;
+      } else if (!document.hidden && simulation._pausedByVisibility) {
+        simulation._pausedByVisibility = false;
+        simulation.start();
+        pauseBtn.textContent = "Pause";
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.target.tagName === "INPUT") return;
+      if (e.code === "Space") {
+        e.preventDefault();
+        if (simulation.running) {
+          simulation.pause();
+          pauseBtn.textContent = "Resume";
+        } else {
+          simulation.start();
+          pauseBtn.textContent = "Pause";
+        }
+      }
+    });
   </script>
 </body>
 </html>
