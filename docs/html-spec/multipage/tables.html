@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+<li><a href="tables.html#the-caption-element">The <code>caption</code> element</a><li><a href="tables.html#the-colgroup-element">The <code>colgroup</code> element</a><li><a href="tables.html#the-col-element">The <code>col</code> element</a><li><a href="tables.html#the-tbody-element">The <code>tbody</code> element</a><li><a href="tables.html#the-thead-element">The <code>thead</code> element</a><li><a href="tables.html#the-tfoot-element">The <code>tfoot</code> element</a><li><a href="tables.html#the-tr-element">The <code>tr</code> element</a><li><a href="tables.html#the-td-element">The <code>td</code> element</a><li><a href="tables.html#the-th-element">The <code>th</code> element</a><li><a href="tables.html#attributes-common-to-td-and-th-elements">Attributes common to <code>td</code> and <code>th</code> elements</a><li><a href="tables.html#table-processing-model">Processing model</a><ol><li><a href="tables.html#forming-a-table">Forming a table</a><li><a href="tables.html#header-and-data-cell-semantics">Forming relationships between data cells and header cells</a></ol><li><a href="tables.html#table-examples">Examples</a></ol></ol></ol><h3 id=tables>Tabular data</h3>
+<h4 id=the-table-element>The <dfn data-dfn-type=element><code>table</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#flow-content-2">flow content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>In this order: optionally a <code><a href="tables.html#the-caption-element">caption</a></code> element, followed by zero or more
+<code><a href="tables.html#the-colgroup-element">colgroup</a></code> elements, followed optionally by a <code><a href="tables.html#the-thead-element">thead</a></code> element, followed by
+either zero or more <code><a href="tables.html#the-tbody-element">tbody</a></code> elements or one or more <code><a href="tables.html#the-tr-element">tr</a></code> elements, followed
+optionally by a <code><a href="tables.html#the-tfoot-element">tfoot</a></code> element, optionally intermixed with one or more
+<a href="dom.html#script-supporting-elements-2">script-supporting elements</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-table>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-table>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmltableelement' data-dfn-type='interface'>HTMLTableElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute <a href='tables.html#htmltablecaptionelement'>HTMLTableCaptionElement</a>? <a href='tables.html#dom-table-caption'>caption</a>;
+<a href='tables.html#htmltablecaptionelement'>HTMLTableCaptionElement</a> <a href='tables.html#dom-table-createcaption'>createCaption</a>();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] undefined <a href='tables.html#dom-table-deletecaption'>deleteCaption</a>();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute <a href='tables.html#htmltablesectionelement'>HTMLTableSectionElement</a>? <a href='tables.html#dom-table-thead'>tHead</a>;
+<a href='tables.html#htmltablesectionelement'>HTMLTableSectionElement</a> <a href='tables.html#dom-table-createthead'>createTHead</a>();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] undefined <a href='tables.html#dom-table-deletethead'>deleteTHead</a>();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute <a href='tables.html#htmltablesectionelement'>HTMLTableSectionElement</a>? <a href='tables.html#dom-table-tfoot'>tFoot</a>;
+<a href='tables.html#htmltablesectionelement'>HTMLTableSectionElement</a> <a href='tables.html#dom-table-createtfoot'>createTFoot</a>();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] undefined <a href='tables.html#dom-table-deletetfoot'>deleteTFoot</a>();
+[SameObject] readonly attribute <a href='https://dom.spec.whatwg.org/#interface-htmlcollection' data-x-internal='htmlcollection'>HTMLCollection</a> <a href='tables.html#dom-table-tbodies'>tBodies</a>;
+<a href='tables.html#htmltablesectionelement'>HTMLTableSectionElement</a> <a href='tables.html#dom-table-createtbody'>createTBody</a>();
+[SameObject] readonly attribute <a href='https://dom.spec.whatwg.org/#interface-htmlcollection' data-x-internal='htmlcollection'>HTMLCollection</a> <a href='tables.html#dom-table-rows'>rows</a>;
+<a href='tables.html#htmltablerowelement'>HTMLTableRowElement</a> <a href='tables.html#dom-table-insertrow'>insertRow</a>(optional long index = -1);
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] undefined <a href='tables.html#dom-table-deleterow'>deleteRow</a>(long index);
+// <a href='obsolete.html#HTMLTableElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>The <code><a href="tables.html#the-table-element">table</a></code> element <a href="dom.html#represents">represents</a> data with more than one dimension, in
+the form of a <a href="tables.html#concept-table">table</a>.</p>
+<p>The <code><a href="tables.html#the-table-element">table</a></code> element takes part in the <a href="tables.html#table-model">table
+model</a>. Tables have rows, columns, and cells given by their descendants. The rows and
+columns form a grid; a table's cells must completely cover that grid without overlap.</p>
+<p>Precise rules for determining whether this conformance requirement is met are
+described in the description of the <a href="tables.html#table-model">table model</a>.</p>
+<p>Authors are encouraged to provide information describing how to interpret complex tables.
+Guidance on how to <a href="tables.html#table-descriptions-techniques">provide such information</a> is given
+below.</p>
+<p>Tables must not be used as layout aids. Historically, some web authors have misused tables in
+HTML as a way to control their page layout. This usage is non-conforming, because tools attempting
+to extract tabular data from such documents would obtain very confusing results. In particular,
+users of accessibility tools like screen readers are likely to find it very difficult to navigate
+pages with tables used for layout.</p>
+<p>There are a variety of alternatives to using HTML tables for layout, such as CSS
+grid layout, CSS flexible box layout ("flexbox"), CSS multi-column layout, CSS positioning, and
+the CSS table model. <a href="references.html#refsCSS">[CSS]</a></p>
+<hr>
+<p>Tables can be complicated to understand and navigate. To help users with this, user agents
+should clearly delineate cells in a table from each other, unless the user agent has classified
+the table as a (non-conforming) layout table.</p>
+<p>Authors and implementers are encouraged to consider
+using some of the <a href="tables.html#table-layout-techniques">table design techniques</a> described below
+to make tables easier to navigate for users.</p>
+<p>User agents, especially those that do table analysis on arbitrary content, are encouraged to
+find heuristics to determine which tables actually contain data and which are merely being used
+for layout. This specification does not define a precise heuristic, but the following are
+suggested as possible indicators:</p>
+<table><thead><tr><th>Feature
+<th>Indication
+<tbody><tr><td>The use of the <code><a href="infrastructure.html#attr-aria-role">role</a></code> attribute with the value <code><a data-x-internal=attr-aria-role-presentation href=https://w3c.github.io/aria/#presentation>presentation</a></code>
+<td>Probably a layout table
+<tr><td>The use of the non-conforming <code><a href="obsolete.html#attr-table-border">border</a></code> attribute with the non-conforming value 0
+<td>Probably a layout table
+<tr><td>The use of the non-conforming <code><a href="obsolete.html#attr-table-cellspacing">cellspacing</a></code> and
+<code><a href="obsolete.html#attr-table-cellpadding">cellpadding</a></code> attributes with the value 0
+<td>Probably a layout table
+<tbody><tr><td>The use of <code><a href="tables.html#the-caption-element">caption</a></code>, <code><a href="tables.html#the-thead-element">thead</a></code>, or <code><a href="tables.html#the-th-element">th</a></code> elements
+<td>Probably a non-layout table
+<tr><td>The use of the <code><a href="tables.html#attr-tdth-headers">headers</a></code> and <code><a href="tables.html#attr-th-scope">scope</a></code> attributes
+<td>Probably a non-layout table
+<tr><td>The use of the non-conforming <code><a href="obsolete.html#attr-table-border">border</a></code> attribute with a value other than 0
+<td>Probably a non-layout table
+<tr><td>Explicit visible borders set using CSS
+<td>Probably a non-layout table
+<tbody><tr><td>The use of the <code><a href="obsolete.html#attr-table-summary">summary</a></code> attribute
+<td>Not a good indicator (both layout and non-layout tables have historically been given this attribute)
+</table>
+<p>It is quite possible that the above suggestions are wrong. Implementers are urged
+to provide feedback elaborating on their experiences with trying to create a layout table
+detection heuristic.</p>
+<p>If a <code><a href="tables.html#the-table-element">table</a></code> element has a (non-conforming) <code><a href="obsolete.html#attr-table-summary">summary</a></code> attribute, and the user agent has not classified the
+table as a layout table, the user agent may report the contents of that attribute to the user.</p>
+<hr>
+<dl><dt><code><var>table</var>.<a href="tables.html#dom-table-caption" id=dom-table-caption-dev>caption</a> [ = <var>value</var> ]</code></div><dd>
+<p>Returns the table's <code><a href="tables.html#the-caption-element">caption</a></code> element.</p>
+<p>Can be set, to replace the <code><a href="tables.html#the-caption-element">caption</a></code> element.</p>
+<dt><code><var>caption</var> = <var>table</var>.<a href="tables.html#dom-table-createcaption" id=dom-table-createcaption-dev>createCaption</a>()</code></div><dd><p>Ensures the table has a <code><a href="tables.html#the-caption-element">caption</a></code> element, and returns it.<dt><code><var>table</var>.<a href="tables.html#dom-table-deletecaption" id=dom-table-deletecaption-dev>deleteCaption</a>()</code></div><dd><p>Ensures the table does not have a <code><a href="tables.html#the-caption-element">caption</a></code> element.<dt><code><var>table</var>.<a href="tables.html#dom-table-thead" id=dom-table-thead-dev>tHead</a> [ = <var>value</var> ]</code></div><dd>
+<p>Returns the table's <code><a href="tables.html#the-thead-element">thead</a></code> element.</p>
+<p>Can be set, to replace the <code><a href="tables.html#the-thead-element">thead</a></code> element. If the new value is not a
+<code><a href="tables.html#the-thead-element">thead</a></code> element, throws a <a href=https://webidl.spec.whatwg.org/#hierarchyrequesterror data-x-internal=hierarchyrequesterror>"<code>HierarchyRequestError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</p>
+<dt><code><var>thead</var> = <var>table</var>.<a href="tables.html#dom-table-createthead" id=dom-table-createthead-dev>createTHead</a>()</code></div><dd><p>Ensures the table has a <code><a href="tables.html#the-thead-element">thead</a></code> element, and returns it.<dt><code><var>table</var>.<a href="tables.html#dom-table-deletethead" id=dom-table-deletethead-dev>deleteTHead</a>()</code></div><dd><p>Ensures the table does not have a <code><a href="tables.html#the-thead-element">thead</a></code> element.<dt><code><var>table</var>.<a href="tables.html#dom-table-tfoot" id=dom-table-tfoot-dev>tFoot</a> [ = <var>value</var> ]</code></div><dd>
+<p>Returns the table's <code><a href="tables.html#the-tfoot-element">tfoot</a></code> element.</p>
+<p>Can be set, to replace the <code><a href="tables.html#the-tfoot-element">tfoot</a></code> element. If the new value is not a
+<code><a href="tables.html#the-tfoot-element">tfoot</a></code> element, throws a <a href=https://webidl.spec.whatwg.org/#hierarchyrequesterror data-x-internal=hierarchyrequesterror>"<code>HierarchyRequestError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</p>
+<dt><code><var>tfoot</var> = <var>table</var>.<a href="tables.html#dom-table-createtfoot" id=dom-table-createtfoot-dev>createTFoot</a>()</code></div><dd><p>Ensures the table has a <code><a href="tables.html#the-tfoot-element">tfoot</a></code> element, and returns it.<dt><code><var>table</var>.<a href="tables.html#dom-table-deletetfoot" id=dom-table-deletetfoot-dev>deleteTFoot</a>()</code></div><dd><p>Ensures the table does not have a <code><a href="tables.html#the-tfoot-element">tfoot</a></code> element.<dt><code><var>table</var>.<a href="tables.html#dom-table-tbodies" id=dom-table-tbodies-dev>tBodies</a></code></div><dd><p>Returns an <code><a data-x-internal=htmlcollection href=https://dom.spec.whatwg.org/#interface-htmlcollection>HTMLCollection</a></code> of the <code><a href="tables.html#the-tbody-element">tbody</a></code> elements of the
+table.<dt><code><var>tbody</var> = <var>table</var>.<a href="tables.html#dom-table-createtbody" id=dom-table-createtbody-dev>createTBody</a>()</code></div><dd><p>Creates a <code><a href="tables.html#the-tbody-element">tbody</a></code> element, inserts it into the table, and returns it.<dt><code><var>table</var>.<a href="tables.html#dom-table-rows" id=dom-table-rows-dev>rows</a></code></div><dd><p>Returns an <code><a data-x-internal=htmlcollection href=https://dom.spec.whatwg.org/#interface-htmlcollection>HTMLCollection</a></code> of the <code><a href="tables.html#the-tr-element">tr</a></code> elements of the
+table.<dt><code><var>tr</var> = <var>table</var>.<a href="tables.html#dom-table-insertrow" id=dom-table-insertrow-dev>insertRow</a>([ <var>index</var> ])</code></div><dd>
+<p>Creates a <code><a href="tables.html#the-tr-element">tr</a></code> element, along with a <code><a href="tables.html#the-tbody-element">tbody</a></code> if required, inserts them
+into the table at the position given by the argument, and returns the <code><a href="tables.html#the-tr-element">tr</a></code>.</p>
+<p>The position is relative to the rows in the table. The index −1, which is the default
+if the argument is omitted, is equivalent to inserting at the end of the table.</p>
+<p>If the given position is less than −1 or greater than the number of rows, throws an
+<a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</p>
+<dt><code><var>table</var>.<a href="tables.html#dom-table-deleterow" id=dom-table-deleterow-dev>deleteRow</a>(<var>index</var>)</code></div><dd>
+<p>Removes the <code><a href="tables.html#the-tr-element">tr</a></code> element with the given position in the table.</p>
+<p>The position is relative to the rows in the table. The index −1 is equivalent to
+deleting the last row of the table.</p>
+<p>If the given position is less than −1 or greater than the index of the last row, or if
+there are no rows, throws an <a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</p>
+</dl>
+<div>
+<p>In all of the following attribute and method definitions, when an element is to be
+<dfn id=table-created>table-created</dfn>, that means to <a href=https://dom.spec.whatwg.org/#concept-create-element data-x-internal=create-an-element>create an element</a> given the
+<code><a href="tables.html#the-table-element">table</a></code> element's <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>, the given local name, and the <a href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML
+namespace</a>.</p>
+</div>
+<div>
+<p>The <dfn id=dom-table-caption data-dfn-type=attribute><code>caption</code></dfn>
+IDL attribute must return, on getting, the first <code><a href="tables.html#the-caption-element">caption</a></code> element child of the
+<code><a href="tables.html#the-table-element">table</a></code> element, if any, or null otherwise. On setting, the first <code><a href="tables.html#the-caption-element">caption</a></code>
+element child of the <code><a href="tables.html#the-table-element">table</a></code> element, if any, must be removed, and the new value, if
+not null, must be inserted as the first node of the <code><a href="tables.html#the-table-element">table</a></code> element.</p>
+</div>
+<div>
+<p>The <dfn id=dom-table-createcaption data-dfn-type=method><code>createCaption()</code></dfn> method must return the first
+<code><a href="tables.html#the-caption-element">caption</a></code> element child of the <code><a href="tables.html#the-table-element">table</a></code> element, if any; otherwise a new
+<code><a href="tables.html#the-caption-element">caption</a></code> element must be <a href="tables.html#table-created">table-created</a>, inserted as the first node of the
+<code><a href="tables.html#the-table-element">table</a></code> element, and then returned.</p>
+</div>
+<div>
+<p>The <dfn id=dom-table-deletecaption data-dfn-type=method><code>deleteCaption()</code></dfn> method must remove the first
+<code><a href="tables.html#the-caption-element">caption</a></code> element child of the <code><a href="tables.html#the-table-element">table</a></code> element, if any.</p>
+</div>
+<div>
+<p>The <dfn id=dom-table-thead data-dfn-type=attribute><code>tHead</code></dfn> IDL
+attribute must return, on getting, the first <code><a href="tables.html#the-thead-element">thead</a></code> element child of the
+<code><a href="tables.html#the-table-element">table</a></code> element, if any, or null otherwise. On setting, if the new value is null or a
+<code><a href="tables.html#the-thead-element">thead</a></code> element, the first <code><a href="tables.html#the-thead-element">thead</a></code> element child of the <code><a href="tables.html#the-table-element">table</a></code>
+element, if any, must be removed, and the new value, if not null, must be inserted immediately
+before the first element in the <code><a href="tables.html#the-table-element">table</a></code> element that is neither a <code><a href="tables.html#the-caption-element">caption</a></code>
+element nor a <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element, if any, or at the end of the table if there are no
+such elements. If the new value is neither null nor a <code><a href="tables.html#the-thead-element">thead</a></code> element, then a
+<a href=https://webidl.spec.whatwg.org/#hierarchyrequesterror data-x-internal=hierarchyrequesterror>"<code>HierarchyRequestError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> must be thrown
+instead.</p>
+</div>
+<div>
+<p>The <dfn id=dom-table-createthead data-dfn-type=method><code>createTHead()</code></dfn> method must return the first
+<code><a href="tables.html#the-thead-element">thead</a></code> element child of the <code><a href="tables.html#the-table-element">table</a></code> element, if any; otherwise a new
+<code><a href="tables.html#the-thead-element">thead</a></code> element must be <a href="tables.html#table-created">table-created</a> and inserted immediately before the
+first element in the <code><a href="tables.html#the-table-element">table</a></code> element that is neither a <code><a href="tables.html#the-caption-element">caption</a></code> element nor
+a <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element, if any, or at the end of the table if there are no such elements,
+and then that new element must be returned.</p>
+</div>
+<div>
+<p>The <dfn id=dom-table-deletethead data-dfn-type=method><code>deleteTHead()</code></dfn> method must remove the first
+<code><a href="tables.html#the-thead-element">thead</a></code> element child of the <code><a href="tables.html#the-table-element">table</a></code> element, if any.</p>
+</div>
+<div>
+<p>The <dfn id=dom-table-tfoot data-dfn-type=attribute><code>tFoot</code></dfn> IDL
+attribute must return, on getting, the first <code><a href="tables.html#the-tfoot-element">tfoot</a></code> element child of the
+<code><a href="tables.html#the-table-element">table</a></code> element, if any, or null otherwise. On setting, if the new value is null or a
+<code><a href="tables.html#the-tfoot-element">tfoot</a></code> element, the first <code><a href="tables.html#the-tfoot-element">tfoot</a></code> element child of the <code><a href="tables.html#the-table-element">table</a></code>
+element, if any, must be removed, and the new value, if not null, must be inserted at the end of
+the table. If the new value is neither null nor a <code><a href="tables.html#the-tfoot-element">tfoot</a></code> element, then a
+<a href=https://webidl.spec.whatwg.org/#hierarchyrequesterror data-x-internal=hierarchyrequesterror>"<code>HierarchyRequestError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> must be thrown
+instead.</p>
+</div>
+<div>
+<p>The <dfn id=dom-table-createtfoot data-dfn-type=method><code>createTFoot()</code></dfn> method must return the first
+<code><a href="tables.html#the-tfoot-element">tfoot</a></code> element child of the <code><a href="tables.html#the-table-element">table</a></code> element, if any; otherwise a new
+<code><a href="tables.html#the-tfoot-element">tfoot</a></code> element must be <a href="tables.html#table-created">table-created</a> and inserted at the end of the
+table, and then that new element must be returned.</p>
+</div>
+<div>
+<p>The <dfn id=dom-table-deletetfoot data-dfn-type=method><code>deleteTFoot()</code></dfn> method must remove the first
+<code><a href="tables.html#the-tfoot-element">tfoot</a></code> element child of the <code><a href="tables.html#the-table-element">table</a></code> element, if any.</p>
+</div>
+<div>
+<p>The <dfn id=dom-table-tbodies data-dfn-type=attribute><code>tBodies</code></dfn>
+attribute must return an <code><a data-x-internal=htmlcollection href=https://dom.spec.whatwg.org/#interface-htmlcollection>HTMLCollection</a></code> rooted at the <code><a href="tables.html#the-table-element">table</a></code> node, whose
+filter matches only <code><a href="tables.html#the-tbody-element">tbody</a></code> elements that are children of the <code><a href="tables.html#the-table-element">table</a></code>
+element.</p>
+</div>
+<div>
+<p>The <dfn id=dom-table-createtbody data-dfn-type=method><code>createTBody()</code></dfn> method must <a href="tables.html#table-created">table-create</a> a new <code><a href="tables.html#the-tbody-element">tbody</a></code> element, insert it immediately
+after the last <code><a href="tables.html#the-tbody-element">tbody</a></code> element child in the <code><a href="tables.html#the-table-element">table</a></code> element, if any, or at
+the end of the <code><a href="tables.html#the-table-element">table</a></code> element if the <code><a href="tables.html#the-table-element">table</a></code> element has no
+<code><a href="tables.html#the-tbody-element">tbody</a></code> element children, and then must return the new <code><a href="tables.html#the-tbody-element">tbody</a></code> element.</p>
+</div>
+<div>
+<p>The <dfn id=dom-table-rows data-dfn-type=attribute><code>rows</code></dfn>
+attribute must return an <code><a data-x-internal=htmlcollection href=https://dom.spec.whatwg.org/#interface-htmlcollection>HTMLCollection</a></code> rooted at the <code><a href="tables.html#the-table-element">table</a></code> node, whose
+filter matches only <code><a href="tables.html#the-tr-element">tr</a></code> elements that are either children of the <code><a href="tables.html#the-table-element">table</a></code>
+element, or children of <code><a href="tables.html#the-thead-element">thead</a></code>, <code><a href="tables.html#the-tbody-element">tbody</a></code>, or <code><a href="tables.html#the-tfoot-element">tfoot</a></code> elements
+that are themselves children of the <code><a href="tables.html#the-table-element">table</a></code> element. The elements in the collection
+must be ordered such that those elements whose parent is a <code><a href="tables.html#the-thead-element">thead</a></code> are included first,
+in <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a>, followed by those elements whose parent is either a <code><a href="tables.html#the-table-element">table</a></code>
+or <code><a href="tables.html#the-tbody-element">tbody</a></code> element, again in <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a>, followed finally by those
+elements whose parent is a <code><a href="tables.html#the-tfoot-element">tfoot</a></code> element, still in <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a>.</p>
+</div>
+<div>
+<p>The behavior of the <dfn id=dom-table-insertrow data-dfn-type=method><code>insertRow(<var>index</var>)</code></dfn> method depends on the state
+of the table. When it is called, the method must act as required by the first item in the
+following list of conditions that describes the state of the table and the <var>index</var>
+argument:</p>
+<dl><dt>If <var>index</var> is less than −1 or greater than the number of elements
+in <code><a href="tables.html#dom-table-rows">rows</a></code> collection:<dd>The method must throw an <a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<dt>If the <code><a href="tables.html#dom-table-rows">rows</a></code> collection has zero elements in it, and the
+<code><a href="tables.html#the-table-element">table</a></code> has no <code><a href="tables.html#the-tbody-element">tbody</a></code> elements in it:<dd>The method must <a href="tables.html#table-created">table-create</a> a <code><a href="tables.html#the-tbody-element">tbody</a></code>
+element, then <a href="tables.html#table-created">table-create</a> a <code><a href="tables.html#the-tr-element">tr</a></code> element, then
+append the <code><a href="tables.html#the-tr-element">tr</a></code> element to the <code><a href="tables.html#the-tbody-element">tbody</a></code> element, then append the
+<code><a href="tables.html#the-tbody-element">tbody</a></code> element to the <code><a href="tables.html#the-table-element">table</a></code> element, and finally return the
+<code><a href="tables.html#the-tr-element">tr</a></code> element.<dt>If the <code><a href="tables.html#dom-table-rows">rows</a></code> collection has zero elements in it:<dd>The method must <a href="tables.html#table-created">table-create</a> a <code><a href="tables.html#the-tr-element">tr</a></code> element,
+append it to the last <code><a href="tables.html#the-tbody-element">tbody</a></code> element in the table, and return the <code><a href="tables.html#the-tr-element">tr</a></code>
+element.<dt>If <var>index</var> is −1 or equal to the number of items in <code><a href="tables.html#dom-table-rows">rows</a></code> collection:<dd>The method must <a href="tables.html#table-created">table-create</a> a <code><a href="tables.html#the-tr-element">tr</a></code> element,
+and append it to the parent of the last <code><a href="tables.html#the-tr-element">tr</a></code> element in the <code><a href="tables.html#dom-table-rows">rows</a></code> collection. Then, the newly created <code><a href="tables.html#the-tr-element">tr</a></code> element
+must be returned.<dt>Otherwise:<dd>The method must <a href="tables.html#table-created">table-create</a> a <code><a href="tables.html#the-tr-element">tr</a></code> element,
+insert it immediately before the <var>index</var>th <code><a href="tables.html#the-tr-element">tr</a></code> element in the <code><a href="tables.html#dom-table-rows">rows</a></code> collection, in the same parent, and finally must return the
+newly created <code><a href="tables.html#the-tr-element">tr</a></code> element.</dl>
+</div>
+<div>
+<p>When the <dfn id=dom-table-deleterow data-dfn-type=method><code>deleteRow(<var>index</var>)</code></dfn> method is called, the user
+agent must run the following steps:</p>
+<ol><li><p>If <var>index</var> is less than −1 or greater than or equal to the number of
+elements in the <code><a href="tables.html#dom-table-rows">rows</a></code> collection, then throw an
+<a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If <var>index</var> is −1, then <a href=https://dom.spec.whatwg.org/#concept-node-remove data-x-internal=concept-node-remove>remove</a>
+the last element in the <code><a href="tables.html#dom-table-rows">rows</a></code> collection from its parent, or
+do nothing if the <code><a href="tables.html#dom-table-rows">rows</a></code> collection is empty.<li><p>Otherwise, <a href=https://dom.spec.whatwg.org/#concept-node-remove data-x-internal=concept-node-remove>remove</a> the <var>index</var>th element
+in the <code><a href="tables.html#dom-table-rows">rows</a></code> collection from its parent.</ol>
+</div>
+<div>
+<p>Here is an example of a table being used to mark up a Sudoku puzzle. Observe the lack of
+headers, which are not necessary in such a table.</p>
+<pre><code>&lt;style&gt;
+#sudoku { border-collapse: collapse; border: solid thick; }
+#sudoku colgroup, table#sudoku tbody { border: solid medium; }
+#sudoku td { border: solid thin; height: 1.4em; width: 1.4em; text-align: center; padding: 0; }
+&lt;/style&gt;
+&lt;h1&gt;Today&apos;s Sudoku&lt;/h1&gt;
+&lt;table id=&quot;sudoku&quot;&gt;
+&lt;colgroup&gt;&lt;col&gt;&lt;col&gt;&lt;col&gt;
+&lt;colgroup&gt;&lt;col&gt;&lt;col&gt;&lt;col&gt;
+&lt;colgroup&gt;&lt;col&gt;&lt;col&gt;&lt;col&gt;
+&lt;tbody&gt;
+&lt;tr&gt; &lt;td&gt; 1 &lt;td&gt;   &lt;td&gt; 3 &lt;td&gt; 6 &lt;td&gt;   &lt;td&gt; 4 &lt;td&gt; 7 &lt;td&gt;   &lt;td&gt; 9
+&lt;tr&gt; &lt;td&gt;   &lt;td&gt; 2 &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 9 &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 1 &lt;td&gt;
+&lt;tr&gt; &lt;td&gt; 7 &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 6
+&lt;tbody&gt;
+&lt;tr&gt; &lt;td&gt; 2 &lt;td&gt;   &lt;td&gt; 4 &lt;td&gt;   &lt;td&gt; 3 &lt;td&gt;   &lt;td&gt; 9 &lt;td&gt;   &lt;td&gt; 8
+&lt;tr&gt; &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;
+&lt;tr&gt; &lt;td&gt; 5 &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 9 &lt;td&gt;   &lt;td&gt; 7 &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 1
+&lt;tbody&gt;
+&lt;tr&gt; &lt;td&gt; 6 &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 5 &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 2
+&lt;tr&gt; &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 7 &lt;td&gt;   &lt;td&gt;   &lt;td&gt;   &lt;td&gt;
+&lt;tr&gt; &lt;td&gt; 9 &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 8 &lt;td&gt;   &lt;td&gt; 2 &lt;td&gt;   &lt;td&gt;   &lt;td&gt; 5
+&lt;/table&gt;</code></pre>
+</div>
+<h5 id=table-descriptions-techniques>Techniques for describing tables</h5>
+<p id=table-descriptions>For tables that consist of more than just a grid of cells with headers
+in the first row and headers in the first column, and for any table in general where the reader
+might have difficulty understanding the content, authors should include explanatory information
+introducing the table. This information is useful for all users, but is especially useful for
+users who cannot see the table, e.g. users of screen readers.</p>
+<p>Such explanatory information should introduce the purpose of the table, outline its basic cell
+structure, highlight any trends or patterns, and generally teach the user how to use the
+table.</p>
+<p>For instance, the following table:</p>
+<table><caption>Characteristics with positive and negative sides</caption><thead><tr><th id=n> Negative
+<th> Characteristic
+<th> Positive
+<tbody><tr><td headers="n r1"> Sad
+<th id=r1> Mood
+<td> Happy
+<tr><td headers="n r2"> Failing
+<th id=r2> Grade
+<td> Passing
+</table>
+<p>...might benefit from a description explaining the way the table is laid out, something like
+"Characteristics are given in the second column, with the negative side in the left column and the
+positive side in the right column".</p>
+<p>There are a variety of ways to include this information, such as:</p>
+<dl><dt>In prose, surrounding the table<dd>
+<div><pre><code><strong>&lt;p&gt;In the following table, characteristics are given in the second
+column, with the negative side in the left column and the positive
+side in the right column.&lt;/p&gt;</strong>
+&lt;table&gt;
+&lt;caption&gt;Characteristics with positive and negative sides&lt;/caption&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th id=&quot;n&quot;&gt; Negative
+&lt;th&gt; Characteristic
+&lt;th&gt; Positive
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td headers=&quot;n r1&quot;&gt; Sad
+&lt;th id=&quot;r1&quot;&gt; Mood
+&lt;td&gt; Happy
+&lt;tr&gt;
+&lt;td headers=&quot;n r2&quot;&gt; Failing
+&lt;th id=&quot;r2&quot;&gt; Grade
+&lt;td&gt; Passing
+&lt;/table&gt;</code></pre></div>
+<dt>In the table's <code><a href="tables.html#the-caption-element">caption</a></code><dd>
+<div><pre><code>&lt;table&gt;
+<strong> &lt;caption&gt;
+&lt;strong&gt;Characteristics with positive and negative sides.&lt;/strong&gt;
+&lt;p&gt;Characteristics are given in the second column, with the
+negative side in the left column and the positive side in the right
+column.&lt;/p&gt;</strong>
+&lt;/caption&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th id=&quot;n&quot;&gt; Negative
+&lt;th&gt; Characteristic
+&lt;th&gt; Positive
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td headers=&quot;n r1&quot;&gt; Sad
+&lt;th id=&quot;r1&quot;&gt; Mood
+&lt;td&gt; Happy
+&lt;tr&gt;
+&lt;td headers=&quot;n r2&quot;&gt; Failing
+&lt;th id=&quot;r2&quot;&gt; Grade
+&lt;td&gt; Passing
+&lt;/table&gt;</code></pre></div>
+<dt>In the table's <code><a href="tables.html#the-caption-element">caption</a></code>, in a <code><a href="interactive-elements.html#the-details-element">details</a></code> element<dd>
+<div><pre><code>&lt;table&gt;
+&lt;caption&gt;
+&lt;strong&gt;Characteristics with positive and negative sides.&lt;/strong&gt;
+<strong>  &lt;details&gt;
+&lt;summary&gt;Help&lt;/summary&gt;
+&lt;p&gt;Characteristics are given in the second column, with the
+negative side in the left column and the positive side in the right
+column.&lt;/p&gt;
+&lt;/details&gt;</strong>
+&lt;/caption&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th id=&quot;n&quot;&gt; Negative
+&lt;th&gt; Characteristic
+&lt;th&gt; Positive
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td headers=&quot;n r1&quot;&gt; Sad
+&lt;th id=&quot;r1&quot;&gt; Mood
+&lt;td&gt; Happy
+&lt;tr&gt;
+&lt;td headers=&quot;n r2&quot;&gt; Failing
+&lt;th id=&quot;r2&quot;&gt; Grade
+&lt;td&gt; Passing
+&lt;/table&gt;</code></pre></div>
+<dt>Next to the table, in the same <code><a href="grouping-content.html#the-figure-element">figure</a></code><dd>
+<div><pre><code>&lt;figure&gt;
+&lt;figcaption&gt;Characteristics with positive and negative sides&lt;/figcaption&gt;
+<strong> &lt;p&gt;Characteristics are given in the second column, with the
+negative side in the left column and the positive side in the right
+column.&lt;/p&gt;</strong>
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th id=&quot;n&quot;&gt; Negative
+&lt;th&gt; Characteristic
+&lt;th&gt; Positive
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td headers=&quot;n r1&quot;&gt; Sad
+&lt;th id=&quot;r1&quot;&gt; Mood
+&lt;td&gt; Happy
+&lt;tr&gt;
+&lt;td headers=&quot;n r2&quot;&gt; Failing
+&lt;th id=&quot;r2&quot;&gt; Grade
+&lt;td&gt; Passing
+&lt;/table&gt;
+&lt;/figure&gt;</code></pre></div>
+<dt>Next to the table, in a <code><a href="grouping-content.html#the-figure-element">figure</a></code>'s <code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code><dd>
+<div><pre><code>&lt;figure&gt;
+&lt;figcaption&gt;
+&lt;strong&gt;Characteristics with positive and negative sides&lt;/strong&gt;
+<strong>  &lt;p&gt;Characteristics are given in the second column, with the
+negative side in the left column and the positive side in the right
+column.&lt;/p&gt;</strong>
+&lt;/figcaption&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th id=&quot;n&quot;&gt; Negative
+&lt;th&gt; Characteristic
+&lt;th&gt; Positive
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td headers=&quot;n r1&quot;&gt; Sad
+&lt;th id=&quot;r1&quot;&gt; Mood
+&lt;td&gt; Happy
+&lt;tr&gt;
+&lt;td headers=&quot;n r2&quot;&gt; Failing
+&lt;th id=&quot;r2&quot;&gt; Grade
+&lt;td&gt; Passing
+&lt;/table&gt;
+&lt;/figure&gt;</code></pre></div>
+</dl>
+<p>Authors may also use other techniques, or combinations of the above techniques, as
+appropriate.</p>
+<p>The best option, of course, rather than writing a description explaining the way the table is
+laid out, is to adjust the table such that no explanation is needed.</p>
+<div>
+<p>In the case of the table used in the examples above, a simple rearrangement of the table so
+that the headers are on the top and left sides removes the need for an explanation as well as
+removing the need for the use of <code><a href="tables.html#attr-tdth-headers">headers</a></code> attributes:</p>
+<pre><code>&lt;table&gt;
+&lt;caption&gt;Characteristics with positive and negative sides&lt;/caption&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt; Characteristic
+&lt;th&gt; Negative
+&lt;th&gt; Positive
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;th&gt; Mood
+&lt;td&gt; Sad
+&lt;td&gt; Happy
+&lt;tr&gt;
+&lt;th&gt; Grade
+&lt;td&gt; Failing
+&lt;td&gt; Passing
+&lt;/table&gt;</code></pre>
+</div>
+<h5 id=table-layout-techniques>Techniques for table design</h5>
+<p>Good table design is key to making tables more readable and usable.</p>
+<p>In visual media, providing column and row borders and alternating row backgrounds can be very
+effective to make complicated tables more readable.</p>
+<p>For tables with large volumes of numeric content, using monospaced fonts can help users see
+patterns, especially in situations where a user agent does not render the borders. (Unfortunately,
+for historical reasons, not rendering borders on tables is a common default.)</p>
+<p>In speech media, table cells can be distinguished by reporting the corresponding headers before
+reading the cell's contents, and by allowing users to navigate the table in a grid fashion, rather
+than serializing the entire contents of the table in source order.</p>
+<p>Authors are encouraged to use CSS to achieve these effects.</p>
+<p>User agents are encouraged to render tables using these techniques whenever the page does not
+use CSS and the table is not classified as a layout table.</p>
+<h4 id=the-caption-element>The <dfn data-dfn-type=element><code>caption</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>As the first element child of a <code><a href="tables.html#the-table-element">table</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>, but with no descendant <code><a href="tables.html#the-table-element">table</a></code> elements.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>A <code><a href="tables.html#the-caption-element">caption</a></code> element's <a href="syntax.html#syntax-end-tag">end tag</a> can be omitted if
+the <code><a href="tables.html#the-caption-element">caption</a></code> element is not immediately followed by <a href=https://infra.spec.whatwg.org/#ascii-whitespace data-x-internal=space-characters>ASCII whitespace</a> or a
+<a href="syntax.html#syntax-comments">comment</a>.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-caption>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-caption>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmltablecaptionelement' data-dfn-type='interface'>HTMLTableCaptionElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+// <a href='obsolete.html#HTMLTableCaptionElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>The <code><a href="tables.html#the-caption-element">caption</a></code> element <a href="dom.html#represents">represents</a> the title of the <code><a href="tables.html#the-table-element">table</a></code>
+that is its parent, if it has a parent and that is a <code><a href="tables.html#the-table-element">table</a></code> element.</p>
+<p>The <code><a href="tables.html#the-caption-element">caption</a></code> element takes part in the <a href="tables.html#table-model">table model</a>.</p>
+<p>When a <code><a href="tables.html#the-table-element">table</a></code> element is the only content in a <code><a href="grouping-content.html#the-figure-element">figure</a></code> element other
+than the <code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code>, the <code><a href="tables.html#the-caption-element">caption</a></code> element should be omitted in favor of
+the <code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code>.</p>
+<p>A caption can introduce context for a table, making it significantly easier to understand.</p>
+<div>
+<p>Consider, for instance, the following table:</p>
+<table><tr><th>   <th> 1 <th> 2 <th> 3 <th> 4 <th> 5 <th> 6
+<tr><th> 1 <td> 2 <td> 3 <td> 4 <td> 5 <td> 6 <td> 7
+<tr><th> 2 <td> 3 <td> 4 <td> 5 <td> 6 <td> 7 <td> 8
+<tr><th> 3 <td> 4 <td> 5 <td> 6 <td> 7 <td> 8 <td> 9
+<tr><th> 4 <td> 5 <td> 6 <td> 7 <td> 8 <td> 9 <td> 10
+<tr><th> 5 <td> 6 <td> 7 <td> 8 <td> 9 <td> 10 <td> 11
+<tr><th> 6 <td> 7 <td> 8 <td> 9 <td> 10 <td> 11 <td> 12
+</table>
+<p>In the abstract, this table is not clear. However, with a caption giving the table's number
+(for <a href="dom.html#referenced">reference</a> in the main prose) and explaining its use, it
+makes more sense:</p>
+<pre><code>&lt;caption&gt;
+&lt;p&gt;Table 1.
+&lt;p&gt;This table shows the total score obtained from rolling two
+six-sided dice. The first row represents the value of the first die,
+the first column the value of the second die. The total is given in
+the cell that corresponds to the values of the two dice.
+&lt;/caption&gt;</code></pre>
+<p>This provides the user with more context:</p>
+<table><caption>
+<p>Table 1.
+<p>This table shows the total score obtained from rolling two
+six-sided dice. The first row represents the value of the first
+die, the first column the value of the second die. The total is
+given in the cell that corresponds to the values of the two dice.
+</caption><tr><th>   <th> 1 <th> 2 <th> 3 <th> 4 <th> 5 <th> 6
+<tr><th> 1 <td> 2 <td> 3 <td> 4 <td> 5 <td> 6 <td> 7
+<tr><th> 2 <td> 3 <td> 4 <td> 5 <td> 6 <td> 7 <td> 8
+<tr><th> 3 <td> 4 <td> 5 <td> 6 <td> 7 <td> 8 <td> 9
+<tr><th> 4 <td> 5 <td> 6 <td> 7 <td> 8 <td> 9 <td> 10
+<tr><th> 5 <td> 6 <td> 7 <td> 8 <td> 9 <td> 10 <td> 11
+<tr><th> 6 <td> 7 <td> 8 <td> 9 <td> 10 <td> 11 <td> 12
+</table>
+</div>
+<h4 id=the-colgroup-element>The <dfn data-dfn-type=element><code>colgroup</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>As a child of a <code><a href="tables.html#the-table-element">table</a></code> element, after any
+<code><a href="tables.html#the-caption-element">caption</a></code> elements and before any <code><a href="tables.html#the-thead-element">thead</a></code>,
+<code><a href="tables.html#the-tbody-element">tbody</a></code>, <code><a href="tables.html#the-tfoot-element">tfoot</a></code>, and <code><a href="tables.html#the-tr-element">tr</a></code>
+elements.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>If the <code><a href="tables.html#attr-colgroup-span">span</a></code> attribute is present: <a href="dom.html#concept-content-nothing">Nothing</a>.<dd>If the <code><a href="tables.html#attr-colgroup-span">span</a></code> attribute is absent: Zero or more <code><a href="tables.html#the-col-element">col</a></code> and <code><a href="scripting.html#the-template-element">template</a></code> elements.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>A <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element's <a href="syntax.html#syntax-start-tag">start tag</a> can be
+omitted if the first thing inside the <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element is a <code><a href="tables.html#the-col-element">col</a></code> element,
+and if the element is not immediately preceded by another <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element whose
+<a href="syntax.html#syntax-end-tag">end tag</a> has been omitted. (It can't be omitted if the element
+is empty.)<dd>A <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element's <a href="syntax.html#syntax-end-tag">end tag</a> can be omitted
+if the <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element is not immediately followed by <a href=https://infra.spec.whatwg.org/#ascii-whitespace data-x-internal=space-characters>ASCII whitespace</a>
+or a <a href="syntax.html#syntax-comments">comment</a>.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="tables.html#attr-colgroup-span">span</a></code> —  Number of columns spanned by the element
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-colgroup>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-colgroup>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmltablecolelement' data-dfn-type='interface'>HTMLTableColElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>, <a href='common-dom-interfaces.html#xattr-reflectdefault'>ReflectDefault=1</a>, <a href='common-dom-interfaces.html#xattr-reflectrange'>ReflectRange=(1, 1000)</a>] attribute unsigned long <dfn id='dom-colgroup-span' data-dfn-type='attribute'>span</dfn>;
+// <a href='obsolete.html#HTMLTableColElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>The <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element <a href="dom.html#represents">represents</a> a <a href="tables.html#concept-column-group">group</a> of one or more <a href="tables.html#concept-column">columns</a> in the <code><a href="tables.html#the-table-element">table</a></code> that is its parent, if it has a
+parent and that is a <code><a href="tables.html#the-table-element">table</a></code> element.</p>
+<p>If the <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element contains no <code><a href="tables.html#the-col-element">col</a></code> elements, then the element
+may have a <dfn id=attr-colgroup-span data-dfn-type=element-attr><code>span</code></dfn>
+content attribute specified, whose value must be a <a href="common-microsyntaxes.html#valid-non-negative-integer">valid non-negative integer</a> greater
+than zero and less than or equal to 1000.</p>
+<p>The <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element and its <code><a href="tables.html#attr-colgroup-span">span</a></code>
+attribute take part in the <a href="tables.html#table-model">table model</a>.</p>
+<h4 id=the-col-element>The <dfn data-dfn-type=element><code>col</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>As a child of a <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element that doesn't have
+a <code><a href="tables.html#attr-col-span">span</a></code> attribute.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#concept-content-nothing">Nothing</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>No <a href="syntax.html#syntax-end-tag">end tag</a>.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="tables.html#attr-col-span">span</a></code> —  Number of columns spanned by the element
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-col>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-col>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="tables.html#htmltablecolelement">HTMLTableColElement</a></code>, as defined for <code><a href="tables.html#the-colgroup-element">colgroup</a></code> elements.</dl>
+<p>If a <code><a href="tables.html#the-col-element">col</a></code> element has a parent and that is a <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element that
+itself has a parent that is a <code><a href="tables.html#the-table-element">table</a></code> element, then the <code><a href="tables.html#the-col-element">col</a></code> element
+<a href="dom.html#represents">represents</a> one or more <a href="tables.html#concept-column">columns</a> in the <a href="tables.html#concept-column-group">column group</a> represented by that <code><a href="tables.html#the-colgroup-element">colgroup</a></code>.</p>
+<p>The element may have a <dfn id=attr-col-span data-dfn-type=element-attr><code>span</code></dfn> content attribute specified, whose value must be a
+<a href="common-microsyntaxes.html#valid-non-negative-integer">valid non-negative integer</a> greater than zero and less than or equal to 1000.</p>
+<p>The <code><a href="tables.html#the-col-element">col</a></code> element and its <code><a href="tables.html#attr-col-span">span</a></code> attribute take
+part in the <a href="tables.html#table-model">table model</a>.</p>
+<h4 id=the-tbody-element>The <dfn data-dfn-type=element><code>tbody</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>As a child of a <code><a href="tables.html#the-table-element">table</a></code> element, after any
+<code><a href="tables.html#the-caption-element">caption</a></code>, <code><a href="tables.html#the-colgroup-element">colgroup</a></code>, and
+<code><a href="tables.html#the-thead-element">thead</a></code> elements, but only if there are no
+<code><a href="tables.html#the-tr-element">tr</a></code> elements that are children of the
+<code><a href="tables.html#the-table-element">table</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>Zero or more <code><a href="tables.html#the-tr-element">tr</a></code> and <a href="dom.html#script-supporting-elements-2">script-supporting</a> elements.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>A <code><a href="tables.html#the-tbody-element">tbody</a></code> element's <a href="syntax.html#syntax-start-tag">start tag</a> can be omitted
+if the first thing inside the <code><a href="tables.html#the-tbody-element">tbody</a></code> element is a <code><a href="tables.html#the-tr-element">tr</a></code> element, and if the
+element is not immediately preceded by a <code><a href="tables.html#the-tbody-element">tbody</a></code>, <code><a href="tables.html#the-thead-element">thead</a></code>, or
+<code><a href="tables.html#the-tfoot-element">tfoot</a></code> element whose <a href="syntax.html#syntax-end-tag">end tag</a> has been omitted. (It
+can't be omitted if the element is empty.)<dd>A <code><a href="tables.html#the-tbody-element">tbody</a></code> element's <a href="syntax.html#syntax-end-tag">end tag</a> can be omitted if
+the <code><a href="tables.html#the-tbody-element">tbody</a></code> element is immediately followed by a <code><a href="tables.html#the-tbody-element">tbody</a></code> or
+<code><a href="tables.html#the-tfoot-element">tfoot</a></code> element, or if there is no more content in the parent element.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-tbody>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-tbody>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmltablesectionelement' data-dfn-type='interface'>HTMLTableSectionElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[SameObject] readonly attribute <a href='https://dom.spec.whatwg.org/#interface-htmlcollection' data-x-internal='htmlcollection'>HTMLCollection</a> <a href='tables.html#dom-tbody-rows'>rows</a>;
+<a href='tables.html#htmltablerowelement'>HTMLTableRowElement</a> <a href='tables.html#dom-tbody-insertrow'>insertRow</a>(optional long index = -1);
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] undefined <a href='tables.html#dom-tbody-deleterow'>deleteRow</a>(long index);
+// <a href='obsolete.html#HTMLTableSectionElement-partial'>also has obsolete members</a>
+};</code></pre>
+<p>The
+<code><a href="tables.html#htmltablesectionelement">HTMLTableSectionElement</a></code> interface is also used for <code><a href="tables.html#the-thead-element">thead</a></code> and
+<code><a href="tables.html#the-tfoot-element">tfoot</a></code> elements.</p>
+</dl>
+<p>The <code><a href="tables.html#the-tbody-element">tbody</a></code> element <a href="dom.html#represents">represents</a> a <a href="tables.html#concept-row-group">block</a> of <a href="tables.html#concept-row">rows</a> that consist of a
+body of data for the parent <code><a href="tables.html#the-table-element">table</a></code> element, if the <code><a href="tables.html#the-tbody-element">tbody</a></code> element has a
+parent and it is a <code><a href="tables.html#the-table-element">table</a></code>.</p>
+<p>The <code><a href="tables.html#the-tbody-element">tbody</a></code> element takes part in the <a href="tables.html#table-model">table model</a>.</p>
+<dl><dt><code><var>tbody</var>.<a href="tables.html#dom-tbody-rows" id=dom-tbody-rows-dev>rows</a></code><dd>
+<p>Returns an <code><a data-x-internal=htmlcollection href=https://dom.spec.whatwg.org/#interface-htmlcollection>HTMLCollection</a></code> of the <code><a href="tables.html#the-tr-element">tr</a></code> elements of the table
+section.</p>
+<dt><code><var>tr</var> = <var>tbody</var>.<a href="tables.html#dom-tbody-insertrow" id=dom-tbody-insertrow-dev>insertRow</a>([ <var>index</var> ])</code><dd>
+<p>Creates a <code><a href="tables.html#the-tr-element">tr</a></code> element, inserts it into the table section at the position given by
+the argument, and returns the <code><a href="tables.html#the-tr-element">tr</a></code>.</p>
+<p>The position is relative to the rows in the table section. The index −1, which is the
+default if the argument is omitted, is equivalent to inserting at the end of the table
+section.</p>
+<p>If the given position is less than −1 or greater than the number of rows, throws an
+<a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</p>
+<dt><code><var>tbody</var>.<a href="tables.html#dom-tbody-deleterow" id=dom-tbody-deleterow-dev>deleteRow</a>(<var>index</var>)</code><dd>
+<p>Removes the <code><a href="tables.html#the-tr-element">tr</a></code> element with the given position in the table section.</p>
+<p>The position is relative to the rows in the table section. The index −1 is equivalent
+to deleting the last row of the table section.</p>
+<p>If the given position is less than −1 or greater than the index of the last row, or if
+there are no rows, throws an <a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</p>
+</dl>
+<div>
+<p>The <dfn id=dom-tbody-rows data-dfn-type=attribute><code>rows</code></dfn> attribute must return an <code><a data-x-internal=htmlcollection href=https://dom.spec.whatwg.org/#interface-htmlcollection>HTMLCollection</a></code>
+rooted at this element, whose filter matches only <code><a href="tables.html#the-tr-element">tr</a></code> elements that are children of
+this element.</p>
+</div>
+<div>
+<p>The <dfn id=dom-tbody-insertrow data-dfn-type=method><code>insertRow(<var>index</var>)</code></dfn> method must act as
+follows:</p>
+<ol><li><p>If <var>index</var> is less than −1 or greater than the number of elements in the
+<code><a href="tables.html#dom-tbody-rows">rows</a></code> collection, throw an
+<a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Let <var>table row</var> be the result of <a href=https://dom.spec.whatwg.org/#concept-create-element data-x-internal=create-an-element>creating an
+element</a> given this element's <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>, "<code>tr</code>", and
+the <a href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>.<li><p>If <var>index</var> is −1 or equal to the number of items in the <code><a href="tables.html#dom-tbody-rows">rows</a></code> collection, then <a href=https://dom.spec.whatwg.org/#concept-node-append data-x-internal=concept-node-append>append</a> <var>table row</var> to this element.<li><p>Otherwise, <a href=https://dom.spec.whatwg.org/#concept-node-insert data-x-internal=concept-node-insert>insert</a> <var>table row</var> as a
+child of this element, immediately before the <var>index</var>th <code><a href="tables.html#the-tr-element">tr</a></code> element in the
+<code><a href="tables.html#dom-tbody-rows">rows</a></code> collection.<li><p>Return <var>table row</var>.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-tbody-deleterow data-dfn-type=method><code>deleteRow(<var>index</var>)</code></dfn> method must, when invoked,
+act as follows:
+<ol><li><p>If <var>index</var> is less than −1 or greater than or equal to the number of
+elements in the <code><a href="tables.html#dom-tbody-rows">rows</a></code> collection, then throw an
+<a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If <var>index</var> is −1, then <a href=https://dom.spec.whatwg.org/#concept-node-remove data-x-internal=concept-node-remove>remove</a>
+the last element in the <code><a href="tables.html#dom-tbody-rows">rows</a></code> collection from this
+element, or do nothing if the <code><a href="tables.html#dom-tbody-rows">rows</a></code> collection is
+empty.<li><p>Otherwise, <a href=https://dom.spec.whatwg.org/#concept-node-remove data-x-internal=concept-node-remove>remove</a> the <var>index</var>th element
+in the <code><a href="tables.html#dom-tbody-rows">rows</a></code> collection from this element.</ol>
+</div>
+<h4 id=the-thead-element>The <dfn data-dfn-type=element><code>thead</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>As a child of a <code><a href="tables.html#the-table-element">table</a></code> element, after any
+<code><a href="tables.html#the-caption-element">caption</a></code>, and <code><a href="tables.html#the-colgroup-element">colgroup</a></code>
+elements and before any <code><a href="tables.html#the-tbody-element">tbody</a></code>, <code><a href="tables.html#the-tfoot-element">tfoot</a></code>, and
+<code><a href="tables.html#the-tr-element">tr</a></code> elements, but only if there are no other
+<code><a href="tables.html#the-thead-element">thead</a></code> elements that are children of the
+<code><a href="tables.html#the-table-element">table</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>Zero or more <code><a href="tables.html#the-tr-element">tr</a></code> and <a href="dom.html#script-supporting-elements-2">script-supporting</a> elements.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>A <code><a href="tables.html#the-thead-element">thead</a></code> element's <a href="syntax.html#syntax-end-tag">end tag</a> can be omitted if
+the <code><a href="tables.html#the-thead-element">thead</a></code> element is immediately followed by a <code><a href="tables.html#the-tbody-element">tbody</a></code> or
+<code><a href="tables.html#the-tfoot-element">tfoot</a></code> element.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-thead>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-thead>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="tables.html#htmltablesectionelement">HTMLTableSectionElement</a></code>, as defined for <code><a href="tables.html#the-tbody-element">tbody</a></code> elements.</dl>
+<p>The <code><a href="tables.html#the-thead-element">thead</a></code> element <a href="dom.html#represents">represents</a> the <a href="tables.html#concept-row-group">block</a> of <a href="tables.html#concept-row">rows</a> that consist of
+the column labels (headers) and any ancillary non-header cells for the parent <code><a href="tables.html#the-table-element">table</a></code>
+element, if the <code><a href="tables.html#the-thead-element">thead</a></code> element has a parent and it is a <code><a href="tables.html#the-table-element">table</a></code>.</p>
+<p>The <code><a href="tables.html#the-thead-element">thead</a></code> element takes part in the <a href="tables.html#table-model">table model</a>.</p>
+<div>
+<p>This example shows a <code><a href="tables.html#the-thead-element">thead</a></code> element being used. Notice the use of both
+<code><a href="tables.html#the-th-element">th</a></code> and <code><a href="tables.html#the-td-element">td</a></code> elements in the <code><a href="tables.html#the-thead-element">thead</a></code> element: the first row is
+the headers, and the second row is an explanation of how to fill in the table.</p>
+<pre><code>&lt;table&gt;
+&lt;caption&gt; School auction sign-up sheet &lt;/caption&gt;
+<strong> &lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;label for=e1&gt;Name&lt;/label&gt;
+&lt;th&gt;&lt;label for=e2&gt;Product&lt;/label&gt;
+&lt;th&gt;&lt;label for=e3&gt;Picture&lt;/label&gt;
+&lt;th&gt;&lt;label for=e4&gt;Price&lt;/label&gt;
+&lt;tr&gt;
+&lt;td&gt;Your name here
+&lt;td&gt;What are you selling?
+&lt;td&gt;Link to a picture
+&lt;td&gt;Your reserve price
+</strong> &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Ms Danus
+&lt;td&gt;Doughnuts
+&lt;td&gt;&lt;img src=&quot;https://example.com/mydoughnuts.png&quot; title=&quot;Doughnuts from Ms Danus&quot;&gt;
+&lt;td&gt;$45
+&lt;tr&gt;
+&lt;td&gt;&lt;input id=e1 type=text name=who required form=f&gt;
+&lt;td&gt;&lt;input id=e2 type=text name=what required form=f&gt;
+&lt;td&gt;&lt;input id=e3 type=url name=pic form=f&gt;
+&lt;td&gt;&lt;input id=e4 type=number step=0.01 min=0 value=0 required form=f&gt;
+&lt;/table&gt;
+&lt;form id=f action=&quot;/auction.cgi&quot;&gt;
+&lt;input type=button name=add value=&quot;Submit&quot;&gt;
+&lt;/form&gt;</code></pre>
+</div>
+<h4 id=the-tfoot-element>The <dfn data-dfn-type=element><code>tfoot</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>As a child of a <code><a href="tables.html#the-table-element">table</a></code> element, after any
+<code><a href="tables.html#the-caption-element">caption</a></code>, <code><a href="tables.html#the-colgroup-element">colgroup</a></code>, <code><a href="tables.html#the-thead-element">thead</a></code>,
+<code><a href="tables.html#the-tbody-element">tbody</a></code>, and <code><a href="tables.html#the-tr-element">tr</a></code> elements, but only if there
+are no other <code><a href="tables.html#the-tfoot-element">tfoot</a></code> elements that are children of the
+<code><a href="tables.html#the-table-element">table</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>Zero or more <code><a href="tables.html#the-tr-element">tr</a></code> and <a href="dom.html#script-supporting-elements-2">script-supporting</a> elements.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>A <code><a href="tables.html#the-tfoot-element">tfoot</a></code> element's <a href="syntax.html#syntax-end-tag">end tag</a> can be omitted if
+there is no more content in the parent element.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-tfoot>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-tfoot>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="tables.html#htmltablesectionelement">HTMLTableSectionElement</a></code>, as defined for <code><a href="tables.html#the-tbody-element">tbody</a></code> elements.</dl>
+<p>The <code><a href="tables.html#the-tfoot-element">tfoot</a></code> element <a href="dom.html#represents">represents</a> the <a href="tables.html#concept-row-group">block</a> of <a href="tables.html#concept-row">rows</a> that consist of
+the column summaries (footers) for the parent <code><a href="tables.html#the-table-element">table</a></code> element, if the
+<code><a href="tables.html#the-tfoot-element">tfoot</a></code> element has a parent and it is a <code><a href="tables.html#the-table-element">table</a></code>.</p>
+<p>The <code><a href="tables.html#the-tfoot-element">tfoot</a></code> element takes part in the <a href="tables.html#table-model">table
+model</a>.</p>
+<h4 id=the-tr-element>The <dfn data-dfn-type=element><code>tr</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>As a child of a <code><a href="tables.html#the-thead-element">thead</a></code> element.<dd>As a child of a <code><a href="tables.html#the-tbody-element">tbody</a></code> element.<dd>As a child of a <code><a href="tables.html#the-tfoot-element">tfoot</a></code> element.<dd>As a child of a <code><a href="tables.html#the-table-element">table</a></code> element, after any
+<code><a href="tables.html#the-caption-element">caption</a></code>, <code><a href="tables.html#the-colgroup-element">colgroup</a></code>, and <code><a href="tables.html#the-thead-element">thead</a></code>
+elements, but only if there are no <code><a href="tables.html#the-tbody-element">tbody</a></code> elements that
+are children of the <code><a href="tables.html#the-table-element">table</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>Zero or more <code><a href="tables.html#the-td-element">td</a></code>, <code><a href="tables.html#the-th-element">th</a></code>, and <a href="dom.html#script-supporting-elements-2">script-supporting</a> elements.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>A <code><a href="tables.html#the-tr-element">tr</a></code> element's <a href="syntax.html#syntax-end-tag">end tag</a> can be omitted if the
+<code><a href="tables.html#the-tr-element">tr</a></code> element is immediately followed by another <code><a href="tables.html#the-tr-element">tr</a></code> element, or if there is
+no more content in the parent element.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-tr>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-tr>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmltablerowelement' data-dfn-type='interface'>HTMLTableRowElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+readonly attribute long <a href='tables.html#dom-tr-rowindex'>rowIndex</a>;
+readonly attribute long <a href='tables.html#dom-tr-sectionrowindex'>sectionRowIndex</a>;
+[SameObject] readonly attribute <a href='https://dom.spec.whatwg.org/#interface-htmlcollection' data-x-internal='htmlcollection'>HTMLCollection</a> <a href='tables.html#dom-tr-cells'>cells</a>;
+<a href='tables.html#htmltablecellelement'>HTMLTableCellElement</a> <a href='tables.html#dom-tr-insertcell'>insertCell</a>(optional long index = -1);
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] undefined <a href='tables.html#dom-tr-deletecell'>deleteCell</a>(long index);
+// <a href='obsolete.html#HTMLTableRowElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>The <code><a href="tables.html#the-tr-element">tr</a></code> element <a href="dom.html#represents">represents</a> a <a href="tables.html#concept-row">row</a> of
+<a href="tables.html#concept-cell">cells</a> in a <a href="tables.html#concept-table">table</a>.</p>
+<p>The <code><a href="tables.html#the-tr-element">tr</a></code> element takes part in the <a href="tables.html#table-model">table model</a>.</p>
+<dl><dt><code><var>tr</var>.<a href="tables.html#dom-tr-rowindex" id=dom-tr-rowindex-dev>rowIndex</a></code></div><dd>
+<p>Returns the position of the row in the table's <code><a href="tables.html#dom-table-rows">rows</a></code>
+list.</p>
+<p>Returns −1 if the element isn't in a table.</p>
+<dt><code><var>tr</var>.<a href="tables.html#dom-tr-sectionrowindex" id=dom-tr-sectionrowindex-dev>sectionRowIndex</a></code><dd>
+<p>Returns the position of the row in the table section's <code><a href="tables.html#dom-tbody-rows">rows</a></code> list.</p>
+<p>Returns −1 if the element isn't in a table section.</p>
+<dt><code><var>tr</var>.<a href="tables.html#dom-tr-cells" id=dom-tr-cells-dev>cells</a></code><dd>
+<p>Returns an <code><a data-x-internal=htmlcollection href=https://dom.spec.whatwg.org/#interface-htmlcollection>HTMLCollection</a></code> of the <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> elements of
+the row.</p>
+<dt><code><var>cell</var> = <var>tr</var>.<a href="tables.html#dom-tr-insertcell" id=dom-tr-insertcell-dev>insertCell</a>([ <var>index</var> ])</code></div><dd>
+<p>Creates a <code><a href="tables.html#the-td-element">td</a></code> element, inserts it into the table row at the position given by the
+argument, and returns the <code><a href="tables.html#the-td-element">td</a></code>.</p>
+<p>The position is relative to the cells in the row. The index −1, which is the default
+if the argument is omitted, is equivalent to inserting at the end of the row.</p>
+<p>If the given position is less than −1 or greater than the number of cells, throws an
+<a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</p>
+<dt><code><var>tr</var>.<a href="tables.html#dom-tr-deletecell" id=dom-tr-deletecell-dev>deleteCell</a>(<var>index</var>)</code><dd>
+<p>Removes the <code><a href="tables.html#the-td-element">td</a></code> or <code><a href="tables.html#the-th-element">th</a></code> element with the given position in the
+row.</p>
+<p>The position is relative to the cells in the row. The index −1 is equivalent to
+deleting the last cell of the row.</p>
+<p>If the given position is less than −1 or greater than the index of the last cell, or
+if there are no cells, throws an <a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</p>
+</dl>
+<div>
+<p>The <dfn id=dom-tr-rowindex data-dfn-type=attribute><code>rowIndex</code></dfn> attribute must, if this element has a parent
+<code><a href="tables.html#the-table-element">table</a></code> element, or a parent <code><a href="tables.html#the-tbody-element">tbody</a></code>, <code><a href="tables.html#the-thead-element">thead</a></code>, or
+<code><a href="tables.html#the-tfoot-element">tfoot</a></code> element and a <em>grandparent</em> <code><a href="tables.html#the-table-element">table</a></code> element, return the index
+of this <code><a href="tables.html#the-tr-element">tr</a></code> element in that <code><a href="tables.html#the-table-element">table</a></code> element's <code><a href="tables.html#dom-table-rows">rows</a></code> collection. If there is no such <code><a href="tables.html#the-table-element">table</a></code> element,
+then the attribute must return −1.</p>
+</div>
+<div>
+<p>The <dfn id=dom-tr-sectionrowindex data-dfn-type=attribute><code>sectionRowIndex</code></dfn> attribute must, if this element has a
+parent <code><a href="tables.html#the-table-element">table</a></code>, <code><a href="tables.html#the-tbody-element">tbody</a></code>, <code><a href="tables.html#the-thead-element">thead</a></code>, or <code><a href="tables.html#the-tfoot-element">tfoot</a></code> element,
+return the index of the <code><a href="tables.html#the-tr-element">tr</a></code> element in the parent element's <code>rows</code> collection (for tables, that's <code><a href="tables.html#htmltableelement">HTMLTableElement</a></code>'s <code><a href="tables.html#dom-table-rows">rows</a></code> collection; for table sections, that's
+<code><a href="tables.html#htmltablesectionelement">HTMLTableSectionElement</a></code>'s <code><a href="tables.html#dom-tbody-rows">rows</a></code>
+collection). If there is no such parent element, then the attribute must return −1.</p>
+</div>
+<div>
+<p>The <dfn id=dom-tr-cells data-dfn-type=attribute><code>cells</code></dfn>
+attribute must return an <code><a data-x-internal=htmlcollection href=https://dom.spec.whatwg.org/#interface-htmlcollection>HTMLCollection</a></code> rooted at this <code><a href="tables.html#the-tr-element">tr</a></code> element, whose
+filter matches only <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> elements that are children of the
+<code><a href="tables.html#the-tr-element">tr</a></code> element.</p>
+</div>
+<div>
+<p>The <dfn id=dom-tr-insertcell data-dfn-type=method><code>insertCell(<var>index</var>)</code></dfn> method must act as
+follows:</p>
+<ol><li><p>If <var>index</var> is less than −1 or greater than the number of elements in
+the <code><a href="tables.html#dom-tr-cells">cells</a></code> collection, then throw an
+<a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Let <var>table cell</var> be the result of <a href=https://dom.spec.whatwg.org/#concept-create-element data-x-internal=create-an-element>creating an
+element</a> given this <code><a href="tables.html#the-tr-element">tr</a></code> element's <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>, "<code>td</code>", and the <a href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>.<li><p>If <var>index</var> is equal to −1 or equal to the number of items in <code><a href="tables.html#dom-tr-cells">cells</a></code> collection, then <a href=https://dom.spec.whatwg.org/#concept-node-append data-x-internal=concept-node-append>append</a> <var>table cell</var> to this <code><a href="tables.html#the-tr-element">tr</a></code>
+element.<li><p>Otherwise, <a href=https://dom.spec.whatwg.org/#concept-node-insert data-x-internal=concept-node-insert>insert</a> <var>table cell</var> as a
+child of this <code><a href="tables.html#the-tr-element">tr</a></code> element, immediately before the <var>index</var>th <code><a href="tables.html#the-td-element">td</a></code>
+or <code><a href="tables.html#the-th-element">th</a></code> element in the <code><a href="tables.html#dom-tr-cells">cells</a></code> collection.<li><p>Return <var>table cell</var>.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-tr-deletecell data-dfn-type=method><code>deleteCell(<var>index</var>)</code></dfn> method must act as
+follows:</p>
+<ol><li><p>If <var>index</var> is less than −1 or greater than or equal to the number of
+elements in the <code><a href="tables.html#dom-tr-cells">cells</a></code> collection, then throw an
+<a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If <var>index</var> is −1, then <a href=https://dom.spec.whatwg.org/#concept-node-remove data-x-internal=concept-node-remove>remove</a>
+the last element in the <code><a href="tables.html#dom-tr-cells">cells</a></code> collection from its
+parent, or do nothing if the <code><a href="tables.html#dom-tr-cells">cells</a></code> collection is
+empty.<li><p>Otherwise, <a href=https://dom.spec.whatwg.org/#concept-node-remove data-x-internal=concept-node-remove>remove</a> the <var>index</var>th element
+in the <code><a href="tables.html#dom-tr-cells">cells</a></code> collection from its parent.</ol>
+</div>
+<h4 id=the-td-element>The <dfn data-dfn-type=element><code>td</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>As a child of a <code><a href="tables.html#the-tr-element">tr</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>A <code><a href="tables.html#the-td-element">td</a></code> element's <a href="syntax.html#syntax-end-tag">end tag</a> can be omitted if the
+<code><a href="tables.html#the-td-element">td</a></code> element is immediately followed by a <code><a href="tables.html#the-td-element">td</a></code> or <code><a href="tables.html#the-th-element">th</a></code> element,
+or if there is no more content in the parent element.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="tables.html#attr-tdth-colspan">colspan</a></code> —  Number of columns that the cell is to span
+<dd><code><a href="tables.html#attr-tdth-rowspan">rowspan</a></code> —  Number of rows that the cell is to span
+<dd><code><a href="tables.html#attr-tdth-headers">headers</a></code> —  The header cells for this cell
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-td>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-td>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmltablecellelement' data-dfn-type='interface'>HTMLTableCellElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>, <a href='common-dom-interfaces.html#xattr-reflectdefault'>ReflectDefault=1</a>, <a href='common-dom-interfaces.html#xattr-reflectrange'>ReflectRange=(1, 1000)</a>] attribute unsigned long <dfn id='dom-tdth-colspan' data-dfn-type='attribute'>colSpan</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>, <a href='common-dom-interfaces.html#xattr-reflectdefault'>ReflectDefault=1</a>, <a href='common-dom-interfaces.html#xattr-reflectrange'>ReflectRange=(0, 65534)</a>] attribute unsigned long <dfn id='dom-tdth-rowspan' data-dfn-type='attribute'>rowSpan</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-tdth-headers'>headers</dfn>;
+readonly attribute long <a href='tables.html#dom-tdth-cellindex'>cellIndex</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString <a href='tables.html#dom-th-scope'>scope</a>; // only conforming for th elements
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-th-abbr' data-dfn-type='attribute'>abbr</dfn>;  // only conforming for th elements
+// <a href='obsolete.html#HTMLTableCellElement-partial'>also has obsolete members</a>
+};</code></pre>
+<p>The
+<code><a href="tables.html#htmltablecellelement">HTMLTableCellElement</a></code> interface is also used for <code><a href="tables.html#the-th-element">th</a></code> elements.</p>
+</dl>
+<p>The <code><a href="tables.html#the-td-element">td</a></code> element <a href="dom.html#represents">represents</a> a data <a href="tables.html#concept-cell">cell</a> in a table.</p>
+<p>The <code><a href="tables.html#the-td-element">td</a></code> element and its <code><a href="tables.html#attr-tdth-colspan">colspan</a></code>, <code><a href="tables.html#attr-tdth-rowspan">rowspan</a></code>, and <code><a href="tables.html#attr-tdth-headers">headers</a></code>
+attributes take part in the <a href="tables.html#table-model">table model</a>.</p>
+<p>User agents, especially in non-visual environments or where displaying the table as a 2D grid
+is impractical, may give the user context for the cell when rendering the contents of a cell; for
+instance, giving its position in the <a href="tables.html#table-model">table model</a>, or listing the cell's header cells
+(as determined by the <a href="tables.html#algorithm-for-assigning-header-cells">algorithm for assigning header cells</a>). When a cell's header
+cells are being listed, user agents may use the value of <code><a href="tables.html#attr-th-abbr">abbr</a></code>
+attributes on those header cells, if any, instead of the contents of the header cells
+themselves.</p>
+<div>
+<p>In this example, we see a snippet of a web application consisting of a grid of editable cells
+(essentially a simple spreadsheet). One of the cells has been configured to show the sum of the
+cells above it. Three have been marked as headings, which use <code><a href="tables.html#the-th-element">th</a></code> elements instead of
+<code><a href="tables.html#the-td-element">td</a></code> elements. A script would attach event handlers to these elements to maintain the
+total.</p>
+<pre><code>&lt;table&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;input value=&quot;Name&quot;&gt;
+&lt;th&gt;&lt;input value=&quot;Paid ($)&quot;&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;input value=&quot;Jeff&quot;&gt;
+&lt;td&gt;&lt;input value=&quot;14&quot;&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;input value=&quot;Britta&quot;&gt;
+&lt;td&gt;&lt;input value=&quot;9&quot;&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;input value=&quot;Abed&quot;&gt;
+&lt;td&gt;&lt;input value=&quot;25&quot;&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;input value=&quot;Shirley&quot;&gt;
+&lt;td&gt;&lt;input value=&quot;2&quot;&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;input value=&quot;Annie&quot;&gt;
+&lt;td&gt;&lt;input value=&quot;5&quot;&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;input value=&quot;Troy&quot;&gt;
+&lt;td&gt;&lt;input value=&quot;5&quot;&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;input value=&quot;Pierce&quot;&gt;
+&lt;td&gt;&lt;input value=&quot;1000&quot;&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;input value=&quot;Total&quot;&gt;
+&lt;td&gt;&lt;output value=&quot;1060&quot;&gt;
+&lt;/table&gt;</code></pre>
+</div>
+<h4 id=the-th-element>The <dfn data-dfn-type=element><code>th</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>As a child of a <code><a href="tables.html#the-tr-element">tr</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>, but with no <code><a href="sections.html#the-header-element">header</a></code>, <code><a href="sections.html#the-footer-element">footer</a></code>,
+<a href="dom.html#sectioning-content-2">sectioning content</a>, or <a href="dom.html#heading-content-2">heading content</a> descendants.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>A <code><a href="tables.html#the-th-element">th</a></code> element's <a href="syntax.html#syntax-end-tag">end tag</a> can be omitted if the
+<code><a href="tables.html#the-th-element">th</a></code> element is immediately followed by a <code><a href="tables.html#the-td-element">td</a></code> or <code><a href="tables.html#the-th-element">th</a></code> element,
+or if there is no more content in the parent element.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="tables.html#attr-tdth-colspan">colspan</a></code> —  Number of columns that the cell is to span
+<dd><code><a href="tables.html#attr-tdth-rowspan">rowspan</a></code> —  Number of rows that the cell is to span
+<dd><code><a href="tables.html#attr-tdth-headers">headers</a></code> —  The header cells for this cell
+<dd><code><a href="tables.html#attr-th-scope">scope</a></code> —  Specifies which cells the header cell applies to
+<dd><code><a href="tables.html#attr-th-abbr">abbr</a></code> —  Alternative label to use for the header cell when referencing the cell in other contexts
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-th>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-th>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="tables.html#htmltablecellelement">HTMLTableCellElement</a></code>, as defined for <code><a href="tables.html#the-td-element">td</a></code> elements.</dl>
+<p>The <code><a href="tables.html#the-th-element">th</a></code> element <a href="dom.html#represents">represents</a> a header <a href="tables.html#concept-cell">cell</a> in a table.</p>
+<p>The <code><a href="tables.html#the-th-element">th</a></code> element may have a <dfn id=attr-th-scope data-dfn-type=element-attr><code>scope</code></dfn> content attribute specified.</p>
+<p>The <code><a href="tables.html#attr-th-scope">scope</a></code> attribute is an <a href="common-microsyntaxes.html#enumerated-attribute">enumerated attribute</a>
+with the following keywords and states:</p>
+<table><thead><tr><th>Keyword
+<th>State
+<th>Brief description
+<tbody><tr><td><dfn id=attr-th-scope-row data-dfn-type=attr-value><code>row</code></dfn>
+<td><dfn id=attr-th-scope-row-state>Row</dfn>
+<td>The header cell applies to some of the subsequent cells in the same row(s).
+<tr><td><dfn id=attr-th-scope-col data-dfn-type=attr-value><code>col</code></dfn>
+<td><dfn id=attr-th-scope-column-state>Column</dfn>
+<td>The header cell applies to some of the subsequent cells in the same column(s).
+<tr><td><dfn id=attr-th-scope-rowgroup data-dfn-type=attr-value><code>rowgroup</code></dfn>
+<td><dfn id=attr-th-scope-rowgroup-state>Row Group</dfn>
+<td>The header cell applies to all the remaining cells in the row group.
+<tr><td><dfn id=attr-th-scope-colgroup data-dfn-type=attr-value><code>colgroup</code></dfn>
+<td><dfn id=attr-th-scope-colgroup-state>Column Group</dfn>
+<td>The header cell applies to all the remaining cells in the column group.
+</table>
+<div>
+<p>The attribute's <i><a href="common-microsyntaxes.html#missing-value-default">missing value default</a></i> and <i><a href="common-microsyntaxes.html#invalid-value-default">invalid value default</a></i> are both the <dfn id=attr-th-scope-auto-state>Auto</dfn> state. (In this state the header cell applies to a
+set of cells selected based on context.)</p>
+</div>
+<p>A <code><a href="tables.html#the-th-element">th</a></code> element's <code><a href="tables.html#attr-th-scope">scope</a></code> attribute must not be in
+the <a href="tables.html#attr-th-scope-rowgroup-state">Row Group</a> state if the element is not anchored in
+a <a href="tables.html#concept-row-group">row group</a>, nor in the <a href="tables.html#attr-th-scope-colgroup-state">Column Group</a> state if the element is not anchored in a
+<a href="tables.html#concept-column-group">column group</a>.
+<p>The <code><a href="tables.html#the-th-element">th</a></code> element may have an <dfn id=attr-th-abbr data-dfn-type=element-attr><code>abbr</code></dfn> content attribute specified. Its value must be an
+alternative label for the header cell, to be used when referencing the cell in other contexts
+(e.g. when describing the header cells that apply to a data cell). It is typically an abbreviated
+form of the full header cell, but can also be an expansion, or merely a different phrasing.</p>
+<p>The <code><a href="tables.html#the-th-element">th</a></code> element and its <code><a href="tables.html#attr-tdth-colspan">colspan</a></code>, <code><a href="tables.html#attr-tdth-rowspan">rowspan</a></code>, <code><a href="tables.html#attr-tdth-headers">headers</a></code>, and
+<code><a href="tables.html#attr-th-scope">scope</a></code> attributes take part in the <a href="tables.html#table-model">table model</a>.</p>
+<div>
+<p>The following example shows how the <code><a href="tables.html#attr-th-scope">scope</a></code> attribute's <code><a href="tables.html#attr-th-scope-rowgroup">rowgroup</a></code> value affects which data cells a header cell
+applies to.</p>
+<p>Here is a markup fragment showing a table:</p>
+<pre><code>&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt; &lt;th&gt; ID &lt;th&gt; Measurement &lt;th&gt; Average &lt;th&gt; Maximum
+&lt;tbody&gt;
+&lt;tr&gt; &lt;td&gt; &lt;th scope=rowgroup&gt; Cats &lt;td&gt; &lt;td&gt;
+&lt;tr&gt; &lt;td&gt; 93 &lt;th&gt; Legs &lt;td&gt; 3.5 &lt;td&gt; 4
+&lt;tr&gt; &lt;td&gt; 10 &lt;th&gt; Tails &lt;td&gt; 1 &lt;td&gt; 1
+&lt;tbody&gt;
+&lt;tr&gt; &lt;td&gt; &lt;th scope=rowgroup&gt; English speakers &lt;td&gt; &lt;td&gt;
+&lt;tr&gt; &lt;td&gt; 32 &lt;th&gt; Legs &lt;td&gt; 2.67 &lt;td&gt; 4
+&lt;tr&gt; &lt;td&gt; 35 &lt;th&gt; Tails &lt;td&gt; 0.33 &lt;td&gt; 1
+&lt;/table&gt;</code></pre>
+<p>This would result in the following table:</p>
+<table><thead><tr><th> ID <th> Measurement <th> Average <th> Maximum
+<tbody><tr><td> <th scope=rowgroup> Cats <td> <td>
+<tr><td> 93 <th> Legs <td> 3.5 <td> 4
+<tr><td> 10 <th> Tails <td> 1 <td> 1
+<tbody><tr><td> <th scope=rowgroup> English speakers <td> <td>
+<tr><td> 32 <th> Legs <td> 2.67 <td> 4
+<tr><td> 35 <th> Tails <td> 0.33 <td> 1
+</table>
+<p>The headers in the first row all apply directly down to the rows in their column.</p>
+<p>The headers with a <code><a href="tables.html#attr-th-scope">scope</a></code> attribute in the <a href="tables.html#attr-th-scope-rowgroup-state">Row Group</a> state apply to all the cells in their row
+group other than the cells in the first column.</p>
+<p>The remaining headers apply just to the cells to the right of them.</p>
+<img src="../images/table-scope-diagram.png" width=459 alt="" height=256>
+</div>
+<h4 id=attributes-common-to-td-and-th-elements>Attributes common to <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> elements</h4>
+<p>The <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> elements may have a <dfn id=attr-tdth-colspan data-dfn-type=element-attr><code>colspan</code></dfn> content attribute specified, whose value must be a
+<a href="common-microsyntaxes.html#valid-non-negative-integer">valid non-negative integer</a> greater than zero and less than or equal to 1000.</p>
+<p>The <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> elements may also have a <dfn id=attr-tdth-rowspan data-dfn-type=element-attr><code>rowspan</code></dfn> content attribute specified,
+whose value must be a <a href="common-microsyntaxes.html#valid-non-negative-integer">valid non-negative integer</a> less than or equal to 65534.  For
+this attribute, the value zero means that the cell is to span all the remaining rows in the row
+group.</p>
+<p>These attributes give the number of columns and rows respectively that the cell is to span.
+These attributes must not be used to overlap cells, as described in the
+description of the <a href="tables.html#table-model">table model</a>.</p>
+<hr>
+<p>The <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> element may have a <dfn id=attr-tdth-headers data-dfn-type=element-attr><code>headers</code></dfn> content attribute specified. The <code><a href="tables.html#attr-tdth-headers">headers</a></code> attribute, if specified, must contain a string
+consisting of an <a href="common-microsyntaxes.html#unordered-set-of-unique-space-separated-tokens">unordered set of unique space-separated tokens</a>, none of which are
+<a href=https://infra.spec.whatwg.org/#string-is data-x-internal=identical-to>identical to</a> another token and each of which must have the value of an <a href=https://dom.spec.whatwg.org/#concept-id data-x-internal=concept-id>ID</a> of a <code><a href="tables.html#the-th-element">th</a></code> element taking part in the same <a href="tables.html#concept-table">table</a> as the <code><a href="tables.html#the-td-element">td</a></code> or <code><a href="tables.html#the-th-element">th</a></code> element (as defined by the <a href="tables.html#table-model">table model</a>).</p>
+<div>
+<p>A <code><a href="tables.html#the-th-element">th</a></code> element with <a href=https://dom.spec.whatwg.org/#concept-id data-x-internal=concept-id>ID</a> <var>id</var> is
+said to be <i>directly targeted</i> by all <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> elements in the
+same <a href="tables.html#concept-table">table</a> that have <code><a href="tables.html#attr-tdth-headers">headers</a></code> attributes whose values include as one of their tokens
+the <a href=https://dom.spec.whatwg.org/#concept-id data-x-internal=concept-id>ID</a> <var>id</var>. A <code><a href="tables.html#the-th-element">th</a></code> element <var>A</var> is said to be <i>targeted</i> by a <code><a href="tables.html#the-th-element">th</a></code> or <code><a href="tables.html#the-td-element">td</a></code> element
+<var>B</var> if either <var>A</var> is <i>directly targeted</i> by <var>B</var> or if there exists an element <var>C</var> that is itself
+<i>targeted</i> by the element <var>B</var> and <var>A</var> is <i>directly
+targeted</i> by <var>C</var>.</p>
+</div>
+<p>A <code><a href="tables.html#the-th-element">th</a></code> element must not be <i>targeted</i> by itself.</p>
+<p>The <code><a href="tables.html#attr-tdth-colspan">colspan</a></code>, <code><a href="tables.html#attr-tdth-rowspan">rowspan</a></code>, and <code><a href="tables.html#attr-tdth-headers">headers</a></code>
+attributes take part in the <a href="tables.html#table-model">table model</a>.</p>
+<hr>
+<dl><dt><code><var>cell</var>.<a href="tables.html#dom-tdth-cellindex" id=dom-tdth-cellindex-dev>cellIndex</a></code><dd>
+<p>Returns the position of the cell in the row's <code><a href="tables.html#dom-tr-cells">cells</a></code> list.
+This does not necessarily correspond to the <var>x</var>-position of the cell in the table,
+since earlier cells might cover multiple rows or columns.</p>
+<p>Returns −1 if the element isn't in a row.</p>
+</dl>
+<div>
+<p>The <dfn id=dom-tdth-cellindex data-dfn-type=attribute><code>cellIndex</code></dfn> IDL attribute must, if the element has a parent
+<code><a href="tables.html#the-tr-element">tr</a></code> element, return the index of the cell's element in the parent element's <code><a href="tables.html#dom-tr-cells">cells</a></code> collection. If there is no such parent element, then the
+attribute must return −1.</p>
+</div>
+<div>
+<p>The <dfn id=dom-th-scope data-dfn-type=attribute><code>scope</code></dfn>
+IDL attribute must <a href="common-dom-interfaces.html#reflect">reflect</a> the content attribute of the same name, <a href="common-dom-interfaces.html#limited-to-only-known-values">limited to
+only known values</a>.</p>
+</div>
+<h4 id=table-processing-model><span id=processing-model-2></span>Processing model</h4>
+<p>The various table elements and their content attributes together define the <dfn id=table-model>table
+model</dfn>.</p>
+<div>
+<p>A <dfn id=concept-table>table</dfn> consists of cells aligned on a two-dimensional grid of
+<dfn id=concept-slots>slots</dfn> with coordinates (<var>x</var>, <var>y</var>). The grid is finite, and is either empty or has one or more slots. If the grid
+has one or more slots, then the <var>x</var> coordinates are always in the range <span>0 ≤ <var>x</var> &lt; <var>x<sub>width</sub></var></span>, and the <var>y</var> coordinates are always in the
+range <span>0 ≤ <var>y</var> &lt; <var>y<sub>height</sub></var></span>. If one or both of <var>x<sub>width</sub></var> and <var>y<sub>height</sub></var> are zero, then the
+table is empty (has no slots). Tables correspond to <code><a href="tables.html#the-table-element">table</a></code> elements.</p>
+<p>A <dfn id=concept-cell>cell</dfn> is a set of slots anchored at a slot (<var>cell<sub>x</sub></var>, <var>cell<sub>y</sub></var>), and with
+a particular <var>width</var> and <var>height</var> such that the cell covers
+all the slots with coordinates (<var>x</var>, <var>y</var>) where <span><var>cell<sub>x</sub></var> ≤ <var>x</var> &lt; <var>cell<sub>x</sub></var>+<var>width</var></span> and <var>cell<sub>y</sub></var> ≤ <var>y</var> &lt; <var>cell<sub>y</sub></var>+<var>height</var>. Cells can either be <em>data cells</em>
+or <em>header cells</em>. Data cells correspond to <code><a href="tables.html#the-td-element">td</a></code> elements, and header cells
+correspond to <code><a href="tables.html#the-th-element">th</a></code> elements. Cells of both types can have zero or more associated
+header cells.</p>
+<p>It is possible, in certain error cases, for two cells to occupy the same slot.</p>
+<p>A <dfn id=concept-row>row</dfn> is a complete set of slots from <var>x</var>=0 to <var>x</var>=<var>x<sub>width</sub></var>-1, for a particular value of <var>y</var>. Rows usually
+correspond to <code><a href="tables.html#the-tr-element">tr</a></code> elements, though a <a href="tables.html#concept-row-group">row group</a>
+can have some implied <a href="tables.html#concept-row">rows</a> at the end in some cases involving
+<a href="tables.html#concept-cell">cells</a> spanning multiple rows.</p>
+<p>A <dfn id=concept-column>column</dfn> is a complete set of slots from <var>y</var>=0 to <var>y</var>=<var>y<sub>height</sub></var>-1, for a particular value of <var>x</var>. Columns can
+correspond to <code><a href="tables.html#the-col-element">col</a></code> elements. In the absence of <code><a href="tables.html#the-col-element">col</a></code> elements, columns are
+implied.</p>
+<p>A <dfn id=concept-row-group>row group</dfn> is a set of <a href="tables.html#concept-row">rows</a> anchored at a slot (0, <var>group<sub>y</sub></var>) with a particular <var>height</var> such that the row group
+covers all the slots with coordinates (<var>x</var>, <var>y</var>) where <span>0 ≤ <var>x</var> &lt; <var>x<sub>width</sub></var></span> and <var>group<sub>y</sub></var> ≤ <var>y</var> &lt; <var>group<sub>y</sub></var>+<var>height</var>. Row groups correspond to
+<code><a href="tables.html#the-tbody-element">tbody</a></code>, <code><a href="tables.html#the-thead-element">thead</a></code>, and <code><a href="tables.html#the-tfoot-element">tfoot</a></code> elements. Not every row is
+necessarily in a row group.</p>
+<p>A <dfn id=concept-column-group>column group</dfn> is a set of <a href="tables.html#concept-column">columns</a> anchored at a slot (<var>group<sub>x</sub></var>, 0) with a particular <var>width</var> such that the column group
+covers all the slots with coordinates (<var>x</var>, <var>y</var>) where <span><var>group<sub>x</sub></var> ≤ <var>x</var> &lt; <var>group<sub>x</sub></var>+<var>width</var></span> and <span>0 ≤ <var>y</var> &lt; <var>y<sub>height</sub></var></span>. Column
+groups correspond to <code><a href="tables.html#the-colgroup-element">colgroup</a></code> elements. Not every column is necessarily in a column
+group.</p>
+</div>
+<p><a href="tables.html#concept-row-group">Row groups</a> cannot overlap each other. Similarly, <a href="tables.html#concept-column-group">column groups</a> cannot overlap each other.</p>
+<p>A <a href="tables.html#concept-cell">cell</a> cannot cover slots that are from two or more <a href="tables.html#concept-row-group">row groups</a>. It is, however, possible for a cell to be in multiple
+<a href="tables.html#concept-column-group">column groups</a>. All the slots that form part of one cell
+are part of zero or one <a href="tables.html#concept-row-group">row groups</a> and zero or more <a href="tables.html#concept-column-group">column groups</a>.</p>
+<p>In addition to <a href="tables.html#concept-cell">cells</a>, <a href="tables.html#concept-column">columns</a>, <a href="tables.html#concept-row">rows</a>, <a href="tables.html#concept-row-group">row groups</a>, and <a href="tables.html#concept-column-group">column
+groups</a>, <a href="tables.html#concept-table">tables</a> can have a <code><a href="tables.html#the-caption-element">caption</a></code> element
+associated with them. This gives the table a heading, or legend.</p>
+<p>A <dfn id=table-model-error>table model error</dfn> is an error with the data represented by <code><a href="tables.html#the-table-element">table</a></code>
+elements and their descendants. Documents must not have table model errors.</p>
+<h5 id=forming-a-table>Forming a table</h5>
+<div>
+<div>
+<p>To determine which elements correspond to which slots in a <a href="tables.html#concept-table">table</a> associated with a <code><a href="tables.html#the-table-element">table</a></code> element, to determine the
+dimensions of the table (<var>x<sub>width</sub></var> and <var>y<sub>height</sub></var>), and to determine if there are any <a href="tables.html#table-model-error">table model errors</a>, user agents must use the following algorithm:</p>
+<ol><li>
+<p>Let <var>x<sub>width</sub></var> be 0.</p>
+<li>
+<p>Let <var>y<sub>height</sub></var> be 0.</p>
+<li>
+<p>Let <var>pending <code><a href="tables.html#the-tfoot-element">tfoot</a></code> elements</var> be a list of <code><a href="tables.html#the-tfoot-element">tfoot</a></code>
+elements, initially empty.</p>
+<li>
+<p>Let <var>the table</var> be the <a href="tables.html#concept-table">table</a> represented
+by the <code><a href="tables.html#the-table-element">table</a></code> element. The <var>x<sub>width</sub></var> and <var>y<sub>height</sub></var> variables give <var>the table</var>'s
+dimensions. <var>The table</var> is initially empty.</p>
+<li>
+<p>If the <code><a href="tables.html#the-table-element">table</a></code> element has no children elements, then return <var>the
+table</var> (which will be empty).</p>
+<li>
+<p>Associate the first <code><a href="tables.html#the-caption-element">caption</a></code> element child of the <code><a href="tables.html#the-table-element">table</a></code> element with
+<var>the table</var>. If there are no such children, then it has no associated
+<code><a href="tables.html#the-caption-element">caption</a></code> element.</p>
+<li>
+<p>Let the <var>current element</var> be the first element child of the
+<code><a href="tables.html#the-table-element">table</a></code> element.</p>
+<p>If a step in this algorithm ever requires the <var>current element</var> to be <dfn id=concept-table-advance>advanced to the next child of the <code>table</code></dfn> when
+there is no such next child, then the user agent must jump to the step labeled <i>end</i>, near
+the end of this algorithm.</p>
+<li>
+<p>While the <var>current element</var> is not one of the following elements, <a href="tables.html#concept-table-advance">advance</a> the <var>current element</var> to the next
+child of the <code><a href="tables.html#the-table-element">table</a></code>:</p>
+<ul><li><code><a href="tables.html#the-colgroup-element">colgroup</a></code><li><code><a href="tables.html#the-thead-element">thead</a></code><li><code><a href="tables.html#the-tbody-element">tbody</a></code><li><code><a href="tables.html#the-tfoot-element">tfoot</a></code><li><code><a href="tables.html#the-tr-element">tr</a></code></ul>
+<li>
+<p>If the <var>current element</var> is a <code><a href="tables.html#the-colgroup-element">colgroup</a></code>, follow these
+substeps:</p>
+<ol><li>
+<p><i>Column groups</i>: Process the <var>current element</var> according to the
+appropriate case below:</p>
+<dl><dt>If the <var>current element</var> has any <code><a href="tables.html#the-col-element">col</a></code> element children<dd>
+<p>Follow these steps:</p>
+<ol><li>
+<p>Let <var>x<sub>start</sub></var> have the value of <span><var>x<sub>width</sub></var></span>.</p>
+<li>
+<p>Let the <var>current column</var> be the first <code><a href="tables.html#the-col-element">col</a></code> element child
+of the <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element.</p>
+<li>
+<p><i>Columns</i>: If the <var>current column</var> <code><a href="tables.html#the-col-element">col</a></code> element has
+a <code><a href="tables.html#attr-col-span">span</a></code> attribute, then parse its value using the
+<a href="common-microsyntaxes.html#rules-for-parsing-non-negative-integers">rules for parsing non-negative integers</a>.</p>
+<p>If the result of parsing the value is not an error or zero, then let <var>span</var> be that value.</p>
+<p>Otherwise, if the <code><a href="tables.html#the-col-element">col</a></code> element has no <code><a href="tables.html#attr-col-span">span</a></code> attribute, or if trying to parse the attribute's value
+resulted in an error or zero, then let <var>span</var> be 1.</p>
+<p>If <var>span</var> is greater than 1000, let it be 1000 instead.</p>
+<li>
+<p>Increase <var>x<sub>width</sub></var> by <var>span</var>.</p>
+<li>
+<p>Let the last <var>span</var> <a href="tables.html#concept-column">columns</a> in
+<var>the table</var> correspond to the <var>current column</var>
+<code><a href="tables.html#the-col-element">col</a></code> element.</p>
+<li>
+<p>If <var>current column</var> is not the last <code><a href="tables.html#the-col-element">col</a></code> element child of
+the <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element, then let the <var>current column</var> be the
+next <code><a href="tables.html#the-col-element">col</a></code> element child of the <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element, and return to
+the step labeled <i>columns</i>.</p>
+<li>
+<p>Let all the last <a href="tables.html#concept-column">columns</a> in <var>the
+table</var> from <span>x=<var>x<sub>start</sub></var></span> to
+<span>x=<var>x<sub>width</sub></var>-1</span> form a new <a href="tables.html#concept-column-group">column group</a>, anchored at the slot (<var>x<sub>start</sub></var>, 0), with width <var>x<sub>width</sub></var>-<var>x<sub>start</sub></var>, corresponding to the <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element.</p>
+</ol>
+<dt>If the <var>current element</var> has no <code><a href="tables.html#the-col-element">col</a></code> element children<dd>
+<ol><li>
+<p>If the <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element has a <code><a href="tables.html#attr-colgroup-span">span</a></code>
+attribute, then parse its value using the <a href="common-microsyntaxes.html#rules-for-parsing-non-negative-integers">rules for parsing non-negative
+integers</a>.</p>
+<p>If the result of parsing the value is not an error or zero, then let <var>span</var> be that value.</p>
+<p>Otherwise, if the <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element has no <code><a href="tables.html#attr-colgroup-span">span</a></code> attribute, or if trying to parse the attribute's
+value resulted in an error or zero, then let <var>span</var> be 1.</p>
+<p>If <var>span</var> is greater than 1000, let it be 1000 instead.</p>
+<li>
+<p>Increase <var>x<sub>width</sub></var> by <var>span</var>.</p>
+<li>
+<p>Let the last <var>span</var> <a href="tables.html#concept-column">columns</a> in
+<var>the table</var> form a new <a href="tables.html#concept-column-group">column
+group</a>, anchored at the slot (<var>x<sub>width</sub></var>-<var>span</var>, 0), with width <var>span</var>, corresponding to the <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element.</p>
+</ol>
+</dl>
+<li>
+<p><a href="tables.html#concept-table-advance">Advance</a> the <var>current element</var>
+to the next child of the <code><a href="tables.html#the-table-element">table</a></code>.</p>
+<li>
+<p>While the <var>current element</var> is not one of the following elements, <a href="tables.html#concept-table-advance">advance</a> the <var>current element</var> to the
+next child of the <code><a href="tables.html#the-table-element">table</a></code>:</p>
+<ul><li><code><a href="tables.html#the-colgroup-element">colgroup</a></code><li><code><a href="tables.html#the-thead-element">thead</a></code><li><code><a href="tables.html#the-tbody-element">tbody</a></code><li><code><a href="tables.html#the-tfoot-element">tfoot</a></code><li><code><a href="tables.html#the-tr-element">tr</a></code></ul>
+<li>
+<p>If the <var>current element</var> is a <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element, jump to the
+step labeled <i>column groups</i> above.</p>
+</ol>
+<li>
+<p>Let <var>y<sub>current</sub></var> be 0.</p>
+<li>
+<p>Let the <var>list of downward-growing cells</var> be an empty list.</p>
+<li>
+<p><i>Rows</i>: While the <var>current element</var> is not one of the following
+elements, <a href="tables.html#concept-table-advance">advance</a> the <var>current
+element</var> to the next child of the <code><a href="tables.html#the-table-element">table</a></code>:</p>
+<ul><li><code><a href="tables.html#the-thead-element">thead</a></code><li><code><a href="tables.html#the-tbody-element">tbody</a></code><li><code><a href="tables.html#the-tfoot-element">tfoot</a></code><li><code><a href="tables.html#the-tr-element">tr</a></code></ul>
+<li>
+<p>If the <var>current element</var> is a <code><a href="tables.html#the-tr-element">tr</a></code>, then run the <a href="tables.html#algorithm-for-processing-rows">algorithm
+for processing rows</a>, <a href="tables.html#concept-table-advance">advance</a> the <var>current element</var> to the next child of the <code><a href="tables.html#the-table-element">table</a></code>, and return to the
+step labeled <i>rows</i>.</p>
+<li>
+<p>Run the <a href="tables.html#algorithm-for-ending-a-row-group">algorithm for ending a row group</a>.</p>
+<li>
+<p>If the <var>current element</var> is a <code><a href="tables.html#the-tfoot-element">tfoot</a></code>, then add that element to
+the list of <var>pending <code><a href="tables.html#the-tfoot-element">tfoot</a></code> elements</var>, <a href="tables.html#concept-table-advance">advance</a> the <var>current element</var> to the next
+child of the <code><a href="tables.html#the-table-element">table</a></code>, and return to the step labeled <i>rows</i>.</p>
+<li>
+<p>The <var>current element</var> is either a <code><a href="tables.html#the-thead-element">thead</a></code> or a
+<code><a href="tables.html#the-tbody-element">tbody</a></code>.</p>
+<p>Run the <a href="tables.html#algorithm-for-processing-row-groups">algorithm for processing row groups</a>.</p>
+<li>
+<p><a href="tables.html#concept-table-advance">Advance</a> the <var>current element</var> to
+the next child of the <code><a href="tables.html#the-table-element">table</a></code>.</p>
+<li>
+<p>Return to the step labeled <i>rows</i>.</p>
+<li>
+<p><i>End</i>: For each <code><a href="tables.html#the-tfoot-element">tfoot</a></code> element in the list of <var>pending
+<code><a href="tables.html#the-tfoot-element">tfoot</a></code> elements</var>, in <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a>, run the <a href="tables.html#algorithm-for-processing-row-groups">algorithm for processing row
+groups</a>.</p>
+<li>
+<p>If there exists a <a href="tables.html#concept-row">row</a> or <a href="tables.html#concept-column">column</a> in <var>the table</var> containing only <a href="tables.html#concept-slots">slots</a> that do not have a <a href="tables.html#concept-cell">cell</a>
+anchored to them, then this is a <a href="tables.html#table-model-error">table model error</a>.</p>
+<li>
+<p>Return <var>the table</var>.</p>
+</ol>
+</div>
+<div>
+<p>The <dfn id=algorithm-for-processing-row-groups>algorithm for processing row groups</dfn>, which is invoked by the set of steps above
+for processing <code><a href="tables.html#the-thead-element">thead</a></code>, <code><a href="tables.html#the-tbody-element">tbody</a></code>, and <code><a href="tables.html#the-tfoot-element">tfoot</a></code> elements, is:</p>
+<ol><li>
+<p>Let <var>y<sub>start</sub></var> have the value of <var>y<sub>height</sub></var>.</p>
+<li>
+<p>For each <code><a href="tables.html#the-tr-element">tr</a></code> element that is a child of the element being processed, in tree
+order, run the <a href="tables.html#algorithm-for-processing-rows">algorithm for processing rows</a>.</p>
+<li>
+<p>If <var>y<sub>height</sub></var> > <var>y<sub>start</sub></var>, then let all the last <a href="tables.html#concept-row">rows</a> in <var>the table</var> from <span>y=<var>y<sub>start</sub></var></span> to <span>y=<var>y<sub>height</sub></var>-1</span> form a new <a href="tables.html#concept-row-group">row
+group</a>, anchored at the slot with coordinate (0, <var>y<sub>start</sub></var>), with height <var>y<sub>height</sub></var>-<var>y<sub>start</sub></var>, corresponding
+to the element being processed.</p>
+<li>
+<p>Run the <a href="tables.html#algorithm-for-ending-a-row-group">algorithm for ending a row group</a>.</p>
+</ol>
+</div>
+<div>
+<p>The <dfn id=algorithm-for-ending-a-row-group>algorithm for ending a row group</dfn>, which is invoked by the set of steps above
+when starting and ending a block of rows, is:</p>
+<ol><li>
+<p>While <var>y<sub>current</sub></var> is less than <var>y<sub>height</sub></var>, follow these steps:</p>
+<ol><li>
+<p>Run the <a href="tables.html#algorithm-for-growing-downward-growing-cells">algorithm for growing downward-growing cells</a>.</p>
+<li>
+<p>Increase <var>y<sub>current</sub></var> by 1.</p>
+</ol>
+<li>
+<p>Empty the <var>list of downward-growing cells</var>.</p>
+</ol>
+</div>
+<div>
+<p>The <dfn id=algorithm-for-processing-rows>algorithm for processing rows</dfn>, which is invoked by the set of steps above for
+processing <code><a href="tables.html#the-tr-element">tr</a></code> elements, is:</p>
+<ol><li>
+<p>If <var>y<sub>height</sub></var> is equal to <var>y<sub>current</sub></var>, then increase <var>y<sub>height</sub></var> by
+1. (<var>y<sub>current</sub></var> is never <em>greater</em> than <var>y<sub>height</sub></var>.)</p>
+<li>
+<p>Let <var>x<sub>current</sub></var> be 0.</p>
+<li>
+<p>Run the <a href="tables.html#algorithm-for-growing-downward-growing-cells">algorithm for growing downward-growing cells</a>.</p>
+<li>
+<p>If the <code><a href="tables.html#the-tr-element">tr</a></code> element being processed has no <code><a href="tables.html#the-td-element">td</a></code> or <code><a href="tables.html#the-th-element">th</a></code>
+element children, then increase <var>y<sub>current</sub></var> by 1, abort
+this set of steps, and return to the algorithm above.</p>
+<li>
+<p>Let <var>current cell</var> be the first <code><a href="tables.html#the-td-element">td</a></code> or <code><a href="tables.html#the-th-element">th</a></code> element child
+in the <code><a href="tables.html#the-tr-element">tr</a></code> element being processed.</p>
+<li>
+<p><i>Cells</i>: While <var>x<sub>current</sub></var> is less than <var>x<sub>width</sub></var> and the slot with coordinate (<var>x<sub>current</sub></var>, <var>y<sub>current</sub></var>) already has a
+cell assigned to it, increase <var>x<sub>current</sub></var> by 1.</p>
+<li>
+<p>If <var>x<sub>current</sub></var> is equal to <var>x<sub>width</sub></var>, increase <var>x<sub>width</sub></var> by 1. (<var>x<sub>current</sub></var> is never <em>greater</em> than <var>x<sub>width</sub></var>.)</p>
+<li>
+<p>If the <var>current cell</var> has a <code><a href="tables.html#attr-tdth-colspan">colspan</a></code>
+attribute, then <a href="common-microsyntaxes.html#rules-for-parsing-non-negative-integers">parse that attribute's
+value</a>, and let <var>colspan</var> be the result.</p>
+<p>If parsing that value failed, or returned zero, or if the attribute is absent, then let <var>colspan</var> be 1, instead.</p>
+<p>If <var>colspan</var> is greater than 1000, let it be 1000 instead.</p>
+<li>
+<p>If the <var>current cell</var> has a <code><a href="tables.html#attr-tdth-rowspan">rowspan</a></code>
+attribute, then <a href="common-microsyntaxes.html#rules-for-parsing-non-negative-integers">parse that attribute's
+value</a>, and let <var>rowspan</var> be the result.</p>
+<p>If parsing that value failed or if the attribute is absent, then let <var>rowspan</var> be 1, instead.</p>
+<p>If <var>rowspan</var> is greater than 65534, let it be 65534 instead.</p>
+<li><p>Let <var>cell grows downward</var> be false.<li><p>If <var>rowspan</var> is zero, then set <var>cell grows downward</var> to true and set
+<var>rowspan</var> to 1.<li>
+<p>If <var>x<sub>width</sub></var> &lt; <var>x<sub>current</sub></var>+<var>colspan</var>, then let <var>x<sub>width</sub></var> be <var>x<sub>current</sub></var>+<var>colspan</var>.</p>
+<li>
+<p>If <var>y<sub>height</sub></var> &lt; <var>y<sub>current</sub></var>+<var>rowspan</var>, then let <var>y<sub>height</sub></var> be <var>y<sub>current</sub></var>+<var>rowspan</var>.</p>
+<li>
+<p>Let the slots with coordinates (<var>x</var>, <var>y</var>) such that <span><var>x<sub>current</sub></var> ≤ <var>x</var> &lt; <var>x<sub>current</sub></var>+<var>colspan</var></span> and <var>y<sub>current</sub></var> ≤ <var>y</var> &lt; <var>y<sub>current</sub></var>+<var>rowspan</var> be covered by a
+new <a href="tables.html#concept-cell">cell</a> <var>c</var>, anchored at (<var>x<sub>current</sub></var>, <var>y<sub>current</sub></var>),
+which has width <var>colspan</var> and height <var>rowspan</var>,
+corresponding to the <var>current cell</var> element.</p>
+<p>If the <var>current cell</var> element is a <code><a href="tables.html#the-th-element">th</a></code> element, let this new
+cell <var>c</var> be a header cell; otherwise, let it be a data cell.</p>
+<p>To establish which header cells apply to the <var>current cell</var> element, use
+the <a href="tables.html#algorithm-for-assigning-header-cells">algorithm for assigning header cells</a> described in the next section.</p>
+<p>If any of the slots involved already had a <a href="tables.html#concept-cell">cell</a> covering
+them, then this is a <a href="tables.html#table-model-error">table model error</a>. Those slots now have two cells
+overlapping.</p>
+<li>
+<p>If <var>cell grows downward</var> is true, then add the tuple {<var>c</var>, <var>x<sub>current</sub></var>, <var>colspan</var>}
+to the <var>list of downward-growing cells</var>.</p>
+<li>
+<p>Increase <var>x<sub>current</sub></var> by <var>colspan</var>.</p>
+<li>
+<p>If <var>current cell</var> is the last <code><a href="tables.html#the-td-element">td</a></code> or <code><a href="tables.html#the-th-element">th</a></code> element child in
+the <code><a href="tables.html#the-tr-element">tr</a></code> element being processed, then increase <var>y<sub>current</sub></var> by 1, abort this set of steps, and return to the algorithm
+above.</p>
+<li>
+<p>Let <var>current cell</var> be the next <code><a href="tables.html#the-td-element">td</a></code> or <code><a href="tables.html#the-th-element">th</a></code> element child
+in the <code><a href="tables.html#the-tr-element">tr</a></code> element being processed.</p>
+<li>
+<p>Return to the step labeled <i>cells</i>.</p>
+</ol>
+</div>
+<div>
+<p>When the algorithms above require the user agent to run the <dfn id=algorithm-for-growing-downward-growing-cells>algorithm for growing
+downward-growing cells</dfn>, the user agent must, for each {<var>cell</var>, <var>cell<sub>x</sub></var>, <var>width</var>} tuple in the <var>list of downward-growing cells</var>, if any, extend the <a href="tables.html#concept-cell">cell</a> <var>cell</var> so that it also covers the slots with
+coordinates (<var>x</var>, <var>y<sub>current</sub></var>), where <span><var>cell<sub>x</sub></var> ≤ <var>x</var> &lt; <var>cell<sub>x</sub></var>+<var>width</var></span>.</p>
+</div>
+</div>
+<h5 id=header-and-data-cell-semantics>Forming relationships between data cells and header cells</h5>
+<div>
+<p>Each cell can be assigned zero or more header cells. The <dfn id=algorithm-for-assigning-header-cells>algorithm for assigning header
+cells</dfn> to a cell <var>principal cell</var> is as follows.</p>
+<ol><li>
+<p>Let <var>header list</var> be an empty list of cells.</p>
+<li>
+<p>Let (<var>principal<sub>x</sub></var>, <var>principal<sub>y</sub></var>) be the coordinate of the slot to which the <var>principal
+cell</var> is anchored.</p>
+<li>
+<dl><dt>If the <var>principal cell</var> has a <code><a href="tables.html#attr-tdth-headers">headers</a></code> attribute specified<dd>
+<ol><li>
+<p>Take the value of the <var>principal cell</var>'s <code><a href="tables.html#attr-tdth-headers">headers</a></code> attribute and <a href=https://infra.spec.whatwg.org/#split-on-ascii-whitespace data-x-internal=split-a-string-on-spaces>split it on ASCII whitespace</a>, letting <var>id list</var> be the
+list of tokens obtained.</p>
+<li>
+<p>For each token in the <var>id list</var>, if the
+first element in the <code><a href="dom.html#document">Document</a></code> with an <a href=https://dom.spec.whatwg.org/#concept-id data-x-internal=concept-id>ID</a> equal to
+the token is a cell in the same <a href="tables.html#concept-table">table</a>, and that cell is not the
+<var>principal cell</var>, then add that cell to <var>header list</var>.</p>
+</ol>
+<dt>If <var>principal cell</var> does not have a <code><a href="tables.html#attr-tdth-headers">headers</a></code> attribute specified<dd>
+<ol><li>
+<p>Let <var>principal<sub>width</sub></var> be the width of the <var>principal cell</var>.</p>
+<li>
+<p>Let <var>principal<sub>height</sub></var> be the height of the <var>principal cell</var>.</p>
+<li>
+<p>For each value of <var>y</var> from <var>principal<sub>y</sub></var> to <var>principal<sub>y</sub></var>+<var>principal<sub>height</sub></var>-1, run
+the <a href="tables.html#internal-algorithm-for-scanning-and-assigning-header-cells">internal algorithm for scanning and assigning header cells</a>, with the <var>principal cell</var>, the <var>header list</var>, the initial coordinate
+(<var>principal<sub>x</sub></var>, <var>y</var>), and the
+increments <span>Δ<var>x</var>=−1</span> and <span>Δ<var>y</var>=0</span>.</p>
+<li>
+<p>For each value of <var>x</var> from <var>principal<sub>x</sub></var> to <var>principal<sub>x</sub></var>+<var>principal<sub>width</sub></var>-1, run
+the <a href="tables.html#internal-algorithm-for-scanning-and-assigning-header-cells">internal algorithm for scanning and assigning header cells</a>, with the <var>principal cell</var>, the <var>header list</var>, the initial coordinate
+(<var>x</var>, <var>principal<sub>y</sub></var>), and the
+increments <span>Δ<var>x</var>=0</span> and <span>Δ<var>y</var>=−1</span>.</p>
+<li>
+<p>If the <var>principal cell</var> is anchored in a <a href="tables.html#concept-row-group">row group</a>, then add all header cells that are <a href="tables.html#row-group-header">row group headers</a> and are anchored in the same row group
+with an <var>x</var>-coordinate less than or equal to <var>principal<sub>x</sub></var>+<var>principal<sub>width</sub></var>-1 and a <var>y</var>-coordinate less than or
+equal to <var>principal<sub>y</sub></var>+<var>principal<sub>height</sub></var>-1 to <var>header
+list</var>.</p>
+<li>
+<p>If the <var>principal cell</var> is anchored in a <a href="tables.html#concept-column-group">column group</a>, then add all header cells that are <a href="tables.html#column-group-header">column group headers</a> and are anchored in the same column
+group with an <var>x</var>-coordinate less than or equal to <var>principal<sub>x</sub></var>+<var>principal<sub>width</sub></var>-1 and a <var>y</var>-coordinate less than or
+equal to <var>principal<sub>y</sub></var>+<var>principal<sub>height</sub></var>-1 to <var>header
+list</var>.</p>
+</ol>
+</dl>
+<li>
+<p>Remove all the <a href="tables.html#empty-cell">empty cells</a> from the <var>header
+list</var>.</p>
+<li>
+<p>Remove any duplicates from the <var>header list</var>.</p>
+<li>
+<p>Remove <var>principal cell</var> from the <var>header list</var> if it is
+there.</p>
+<li>
+<p>Assign the headers in the <var>header list</var> to the <var>principal
+cell</var>.</p>
+</ol>
+</div>
+<div>
+<p>The <dfn id=internal-algorithm-for-scanning-and-assigning-header-cells>internal algorithm for scanning and assigning header cells</dfn>, given a <var>principal cell</var>, a <var>header list</var>, an initial coordinate (<var>initial<sub>x</sub></var>, <var>initial<sub>y</sub></var>),
+and Δ<var>x</var> and Δ<var>y</var> increments, is as follows:</p>
+<ol><li>
+<p>Let <var>x</var> equal <var>initial<sub>x</sub></var>.</p>
+<li>
+<p>Let <var>y</var> equal <var>initial<sub>y</sub></var>.</p>
+<li>
+<p>Let <var>opaque headers</var> be an empty list of cells.</p>
+<li>
+<dl><dt>If <var>principal cell</var> is a header cell<dd><p>Let <var>in header block</var> be true, and let <var>headers from
+current header block</var> be a list of cells containing just the <var>principal
+cell</var>.<dt>Otherwise<dd><p>Let <var>in header block</var> be false and let <var>headers from
+current header block</var> be an empty list of cells.</p>
+</dl>
+<li>
+<p><i>Loop</i>: Increment <var>x</var> by Δ<var>x</var>; increment <var>y</var> by Δ<var>y</var>.</p>
+<p>For each invocation of this algorithm, one of Δ<var>x</var> and
+Δ<var>y</var> will be −1, and the other will be 0.</p>
+<li>
+<p>If either <var>x</var> or <var>y</var> are less than 0, then abort this
+internal algorithm.</p>
+<li>
+<p>If there is no cell covering slot (<var>x</var>, <var>y</var>), or if there
+is more than one cell covering slot (<var>x</var>, <var>y</var>), return to
+the substep labeled <i>loop</i>.</p>
+<li>
+<p>Let <var>current cell</var> be the cell covering slot (<var>x</var>, <var>y</var>).</p>
+<li>
+<dl><dt>If <var>current cell</var> is a header cell<dd>
+<ol><li><p>Set <var>in header block</var> to true.<li><p>Add <var>current cell</var> to <var>headers from current header
+block</var>.<li><p>Let <var>blocked</var> be false.<li>
+<dl><dt>If Δ<var>x</var> is 0<dd>
+<p>If there are any cells in the <var>opaque headers</var> list anchored with the
+same <var>x</var>-coordinate as the <var>current cell</var>, and with
+the same width as <var>current cell</var>, then let <var>blocked</var>
+be true.</p>
+<p>If the <var>current cell</var> is not a <a href="tables.html#column-header">column header</a>, then let
+<var>blocked</var> be true.</p>
+<dt>If Δ<var>y</var> is 0<dd>
+<p>If there are any cells in the <var>opaque headers</var> list anchored with the
+same <var>y</var>-coordinate as the <var>current cell</var>, and with
+the same height as <var>current cell</var>, then let <var>blocked</var>
+be true.</p>
+<p>If the <var>current cell</var> is not a <a href="tables.html#row-header">row header</a>, then let <var>blocked</var> be true.</p>
+</dl>
+<li><p>If <var>blocked</var> is false, then add the <var>current cell</var>
+to the <var>header list</var>.</ol>
+<dt>If <var>current cell</var> is a data cell and <var>in header block</var> is true<dd><p>Set <var>in header block</var> to false. Add all the cells in <var>headers from current header block</var> to the <var>opaque headers</var>
+list, and empty the <var>headers from current header block</var> list.</p>
+</dl>
+<li>
+<p>Return to the step labeled <i>loop</i>.</p>
+</ol>
+</div>
+<div>
+<p>A header cell anchored at the slot with coordinate (<var>x</var>, <var>y</var>) with width
+<var>width</var> and height <var>height</var> is said to be a <dfn id=column-header>column header</dfn> if any of
+the following are true:</p>
+<ul><li><p>the cell's <code><a href="tables.html#attr-th-scope">scope</a></code> attribute is in the <a href="tables.html#attr-th-scope-column-state">Column</a> state; or<li><p>the cell's <code><a href="tables.html#attr-th-scope">scope</a></code> attribute is in the <a href="tables.html#attr-th-scope-auto-state">Auto</a> state, and there are no data cells in any of the
+cells covering slots with <var>y</var>-coordinates <var>y</var> .. <span><var>y</var>+<var>height</var>-1</span>.</ul>
+</div>
+<div>
+<p>A header cell anchored at the slot with coordinate (<var>x</var>, <var>y</var>) with width
+<var>width</var> and height <var>height</var> is said to be a <dfn id=row-header>row header</dfn> if any of the
+following are true:</p>
+<ul><li><p>the cell's <code><a href="tables.html#attr-th-scope">scope</a></code> attribute is in the <a href="tables.html#attr-th-scope-row-state">Row</a> state; or<li><p>the cell's <code><a href="tables.html#attr-th-scope">scope</a></code> attribute is in the <a href="tables.html#attr-th-scope-auto-state">Auto</a> state, the cell is not a <a href="tables.html#column-header">column
+header</a>, and there are no data cells in any of the cells covering slots with
+<var>x</var>-coordinates <var>x</var> .. <var>x</var>+<var>width</var>-1.</ul>
+</div>
+<div>
+<p>A header cell is said to be a <dfn id=column-group-header>column group header</dfn> if its <code><a href="tables.html#attr-th-scope">scope</a></code> attribute is in the <a href="tables.html#attr-th-scope-colgroup-state">Column Group</a> state.</p>
+</div>
+<div>
+<p>A header cell is said to be a <dfn id=row-group-header>row group header</dfn> if its <code><a href="tables.html#attr-th-scope">scope</a></code> attribute is in the <a href="tables.html#attr-th-scope-rowgroup-state">Row Group</a> state.</p>
+</div>
+<div>
+<p>A cell is said to be an <dfn id=empty-cell>empty cell</dfn> if it contains no elements and its <a href=https://dom.spec.whatwg.org/#concept-child-text-content data-x-internal=child-text-content>child
+text content</a>, if any, consists only of <a href=https://infra.spec.whatwg.org/#ascii-whitespace data-x-internal=space-characters>ASCII whitespace</a>.</p>
+</div>
+<h4 id=table-examples>Examples</h4>
+<p><i>This section is non-normative.</i></p>
+<p>The following shows how one might mark up the bottom part of table 45 of the <cite>Smithsonian
+physical tables, Volume 71</cite>:</p>
+<pre><code>&lt;table&gt;
+&lt;caption&gt;Specification values: &lt;b&gt;Steel&lt;/b&gt;, &lt;b&gt;Castings&lt;/b&gt;,
+Ann. A.S.T.M. A27-16, Class B;* P max. 0.06; S max. 0.05.&lt;/caption&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th rowspan=2&gt;Grade.&lt;/th&gt;
+&lt;th rowspan=2&gt;Yield Point.&lt;/th&gt;
+&lt;th colspan=2&gt;Ultimate tensile strength&lt;/th&gt;
+&lt;th rowspan=2&gt;Per cent elong. 50.8&amp;nbsp;mm or 2&amp;nbsp;in.&lt;/th&gt;
+&lt;th rowspan=2&gt;Per cent reduct. area.&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;kg/mm&lt;sup&gt;2&lt;/sup&gt;&lt;/th&gt;
+&lt;th&gt;lb/in&lt;sup&gt;2&lt;/sup&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Hard&lt;/td&gt;
+&lt;td&gt;0.45 ultimate&lt;/td&gt;
+&lt;td&gt;56.2&lt;/td&gt;
+&lt;td&gt;80,000&lt;/td&gt;
+&lt;td&gt;15&lt;/td&gt;
+&lt;td&gt;20&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Medium&lt;/td&gt;
+&lt;td&gt;0.45 ultimate&lt;/td&gt;
+&lt;td&gt;49.2&lt;/td&gt;
+&lt;td&gt;70,000&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;td&gt;25&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Soft&lt;/td&gt;
+&lt;td&gt;0.45 ultimate&lt;/td&gt;
+&lt;td&gt;42.2&lt;/td&gt;
+&lt;td&gt;60,000&lt;/td&gt;
+&lt;td&gt;22&lt;/td&gt;
+&lt;td&gt;30&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+<p>This table could look like this:</p>
+<table id=table-example-1><caption>Specification values: <b>Steel</b>, <b>Castings</b>,
+Ann. A.S.T.M. A27-16, Class B;* P max. 0.06; S max. 0.05.</caption><thead><tr><th rowspan=2>Grade.<th rowspan=2>Yield Point.<th colspan=2>Ultimate tensile strength<th rowspan=2>Per cent elong. 50.8 mm or 2 in.<th rowspan=2>Per cent reduct. area.<tr><th>kg/mm<sup>2</sup><th>lb/in<sup>2</sup><tbody><tr><td>Hard<td>0.45 ultimate<td>56.2<td>80,000<td>15<td>20<tr><td>Medium<td>0.45 ultimate<td>49.2<td>70,000<td>18<td>25<tr><td>Soft<td>0.45 ultimate<td>42.2<td>60,000<td>22<td>30</table>
+<hr>
+<p>The following shows how one might mark up the gross margin table on page 46 of Apple, Inc's
+10-K filing for fiscal year 2008:</p>
+<pre><code>&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;
+&lt;th&gt;2008
+&lt;th&gt;2007
+&lt;th&gt;2006
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;th&gt;Net sales
+&lt;td&gt;$ 32,479
+&lt;td&gt;$ 24,006
+&lt;td&gt;$ 19,315
+&lt;tr&gt;
+&lt;th&gt;Cost of sales
+&lt;td&gt;  21,334
+&lt;td&gt;  15,852
+&lt;td&gt;  13,717
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;th&gt;Gross margin
+&lt;td&gt;$ 11,145
+&lt;td&gt;$  8,154
+&lt;td&gt;$  5,598
+&lt;tfoot&gt;
+&lt;tr&gt;
+&lt;th&gt;Gross margin percentage
+&lt;td&gt;34.3%
+&lt;td&gt;34.0%
+&lt;td&gt;29.0%
+&lt;/table&gt;</code></pre>
+<p>This table could look like this:</p>
+<table><thead><tr><th>
+<th>2008
+<th>2007
+<th>2006
+<tbody><tr><th>Net sales
+<td>$ 32,479
+<td>$ 24,006
+<td>$ 19,315
+<tr><th>Cost of sales
+<td>  21,334
+<td>  15,852
+<td>  13,717
+<tbody><tr><th>Gross margin
+<td>$ 11,145
+<td>$  8,154
+<td>$  5,598
+<tfoot><tr><th>Gross margin percentage
+<td>34.3%
+<td>34.0%
+<td>29.0%
+</table>
+<hr>
+<p>The following shows how one might mark up the operating expenses table from lower on the same
+page of that document:</p>
+<pre><code>&lt;table&gt;
+&lt;colgroup&gt; &lt;col&gt;
+&lt;colgroup&gt; &lt;col&gt; &lt;col&gt; &lt;col&gt;
+&lt;thead&gt;
+&lt;tr&gt; &lt;th&gt; &lt;th&gt;2008 &lt;th&gt;2007 &lt;th&gt;2006
+&lt;tbody&gt;
+&lt;tr&gt; &lt;th scope=rowgroup&gt; Research and development
+&lt;td&gt; $ 1,109 &lt;td&gt; $ 782 &lt;td&gt; $ 712
+&lt;tr&gt; &lt;th scope=row&gt; Percentage of net sales
+&lt;td&gt; 3.4% &lt;td&gt; 3.3% &lt;td&gt; 3.7%
+&lt;tbody&gt;
+&lt;tr&gt; &lt;th scope=rowgroup&gt; Selling, general, and administrative
+&lt;td&gt; $ 3,761 &lt;td&gt; $ 2,963 &lt;td&gt; $ 2,433
+&lt;tr&gt; &lt;th scope=row&gt; Percentage of net sales
+&lt;td&gt; 11.6% &lt;td&gt; 12.3% &lt;td&gt; 12.6%
+&lt;/table&gt;</code></pre>
+<p>This table could look like this:</p>
+<table><thead><tr><th> <th>2008 <th>2007 <th>2006
+<tbody><tr><th scope=rowgroup> Research and development
+<td> $ 1,109 <td> $ 782 <td> $ 712
+<tr><th scope=row> Percentage of net sales
+<td> 3.4% <td> 3.3% <td> 3.7%
+<tbody><tr><th scope=rowgroup> Selling, general, and administrative
+<td> $ 3,761 <td> $ 2,963 <td> $ 2,433
+<tr><th scope=row> Percentage of net sales
+<td> 11.6% <td> 12.3% <td> 12.6%
+</table>
+</body>
+</html>

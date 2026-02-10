@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+<li><a href="system-state.html#cookies">Cookies</a><li><a href="system-state.html#pdf-viewing-support">PDF viewing support</a></ol></ol></ol></ol><h3 id=system-state-and-capabilities>System state and capabilities</h3>
+<h4 id=the-navigator-object>The <code><a href="system-state.html#navigator">Navigator</a></code> object</h4></div>
+<p>Instances of <code><a href="system-state.html#navigator">Navigator</a></code> represent the identity and state of the user agent (the
+client). It has also been used as a generic global under which various APIs are located, but this
+is not precedent to build upon. Instead use the <code><a href="webappapis.html#windoworworkerglobalscope">WindowOrWorkerGlobalScope</a></code> mixin or
+equivalent.</p>
+<pre><code>[Exposed=Window]
+interface <dfn id='navigator' data-dfn-type='interface'>Navigator</dfn> {
+// objects implementing this interface also implement the interfaces given below
+};
+<a href='system-state.html#navigator'>Navigator</a> includes <a href='system-state.html#navigatorid'>NavigatorID</a>;
+<a href='system-state.html#navigator'>Navigator</a> includes <a href='system-state.html#navigatorlanguage'>NavigatorLanguage</a>;
+<a href='system-state.html#navigator'>Navigator</a> includes <a href='system-state.html#navigatoronline'>NavigatorOnLine</a>;
+<a href='system-state.html#navigator'>Navigator</a> includes <a href='system-state.html#navigatorcontentutils'>NavigatorContentUtils</a>;
+<a href='system-state.html#navigator'>Navigator</a> includes <a href='system-state.html#navigatorcookies'>NavigatorCookies</a>;
+<a href='system-state.html#navigator'>Navigator</a> includes <a href='system-state.html#navigatorplugins'>NavigatorPlugins</a>;
+<a href='system-state.html#navigator'>Navigator</a> includes <a href='workers.html#navigatorconcurrenthardware'>NavigatorConcurrentHardware</a>;</code></pre>
+<p>These interface mixins are defined separately so that <code><a href="workers.html#workernavigator">WorkerNavigator</a></code> can reuse parts of
+the <code><a href="system-state.html#navigator">Navigator</a></code> interface.</p>
+<div>
+<p>Each <code><a href="nav-history-apis.html#window">Window</a></code> has an <dfn id=associated-navigator>associated <code>Navigator</code></dfn>, which is a <code><a href="system-state.html#navigator">Navigator</a></code>
+object. Upon creation of the <code><a href="nav-history-apis.html#window">Window</a></code> object, its <a href="system-state.html#associated-navigator">associated <code>Navigator</code></a> must be
+set to a <a href=https://webidl.spec.whatwg.org/#new data-x-internal=new>new</a> <code><a href="system-state.html#navigator">Navigator</a></code> object created in the <code><a href="nav-history-apis.html#window">Window</a></code> object's <a href="webappapis.html#concept-relevant-realm">relevant realm</a>.</p>
+</div>
+</div><div>
+<p>The <dfn id=dom-navigator data-dfn-type=attribute><code>navigator</code></dfn> and <dfn id=dom-clientinformation data-dfn-type=attribute><code>clientInformation</code></dfn> getter steps are to return
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="system-state.html#associated-navigator">associated <code>Navigator</code></a>.
+</div>
+<h5 id=client-identification>Client identification</h5>
+<pre><code>interface mixin <dfn id='navigatorid' data-dfn-type='interface'>NavigatorID</dfn> {
+readonly attribute DOMString <a href='system-state.html#dom-navigator-appcodename'>appCodeName</a>; // constant &quot;Mozilla&quot;
+readonly attribute DOMString <a href='system-state.html#dom-navigator-appname'>appName</a>; // constant &quot;Netscape&quot;
+readonly attribute DOMString <a href='system-state.html#dom-navigator-appversion'>appVersion</a>;
+readonly attribute DOMString <a href='system-state.html#dom-navigator-platform'>platform</a>;
+readonly attribute DOMString <a href='system-state.html#dom-navigator-product'>product</a>; // constant &quot;Gecko&quot;
+[Exposed=Window] readonly attribute DOMString <a href='system-state.html#dom-navigator-productsub'>productSub</a>;
+readonly attribute DOMString <a href='system-state.html#dom-navigator-useragent'>userAgent</a>;
+[Exposed=Window] readonly attribute DOMString <a href='system-state.html#dom-navigator-vendor'>vendor</a>;
+[Exposed=Window] readonly attribute DOMString <a href='system-state.html#dom-navigator-vendorsub'>vendorSub</a>; // constant &quot;&quot;
+};</code></pre>
+<p>In certain cases, despite the best efforts of the entire industry, web browsers have bugs and
+limitations that web authors are forced to work around.</p>
+<p>This section defines a collection of attributes that can be used to determine, from script, the
+kind of user agent in use, in order to work around these issues.</p>
+<p>The user agent has a <dfn id=concept-navigator-compatibility-mode>navigator compatibility
+mode</dfn>, which is either <i>Chrome</i>, <i>Gecko</i>, or <i>WebKit</i>.</p>
+<p>The <a href="system-state.html#concept-navigator-compatibility-mode">navigator compatibility
+mode</a> constrains the <code><a href="system-state.html#navigatorid">NavigatorID</a></code> mixin to the combinations of attribute
+values and presence of <code><a href="system-state.html#dom-navigator-taintenabled">taintEnabled()</a></code> and <code><a href="system-state.html#dom-navigator-oscpu">oscpu</a></code> that are known to be compatible with existing web
+content.</p>
+<p>Client detection should always be limited to detecting known current versions; future versions
+and unknown versions should always be assumed to be fully compliant.</p>
+<dl><dt><code><var>self</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-appcodename" id=dom-navigator-appcodename-dev>appCodeName</a></code><dd><p>Returns the string "<code>Mozilla</code>".<dt><code><var>self</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-appname" id=dom-navigator-appname-dev>appName</a></code><dd><p>Returns the string "<code>Netscape</code>".<dt><code><var>self</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-appversion" id=dom-navigator-appversion-dev>appVersion</a></code><dd><p>Returns the version of the browser.<dt><code><var>self</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-platform" id=dom-navigator-platform-dev>platform</a></code><dd><p>Returns the name of the platform.<dt><code><var>self</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-product" id=dom-navigator-product-dev>product</a></code><dd><p>Returns the string "<code>Gecko</code>".<dt><code><var>window</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-productsub" id=dom-navigator-productsub-dev>productSub</a></code><dd><p>Returns either the string "<code>20030107</code>", or the string "<code>20100101</code>".<dt><code><var>self</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-useragent" id=dom-navigator-useragent-dev>userAgent</a></code></div><dd><p>Returns the complete `<code>User-Agent</code>` header.<dt><code><var>window</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-vendor" id=dom-navigator-vendor-dev>vendor</a></code><dd><p>Returns either the empty string, the string "<code>Apple Computer, Inc.</code>",
+or the string "<code>Google Inc.</code>".<dt><code><var>window</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-vendorsub" id=dom-navigator-vendorsub-dev>vendorSub</a></code><dd><p>Returns the empty string.</dl>
+<div>
+<p>The <dfn id=dom-navigator-appcodename data-dfn-type=attribute><code>appCodeName</code></dfn> getter steps are to return
+"<code>Mozilla</code>".</p>
+</div>
+<div>
+<p>The <dfn id=dom-navigator-appname data-dfn-type=attribute><code>appName</code></dfn>
+getter steps are to return "<code>Netscape</code>".</p>
+</div>
+<div>
+<p>The <dfn id=dom-navigator-appversion data-dfn-type=attribute><code>appVersion</code></dfn> getter steps are:</p>
+<ol><li><p>Let <var>userAgent</var> be <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#relevant-settings-object">relevant settings object</a>'s
+<a href=https://fetch.spec.whatwg.org/#environment-default-user-agent-value data-x-internal=environment-default-user-agent-value>environment default `<code>User-Agent</code>`
+value</a>.<li><p>If <var>userAgent</var> does not start with `<code>Mozilla/5.0 (</code>`, then
+return the empty string.<li><p>Let <var>trail</var> be the substring of <var>userAgent</var>, <a href=https://infra.spec.whatwg.org/#isomorphic-decode data-x-internal=isomorphic-decode>isomorphic decoded</a>, that follows the "<code>Mozilla/</code>" prefix.<li>
+<dl><dt>If the <a href="system-state.html#concept-navigator-compatibility-mode">navigator compatibility
+mode</a> is <i>Chrome</i> or <i>WebKit</i><dd><p>Return <var>trail</var>.<dt>If the <a href="system-state.html#concept-navigator-compatibility-mode">navigator compatibility
+mode</a> is <i>Gecko</i><dd>
+<p>If <var>trail</var> starts with "<code>5.0 (Windows</code>", then return "<code>5.0 (Windows)</code>".</p>
+<p>Otherwise, return the prefix of <var>trail</var> up to but not including the first U+003B
+(;), concatenated with the character U+0029 RIGHT PARENTHESIS. For example, "<code>5.0 (Macintosh)</code>", "<code>5.0 (Android 10)</code>", or "<code>5.0 (X11)</code>".</p>
+</dl>
+</ol>
+</div>
+<div>
+<p>The <dfn id=dom-navigator-platform data-dfn-type=attribute><code>platform</code></dfn>
+getter steps are to return a string representing the platform on which the
+browser is executing (e.g. "<code>MacIntel</code>", "<code>Win32</code>",
+"<code>Linux x86_64</code>", "<code>Linux armv81</code>") or, for privacy and
+compatibility, a string that is commonly returned on another platform.</p>
+</div>
+<div>
+<p>The <dfn id=dom-navigator-product data-dfn-type=attribute><code>product</code></dfn>
+getter steps are to return "<code>Gecko</code>".</p>
+</div>
+<div>
+<p>The <dfn id=dom-navigator-productsub data-dfn-type=attribute><code>productSub</code></dfn>
+getter steps are to return the appropriate string from the following list:</p>
+<dl><dt>If the <a href="system-state.html#concept-navigator-compatibility-mode">navigator compatibility
+mode</a> is <i>Chrome</i> or <i>WebKit</i><dd><p>The string "<code>20030107</code>".<dt>If the <a href="system-state.html#concept-navigator-compatibility-mode">navigator compatibility
+mode</a> is <i>Gecko</i><dd><p>The string "<code>20100101</code>".</dl>
+</div>
+<div>
+<p>The <dfn id=dom-navigator-useragent data-dfn-type=attribute><code>userAgent</code></dfn>
+getter steps are to return <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#relevant-settings-object">relevant settings object</a>'s <a href=https://fetch.spec.whatwg.org/#environment-default-user-agent-value data-x-internal=environment-default-user-agent-value>environment default `<code>User-Agent</code>` value</a>.</p>
+</div>
+<div>
+<p>The <dfn id=dom-navigator-vendor data-dfn-type=attribute><code>vendor</code></dfn>
+getter steps are to return the appropriate string from the following list:</p>
+<dl><dt>If the <a href="system-state.html#concept-navigator-compatibility-mode">navigator compatibility
+mode</a> is <i>Chrome</i><dd><p>The string "<code>Google Inc.</code>".<dt>If the <a href="system-state.html#concept-navigator-compatibility-mode">navigator compatibility
+mode</a> is <i>Gecko</i><dd><p>The empty string.<dt>If the <a href="system-state.html#concept-navigator-compatibility-mode">navigator compatibility
+mode</a> is <i>WebKit</i><dd><p>The string "<code>Apple Computer, Inc.</code>".</dl>
+</div>
+<div>
+<p>The <dfn id=dom-navigator-vendorsub data-dfn-type=attribute><code>vendorSub</code></dfn>
+getter steps are to return the empty string.</p>
+</div>
+<p>If the <a href="system-state.html#concept-navigator-compatibility-mode">navigator compatibility mode</a>
+is <i>Gecko</i>, then the user agent must also support the following partial interface:</p>
+<pre><code>partial interface mixin <a href='system-state.html#navigatorid' id='NavigatorID-partial'>NavigatorID</a> {
+[Exposed=Window] boolean <a href='system-state.html#dom-navigator-taintenabled'>taintEnabled</a>(); // constant false
+[Exposed=Window] readonly attribute DOMString <a href='system-state.html#dom-navigator-oscpu'>oscpu</a>;
+};</code></pre>
+<div>
+<p>The <dfn id=dom-navigator-taintenabled data-dfn-type=method><code>taintEnabled()</code></dfn> method must return false.</p>
+</div>
+<div>
+<p>The <dfn id=dom-navigator-oscpu data-dfn-type=attribute><code>oscpu</code></dfn> attribute's getter must return
+either the empty string or a string representing the platform on which the browser is executing,
+e.g. "<code>Windows NT 10.0; Win64; x64</code>", "<code>Linux
+x86_64</code>".</p>
+</div>
+<p>
+<a href=https://infra.spec.whatwg.org/#tracking-vector data-x-internal=tracking-vector><img width=46 alt="(This is a tracking vector.)" src=https://resources.whatwg.org/tracking-vector.svg height=64></a>
+Any information in this API that varies from user to user can be used to profile the user. In
+fact, if enough such information is available, a user can actually be uniquely identified. For
+this reason, user agent implementers are strongly urged to include as little information in this
+API as possible.</p>
+<h5 id=language-preferences>Language preferences</h5>
+<pre><code>interface mixin <dfn id='navigatorlanguage' data-dfn-type='interface'>NavigatorLanguage</dfn> {
+readonly attribute DOMString <a href='system-state.html#dom-navigator-language'>language</a>;
+readonly attribute FrozenArray&lt;DOMString&gt; <a href='system-state.html#dom-navigator-languages'>languages</a>;
+};</code></pre>
+<dl><dt><code><var>self</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-language" id=dom-navigator-language-dev>language</a></code></div><dd><p>Returns a language tag representing the user's preferred language.<dt><code><var>self</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-languages" id=dom-navigator-languages-dev>languages</a></code></div><dd>
+<p>Returns an array of language tags representing the user's preferred languages, with the most
+preferred language first.</p>
+<p>The most preferred language is the one returned by <code><a href="system-state.html#dom-navigator-language">navigator.language</a></code>.</p>
+</dl>
+<p>A <code><a href="indices.html#event-languagechange">languagechange</a></code> event is fired at the
+<code><a href="nav-history-apis.html#window">Window</a></code> or <code><a href="workers.html#workerglobalscope">WorkerGlobalScope</a></code> object when the user agent's understanding
+of what the user's preferred languages are changes.</p>
+<div>
+<p>The <dfn id=dom-navigator-language data-dfn-type=attribute><code>language</code></dfn> getter steps are:</p>
+<ol><li>Let <var>emulatedLanguage</var> be the <a href=https://w3c.github.io/webdriver-bidi/#webdriver-bidi-emulated-language data-x-internal=webdriver-bidi-emulated-language>WebDriver BiDi emulated language</a> for
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#relevant-settings-object">relevant settings object</a>.<li>If <var>emulatedLanguage</var> is not null, return <var>emulatedLanguage</var>.<li>Return a valid BCP 47 language tag representing either <a href="system-state.html#a-plausible-language">a plausible language</a> or
+the user's most preferred language. <a href="references.html#refsBCP47">[BCP47]</a></ol>
+</div>
+<div>
+<p>The <dfn id=dom-navigator-languages data-dfn-type=attribute><code>languages</code></dfn> getter steps are:</p>
+<ol><li>Let <var>emulatedLanguage</var> be the <a href=https://w3c.github.io/webdriver-bidi/#webdriver-bidi-emulated-language data-x-internal=webdriver-bidi-emulated-language>WebDriver BiDi emulated language</a> for
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#relevant-settings-object">relevant settings object</a>.<li>If <var>emulatedLanguage</var> is not null, return a <a href=https://webidl.spec.whatwg.org/#dfn-frozen-array-type data-x-internal=frozen-array>frozen array</a> containing
+<var>emulatedLanguage</var>.<li>Return a <a href=https://webidl.spec.whatwg.org/#dfn-frozen-array-type data-x-internal=frozen-array>frozen array</a> of valid BCP 47 language tags representing either one or
+more <a href="system-state.html#a-plausible-language">plausible languages</a>, or the user's preferred
+languages, ordered by preference with the most preferred language first. <a href="references.html#refsBCP47">[BCP47]</a></ol>
+<p>The same object must be returned until the user agent needs to return different values, or
+values in a different order, or <var>emulatedLanguage</var> is updated.</p>
+</div>
+<div>
+<p>Whenever the user agent needs to make the <code><a href="system-state.html#dom-navigator-languages">navigator.languages</a></code> attribute of a <code><a href="nav-history-apis.html#window">Window</a></code>
+or <code><a href="workers.html#workerglobalscope">WorkerGlobalScope</a></code> object <var>global</var> return a new set of language tags,
+the user agent must <a href="webappapis.html#queue-a-global-task">queue a global task</a> on the <a href="webappapis.html#dom-manipulation-task-source">DOM manipulation task
+source</a> given <var>global</var> to <a href=https://dom.spec.whatwg.org/#concept-event-fire data-x-internal=concept-event-fire>fire an event</a>
+named <code><a href="indices.html#event-languagechange">languagechange</a></code> at <var>global</var>, and wait
+until that task begins to be executed before actually returning a new value.</p>
+</div>
+<p>To determine <dfn id=a-plausible-language>a plausible language</dfn>, the user agent should bear in mind the following:</p>
+<ul><li>
+<a href=https://infra.spec.whatwg.org/#tracking-vector data-x-internal=tracking-vector><img width=46 alt="(This is a tracking vector.)" src=https://resources.whatwg.org/tracking-vector.svg height=64></a>
+Any information in this API that varies from user to user can be used to profile or identify the
+user.<li>If the user is not using a service that obfuscates the user's point of origin (e.g. the Tor
+anonymity network), then the value that is least likely to distinguish the user from other users
+with similar origins (e.g. from the same IP address block) is the language used by the majority
+of such users. <a href="references.html#refsTOR">[TOR]</a><li>If the user is using an anonymizing service, then the value "<code>en-US</code>" is
+suggested; if all users of the service use that same value, that reduces the possibility of
+distinguishing the users from each other.</ul>
+<p>
+<a href=https://infra.spec.whatwg.org/#tracking-vector data-x-internal=tracking-vector><img width=46 alt="(This is a tracking vector.)" src=https://resources.whatwg.org/tracking-vector.svg height=64></a>
+To avoid introducing any more fingerprinting vectors, user agents should use the same list for the
+APIs defined in this function as for the HTTP `<code><a data-x-internal=http-accept-language href=https://httpwg.org/specs/rfc7231.html#header.accept-language>Accept-Language</a></code>` header.</p>
+<h5 id=navigator.online><span id=browser-state></span>Browser state</h5>
+<pre><code>interface mixin <dfn id='navigatoronline' data-dfn-type='interface'>NavigatorOnLine</dfn> {
+readonly attribute boolean <a href='system-state.html#dom-navigator-online'>onLine</a>;
+};</code></pre>
+<dl><dt><code><var>self</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-online" id=dom-navigator-online-dev>onLine</a></code></div><dd>
+<p>Returns false if the user agent is definitely offline (disconnected from the network).
+Returns true if the user agent might be online.</p>
+<p>The events <code><a href="indices.html#event-online">online</a></code> and <code><a href="indices.html#event-offline">offline</a></code> are fired when the value of this attribute changes.</p>
+</dl>
+<div>
+<p>The <dfn id=dom-navigator-online data-dfn-type=attribute><code>onLine</code></dfn> getter steps are to return true if
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#relevant-settings-object">relevant settings object</a> <a href=https://fetch.spec.whatwg.org/#is-offline data-x-internal=is-offline>is offline</a> is false;
+otherwise false.</p>
+</div>
+<div>
+<p>When the value that would be returned by the <code><a href="system-state.html#dom-navigator-online">navigator.onLine</a></code> attribute of a <code><a href="nav-history-apis.html#window">Window</a></code> or
+<code><a href="workers.html#workerglobalscope">WorkerGlobalScope</a></code> <var>global</var> changes from true to false, the user agent must
+<a href="webappapis.html#queue-a-global-task">queue a global task</a> on the <a href="webappapis.html#networking-task-source">networking task source</a> given
+<var>global</var> to <a href=https://dom.spec.whatwg.org/#concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code><a href="indices.html#event-offline">offline</a></code> at <var>global</var>.</p>
+</div>
+<div>
+<p>On the other hand, when the value that would be returned by the <code><a href="system-state.html#dom-navigator-online">navigator.onLine</a></code> attribute of a <code><a href="nav-history-apis.html#window">Window</a></code> or
+<code><a href="workers.html#workerglobalscope">WorkerGlobalScope</a></code> <var>global</var> changes from false to true, the user agent must
+<a href="webappapis.html#queue-a-global-task">queue a global task</a> on the <a href="webappapis.html#networking-task-source">networking task source</a> given
+<var>global</var> to <a href=https://dom.spec.whatwg.org/#concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code><a href="indices.html#event-online">online</a></code> at the <code><a href="nav-history-apis.html#window">Window</a></code> or <code><a href="workers.html#workerglobalscope">WorkerGlobalScope</a></code>
+object.</p>
+</div>
+<p>This attribute is inherently unreliable. A computer can be connected to a network
+without having Internet access.</p>
+<div>
+<p>In this example, an indicator is updated as the browser goes online and offline.</p>
+<pre><code>&lt;!DOCTYPE HTML&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;title&gt;Online status&lt;/title&gt;
+&lt;script&gt;
+function updateIndicator() {
+document.getElementById(&apos;indicator&apos;).textContent = navigator.onLine ? &apos;online&apos; : &apos;offline&apos;;
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body onload=&quot;updateIndicator()&quot; ononline=&quot;updateIndicator()&quot; onoffline=&quot;updateIndicator()&quot;&gt;
+&lt;p&gt;The network is: &lt;span id=&quot;indicator&quot;&gt;(state unknown)&lt;/span&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<h5 id=custom-handlers>Custom scheme handlers: the <code><a href="system-state.html#dom-navigator-registerprotocolhandler">registerProtocolHandler()</a></code> method</h5></div>
+<pre><code>interface mixin <dfn id='navigatorcontentutils' data-dfn-type='interface'>NavigatorContentUtils</dfn> {
+[SecureContext] undefined <a href='system-state.html#dom-navigator-registerprotocolhandler'>registerProtocolHandler</a>(DOMString scheme, USVString url);
+[SecureContext] undefined <a href='system-state.html#dom-navigator-unregisterprotocolhandler'>unregisterProtocolHandler</a>(DOMString scheme, USVString url);
+};</code></pre>
+<dl><dt><code><var>window</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-registerprotocolhandler" id=dom-navigator-registerprotocolhandler-dev>registerProtocolHandler</a>(<var>scheme</var>, <var>url</var>)</code><dd>
+<p>Registers a handler for <var>scheme</var> at <var>url</var>. For example, an online telephone
+messaging service could register itself as a handler of the <code><a data-x-internal=sms-protocol href=https://www.rfc-editor.org/rfc/rfc5724#section-2>sms:</a></code> scheme, so that if the user clicks on such a link, they are given the
+opportunity to use that web site. <a href="references.html#refsSMS">[SMS]</a></p>
+<p>The string "<code>%s</code>" in <var>url</var> is used as a placeholder for where
+to put the URL of the content to be handled.</p>
+<p>Throws a <a href=https://webidl.spec.whatwg.org/#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> if the user
+agent blocks the registration (this might happen if trying to register as a handler for "<code>http</code>", for instance).</p>
+<p>Throws a <a href=https://webidl.spec.whatwg.org/#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> if the "<code>%s</code>" string is missing in <var>url</var>.</p>
+<dt><code><var>window</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-unregisterprotocolhandler" id=dom-navigator-unregisterprotocolhandler-dev>unregisterProtocolHandler</a>(<var>scheme</var>, <var>url</var>)</code></div><dd>
+<p>Unregisters the handler given by the arguments.</p>
+<p>Throws a <a href=https://webidl.spec.whatwg.org/#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> if the user
+agent blocks the deregistration (this might happen if with invalid schemes, for instance).</p>
+<p>Throws a <a href=https://webidl.spec.whatwg.org/#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> if the "<code>%s</code>" string is missing in <var>url</var>.</p>
+</dl>
+<div>
+<p>The <dfn id=dom-navigator-registerprotocolhandler data-dfn-type=method><code>registerProtocolHandler(<var>scheme</var>,
+<var>url</var>)</code></dfn> method steps are:</p>
+<ol><li><p>Let (<var>normalizedScheme</var>, <var>normalizedURLString</var>) be the result of running
+<a href="system-state.html#normalize-protocol-handler-parameters">normalize protocol handler parameters</a> with <var>scheme</var>, <var>url</var>, and
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#relevant-settings-object">relevant settings object</a>.<li>
+<p><a href="infrastructure.html#in-parallel">In parallel</a>: <dfn id=protocol-handler-registration>register a
+protocol handler</dfn> for <var>normalizedScheme</var> and <var>normalizedURLString</var>. User
+agents may, within the constraints described, do whatever they like. A user agent could, for
+instance, prompt the user and offer the user the opportunity to add the site to a shortlist of
+handlers, or make the handlers their default, or cancel the request. User agents could also
+silently collect the information, providing it only when relevant to the user.</p>
+<p>User agents should keep track of which sites have registered handlers (even if the user has
+declined such registrations) so that the user is not repeatedly prompted with the same
+request.</p>
+<p>If the <a href="system-state.html#registerprotocolhandler()-automation-mode"><code>registerProtocolHandler()</code> automation
+mode</a> of <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#concept-relevant-global">relevant global object</a>'s <a href="nav-history-apis.html#concept-document-window">associated <code>Document</code></a> is not "<dfn id=rph-automation-mode-none><code>none</code></dfn>", the user agent should first verify that it
+is in an automation context (see <as-security-considerations" href=https://w3c.github.io/webdriver/#security data-x-internal="webdriver's-security-considerations">WebDriver's security considerations</a>). The user
+agent should then bypass the above communication of information and gathering of user consent,
+and instead do the following based on the value of the <a href="system-state.html#registerprotocolhandler()-automation-mode"><code>registerProtocolHandler()</code> automation
+mode</a>:</p>
+<dl><dt>"<dfn id=rph-automation-mode-auto-accept><code>autoAccept</code></dfn>"<dd><p>Act as if the user has seen the registration details and accepted the request.<dt>"<dfn id=rph-automation-mode-auto-reject><code>autoReject</code></dfn>"<dd><p>Act as if the user has seen the registration details and rejected the request.</dl>
+<p>When the <dfn id=protocol-handler-invocation>user agent uses this handler</dfn> for a <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> <var>inputURL</var>:</p>
+<ol><li><p><a href=https://infra.spec.whatwg.org/#assert data-x-internal=assert>Assert</a>: <var>inputURL</var>'s <a href=https://url.spec.whatwg.org/#concept-url-scheme data-x-internal=concept-url-scheme>scheme</a> is <var>normalizedScheme</var>.<li><p><a href=https://url.spec.whatwg.org/#set-the-username data-x-internal=set-the-username>Set the username</a> given <var>inputURL</var> and
+the empty string.<li><p><a href=https://url.spec.whatwg.org/#set-the-password data-x-internal=set-the-password>Set the password</a> given <var>inputURL</var> and
+the empty string.<li><p>Let <var>inputURLString</var> be the <a href=https://url.spec.whatwg.org/#concept-url-serializer data-x-internal=concept-url-serializer>serialization</a> of <var>inputURL</var>.<li><p>Let <var>encodedURL</var> be the result of running <a href=https://url.spec.whatwg.org/#string-utf-8-percent-encode data-x-internal=utf-8-percent-encode>UTF-8 percent-encode</a> on
+<var>inputURLString</var> using the <a href=https://url.spec.whatwg.org/#component-percent-encode-set data-x-internal=component-percent-encode-set>component percent-encode set</a>.<li><p>Let <var>handlerURLString</var> be <var>normalizedURLString</var>.<li><p>Replace the first instance of "<code>%s</code>" in <var>handlerURLString</var>
+with <var>encodedURL</var>.<li><p>Let <var>resultURL</var> be the result of <a href=https://url.spec.whatwg.org/#concept-url-parser data-x-internal=url-parser>parsing</a>
+<var>handlerURLString</var>.<li><p><a href="browsing-the-web.html#navigate">Navigate</a> an appropriate <a href="document-sequences.html#navigable">navigable</a> to
+<var>resultURL</var>.</ol>
+<div>
+<p>If the user had visited a site at <code>https://example.com/</code> that made the
+following call:</p>
+<pre><code>navigator.registerProtocolHandler(&apos;web+soup&apos;, &apos;soup?url=%s&apos;)</code></pre>
+<p>...and then, much later, while visiting <code>https://www.example.net/</code>,
+clicked on a link such as:</p>
+<pre><code>&lt;a href=&quot;web+soup:chicken-kïwi&quot;&gt;Download our Chicken Kïwi soup!&lt;/a&gt;</code></pre>
+<p>...then the UA might navigate to the following URL:</p>
+<pre>https://example.com/soup?url=web+soup:chicken-k%C3%AFwi</pre>
+<p>This site could then do whatever it is that it does with soup (synthesize it and ship it to
+the user, or whatever).</p>
+</div>
+<p>This does not define when the handler is used. To some extent, the <a href="browsing-the-web.html#navigate">processing model for navigating across documents</a> defines some cases
+where it is relevant, but in general user agents may use this information wherever they would
+otherwise consider handing schemes to native plugins or helper applications.</p>
+</ol>
+</div>
+<div>
+<p>The <dfn id=dom-navigator-unregisterprotocolhandler data-dfn-type=method><code>unregisterProtocolHandler(<var>scheme</var>,
+<var>url</var>)</code></dfn> method steps are:
+<ol><li><p>Let (<var>normalizedScheme</var>, <var>normalizedURLString</var>) be the result of running
+<a href="system-state.html#normalize-protocol-handler-parameters">normalize protocol handler parameters</a> with <var>scheme</var>, <var>url</var>, and
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#relevant-settings-object">relevant settings object</a>.<li><p><a href="infrastructure.html#in-parallel">In parallel</a>: unregister the handler described by <var>normalizedScheme</var>
+and <var>normalizedURLString</var>.</ol>
+</div>
+<hr>
+<div>
+<p>To <dfn id=normalize-protocol-handler-parameters>normalize protocol handler parameters</dfn>, given a string <var>scheme</var>, a
+string <var>url</var>, and an <a href="webappapis.html#environment-settings-object">environment settings object</a> <var>environment</var>, run
+these steps:</p>
+<ol><li><p>Set <var>scheme</var> to <var>scheme</var>, <a href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII
+lowercase</a>.<li>
+<p>If <var>scheme</var> is neither a <a href="system-state.html#safelisted-scheme">safelisted scheme</a> nor a string starting with
+"<code>web+</code>" followed by one or more <a href=https://infra.spec.whatwg.org/#ascii-lower-alpha data-x-internal=lowercase-ascii-letters>ASCII
+lower alphas</a>, then throw a <a href=https://webidl.spec.whatwg.org/#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</p>
+<p>This means that including a colon in <var>scheme</var> (as in "<code>mailto:</code>") will throw.</p>
+<p>The following schemes are the <dfn id=safelisted-scheme>safelisted
+schemes</dfn>:</p>
+<ul><li><code>bitcoin</code><li><code>ftp</code><li><code>ftps</code><li><code>geo</code><li><code>im</code><li><code>irc</code><li><code>ircs</code><li><code>magnet</code><li><code>mailto</code><li><code>matrix</code><li><code>mms</code><li><code>news</code><li><code>nntp</code><li><code>openpgp4fpr</code><li><code>sftp</code><li><code>sip</code><li><code>sms</code><li><code>smsto</code><li><code>ssh</code><li><code>tel</code><li><code>urn</code><li><code>webcal</code><li><code>wtai</code><li><code>xmpp</code></ul>
+<p>This list can be changed. If there are schemes that ought to be added, please
+send feedback.</p>
+<li><p>If <var>url</var> does not contain "<code>%s</code>", then throw a
+<a href=https://webidl.spec.whatwg.org/#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Let <var>urlRecord</var> be the result of <a href="urls-and-fetching.html#encoding-parsing-a-url">encoding-parsing a URL</a> given
+<var>url</var>, relative to <var>environment</var>.<li>
+<p>If <var>urlRecord</var> is failure, then throw a <a href=https://webidl.spec.whatwg.org/#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</p>
+<p>This is forcibly the case if the <code>%s</code> placeholder is in the
+host or port of the URL.</p>
+<li><p>If <var>urlRecord</var>'s <a href=https://url.spec.whatwg.org/#concept-url-scheme data-x-internal=concept-url-scheme>scheme</a> is not an
+<a href=https://fetch.spec.whatwg.org/#http-scheme data-x-internal=http(s)-scheme>HTTP(S) scheme</a> or <var>urlRecord</var>'s <a href=https://url.spec.whatwg.org/#concept-url-origin data-x-internal=concept-url-origin>origin</a> is not <a href="browsers.html#same-origin">same origin</a> with
+<var>environment</var>'s <a href="webappapis.html#concept-settings-object-origin">origin</a>, then throw
+a <a href=https://webidl.spec.whatwg.org/#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li>
+<p><a href=https://infra.spec.whatwg.org/#assert data-x-internal=assert>Assert</a>: the result of <a href=https://w3c.github.io/webappsec-secure-contexts/#potentially-trustworthy-url data-x-internal=is-url-potentially-trustworthy>Is url potentially trustworthy?</a> given
+<var>urlRecord</var> is "<code>Potentially Trustworthy</code>".</p>
+<p>Because <a href="system-state.html#normalize-protocol-handler-parameters">normalize protocol handler parameters</a> is run within a
+<a href="webappapis.html#secure-context">secure context</a>, this is implied by the <a href="browsers.html#same-origin">same origin</a> condition.</p>
+<li>
+<p>Return (<var>scheme</var>, <var>urlRecord</var>).</p>
+<p>The <a href=https://url.spec.whatwg.org/#concept-url-serializer data-x-internal=concept-url-serializer>serialization</a> of
+<var>urlRecord</var> will by definition not be a <a href=https://url.spec.whatwg.org/#valid-url-string data-x-internal=valid-url-string>valid URL string</a> as it includes
+the string "<code>%s</code>" which is not a valid component in a URL.</p>
+</ol>
+</div>
+<h6 id=security-and-privacy>Security and privacy</h6>
+<p>Custom scheme handlers can introduce a number of concerns, in particular privacy concerns.</p>
+<p><strong>Hijacking all web usage.</strong> User agents should not allow schemes that are key to
+its normal operation, such as an <a href=https://fetch.spec.whatwg.org/#http-scheme data-x-internal=http(s)-scheme>HTTP(S) scheme</a>, to be rerouted through third-party
+sites. This would allow a user's activities to be trivially tracked, and would allow user
+information, even in secure connections, to be collected.</p>
+<p><strong>Hijacking defaults.</strong> User agents are strongly urged to not automatically change
+any defaults, as this could lead the user to send data to remote hosts that the user is not
+expecting. New handlers registering themselves should never automatically cause those sites to be
+used.</p>
+<p><strong>Registration spamming.</strong> User agents should consider the possibility that a site
+will attempt to register a large number of handlers, possibly from multiple domains (e.g., by
+redirecting through a series of pages each on a different domain, and each registering a handler
+for <code>web+spam:</code> — analogous practices abusing other web browser
+features have been used by pornography web sites for many years). User agents should gracefully
+handle such hostile attempts, protecting the user.</p>
+<p><strong>Hostile handler metadata.</strong> User agents should protect against typical attacks
+against strings embedded in their interface, for example ensuring that markup or escape characters
+in such strings are not executed, that null bytes are properly handled, that over-long strings do
+not cause crashes or buffer overruns, and so forth.</p>
+<p><strong>Leaking private data.</strong> Web page authors may reference a custom scheme
+handler using URL data considered private. They might do so with the expectation that the user's
+choice of handler points to a page inside the organization, ensuring that sensitive data will not
+be exposed to third parties. However, a user may have registered a handler pointing to an
+external site, resulting in a data leak to that third party. Implementers might wish to consider
+allowing administrators to disable custom handlers on certain subdomains, content types, or
+schemes.</p>
+<p><strong>Interface interference.</strong> User agents should be prepared to handle intentionally
+long arguments to the methods. For example, if the user interface exposed consists of an "accept"
+button and a "deny" button, with the "accept" binding containing the name of the handler, it's
+important that a long name not cause the "deny" button to be pushed off the screen.</p>
+<h6 id=user-agent-automation><dfn id=rph-user-agent-automation>User agent automation</dfn></h6>
+<p>Each <code><a href="dom.html#document">Document</a></code> has a <dfn id=registerprotocolhandler()-automation-mode><code>registerProtocolHandler()</code> automation
+mode</dfn>. It defaults to "<code><a href="system-state.html#rph-automation-mode-none">none</a></code>", but it also can
+be either "<code><a href="system-state.html#rph-automation-mode-auto-accept">autoAccept</a></code>" or "<code><a href="system-state.html#rph-automation-mode-auto-reject">autoReject</a></code>".</p>
+<p>For the purposes of user agent automation and website testing, this standard defines <dfn id=set-rph-registration-mode>Set RPH Registration Mode</dfn> WebDriver <a href=https://w3c.github.io/webdriver/#dfn-extension-commands data-x-internal=extension-command>extension
+command</a>. It instructs the user agent to place a <code><a href="dom.html#document">Document</a></code> into a mode where it
+will automatically simulate a user either accepting or rejecting and registration confirmation
+prompt dialog.</p>
+<table><thead><tr><th>HTTP Method
+<th>URI Template
+<tbody><tr><td>`<code>POST</code>`
+<td><code>/session/{session id}/custom-handlers/set-mode</code>
+</table>
+<div>
+<p>The <a href=https://w3c.github.io/webdriver/#dfn-remote-end-steps data-x-internal=remote-end-steps>remote end steps</a> are:</p>
+<ol><li><p>If <var>parameters</var> is not a JSON Object, return a <a href=https://w3c.github.io/webdriver/#dfn-errors data-x-internal=webdriver-error>WebDriver error</a> with
+<a href=https://w3c.github.io/webdriver/#dfn-error-code data-x-internal=webdriver-error-code>WebDriver error code</a> <a href=https://w3c.github.io/webdriver/#dfn-invalid-argument data-x-internal=invalid-argument>invalid argument</a>.<li><p>Let <var>mode</var> be the result of <a href=https://w3c.github.io/webdriver/#dfn-getting-properties data-x-internal=getting-a-property>getting a property</a> named "<code>mode</code>" from <var>parameters</var>.<li><p>If <var>mode</var> is not "<code><a href="system-state.html#rph-automation-mode-auto-accept">autoAccept</a></code>", "<code><a href="system-state.html#rph-automation-mode-auto-reject">autoReject</a></code>", or "<code><a href="system-state.html#rph-automation-mode-none">none</a></code>", return a <a href=https://w3c.github.io/webdriver/#dfn-errors data-x-internal=webdriver-error>WebDriver error</a> with
+<a href=https://w3c.github.io/webdriver/#dfn-error-code data-x-internal=webdriver-error-code>WebDriver error code</a> <a href=https://w3c.github.io/webdriver/#dfn-invalid-argument data-x-internal=invalid-argument>invalid argument</a>.<li><p>Let <var>document</var> be the <a href=https://w3c.github.io/webdriver/#dfn-current-browsing-context data-x-internal=webdriver-current-browsing-context>current
+browsing context</a>'s <a href="document-sequences.html#active-document">active document</a>.<li><p>Set <var>document</var>'s <a href="system-state.html#registerprotocolhandler()-automation-mode"><code>registerProtocolHandler()</code> automation
+mode</a> to <var>mode</var>.<li><p>Return <a href=https://w3c.github.io/webdriver/#dfn-success data-x-internal=success-value>success</a> with data null.</ol>
+</div>
+<h5 id=cookies>Cookies</h5>
+<pre><code>interface mixin <dfn id='navigatorcookies' data-dfn-type='interface'>NavigatorCookies</dfn> {
+readonly attribute boolean <a href='system-state.html#dom-navigator-cookieenabled'>cookieEnabled</a>;
+};</code></pre>
+<dl><dt><code><var>window</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-cookieenabled" id=dom-navigator-cookieenabled-dev>cookieEnabled</a></code></div><dd><p>Returns false if setting a cookie will be ignored, and true otherwise.</dl>
+<div>
+<p>The <dfn id=dom-navigator-cookieenabled data-dfn-type=attribute><code>cookieEnabled</code></dfn> attribute must return true if the
+user agent attempts to handle cookies according to <cite>HTTP State Management Mechanism</cite>,
+and false if it ignores cookie change requests. <a href="references.html#refsCOOKIES">[COOKIES]</a></p>
+</div>
+<h5 id=pdf-viewing-support>PDF viewing support</h5>
+<dl><dt><code><var>window</var>.<a href="system-state.html#dom-navigator">navigator</a>.<a href="system-state.html#dom-navigator-pdfviewerenabled" id=dom-navigator-pdfviewerenabled-dev>pdfViewerEnabled</a></code><dd><p>Returns true if the user agent supports inline viewing of PDF files when <a href="browsing-the-web.html#navigate">navigating</a> to them, or false otherwise. In the latter case, PDF files
+will be handled by <a href="browsing-the-web.html#hand-off-to-external-software">external
+software</a>.</dl>
+<pre><code>interface mixin <dfn id='navigatorplugins' data-dfn-type='interface'>NavigatorPlugins</dfn> {
+[SameObject] readonly attribute <a href='system-state.html#pluginarray'>PluginArray</a> <a href='system-state.html#dom-navigator-plugins'>plugins</a>;
+[SameObject] readonly attribute <a href='system-state.html#mimetypearray'>MimeTypeArray</a> <a href='system-state.html#dom-navigator-mimetypes'>mimeTypes</a>;
+boolean <a href='system-state.html#dom-navigator-javaenabled'>javaEnabled</a>();
+readonly attribute boolean <a href='system-state.html#dom-navigator-pdfviewerenabled'>pdfViewerEnabled</a>;
+};
+[Exposed=Window,
+<a href='https://webidl.spec.whatwg.org/#LegacyUnenumerableNamedProperties' data-x-internal='legacyunenumerablenamedproperties'>LegacyUnenumerableNamedProperties</a>]
+interface <dfn id='pluginarray' data-dfn-type='interface'>PluginArray</dfn> {
+undefined <a href='system-state.html#dom-pluginarray-refresh'>refresh</a>();
+readonly attribute unsigned long <a href='system-state.html#dom-pluginarray-length'>length</a>;
+getter <a href='infrastructure.html#plugin'>Plugin</a>? <a href='system-state.html#dom-pluginarray-item'>item</a>(unsigned long index);
+getter <a href='infrastructure.html#plugin'>Plugin</a>? <a href='system-state.html#dom-pluginarray-nameditem'>namedItem</a>(DOMString name);
+};
+[Exposed=Window,
+<a href='https://webidl.spec.whatwg.org/#LegacyUnenumerableNamedProperties' data-x-internal='legacyunenumerablenamedproperties'>LegacyUnenumerableNamedProperties</a>]
+interface <dfn id='mimetypearray' data-dfn-type='interface'>MimeTypeArray</dfn> {
+readonly attribute unsigned long <a href='system-state.html#dom-mimetypearray-length'>length</a>;
+getter <a href='system-state.html#mimetype'>MimeType</a>? <a href='system-state.html#dom-mimetypearray-item'>item</a>(unsigned long index);
+getter <a href='system-state.html#mimetype'>MimeType</a>? <a href='system-state.html#dom-mimetypearray-nameditem'>namedItem</a>(DOMString name);
+};
+[Exposed=Window,
+<a href='https://webidl.spec.whatwg.org/#LegacyUnenumerableNamedProperties' data-x-internal='legacyunenumerablenamedproperties'>LegacyUnenumerableNamedProperties</a>]
+interface <dfn id='dom-plugin' data-dfn-type='interface'>Plugin</dfn> {
+readonly attribute DOMString <a href='system-state.html#dom-plugin-name'>name</a>;
+readonly attribute DOMString <a href='system-state.html#dom-plugin-description'>description</a>;
+readonly attribute DOMString <a href='system-state.html#dom-plugin-filename'>filename</a>;
+readonly attribute unsigned long <a href='system-state.html#dom-plugin-length'>length</a>;
+getter <a href='system-state.html#mimetype'>MimeType</a>? <a href='system-state.html#dom-plugin-item'>item</a>(unsigned long index);
+getter <a href='system-state.html#mimetype'>MimeType</a>? <a href='system-state.html#dom-plugin-nameditem'>namedItem</a>(DOMString name);
+};
+[Exposed=Window]
+interface <dfn id='mimetype' data-dfn-type='interface'>MimeType</dfn> {
+readonly attribute DOMString <a href='system-state.html#dom-mimetype-type'>type</a>;
+readonly attribute DOMString <a href='system-state.html#dom-mimetype-description'>description</a>;
+readonly attribute DOMString <a href='system-state.html#dom-mimetype-suffixes'>suffixes</a>;
+readonly attribute <a href='infrastructure.html#plugin'>Plugin</a> <a href='system-state.html#dom-mimetype-enabledplugin'>enabledPlugin</a>;
+};</code></pre>
+<p>Although these days detecting PDF viewer support can be done via <code><a href="system-state.html#dom-navigator-pdfviewerenabled">navigator.pdfViewerEnabled</a></code>, for historical reasons,
+there are a number of complex and intertwined interfaces that provide the same capability, which
+legacy code relies on. This section specifies both the simple modern variant and the complicated
+historical one.</p>
+<p id=fingerprint-pdfViewerEnabled>
+<a href=https://infra.spec.whatwg.org/#tracking-vector data-x-internal=tracking-vector><img width=46 alt="(This is a tracking vector.)" src=https://resources.whatwg.org/tracking-vector.svg height=64></a>
+Each user agent has a <dfn id=pdf-viewer-supported>PDF viewer supported</dfn> boolean, whose value is
+<a href=https://infra.spec.whatwg.org/#implementation-defined data-x-internal=implementation-defined>implementation-defined</a> (and might vary according to user preferences).</p>
+<p>This value also impacts the <a href="browsing-the-web.html#navigate">navigation</a> processing
+model.</p>
+<hr>
+<p>Each <code><a href="nav-history-apis.html#window">Window</a></code> object has a <dfn id=pdf-viewer-plugin-objects>PDF viewer plugin objects</dfn> list. If the user
+agent's <a href="system-state.html#pdf-viewer-supported">PDF viewer supported</a> is false, then it is the empty list. Otherwise, it is a
+list containing five <code><a href="system-state.html#dom-plugin">Plugin</a></code> objects, whose <a href="system-state.html#concept-plugin-name">names</a> are, respectively:</p>
+<ol start=0><li>"<code>PDF Viewer</code>"<li>"<code>Chrome PDF Viewer</code>"<li>"<code>Chromium PDF Viewer</code>"<li>"<code>Microsoft Edge PDF Viewer</code>"<li>"<code>WebKit built-in PDF</code>"</ol>
+<p>The values of the above list form the <dfn id=pdf-viewer-plugin-names>PDF viewer plugin names</dfn> list.</p>
+<p>These names were chosen based on evidence of what websites historically search
+for, and thus what is necessary for user agents to expose in order to maintain compatibility with
+existing content. They are ordered alphabetically. The "<code>PDF Viewer</code>" name
+was then inserted in the 0th position so that the <code><a href="system-state.html#dom-mimetype-enabledplugin">enabledPlugin</a></code> getter could point to a generic plugin
+name.</p>
+<p>Each <code><a href="nav-history-apis.html#window">Window</a></code> object has a <dfn id=pdf-viewer-mime-type-objects>PDF viewer mime type objects</dfn> list. If the user
+agent's <a href="system-state.html#pdf-viewer-supported">PDF viewer supported</a> is false, then it is the empty list. Otherwise, it is a
+list containing two <code><a href="system-state.html#mimetype">MimeType</a></code> objects, whose <a href="system-state.html#concept-mimetype-type">types</a> are, respectively:</p>
+<ol start=0><li>"<code>application/pdf</code>"<li>"<code>text/pdf</code>"</ol>
+<p>The values of the above list form the <dfn id=pdf-viewer-mime-types>PDF viewer mime types</dfn> list.</p>
+<hr>
+<p>Each <code><a href="system-state.html#navigatorplugins">NavigatorPlugins</a></code> object has a <dfn id=plugins-array>plugins array</dfn>, which is a new
+<code><a href="system-state.html#pluginarray">PluginArray</a></code>, and a <dfn id=mime-types-array>mime types array</dfn>, which is a new
+<code><a href="system-state.html#mimetypearray">MimeTypeArray</a></code>.</p>
+<div>
+<p>The <code><a href="system-state.html#navigatorplugins">NavigatorPlugins</a></code> mixin's <dfn id=dom-navigator-plugins data-dfn-type=attribute><code>plugins</code></dfn> getter steps are to return <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s
+<a href="system-state.html#plugins-array">plugins array</a>.</p>
+</div>
+<div>
+<p>The <code><a href="system-state.html#navigatorplugins">NavigatorPlugins</a></code> mixin's <dfn id=dom-navigator-mimetypes data-dfn-type=attribute><code>mimeTypes</code></dfn> getter steps are to return
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="system-state.html#mime-types-array">mime types array</a>.</p>
+</div>
+<div>
+<p>The <code><a href="system-state.html#navigatorplugins">NavigatorPlugins</a></code> mixin's <dfn id=dom-navigator-javaenabled data-dfn-type=method><code>javaEnabled()</code></dfn> method steps are to return false.</p>
+</div>
+</div><div>
+<p>The <code><a href="system-state.html#navigatorplugins">NavigatorPlugins</a></code> mixin's <dfn id=dom-navigator-pdfviewerenabled data-dfn-type=attribute><code>pdfViewerEnabled</code></dfn> getter steps are to return
+the user agent's <a href="system-state.html#pdf-viewer-supported">PDF viewer supported</a>.</p>
+</div>
+<hr>
+<div>
+<p>The <code><a href="system-state.html#pluginarray">PluginArray</a></code> interface <a href=https://webidl.spec.whatwg.org/#dfn-support-named-properties data-x-internal=support-named-properties>supports named
+properties</a>. If the user agent's <a href="system-state.html#pdf-viewer-supported">PDF viewer supported</a> is true, then they are
+the <a href="system-state.html#pdf-viewer-plugin-names">PDF viewer plugin names</a>. Otherwise, they are the empty list.</p>
+</div>
+<div>
+<p>The <code><a href="system-state.html#pluginarray">PluginArray</a></code> interface's <dfn id=dom-pluginarray-nameditem data-dfn-type=method><code>namedItem(<var>name</var>)</code></dfn> method steps are:</p>
+<ol><li><p><a href=https://infra.spec.whatwg.org/#list-iterate data-x-internal=list-iterate>For each</a> <code><a href="system-state.html#dom-plugin">Plugin</a></code>
+<var>plugin</var> of <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#concept-relevant-global">relevant global object</a>'s <a href="system-state.html#pdf-viewer-plugin-objects">PDF viewer
+plugin objects</a>: if <var>plugin</var>'s <a href="system-state.html#concept-plugin-name">name</a> is
+<var>name</var>, then return <var>plugin</var>.<li><p>Return null.</ol>
+</div>
+<div>
+<p>The <code><a href="system-state.html#pluginarray">PluginArray</a></code> interface <a href=https://webidl.spec.whatwg.org/#dfn-support-indexed-properties data-x-internal=supports-indexed-properties>supports indexed properties</a>. The
+<a href=https://webidl.spec.whatwg.org/#dfn-supported-property-indices data-x-internal=supported-property-indices>supported property indices</a> are the <a href=https://infra.spec.whatwg.org/#list-get-the-indices data-x-internal=indices>indices</a> of <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s
+<a href="webappapis.html#concept-relevant-global">relevant global object</a>'s <a href="system-state.html#pdf-viewer-plugin-objects">PDF viewer plugin objects</a>.</p>
+</div>
+<div>
+<p>The <code><a href="system-state.html#pluginarray">PluginArray</a></code> interface's <dfn id=dom-pluginarray-item data-dfn-type=method><code>item(<var>index</var>)</code></dfn> method steps are:</p>
+<ol><li><p>Let <var>plugins</var> be <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#concept-relevant-global">relevant global object</a>'s
+<a href="system-state.html#pdf-viewer-plugin-objects">PDF viewer plugin objects</a>.<li><p>If <var>index</var> &lt; <var>plugins</var>'s <a href=https://infra.spec.whatwg.org/#list-size data-x-internal=list-size>size</a>, then
+return <var>plugins</var>[<var>index</var>].<li><p>Return null.</ol>
+</div>
+<div>
+<p>The <code><a href="system-state.html#pluginarray">PluginArray</a></code> interface's <dfn id=dom-pluginarray-length data-dfn-type=attribute><code>length</code></dfn> getter steps are to return <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s
+<a href="webappapis.html#concept-relevant-global">relevant global object</a>'s <a href="system-state.html#pdf-viewer-plugin-objects">PDF viewer plugin objects</a>'s <a href=https://infra.spec.whatwg.org/#list-size data-x-internal=list-size>size</a>.</p>
+</div>
+<div>
+<p>The <code><a href="system-state.html#pluginarray">PluginArray</a></code> interface's <dfn id=dom-pluginarray-refresh data-dfn-type=method><code>refresh()</code></dfn> method steps are to do nothing.</p>
+</div>
+<hr>
+<div>
+<p>The <code><a href="system-state.html#mimetypearray">MimeTypeArray</a></code> interface <a href=https://webidl.spec.whatwg.org/#dfn-support-named-properties data-x-internal=support-named-properties>supports named
+properties</a>. If the user agent's <a href="system-state.html#pdf-viewer-supported">PDF viewer supported</a> is true, then they are
+the <a href="system-state.html#pdf-viewer-mime-types">PDF viewer mime types</a>. Otherwise, they are the empty list.</p>
+</div>
+<div>
+<p>The <code><a href="system-state.html#mimetypearray">MimeTypeArray</a></code> interface's <dfn id=dom-mimetypearray-nameditem data-dfn-type=method><code>namedItem(<var>name</var>)</code></dfn> method steps are:</p>
+<ol><li><p><a href=https://infra.spec.whatwg.org/#list-iterate data-x-internal=list-iterate>For each</a> <code><a href="system-state.html#mimetype">MimeType</a></code> <var>mimeType</var> of
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#concept-relevant-global">relevant global object</a>'s <a href="system-state.html#pdf-viewer-mime-type-objects">PDF viewer mime type
+objects</a>: if <var>mimeType</var>'s <a href="system-state.html#concept-mimetype-type">type</a> is
+<var>name</var>, then return <var>mimeType</var>.<li><p>Return null.</ol>
+</div>
+<div>
+<p>The <code><a href="system-state.html#mimetypearray">MimeTypeArray</a></code> interface <a href=https://webidl.spec.whatwg.org/#dfn-support-indexed-properties data-x-internal=supports-indexed-properties>supports indexed properties</a>. The
+<a href=https://webidl.spec.whatwg.org/#dfn-supported-property-indices data-x-internal=supported-property-indices>supported property indices</a> are the <a href=https://infra.spec.whatwg.org/#list-get-the-indices data-x-internal=indices>indices</a> of <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s
+<a href="webappapis.html#concept-relevant-global">relevant global object</a>'s <a href="system-state.html#pdf-viewer-mime-type-objects">PDF viewer mime type objects</a>.</p>
+</div>
+<div>
+<p>The <code><a href="system-state.html#mimetypearray">MimeTypeArray</a></code> interface's <dfn id=dom-mimetypearray-item data-dfn-type=method><code>item(<var>index</var>)</code></dfn> method steps are:</p>
+<ol><li><p>Let <var>mimeTypes</var> be <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#concept-relevant-global">relevant global object</a>'s
+<a href="system-state.html#pdf-viewer-mime-type-objects">PDF viewer mime type objects</a>.<li><p>If <var>index</var> &lt; <var>mimeTypes</var>'s <a href=https://infra.spec.whatwg.org/#list-size data-x-internal=list-size>size</a>, then
+return <var>mimeTypes</var>[<var>index</var>].<li><p>Return null.</ol>
+</div>
+<div>
+<p>The <code><a href="system-state.html#mimetypearray">MimeTypeArray</a></code> interface's <dfn id=dom-mimetypearray-length data-dfn-type=attribute><code>length</code></dfn> getter steps are to return
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#concept-relevant-global">relevant global object</a>'s <a href="system-state.html#pdf-viewer-mime-type-objects">PDF viewer mime type
+objects</a>'s <a href=https://infra.spec.whatwg.org/#list-size data-x-internal=list-size>size</a>.</p>
+</div>
+<hr>
+<p>Each <code><a href="system-state.html#dom-plugin">Plugin</a></code> object has a <dfn id=concept-plugin-name>name</dfn>, which is set when the object is created.</p>
+<div>
+<p>The <code><a href="system-state.html#dom-plugin">Plugin</a></code> interface's <dfn id=dom-plugin-name data-dfn-type=attribute><code>name</code></dfn> getter steps are to return <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="system-state.html#concept-plugin-name">name</a>.</p>
+</div>
+<div>
+<p>The <code><a href="system-state.html#dom-plugin">Plugin</a></code> interface's <dfn id=dom-plugin-description data-dfn-type=attribute><code>description</code></dfn> getter steps are to return "<code>Portable Document Format</code>".</p>
+</div>
+<div>
+<p>The <code><a href="system-state.html#dom-plugin">Plugin</a></code> interface's <dfn id=dom-plugin-filename data-dfn-type=attribute><code>filename</code></dfn> getter steps are to return "<code>internal-pdf-viewer</code>".</p>
+</div>
+<div>
+<p>The <code><a href="system-state.html#dom-plugin">Plugin</a></code> interface <a href=https://webidl.spec.whatwg.org/#dfn-support-named-properties data-x-internal=support-named-properties>supports named properties</a>. If the user agent's <a href="system-state.html#pdf-viewer-supported">PDF viewer
+supported</a> is true, then they are the <a href="system-state.html#pdf-viewer-mime-types">PDF viewer mime types</a>. Otherwise, they
+are the empty list.</p>
+</div>
+<div>
+<p>The <code><a href="system-state.html#dom-plugin">Plugin</a></code> interface's <dfn id=dom-plugin-nameditem data-dfn-type=method><code>namedItem(<var>name</var>)</code></dfn> method steps are:</p>
+<ol><li><p><a href=https://infra.spec.whatwg.org/#list-iterate data-x-internal=list-iterate>For each</a> <code><a href="system-state.html#mimetype">MimeType</a></code> <var>mimeType</var> of
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#concept-relevant-global">relevant global object</a>'s <a href="system-state.html#pdf-viewer-mime-type-objects">PDF viewer mime type
+objects</a>: if <var>mimeType</var>'s <a href="system-state.html#concept-mimetype-type">type</a> is
+<var>name</var>, then return <var>mimeType</var>.<li><p>Return null.</ol>
+</div>
+<div>
+<p>The <code><a href="system-state.html#dom-plugin">Plugin</a></code> interface <a href=https://webidl.spec.whatwg.org/#dfn-support-indexed-properties data-x-internal=supports-indexed-properties>supports indexed properties</a>.
+The <a href=https://webidl.spec.whatwg.org/#dfn-supported-property-indices data-x-internal=supported-property-indices>supported property indices</a> are the <a href=https://infra.spec.whatwg.org/#list-get-the-indices data-x-internal=indices>indices</a> of <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s
+<a href="webappapis.html#concept-relevant-global">relevant global object</a>'s <a href="system-state.html#pdf-viewer-mime-type-objects">PDF viewer mime type objects</a>.</p>
+</div>
+<div>
+<p>The <code><a href="system-state.html#dom-plugin">Plugin</a></code> interface's <dfn id=dom-plugin-item data-dfn-type=method><code>item(<var>index</var>)</code></dfn> method steps are:</p>
+<ol><li><p>Let <var>mimeTypes</var> be <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#concept-relevant-global">relevant global object</a>'s
+<a href="system-state.html#pdf-viewer-mime-type-objects">PDF viewer mime type objects</a>.<li><p>If <var>index</var> &lt; <var>mimeTypes</var>'s <a href=https://infra.spec.whatwg.org/#list-size data-x-internal=list-size>size</a>, then
+return <var>mimeTypes</var>[<var>index</var>].<li><p>Return null.</ol>
+</div>
+<div>
+<p>The <code><a href="system-state.html#dom-plugin">Plugin</a></code> interface's <dfn id=dom-plugin-length data-dfn-type=attribute><code>length</code></dfn> getter steps are to return
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#concept-relevant-global">relevant global object</a>'s <a href="system-state.html#pdf-viewer-mime-type-objects">PDF viewer mime type
+objects</a>'s <a href=https://infra.spec.whatwg.org/#list-size data-x-internal=list-size>size</a>.</p>
+</div>
+<hr>
+<p>Each <code><a href="system-state.html#mimetype">MimeType</a></code> object has a <dfn id=concept-mimetype-type>type</dfn>, which
+is set when the object is created.</p>
+<div>
+<p>The <code><a href="system-state.html#mimetype">MimeType</a></code> interface's <dfn id=dom-mimetype-type data-dfn-type=attribute><code>type</code></dfn> getter steps are to return <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="system-state.html#concept-mimetype-type">type</a>.</p>
+</div>
+<div>
+<p>The <code><a href="system-state.html#mimetype">MimeType</a></code> interface's <dfn id=dom-mimetype-description data-dfn-type=attribute><code>description</code></dfn> getter steps are to return "<code>Portable Document Format</code>".</p>
+</div>
+<div>
+<p>The <code><a href="system-state.html#mimetype">MimeType</a></code> interface's <dfn id=dom-mimetype-suffixes data-dfn-type=attribute><code>suffixes</code></dfn> getter steps are to return "<code>pdf</code>".</p>
+</div>
+<div>
+<p>The <code><a href="system-state.html#mimetype">MimeType</a></code> interface's <dfn id=dom-mimetype-enabledplugin data-dfn-type=attribute><code>enabledPlugin</code></dfn> getter steps are to return
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#concept-relevant-global">relevant global object</a>'s <a href="system-state.html#pdf-viewer-plugin-objects">PDF viewer plugin
+objects</a>[0] (i.e., the generic "<code>PDF Viewer</code>" one).</p>
+</div>
+</body>
+</html>

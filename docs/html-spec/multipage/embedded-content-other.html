@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+</ol></ol><h4 id=mathml>MathML</h4></div>
+<p>The <a href=https://w3c.github.io/mathml-core/#the-top-level-math-element data-x-internal=mathml-math>MathML <code>math</code></a> element falls into the <a href="dom.html#embedded-content-category">embedded content</a>,
+<a href="dom.html#phrasing-content-2">phrasing content</a>, <a href="dom.html#flow-content-2">flow content</a>, and <a href="dom.html#palpable-content-2">palpable content</a>
+categories for the purposes of the content models in this specification.</p>
+<p>When the <a href=https://w3c.github.io/mathml-core/#dfn-annotation-xml data-x-internal=mathml-annotation-xml>MathML <code>annotation-xml</code></a> element contains elements from the
+<a href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>, such elements must all be <a href="dom.html#flow-content-2">flow content</a>.</p>
+<p>When the MathML token elements (<code><a data-x-internal=mathml-mi href=https://w3c.github.io/mathml-core/#the-mi-element>mi</a></code>, <code><a data-x-internal=mathml-mo href=https://w3c.github.io/mathml-core/#operator-fence-separator-or-accent-mo>mo</a></code>, <code><a data-x-internal=mathml-mn href=https://w3c.github.io/mathml-core/#number-mn>mn</a></code>, <code><a data-x-internal=mathml-ms href=https://w3c.github.io/mathml-core/#string-literal-ms>ms</a></code>, and <code><a data-x-internal=mathml-mtext href=https://w3c.github.io/mathml-core/#text-mtext>mtext</a></code>) are descendants of HTML elements, they may contain
+<a href="dom.html#phrasing-content-2">phrasing content</a> elements from the <a href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>.</p>
+<p>User agents must handle text other than <a href="dom.html#inter-element-whitespace">inter-element whitespace</a> found in MathML
+elements whose content models do not allow straight text by pretending for the purposes of MathML
+content models, layout, and rendering that the text is actually wrapped in a <a href=https://w3c.github.io/mathml-core/#text-mtext data-x-internal=mathml-mtext>MathML
+<code>mtext</code></a> element. (Such text is not, however, conforming.)</p>
+<p>User agents must act as if any MathML element whose contents does not match the element's
+content model was replaced, for the purposes of MathML layout and rendering, by a <a href=https://w3c.github.io/mathml-core/#error-message-merror data-x-internal=mathml-merror>MathML
+<code>merror</code></a> element containing some appropriate error message.</p>
+<p>The semantics of MathML elements are defined by <cite>MathML</cite> and <a href="infrastructure.html#other-applicable-specifications">other applicable
+specifications</a>. <a href="references.html#refsMATHML">[MATHML]</a></p>
+<div>
+<p>Here is an example of the use of MathML in an HTML document:</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;title&gt;The quadratic formula&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;The quadratic formula&lt;/h1&gt;
+&lt;p&gt;
+&lt;math&gt;
+&lt;mi&gt;x&lt;/mi&gt;
+&lt;mo&gt;=&lt;/mo&gt;
+&lt;mfrac&gt;
+&lt;mrow&gt;
+&lt;mo form=&quot;prefix&quot;&gt;−&lt;/mo&gt; &lt;mi&gt;b&lt;/mi&gt;
+&lt;mo&gt;±&lt;/mo&gt;
+&lt;msqrt&gt;
+&lt;msup&gt; &lt;mi&gt;b&lt;/mi&gt; &lt;mn&gt;2&lt;/mn&gt; &lt;/msup&gt;
+&lt;mo&gt;−&lt;/mo&gt;
+&lt;mn&gt;4&lt;/mn&gt; &lt;mo&gt;⁢&lt;/mo&gt; &lt;mi&gt;a&lt;/mi&gt; &lt;mo&gt;⁢&lt;/mo&gt; &lt;mi&gt;c&lt;/mi&gt;
+&lt;/msqrt&gt;
+&lt;/mrow&gt;
+&lt;mrow&gt;
+&lt;mn&gt;2&lt;/mn&gt; &lt;mo&gt;⁢&lt;/mo&gt; &lt;mi&gt;a&lt;/mi&gt;
+&lt;/mrow&gt;
+&lt;/mfrac&gt;
+&lt;/math&gt;
+&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<h4 id=svg-0>SVG</h4></div>
+<p>The <a href=https://svgwg.org/svg2-draft/struct.html#SVGElement data-x-internal=svg-svg>SVG <code>svg</code></a> element falls into the <a href="dom.html#embedded-content-category">embedded content</a>,
+<a href="dom.html#phrasing-content-2">phrasing content</a>, <a href="dom.html#flow-content-2">flow content</a>, and <a href="dom.html#palpable-content-2">palpable content</a>
+categories for the purposes of the content models in this specification.</p>
+<p>When the <a href=https://svgwg.org/svg2-draft/embedded.html#ForeignObjectElement data-x-internal=svg-foreignobject>SVG <code>foreignObject</code></a> element contains elements from the
+<a href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>, such elements must all be <a href="dom.html#flow-content-2">flow content</a>.</p>
+<p>The content model for the <a href=https://svgwg.org/svg2-draft/struct.html#TitleElement data-x-internal=svg-title>SVG <code>title</code></a> element inside <a href=https://dom.spec.whatwg.org/#html-document data-x-internal=html-documents>HTML
+documents</a> is <a href="dom.html#phrasing-content-2">phrasing content</a>. (This further constrains the requirements given
+in <cite>SVG 2</cite>.)</p>
+<p>The semantics of SVG elements are defined by <cite>SVG 2</cite> and <a href="infrastructure.html#other-applicable-specifications">other applicable
+specifications</a>. <a href="references.html#refsSVG">[SVG]</a></p>
+<hr>
+<dl><dt><code><var>doc</var> = <var>iframe</var>.<a href="embedded-content-other.html#dom-media-getsvgdocument" id=dom-media-getsvgdocument-dev>getSVGDocument</a>()</code><dt><code><var>doc</var> = <var>embed</var>.<a href="embedded-content-other.html#dom-media-getsvgdocument">getSVGDocument</a>()</code><dt><code><var>doc</var> = <var>object</var>.<a href="embedded-content-other.html#dom-media-getsvgdocument">getSVGDocument</a>()</code><dd><p>Returns the <code><a href="dom.html#document">Document</a></code> object, in the case of <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code>,
+<code><a href="iframe-embed-object.html#the-embed-element">embed</a></code>, or <code><a href="iframe-embed-object.html#the-object-element">object</a></code> elements being used to embed SVG.</dl>
+<div>
+<p>The <dfn id=dom-media-getsvgdocument data-dfn-type=method><code>getSVGDocument()</code></dfn> method steps are:</p>
+<ol><li><p>Let <var>document</var> be <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="document-sequences.html#concept-bcc-content-document">content document</a>.<li><p>If <var>document</var> is non-null and was created by the <a href="document-lifecycle.html#read-xml">page
+load processing model for XML files</a> section because the <a href=https://mimesniff.spec.whatwg.org/#computed-mime-type data-x-internal=content-type-sniffing-2>computed type of the resource</a> in the <a href="browsing-the-web.html#navigate">navigate</a> algorithm was
+<code><a href="indices.html#image/svg+xml">image/svg+xml</a></code>, then return <var>document</var>.<li><p>Return null.</ol>
+</div>
+<h4 id=dimension-attributes><dfn>Dimension attributes</dfn></h4>
+<p><strong>Author requirements</strong>: The <dfn id=attr-dim-width data-dfn-type=element-attr><code>width</code></dfn> and
+<dfn id=attr-dim-height data-dfn-type=element-attr><code>height</code></dfn> attributes on <code><a href="embedded-content.html#the-img-element">img</a></code>, <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code>,
+<code><a href="iframe-embed-object.html#the-embed-element">embed</a></code>, <code><a href="iframe-embed-object.html#the-object-element">object</a></code>, <code><a href="media.html#the-video-element">video</a></code>, <code><a href="embedded-content.html#the-source-element">source</a></code> when the parent
+is a <code><a href="embedded-content.html#the-picture-element">picture</a></code> element and, when their <code><a href="input.html#attr-input-type">type</a></code>
+attribute is in the <a href="input.html#image-button-state-(type=image)">Image Button</a> state,
+<code><a href="input.html#the-input-element">input</a></code> elements may be specified to give the dimensions of the visual content of the
+element (the width and height respectively, relative to the nominal direction of the output
+medium), in <a href=https://drafts.csswg.org/css-values/#pxpx'" data-x-internal="'px'">CSS pixels</a>. The attributes, if specified, must have values
+that are <a href="common-microsyntaxes.html#valid-non-negative-integer">valid non-negative integers</a>.</p>
+<div>
+<p>The specified dimensions given may differ from the dimensions specified in the resource itself,
+since the resource may have a resolution that differs from the CSS pixel resolution. (On screens,
+<a href=https://drafts.csswg.org/css-values/#pxpx'-2" data-x-internal="'px'">CSS pixels</a> have a resolution of 96ppi, but in general the CSS pixel
+resolution depends on the reading distance.) If both attributes are specified, then one of the
+following statements must be true:</p>
+<ul><li><var>specified width</var> - 0.5 ≤
+<var>specified height</var> * <var>target ratio</var> ≤
+<var>specified width</var> + 0.5<li><var>specified height</var> - 0.5 ≤
+<var>specified width</var> / <var>target ratio</var> ≤
+<var>specified height</var> + 0.5<li><var>specified height</var> = <var>specified width</var> = 0</ul>
+<p>The <var>target ratio</var> is the ratio of the <a href=https://drafts.csswg.org/css-images/#natural-width data-x-internal=natural-width>natural width</a> to the
+<a href=https://drafts.csswg.org/css-images/#natural-height data-x-internal=natural-height>natural height</a> in the resource. The <var>specified width</var> and <var>specified
+height</var> are the values of the <code><a href="embedded-content-other.html#attr-dim-width">width</a></code> and <code><a href="embedded-content-other.html#attr-dim-height">height</a></code> attributes respectively.</p>
+</div>
+<p>The two attributes must be omitted if the resource in question does not have both a
+<a href=https://drafts.csswg.org/css-images/#natural-width data-x-internal=natural-width>natural width</a> and a <a href=https://drafts.csswg.org/css-images/#natural-height data-x-internal=natural-height>natural height</a>.</p>
+<p>If the two attributes are both 0, it indicates that the element is not intended for the user
+(e.g. it might be a part of a service to count page views).</p>
+<p>The dimension attributes are not intended to be used to stretch the image.</p>
+<p><strong>User agent requirements</strong>: User agents are expected to use these attributes <a href="rendering.html#dimRendering">as hints for the rendering</a>.</p>
+<p>For <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code>, <code><a href="iframe-embed-object.html#the-embed-element">embed</a></code> and <code><a href="iframe-embed-object.html#the-object-element">object</a></code> the IDL
+attributes are <code><a data-x-internal=idl-domstring href=https://webidl.spec.whatwg.org/#idl-DOMString>DOMString</a></code>; for <code><a href="media.html#the-video-element">video</a></code> and
+<code><a href="embedded-content.html#the-source-element">source</a></code> the IDL attributes are <code><a data-x-internal=idl-unsigned-long href=https://webidl.spec.whatwg.org/#idl-unsigned-long>unsigned
+long</a></code>.</p>
+<p>The corresponding IDL attributes for <code><a href="embedded-content.html#dom-img-height">img</a></code> and
+<code><a href="input.html#dom-input-height">input</a></code> elements are defined in those respective elements'
+sections, as they are slightly more specific to those elements' other behaviors.</p>
+</body>
+</html>

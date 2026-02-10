@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+</ol></ol><h3 id=embedded-content>Embedded content</h3>
+<h4 id=the-picture-element>The <dfn data-dfn-type=element><code>picture</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#embedded-content-category">Embedded content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#embedded-content-category">embedded content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>Zero or more <code><a href="embedded-content.html#the-source-element">source</a></code> elements, followed by one <code><a href="embedded-content.html#the-img-element">img</a></code> element,
+optionally intermixed with <a href="dom.html#script-supporting-elements-2">script-supporting elements</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-picture>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-picture>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlpictureelement' data-dfn-type='interface'>HTMLPictureElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+};</code></pre>
+</dl>
+<p>The <code><a href="embedded-content.html#the-picture-element">picture</a></code> element is a container
+which provides multiple sources to its contained <code><a href="embedded-content.html#the-img-element">img</a></code> element
+to allow authors to declaratively control or give hints to the user agent about which image resource to use,
+based on the screen pixel density, <a href=https://drafts.csswg.org/css2/#viewport data-x-internal=viewport>viewport</a> size, image format, and other factors.
+It <a href="dom.html#represents">represents</a> its children.</p>
+<p>The <code><a href="embedded-content.html#the-picture-element">picture</a></code> element is somewhat different from the similar-looking
+<code><a href="media.html#the-video-element">video</a></code> and <code><a href="media.html#the-audio-element">audio</a></code> elements. While all of them contain <code><a href="embedded-content.html#the-source-element">source</a></code>
+elements, the <code><a href="embedded-content.html#the-source-element">source</a></code> element's <code><a href="embedded-content.html#attr-source-src">src</a></code> attribute
+has no meaning when the element is nested within a <code><a href="embedded-content.html#the-picture-element">picture</a></code> element, and the resource
+selection algorithm is different. Also, the <code><a href="embedded-content.html#the-picture-element">picture</a></code> element itself does not display
+anything; it merely provides a context for its contained <code><a href="embedded-content.html#the-img-element">img</a></code> element that enables it
+to choose from multiple <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URLs</a>.</p>
+<h4 id=the-source-element>The <dfn data-dfn-type=element><code>source</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>As a child of a <code><a href="embedded-content.html#the-picture-element">picture</a></code> element, before the <code><a href="embedded-content.html#the-img-element">img</a></code> element.<dd>As a child of a <a href="media.html#media-element">media element</a>, before any <a href="dom.html#flow-content-2">flow content</a> or
+<code><a href="media.html#the-track-element">track</a></code> elements.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#concept-content-nothing">Nothing</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>No <a href="syntax.html#syntax-end-tag">end tag</a>.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="embedded-content.html#attr-source-type">type</a></code> —  Type of embedded resource
+<dd><code><a href="embedded-content.html#attr-source-media">media</a></code> —  Applicable media
+<dd><code><a href="embedded-content.html#attr-source-src">src</a></code> (in <code><a href="media.html#the-audio-element">audio</a></code> or <code><a href="media.html#the-video-element">video</a></code>) —  Address of the resource
+<dd><code><a href="embedded-content.html#attr-source-srcset">srcset</a></code> (in <code><a href="embedded-content.html#the-picture-element">picture</a></code>) —  Images to use in different situations, e.g., high-resolution displays, small monitors, etc.
+<dd><code><a href="embedded-content.html#attr-source-sizes">sizes</a></code> (in <code><a href="embedded-content.html#the-picture-element">picture</a></code>) —  Image sizes for different page layouts
+<dd><code><a href="embedded-content-other.html#attr-dim-width">width</a></code> (in <code><a href="embedded-content.html#the-picture-element">picture</a></code>) —  Horizontal dimension
+<dd><code><a href="embedded-content-other.html#attr-dim-height">height</a></code> (in <code><a href="embedded-content.html#the-picture-element">picture</a></code>) —  Vertical dimension
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-source>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-source>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlsourceelement' data-dfn-type='interface'>HTMLSourceElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflecturl'>ReflectURL</a>] attribute USVString <dfn id='dom-source-src' data-dfn-type='attribute'>src</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-source-type' data-dfn-type='attribute'>type</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute USVString <dfn id='dom-source-srcset' data-dfn-type='attribute'>srcset</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-source-sizes' data-dfn-type='attribute'>sizes</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-source-media' data-dfn-type='attribute'>media</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute unsigned long <dfn id='dom-source-width' data-dfn-type='attribute'>width</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute unsigned long <dfn id='dom-source-height' data-dfn-type='attribute'>height</dfn>;
+};</code></pre>
+</dl>
+<p>The <code><a href="embedded-content.html#the-source-element">source</a></code> element allows authors to specify multiple alternative
+<a href="images.html#source-set">source sets</a> for <code><a href="embedded-content.html#the-img-element">img</a></code> elements or multiple alternative
+<a href="media.html#media-resource">media resources</a> for <a href="media.html#media-element">media
+elements</a>. It does not <a href="dom.html#represents">represent</a> anything on its own.</p>
+<p>The <dfn id=attr-source-type data-dfn-type=element-attr><code>type</code></dfn> attribute
+may be present. If present, the value must be a <a href=https://mimesniff.spec.whatwg.org/#valid-mime-type data-x-internal=valid-mime-type-string>valid MIME type string</a>.</p>
+<p>The <dfn id=attr-source-media data-dfn-type=element-attr><code>media</code></dfn>
+attribute may also be present. If present, the value must contain a <a href="common-microsyntaxes.html#valid-media-query-list">valid media query
+list</a>. The user agent will skip to the next <code><a href="embedded-content.html#the-source-element">source</a></code> element if the value does
+not <a href="common-microsyntaxes.html#matches-the-environment">match the environment</a>.</p>
+<p>The <code><a href="embedded-content.html#attr-source-media">media</a></code> attribute is only evaluated
+once during the <a href="media.html#concept-media-load-algorithm">resource selection algorithm</a>
+for <a href="media.html#media-element">media elements</a>. In contrast, when using the
+<code><a href="embedded-content.html#the-picture-element">picture</a></code> element, the user agent will <a href="images.html#img-environment-changes">react to
+changes in the environment</a>.</p>
+<p>The remainder of the requirements depend on whether the parent is a <code><a href="embedded-content.html#the-picture-element">picture</a></code>
+element or a <a href="media.html#media-element">media element</a>:</p>
+<dl><dt>The <code><a href="embedded-content.html#the-source-element">source</a></code> element's parent is a <code><a href="embedded-content.html#the-picture-element">picture</a></code> element<dd>
+<p>The <dfn id=attr-source-srcset data-dfn-type=element-attr><code>srcset</code></dfn>
+attribute must be present, and is a <a href="images.html#srcset-attribute">srcset attribute</a>.</p>
+<p>The <code><a href="embedded-content.html#attr-source-srcset">srcset</a></code> attribute contributes the <a href="images.html#image-source">image sources</a> to the <a href="images.html#source-set">source set</a>, if the
+<code><a href="embedded-content.html#the-source-element">source</a></code> element is selected.</p>
+<p>If the <code><a href="embedded-content.html#attr-source-srcset">srcset</a></code> attribute has any <a href="images.html#image-candidate-string">image candidate strings</a> using a <a href="images.html#width-descriptor">width descriptor</a>, the
+<code><a href="embedded-content.html#attr-source-sizes">sizes</a></code> attribute may also be present. If, additionally,
+the following sibling <code><a href="embedded-content.html#the-img-element">img</a></code> element does not <a href="embedded-content.html#allows-auto-sizes">allow
+auto-sizes</a>, the <code><a href="embedded-content.html#attr-source-sizes">sizes</a></code> attribute must be present.
+The <dfn id=attr-source-sizes data-dfn-type=element-attr><code>sizes</code></dfn>
+attribute is a <a href="images.html#sizes-attribute">sizes attribute</a>, which contributes the <a href="images.html#source-size-2">source size</a> to
+the <a href="images.html#source-set">source set</a>, if the <code><a href="embedded-content.html#the-source-element">source</a></code> element is selected.</p>
+<p>If the <code><a href="embedded-content.html#the-img-element">img</a></code> element <a href="embedded-content.html#allows-auto-sizes">allows auto-sizes</a>, then the <code><a href="embedded-content.html#attr-source-sizes">sizes</a></code> attribute can be omitted on previous sibling
+<code><a href="embedded-content.html#the-source-element">source</a></code> elements. In such cases, it is equivalent to specifying <code><a href="images.html#valdef-sizes-auto">auto</a></code>.</p>
+<p>The <code><a href="embedded-content.html#the-source-element">source</a></code> element supports <a href="embedded-content-other.html#dimension-attributes">dimension attributes</a>. The
+<code><a href="embedded-content.html#the-img-element">img</a></code> element can use the <code><a href="embedded-content-other.html#attr-dim-width">width</a></code> and <code><a href="embedded-content-other.html#attr-dim-height">height</a></code> attributes of a <code><a href="embedded-content.html#the-source-element">source</a></code> element, instead of
+those on the <code><a href="embedded-content.html#the-img-element">img</a></code> element itself, to determine its rendered dimensions and
+aspect-ratio, <a href="rendering.html#dimRendering">as defined in the Rendering section</a>.</p>
+<p>The <code><a href="embedded-content.html#attr-source-type">type</a></code> attribute gives the type of the images in the
+<a href="images.html#source-set">source set</a>, to allow the user agent to skip to the next <code><a href="embedded-content.html#the-source-element">source</a></code> element
+if it does not support the given type.</p>
+<p>If the <code><a href="embedded-content.html#attr-source-type">type</a></code> attribute is <em>not</em>
+specified, the user agent will not select a different <code><a href="embedded-content.html#the-source-element">source</a></code> element if it finds
+that it does not support the image format after fetching it.</p>
+<p>When a <code><a href="embedded-content.html#the-source-element">source</a></code> element has a following sibling <code><a href="embedded-content.html#the-source-element">source</a></code> element or
+<code><a href="embedded-content.html#the-img-element">img</a></code> element with a <code><a href="embedded-content.html#attr-img-srcset">srcset</a></code> attribute
+specified, it must have at least one of the following:</p>
+<ul><li><p>A <code><a href="embedded-content.html#attr-source-media">media</a></code> attribute specified with a value that,
+after <a href=https://infra.spec.whatwg.org/#strip-leading-and-trailing-ascii-whitespace data-x-internal=strip-leading-and-trailing-ascii-whitespace>stripping leading and trailing
+ASCII whitespace</a>, is not the empty string and is not an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII
+case-insensitive</a> match for the string "<code>all</code>".<li><p>A <code><a href="embedded-content.html#attr-source-type">type</a></code> attribute specified.</ul>
+<p>The <code><a href="embedded-content.html#attr-source-src">src</a></code> attribute must not be present.</p>
+<dt>The <code><a href="embedded-content.html#the-source-element">source</a></code> element's parent is a <a href="media.html#media-element">media element</a><dd>
+<p>The <dfn id=attr-source-src data-dfn-type=element-attr><code>src</code></dfn> attribute
+gives the <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> of the <a href="media.html#media-resource">media resource</a>. The value must be a <a href="urls-and-fetching.html#valid-non-empty-url-potentially-surrounded-by-spaces">valid
+non-empty URL potentially surrounded by spaces</a>. This attribute must be present.</p>
+<p>The <code><a href="embedded-content.html#attr-source-type">type</a></code> attribute gives the type of the <a href="media.html#media-resource">media
+resource</a>, to help the user agent determine if it can play this <a href="media.html#media-resource">media
+resource</a> before fetching it. The <code>codecs</code> parameter, which certain
+MIME types define, might be necessary to specify exactly how the resource is encoded.
+<a href="references.html#refsRFC6381">[RFC6381]</a></p>
+<p>Dynamically modifying a <code><a href="embedded-content.html#the-source-element">source</a></code> element's <code><a href="embedded-content.html#attr-source-src">src</a></code> or <code><a href="embedded-content.html#attr-source-type">type</a></code> attribute
+when the element is already inserted in a <code><a href="media.html#the-video-element">video</a></code> or <code><a href="media.html#the-audio-element">audio</a></code> element will
+have no effect. To change what is playing, just use the <code><a href="media.html#attr-media-src">src</a></code>
+attribute on the <a href="media.html#media-element">media element</a> directly, possibly making use of the <code><a href="media.html#dom-navigator-canplaytype">canPlayType()</a></code> method to pick from amongst available
+resources. Generally, manipulating <code><a href="embedded-content.html#the-source-element">source</a></code> elements manually after the document has
+been parsed is an unnecessarily complicated approach.</p>
+<div>
+<p>The following list shows some examples of how to use the <code>codecs=</code> MIME
+parameter in the <code><a href="embedded-content.html#attr-source-type">type</a></code> attribute.</p>
+<dl><dt>H.264 Constrained baseline profile video (main and extended video compatible) level 3 and Low-Complexity AAC audio in MP4 container<dd><pre><code>&lt;source src=&apos;video.mp4&apos; type=&apos;video/mp4; codecs=&quot;avc1.42E01E, mp4a.40.2&quot;&apos;&gt;</code></pre><dt>H.264 Extended profile video (baseline-compatible) level 3 and Low-Complexity AAC audio in MP4 container<dd><pre><code>&lt;source src=&apos;video.mp4&apos; type=&apos;video/mp4; codecs=&quot;avc1.58A01E, mp4a.40.2&quot;&apos;&gt;</code></pre><dt>H.264 Main profile video level 3 and Low-Complexity AAC audio in MP4 container<dd><pre><code>&lt;source src=&apos;video.mp4&apos; type=&apos;video/mp4; codecs=&quot;avc1.4D401E, mp4a.40.2&quot;&apos;&gt;</code></pre><dt>H.264 'High' profile video (incompatible with main, baseline, or extended profiles) level 3 and Low-Complexity AAC audio in MP4 container<dd><pre><code>&lt;source src=&apos;video.mp4&apos; type=&apos;video/mp4; codecs=&quot;avc1.64001E, mp4a.40.2&quot;&apos;&gt;</code></pre><dt>MPEG-4 Visual Simple Profile Level 0 video and Low-Complexity AAC audio in MP4 container<dd><pre><code>&lt;source src=&apos;video.mp4&apos; type=&apos;video/mp4; codecs=&quot;mp4v.20.8, mp4a.40.2&quot;&apos;&gt;</code></pre><dt>MPEG-4 Advanced Simple Profile Level 0 video and Low-Complexity AAC audio in MP4 container<dd><pre><code>&lt;source src=&apos;video.mp4&apos; type=&apos;video/mp4; codecs=&quot;mp4v.20.240, mp4a.40.2&quot;&apos;&gt;</code></pre><dt>MPEG-4 Visual Simple Profile Level 0 video and AMR audio in 3GPP container<dd><pre><code>&lt;source src=&apos;video.3gp&apos; type=&apos;video/3gpp; codecs=&quot;mp4v.20.8, samr&quot;&apos;&gt;</code></pre><dt>Theora video and Vorbis audio in Ogg container<dd><pre><code>&lt;source src=&apos;video.ogv&apos; type=&apos;video/ogg; codecs=&quot;theora, vorbis&quot;&apos;&gt;</code></pre><dt>Theora video and Speex audio in Ogg container<dd><pre><code>&lt;source src=&apos;video.ogv&apos; type=&apos;video/ogg; codecs=&quot;theora, speex&quot;&apos;&gt;</code></pre><dt>Vorbis audio alone in Ogg container<dd><pre><code>&lt;source src=&apos;audio.ogg&apos; type=&apos;audio/ogg; codecs=vorbis&apos;&gt;</code></pre><dt>Speex audio alone in Ogg container<dd><pre><code>&lt;source src=&apos;audio.spx&apos; type=&apos;audio/ogg; codecs=speex&apos;&gt;</code></pre><dt>FLAC audio alone in Ogg container<dd><pre><code>&lt;source src=&apos;audio.oga&apos; type=&apos;audio/ogg; codecs=flac&apos;&gt;</code></pre><dt>Dirac video and Vorbis audio in Ogg container<dd><pre><code>&lt;source src=&apos;video.ogv&apos; type=&apos;video/ogg; codecs=&quot;dirac, vorbis&quot;&apos;&gt;</code></pre></dl>
+</div>
+<p>The <code><a href="embedded-content.html#attr-source-srcset">srcset</a></code> and <code><a href="embedded-content.html#attr-source-sizes">sizes</a></code> attributes must not be present.</p>
+</dl>
+<div>
+<p>The <code><a href="embedded-content.html#the-source-element">source</a></code> <a href="infrastructure.html#html-element-insertion-steps">HTML element insertion steps</a>, given
+<var>insertedNode</var>, are:</p>
+<ol><li><p>Let <var>parent</var> be <var>insertedNode</var>'s <a href=https://dom.spec.whatwg.org/#concept-tree-parent data-x-internal=parent>parent</a>.<li><p>If <var>parent</var> is a <a href="media.html#media-element">media element</a> that has no <code><a href="media.html#attr-media-src">src</a></code> attribute and whose <code><a href="media.html#dom-media-networkstate">networkState</a></code> has the value <code><a href="media.html#dom-media-network_empty">NETWORK_EMPTY</a></code>, then invoke that <a href="media.html#media-element">media
+element</a>'s <a href="media.html#concept-media-load-algorithm">resource selection
+algorithm</a>.<li><p>If <var>parent</var> is a <code><a href="embedded-content.html#the-picture-element">picture</a></code> element, then <a href=https://infra.spec.whatwg.org/#list-iterate data-x-internal=list-iterate>for each</a> <var>child</var> of <var>parent</var>'s <a href=https://dom.spec.whatwg.org/#concept-tree-child data-x-internal=concept-tree-child>children</a>, if <var>child</var> is an <code><a href="embedded-content.html#the-img-element">img</a></code> element,
+then count this as a <a href="images.html#relevant-mutations">relevant mutation</a> for
+<var>child</var>.</ol>
+</div>
+<div>
+<p>The <code><a href="embedded-content.html#the-source-element">source</a></code> <a href="infrastructure.html#html-element-moving-steps">HTML element moving steps</a>, given <var>movedNode</var> and
+<var>oldParent</var>, are:</p>
+<ol><li><p>If <var>oldParent</var> is a <code><a href="embedded-content.html#the-picture-element">picture</a></code> element, then <a href=https://infra.spec.whatwg.org/#list-iterate data-x-internal=list-iterate>for each</a> <var>child</var> of <var>oldParent</var>'s <a href=https://dom.spec.whatwg.org/#concept-tree-child data-x-internal=concept-tree-child>children</a>, if <var>child</var> is an <code><a href="embedded-content.html#the-img-element">img</a></code> element,
+then count this as a <a href="images.html#relevant-mutations">relevant mutation</a> for
+<var>child</var>.</ol>
+</div>
+<div>
+<p>The <code><a href="embedded-content.html#the-source-element">source</a></code> <a href="infrastructure.html#html-element-removing-steps">HTML element removing steps</a>, given <var>removedNode</var>
+and <var>oldParent</var>, are:</p>
+<ol><li><p>If <var>oldParent</var> is a <code><a href="embedded-content.html#the-picture-element">picture</a></code> element, then <a href=https://infra.spec.whatwg.org/#list-iterate data-x-internal=list-iterate>for each</a> <var>child</var> of <var>oldParent</var>'s <a href=https://dom.spec.whatwg.org/#concept-tree-child data-x-internal=concept-tree-child>children</a>, if <var>child</var> is an <code><a href="embedded-content.html#the-img-element">img</a></code> element,
+then count this as a <a href="images.html#relevant-mutations">relevant mutation</a> for
+<var>child</var>.</ol>
+</div>
+<div>
+<p>If the author isn't sure if user agents will all be able to render the media resources
+provided, the author can listen to the <code><a href="indices.html#event-error">error</a></code> event on the last
+<code><a href="embedded-content.html#the-source-element">source</a></code> element and trigger fallback behavior:</p>
+<pre><code>&lt;script&gt;
+function fallback(video) {
+// replace &lt;video&gt; with its contents
+while (video.hasChildNodes()) {
+if (video.firstChild instanceof HTMLSourceElement)
+video.removeChild(video.firstChild);
+else
+video.parentNode.insertBefore(video.firstChild, video);
+}
+video.parentNode.removeChild(video);
+}
+&lt;/script&gt;
+&lt;video controls autoplay&gt;
+&lt;source src=&apos;video.mp4&apos; type=&apos;video/mp4; codecs=&quot;avc1.42E01E, mp4a.40.2&quot;&apos;&gt;
+&lt;source src=&apos;video.ogv&apos; type=&apos;video/ogg; codecs=&quot;theora, vorbis&quot;&apos;
+onerror=&quot;fallback(parentNode)&quot;&gt;
+...
+&lt;/video&gt;</code></pre>
+</div>
+<h4 id=the-img-element>The <dfn data-dfn-type=element><code>img</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#embedded-content-category">Embedded content</a>.<dd><a href="forms.html#form-associated-element">Form-associated element</a>.<dd>If the element has a <code><a href="image-maps.html#attr-hyperlink-usemap">usemap</a></code> attribute: <a href="dom.html#interactive-content-2">Interactive content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#embedded-content-category">embedded content</a> is expected.<dd>As a child of a <code><a href="embedded-content.html#the-picture-element">picture</a></code> element, after all <code><a href="embedded-content.html#the-source-element">source</a></code> elements.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#concept-content-nothing">Nothing</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>No <a href="syntax.html#syntax-end-tag">end tag</a>.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="embedded-content.html#attr-img-alt">alt</a></code> —  Replacement text for use when images are not available
+<dd><code><a href="embedded-content.html#attr-img-src">src</a></code> —  Address of the resource
+<dd><code><a href="embedded-content.html#attr-img-srcset">srcset</a></code> —  Images to use in different situations, e.g., high-resolution displays, small monitors, etc.
+<dd><code><a href="embedded-content.html#attr-img-sizes">sizes</a></code> —  Image sizes for different page layouts
+<dd><code><a href="embedded-content.html#attr-img-crossorigin">crossorigin</a></code> —  How the element handles requests
+<dd><code><a href="image-maps.html#attr-hyperlink-usemap">usemap</a></code> —  Name of <a href="image-maps.html#image-map">image map</a> to use
+<dd><code><a href="embedded-content.html#attr-img-ismap">ismap</a></code> —  Whether the image is a server-side image map
+<dd><code><a href="embedded-content-other.html#attr-dim-width">width</a></code> —  Horizontal dimension
+<dd><code><a href="embedded-content-other.html#attr-dim-height">height</a></code> —  Vertical dimension
+<dd><code><a href="embedded-content.html#attr-img-referrerpolicy">referrerpolicy</a></code> —  <a href=https://w3c.github.io/webappsec-referrer-policy/#referrer-policy data-x-internal=referrer-policy>Referrer policy</a> for <a href=https://fetch.spec.whatwg.org/#concept-fetch data-x-internal=concept-fetch>fetches</a> initiated by the element
+<dd><code><a href="embedded-content.html#attr-img-decoding">decoding</a></code> —  Decoding hint to use when processing this image for presentation
+<dd><code><a href="embedded-content.html#attr-img-loading">loading</a></code> —  Used when determining loading deferral
+<dd><code><a href="embedded-content.html#attr-img-fetchpriority">fetchpriority</a></code> —  Sets the <a href=https://fetch.spec.whatwg.org/#request-priority data-x-internal=concept-request-priority>priority</a> for <a href=https://fetch.spec.whatwg.org/#concept-fetch data-x-internal=concept-fetch>fetches</a> initiated by the element
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd>If the element has a non-empty <code><a href="embedded-content.html#attr-img-alt">alt</a></code> attribute: <a href=https://w3c.github.io/html-aria/#el-img>for authors</a>; <a href=https://w3c.github.io/html-aam/#el-img>for implementers</a>.<dd>Otherwise: <a href=https://w3c.github.io/html-aria/#el-img-empty-alt>for authors</a>; <a href=https://w3c.github.io/html-aam/#el-img-empty-alt>for implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window,
+<a href='https://webidl.spec.whatwg.org/#LegacyFactoryFunction' data-x-internal='legacyfactoryfunction'>LegacyFactoryFunction</a>=<a href='embedded-content.html#dom-image'>Image</a>(optional unsigned long width, optional unsigned long height)]
+interface <dfn id='htmlimageelement' data-dfn-type='interface'>HTMLImageElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-img-alt' data-dfn-type='attribute'>alt</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflecturl'>ReflectURL</a>] attribute USVString <dfn id='dom-img-src' data-dfn-type='attribute'>src</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute USVString <dfn id='dom-img-srcset' data-dfn-type='attribute'>srcset</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-img-sizes' data-dfn-type='attribute'>sizes</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString? <a href='embedded-content.html#dom-img-crossorigin'>crossOrigin</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-img-usemap' data-dfn-type='attribute'>useMap</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-img-ismap' data-dfn-type='attribute'>isMap</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflectsetter'>ReflectSetter</a>] attribute unsigned long <a href='embedded-content.html#dom-img-width'>width</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflectsetter'>ReflectSetter</a>] attribute unsigned long <a href='embedded-content.html#dom-img-height'>height</a>;
+readonly attribute unsigned long <a href='embedded-content.html#dom-img-naturalwidth'>naturalWidth</a>;
+readonly attribute unsigned long <a href='embedded-content.html#dom-img-naturalheight'>naturalHeight</a>;
+readonly attribute boolean <a href='embedded-content.html#dom-img-complete'>complete</a>;
+readonly attribute USVString <a href='embedded-content.html#dom-img-currentsrc'>currentSrc</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString <a href='embedded-content.html#dom-img-referrerpolicy'>referrerPolicy</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString <a href='embedded-content.html#dom-img-decoding'>decoding</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString <a href='embedded-content.html#dom-img-loading'>loading</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString <a href='embedded-content.html#dom-img-fetchpriority'>fetchPriority</a>;
+<a href='https://webidl.spec.whatwg.org/#idl-promise' data-x-internal='idl-promise'>Promise</a>&lt;undefined&gt; <a href='embedded-content.html#dom-img-decode'>decode</a>();
+// <a href='obsolete.html#HTMLImageElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>An <code><a href="embedded-content.html#the-img-element">img</a></code> element represents an image.</p>
+<p>An <code><a href="embedded-content.html#the-img-element">img</a></code> element has a <dfn id=concept-img-dimension-attribute-source>dimension
+attribute source</dfn>, initially set to the element itself.</p>
+</div><p>The image given by the <dfn id=attr-img-src data-dfn-type=element-attr><code>src</code></dfn>
+and <dfn id=attr-img-srcset data-dfn-type=element-attr><code>srcset</code></dfn> attributes, and
+any previous sibling <code><a href="embedded-content.html#the-source-element">source</a></code> elements' <code><a href="embedded-content.html#attr-source-srcset">srcset</a></code>
+attributes if the parent is a <code><a href="embedded-content.html#the-picture-element">picture</a></code> element, is the embedded content; the value of
+the <dfn id=attr-img-alt data-dfn-type=element-attr><code>alt</code></dfn> attribute provides
+equivalent content for those who cannot process images or who have image loading disabled (i.e.,
+it is the <code><a href="embedded-content.html#the-img-element">img</a></code> element's <a href="dom.html#fallback-content">fallback content</a>).</p>
+<p>The requirements on the <code><a href="embedded-content.html#attr-img-alt">alt</a></code> attribute's value are described
+<a href="images.html#alt">in a separate section</a>.</p>
+<p>At least one of the <code><a href="embedded-content.html#attr-img-src">src</a></code> and <code><a href="embedded-content.html#attr-img-srcset">srcset</a></code> attributes must be present.</p>
+<p>If the <code><a href="embedded-content.html#attr-img-src">src</a></code> attribute is present, it must contain a
+<a href="urls-and-fetching.html#valid-non-empty-url-potentially-surrounded-by-spaces">valid non-empty URL potentially surrounded by spaces</a> referencing a non-interactive,
+optionally animated, image resource that is neither paged nor scripted.</p>
+<p>The requirements above imply that images can be static bitmaps (e.g. PNGs, GIFs,
+JPEGs), single-page vector documents (single-page PDFs, XML files with an SVG document element),
+animated bitmaps (APNGs, animated GIFs), animated vector graphics (XML files with an SVG
+<a href=https://dom.spec.whatwg.org/#document-element data-x-internal=document-element>document element</a> that use declarative SMIL animation), and so forth. However, these
+definitions preclude SVG files with script, multipage PDF files, interactive MNG files, HTML
+documents, plain text documents, and the like. <a href="references.html#refsPNG">[PNG]</a> <a href="references.html#refsGIF">[GIF]</a> <a href="references.html#refsJPEG">[JPEG]</a>
+<a href="references.html#refsPDF">[PDF]</a> <a href="references.html#refsXML">[XML]</a> <a href="references.html#refsAPNG">[APNG]</a> <a href="references.html#refsSVG">[SVG]</a> <a href="references.html#refsMNG">[MNG]</a></p>
+<p>The <code><a href="embedded-content.html#attr-img-srcset">srcset</a></code> attribute is a <a href="images.html#srcset-attribute">srcset
+attribute</a>.</p>
+<p>The <code><a href="embedded-content.html#attr-img-srcset">srcset</a></code> attribute and the <code><a href="embedded-content.html#attr-img-src">src</a></code> attribute (if <a href="images.html#width-descriptor">width
+descriptors</a> are not used) contribute the <a href="images.html#image-source">image sources</a>
+to the <a href="images.html#source-set">source set</a> (if no <code><a href="embedded-content.html#the-source-element">source</a></code> element was selected).</p>
+<p>If the <code><a href="embedded-content.html#attr-img-srcset">srcset</a></code> attribute is present and has any <a href="images.html#image-candidate-string">image candidate strings</a> using a <a href="images.html#width-descriptor">width
+descriptor</a>, the <code><a href="embedded-content.html#attr-img-sizes">sizes</a></code> attribute must also be present.
+If the <code><a href="embedded-content.html#attr-img-srcset">srcset</a></code> attribute is <em>not</em> specified, and the
+<code><a href="embedded-content.html#attr-img-loading">loading</a></code> attribute is in the <a href="urls-and-fetching.html#attr-loading-lazy-state">Lazy</a> state, the <code><a href="embedded-content.html#attr-img-sizes">sizes</a></code> attribute may be specified with the value "<code>auto</code>" (<a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a>). The <dfn id=attr-img-sizes data-dfn-type=element-attr><code>sizes</code></dfn> attribute is a <a href="images.html#sizes-attribute">sizes attribute</a>,
+which contributes the <a href="images.html#source-size-2">source size</a> to the <a href="images.html#source-set">source set</a> (if no
+<code><a href="embedded-content.html#the-source-element">source</a></code> element was selected).</p>
+<div>
+<p>An <code><a href="embedded-content.html#the-img-element">img</a></code> element <dfn id=allows-auto-sizes>allows auto-sizes</dfn> if:</p>
+<ul><li>its <code><a href="embedded-content.html#attr-img-loading">loading</a></code> attribute is in the <a href="urls-and-fetching.html#attr-loading-lazy-state">Lazy</a> state, and<li>its <code><a href="embedded-content.html#attr-img-sizes">sizes</a></code> attribute's value is "<code>auto</code>" (<a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a>), or starts with "<code>auto,</code>" (<a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a>).</ul>
+</div>
+</div><p>The <dfn id=attr-img-crossorigin data-dfn-type=element-attr><code>crossorigin</code></dfn>
+attribute is a <a href="urls-and-fetching.html#cors-settings-attribute">CORS settings attribute</a>. Its purpose is to allow images from
+third-party sites that allow cross-origin access to be used with <code><a href="canvas.html#the-canvas-element">canvas</a></code>.</p>
+<p>The <dfn id=attr-img-referrerpolicy data-dfn-type=element-attr><code>referrerpolicy</code></dfn> attribute is a <a href="urls-and-fetching.html#referrer-policy-attribute">referrer
+policy attribute</a>. Its purpose is to set the <a href=https://w3c.github.io/webappsec-referrer-policy/#referrer-policy data-x-internal=referrer-policy>referrer policy</a> used when <a href=https://fetch.spec.whatwg.org/#concept-fetch data-x-internal=concept-fetch>fetching</a> the image. <a href="references.html#refsREFERRERPOLICY">[REFERRERPOLICY]</a></p>
+<p>The <dfn id=attr-img-decoding data-dfn-type=element-attr><code>decoding</code></dfn>
+attribute indicates the preferred method to <a href="images.html#img-decoding-process">decode</a> this
+image. The attribute, if present, must be an <a href="images.html#image-decoding-hint">image decoding hint</a>. This attribute's <i><a href="common-microsyntaxes.html#missing-value-default">missing value default</a></i> and <i><a href="common-microsyntaxes.html#invalid-value-default">invalid value default</a></i> are both the <a href="images.html#attr-img-decoding-auto-state">Auto</a> state.</p>
+</div><p>The <dfn id=attr-img-fetchpriority data-dfn-type=element-attr><code>fetchpriority</code></dfn> attribute is a <a href="urls-and-fetching.html#fetch-priority-attribute">fetch
+priority attribute</a>. Its purpose is to set the <a href=https://fetch.spec.whatwg.org/#request-priority data-x-internal=concept-request-priority>priority</a> used when <a href=https://fetch.spec.whatwg.org/#concept-fetch data-x-internal=concept-fetch>fetching</a> the image.</p>
+<p>The <dfn id=attr-img-loading data-dfn-type=element-attr><code>loading</code></dfn> attribute is a <a href="urls-and-fetching.html#lazy-loading-attribute">lazy
+loading attribute</a>. Its purpose is to indicate the policy for loading images that are
+outside the viewport.</p>
+<div>
+<p>When the <code><a href="embedded-content.html#attr-img-loading">loading</a></code> attribute's state is changed to the
+<a href="urls-and-fetching.html#attr-loading-eager-state">Eager</a> state, the user agent must run these
+steps:</p>
+<ol><li><p>Let <var>resumptionSteps</var> be the <code><a href="embedded-content.html#the-img-element">img</a></code> element's <a href="urls-and-fetching.html#lazy-load-resumption-steps">lazy load
+resumption steps</a>.<li><p>If <var>resumptionSteps</var> is null, then return.<li><p>Set the <code><a href="embedded-content.html#the-img-element">img</a></code>'s <a href="urls-and-fetching.html#lazy-load-resumption-steps">lazy load resumption steps</a> to null.<li><p>Invoke <var>resumptionSteps</var>.</ol>
+</div>
+<div>
+<pre><code>&lt;img src=&quot;1.jpeg&quot; alt=&quot;1&quot;&gt;
+&lt;img src=&quot;2.jpeg&quot; loading=eager alt=&quot;2&quot;&gt;
+&lt;img src=&quot;3.jpeg&quot; loading=lazy alt=&quot;3&quot;&gt;
+&lt;div id=very-large&gt;&lt;/div&gt; &lt;!-- Everything after this div is below the viewport --&gt;
+&lt;img src=&quot;4.jpeg&quot; alt=&quot;4&quot;&gt;
+&lt;img src=&quot;5.jpeg&quot; loading=lazy alt=&quot;5&quot;&gt;</code></pre>
+<p>In the example above, the images load as follows:</p>
+<dl><dt><code>1.jpeg</code>, <code>2.jpeg</code>,
+<code>4.jpeg</code><dd><p>The images load eagerly and delay the window's load event.<dt><code>3.jpeg</code><dd><p>The image loads when layout is known, due to being in the viewport, however it does not
+delay the window's load event.<dt><code>5.jpeg</code><dd><p>The image loads only once scrolled into the viewport, and does not delay the window's
+load event.</dl>
+<p>Developers are encouraged to specify a preferred aspect ratio via <code><a href="embedded-content-other.html#attr-dim-width">width</a></code> and <code><a href="embedded-content-other.html#attr-dim-height">height</a></code> attributes
+on lazy loaded images, even if CSS sets the image's width and height properties, to prevent the
+page layout from shifting around after the image loads.</p>
+</div>
+<div>
+<p>The <code><a href="embedded-content.html#the-img-element">img</a></code> <a href="infrastructure.html#html-element-insertion-steps">HTML element insertion steps</a>, given <var>insertedNode</var>,
+are:</p>
+<ol><li><p>If <var>insertedNode</var>'s parent is a <code><a href="embedded-content.html#the-picture-element">picture</a></code> element, then, count this as
+a <a href="images.html#relevant-mutations">relevant mutation</a> for
+<var>insertedNode</var>.</ol>
+</div>
+<div>
+<p>The <code><a href="embedded-content.html#the-img-element">img</a></code> <a href="infrastructure.html#html-element-moving-steps">HTML element moving steps</a>, given <var>movedNode</var> and
+<var>oldParent</var>, are:</p>
+<ol><li><p>If <var>oldParent</var> is a <code><a href="embedded-content.html#the-picture-element">picture</a></code> element, then, count this as a <a href="images.html#relevant-mutations">relevant mutation</a> for <var>movedNode</var>.</ol>
+</div>
+<div>
+<p>The <code><a href="embedded-content.html#the-img-element">img</a></code> <a href="infrastructure.html#html-element-removing-steps">HTML element removing steps</a>, given <var>removedNode</var> and
+<var>oldParent</var>, are:</p>
+<ol><li><p>If <var>oldParent</var> is a <code><a href="embedded-content.html#the-picture-element">picture</a></code> element, then, count this as a
+<a href="images.html#relevant-mutations">relevant mutation</a> for <var>removedNode</var>.</ol>
+</div>
+<hr>
+<p>The <code><a href="embedded-content.html#the-img-element">img</a></code> element must not be used as a layout tool. In particular, <code><a href="embedded-content.html#the-img-element">img</a></code>
+elements should not be used to display transparent images, as such images rarely convey meaning and
+rarely add anything useful to the document.</p>
+<hr>
+<div>
+<p>What an <code><a href="embedded-content.html#the-img-element">img</a></code> element represents depends on the <code><a href="embedded-content.html#attr-img-src">src</a></code> attribute and the <code><a href="embedded-content.html#attr-img-alt">alt</a></code>
+attribute.</p>
+<dl><dt>If the <code><a href="embedded-content.html#attr-img-src">src</a></code> attribute is set and the <code><a href="embedded-content.html#attr-img-alt">alt</a></code> attribute is set to the empty string<dd>
+<p>The image is either decorative or supplemental to the rest of the content, redundant with
+some other information in the document.</p>
+<p>If the image is <a href="images.html#img-available">available</a> and the user agent is configured
+to display that image, then the element <a href="dom.html#represents">represents</a> the element's image data.</p>
+<p>Otherwise, the element <a href="dom.html#represents">represents</a> nothing, and may be omitted completely from
+the rendering. User agents may provide the user with a notification that an image is present but
+has been omitted from the rendering.</p>
+<dt>If the <code><a href="embedded-content.html#attr-img-src">src</a></code> attribute is set and the <code><a href="embedded-content.html#attr-img-alt">alt</a></code> attribute is set to a value that isn't empty<dd>
+<p>The image is a key part of the content; the <code><a href="embedded-content.html#attr-img-alt">alt</a></code> attribute
+gives a textual equivalent or replacement for the image.</p>
+<p>If the image is <a href="images.html#img-available">available</a> and the user agent is configured
+to display that image, then the element <a href="dom.html#represents">represents</a> the element's image data.</p>
+<p>Otherwise, the element <a href="dom.html#represents">represents</a> the text given by the <code><a href="embedded-content.html#attr-img-alt">alt</a></code> attribute. User agents may provide the user with a notification
+that an image is present but has been omitted from the rendering.</p>
+<dt>If the <code><a href="embedded-content.html#attr-img-src">src</a></code> attribute is set and the <code><a href="embedded-content.html#attr-img-alt">alt</a></code> attribute is not<dd>
+<p>The image might be a key part of the content, and there is no textual equivalent of the image
+available.</p>
+<p>In a conforming document, the absence of the <code><a href="embedded-content.html#attr-img-alt">alt</a></code> attribute indicates that the image is a key part of the content
+but that a textual replacement for the image was not available when the image was generated.</p>
+<p>If the image is <a href="images.html#img-available">available</a> and the user agent is configured
+to display that image, then the element <a href="dom.html#represents">represents</a> the element's image data.</p>
+<p>If the image has a <code><a href="embedded-content.html#attr-img-src">src</a></code> attribute whose value is
+the empty string, then the element <a href="dom.html#represents">represents</a> nothing.</p>
+<p>Otherwise, the user agent should display some sort of indicator that there is an image that
+is not being rendered, and may, if requested by the user, or if so configured, or when required
+to provide contextual information in response to navigation, provide caption information for the
+image, derived as follows:</p>
+<ol><li><p>If the image has a <code><a href="dom.html#attr-title">title</a></code> attribute whose value is not
+the empty string, then return the value of that attribute.<li><p>If the image is a descendant of a <code><a href="grouping-content.html#the-figure-element">figure</a></code> element that has a child
+<code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code> element, and, ignoring the <code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code> element and its
+descendants, the <code><a href="grouping-content.html#the-figure-element">figure</a></code> element has no <a href="dom.html#flow-content-2">flow content</a> descendants other
+than <a href="dom.html#inter-element-whitespace">inter-element whitespace</a> and the <code><a href="embedded-content.html#the-img-element">img</a></code> element, then return the
+contents of the first such <code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code> element.<li><p>Return nothing. (There is no caption information.)</ol>
+<dt>If the <code><a href="embedded-content.html#attr-img-src">src</a></code> attribute is not set and either the <code><a href="embedded-content.html#attr-img-alt">alt</a></code> attribute is set to the empty string or the <code><a href="embedded-content.html#attr-img-alt">alt</a></code> attribute is not set at all<dd>
+<p>The element <a href="dom.html#represents">represents</a> nothing.</p>
+<dt>Otherwise<dd>
+<p>The element <a href="dom.html#represents">represents</a> the text given by the <code><a href="embedded-content.html#attr-img-alt">alt</a></code> attribute.</p>
+</dl>
+</div>
+<p>The <code><a href="embedded-content.html#attr-img-alt">alt</a></code> attribute does not represent advisory information.
+User agents must not present the contents of the <code><a href="embedded-content.html#attr-img-alt">alt</a></code> attribute
+in the same way as content of the <code><a href="dom.html#attr-title">title</a></code> attribute.</p>
+<p>User agents may always provide the user with the option to display any image, or to prevent any
+image from being displayed. User agents may also apply heuristics to help the user make use of the
+image when the user is unable to see it, e.g. due to a visual disability or because they are using
+a text terminal with no graphics capabilities. Such heuristics could include, for instance,
+optical character recognition (OCR) of text found within the image.</p>
+<p>While user agents are encouraged to repair cases of missing <code><a href="embedded-content.html#attr-img-alt">alt</a></code> attributes, authors must not rely on such behavior. <a href="images.html#alt">Requirements for providing text to act as an alternative for images</a> are described
+in detail below.</p>
+<p>The <em>contents</em> of <code><a href="embedded-content.html#the-img-element">img</a></code> elements, if any, are ignored for the purposes of
+rendering.</p>
+<hr>
+<p>The <code><a href="image-maps.html#attr-hyperlink-usemap">usemap</a></code> attribute,
+if present, can indicate that the image has an associated
+<a href="image-maps.html#image-map">image map</a>.</p>
+<p>The <dfn id=attr-img-ismap data-dfn-type=element-attr><code>ismap</code></dfn> attribute,
+when used on an element that is a descendant of an <code><a href="text-level-semantics.html#the-a-element">a</a></code> element with an <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute, indicates by its presence that the element
+provides access to a server-side image map. This affects how events are handled on the
+corresponding <code><a href="text-level-semantics.html#the-a-element">a</a></code> element.</p>
+<p>The <code><a href="embedded-content.html#attr-img-ismap">ismap</a></code> attribute is a
+<a href="common-microsyntaxes.html#boolean-attribute">boolean attribute</a>. The attribute must not be specified
+on an element that does not have an ancestor <code><a href="text-level-semantics.html#the-a-element">a</a></code> element
+with an <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute.</p>
+<p>The <code><a href="image-maps.html#attr-hyperlink-usemap">usemap</a></code> and <code><a href="embedded-content.html#attr-img-ismap">ismap</a></code> attributes can result in confusing behavior when used
+together with <code><a href="embedded-content.html#the-source-element">source</a></code> elements with the <code><a href="embedded-content.html#attr-source-media">media</a></code>
+attribute specified in a <code><a href="embedded-content.html#the-picture-element">picture</a></code> element.</p>
+<p>The <code><a href="embedded-content.html#the-img-element">img</a></code> element supports <a href="embedded-content-other.html#dimension-attributes">dimension
+attributes</a>.</p>
+</div><div>
+<p>The <dfn id=dom-img-crossorigin data-dfn-type=attribute><code>crossOrigin</code></dfn> IDL attribute must
+<a href="common-dom-interfaces.html#reflect">reflect</a> the <code><a href="embedded-content.html#attr-img-crossorigin">crossorigin</a></code> content attribute,
+<a href="common-dom-interfaces.html#limited-to-only-known-values">limited to only known values</a>.</p>
+</div>
+</div><div>
+<p>The <dfn id=dom-img-referrerpolicy data-dfn-type=attribute><code>referrerPolicy</code></dfn> IDL attribute must
+<a href="common-dom-interfaces.html#reflect">reflect</a> the <code><a href="embedded-content.html#attr-img-referrerpolicy">referrerpolicy</a></code> content
+attribute, <a href="common-dom-interfaces.html#limited-to-only-known-values">limited to only known values</a>.</p>
+</div>
+</div><div>
+<p>The <dfn id=dom-img-decoding data-dfn-type=attribute><code>decoding</code></dfn>
+IDL attribute must <a href="common-dom-interfaces.html#reflect">reflect</a> the <code><a href="embedded-content.html#attr-img-decoding">decoding</a></code>
+content attribute, <a href="common-dom-interfaces.html#limited-to-only-known-values">limited to only known values</a>.</p>
+</div>
+</div><div>
+<p>The <dfn id=dom-img-loading data-dfn-type=attribute><code>loading</code></dfn>
+IDL attribute must <a href="common-dom-interfaces.html#reflect">reflect</a> the <code><a href="embedded-content.html#attr-img-loading">loading</a></code> content
+attribute, <a href="common-dom-interfaces.html#limited-to-only-known-values">limited to only known values</a>.</p>
+</div>
+<div>
+<p>The <dfn id=dom-img-fetchpriority data-dfn-type=attribute><code>fetchPriority</code></dfn> IDL attribute
+must <a href="common-dom-interfaces.html#reflect">reflect</a> the <code><a href="embedded-content.html#attr-img-fetchpriority">fetchpriority</a></code> content
+attribute, <a href="common-dom-interfaces.html#limited-to-only-known-values">limited to only known values</a>.</p>
+</div>
+<dl><dt><code><var>image</var>.<a href="embedded-content.html#dom-img-width" id=dom-img-width-dev>width</a> [ = <var>value</var> ]</code></div><dt><code><var>image</var>.<a href="embedded-content.html#dom-img-height" id=dom-img-height-dev>height</a> [ = <var>value</var> ]</code></div><dd>
+<p>These attributes return the actual rendered dimensions of the image, or 0 if the dimensions
+are not known.</p>
+<p>They can be set, to change the corresponding content attributes.</p>
+<dt><code><var>image</var>.<a href="embedded-content.html#dom-img-naturalwidth" id=dom-img-naturalwidth-dev>naturalWidth</a></code></div><dt><code><var>image</var>.<a href="embedded-content.html#dom-img-naturalheight" id=dom-img-naturalheight-dev>naturalHeight</a></code></div><dd>
+<p>These attributes return the natural dimensions of the image, or 0 if the dimensions are not
+known.</p>
+<dt><code><var>image</var>.<a href="embedded-content.html#dom-img-complete" id=dom-img-complete-dev>complete</a></code></div><dd>
+<p>Returns true if the image has been completely downloaded or if no image is specified;
+otherwise, returns false.</p>
+<dt><code><var>image</var>.<a href="embedded-content.html#dom-img-currentsrc" id=dom-img-currentsrc-dev>currentSrc</a></code></div><dd><p>Returns the image's <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>.<dt><code><var>image</var>.<a href="embedded-content.html#dom-img-decode" id=dom-img-decode-dev>decode</a>()</code></div><dd>
+<p>This method causes the user agent to <a href="images.html#img-decoding-process">decode</a> the
+image <a href="infrastructure.html#in-parallel">in parallel</a>, returning a promise that fulfills when decoding is complete.</p>
+<p>The promise will be rejected with an <a href=https://webidl.spec.whatwg.org/#encodingerror data-x-internal=encodingerror>"<code>EncodingError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> if the image cannot be decoded.</p>
+<dt><code><var>image</var> = new <a href="embedded-content.html#dom-image" id=dom-image-dev>Image</a>([ <var>width</var> [, <var>height</var> ] ])</code></div><dd>
+<p>Returns a new <code><a href="embedded-content.html#the-img-element">img</a></code> element, with the <code><a href="embedded-content-other.html#attr-dim-width">width</a></code>
+and <code><a href="embedded-content-other.html#attr-dim-height">height</a></code> attributes set to the values passed in the
+relevant arguments, if applicable.</p>
+</dl>
+<div>
+<p>The IDL attributes <dfn id=dom-img-width data-dfn-type=attribute><code>width</code></dfn> and <dfn id=dom-img-height data-dfn-type=attribute><code>height</code></dfn> must return the rendered width and height of the
+image, in <a href=https://drafts.csswg.org/css-values/#pxpx'" data-x-internal="'px'">CSS pixels</a>, if the image is <a href="rendering.html#being-rendered">being rendered</a>; or
+else the <a href="images.html#density-corrected-intrinsic-width-and-height">density-corrected natural width and height</a> of the image, in <a href=https://drafts.csswg.org/css-values/#pxpx'-2" data-x-internal="'px'">CSS pixels</a>, if the image has <a href="images.html#density-corrected-intrinsic-width-and-height">density-corrected natural width and
+height</a> and is <i><a href="images.html#img-available">available</a></i> but is not <a href="rendering.html#being-rendered">being
+rendered</a>; or else 0, if the image is not <i><a href="images.html#img-available">available</a></i> or does
+not have <a href="images.html#density-corrected-intrinsic-width-and-height">density-corrected natural width and height</a>. <a href="references.html#refsCSS">[CSS]</a></p>
+</div>
+<div>
+<p>The IDL attributes <dfn id=dom-img-naturalwidth data-dfn-type=attribute><code>naturalWidth</code></dfn> and <dfn id=dom-img-naturalheight data-dfn-type=attribute><code>naturalHeight</code></dfn> must return
+the <a href="images.html#density-corrected-intrinsic-width-and-height">density-corrected natural width and height</a> of the image, in <a href=https://drafts.csswg.org/css-values/#pxpx'-3" data-x-internal="'px'">CSS pixels</a>, if the image has <a href="images.html#density-corrected-intrinsic-width-and-height">density-corrected natural width and
+height</a> and is <i><a href="images.html#img-available">available</a></i>, or else 0. <a href="references.html#refsCSS">[CSS]</a></p>
+</div>
+<p>Since the <a href="images.html#density-corrected-intrinsic-width-and-height">density-corrected natural width and height</a> of an image
+take into account any orientation specified in its metadata, <code><a href="embedded-content.html#dom-img-naturalwidth">naturalWidth</a></code> and <code><a href="embedded-content.html#dom-img-naturalheight">naturalHeight</a></code> reflect the dimensions after applying any
+rotation needed to correctly orient the image, regardless of the value of the
+<aimage-orientation'" href=https://drafts.csswg.org/css-images-3/#the-image-orientation data-x-internal="'image-orientation'">'image-orientation'</a> property.</p>
+<div>
+<p>The <dfn id=dom-img-complete data-dfn-type=attribute><code>complete</code></dfn> getter steps are:</p>
+<ol><li>
+<p>If any of the following are true:</p>
+<ul><li><p>both the <code><a href="embedded-content.html#attr-img-src">src</a></code> attribute and the <code><a href="embedded-content.html#attr-img-srcset">srcset</a></code> attribute are omitted;<li><p>the <code><a href="embedded-content.html#attr-img-srcset">srcset</a></code> attribute is omitted and the <code><a href="embedded-content.html#attr-img-src">src</a></code> attribute's value is the empty string;<li><p>the <code><a href="embedded-content.html#the-img-element">img</a></code> element's <a href="images.html#current-request">current request</a>'s <a href="images.html#img-req-state">state</a> is <a href="images.html#img-all">completely available</a> and
+its <a href="images.html#pending-request">pending request</a> is null; or<li><p>the <code><a href="embedded-content.html#the-img-element">img</a></code> element's <a href="images.html#current-request">current request</a>'s <a href="images.html#img-req-state">state</a> is <a href="images.html#img-error">broken</a> and its
+<a href="images.html#pending-request">pending request</a> is null,</ul>
+<p>then return true.</p>
+<li><p>Return false.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-img-currentsrc data-dfn-type=attribute><code>currentSrc</code></dfn> IDL attribute must return the
+<code><a href="embedded-content.html#the-img-element">img</a></code> element's <a href="images.html#current-request">current request</a>'s <a href="images.html#img-req-url">current
+URL</a>.</p>
+</div>
+<div>
+<p>The <dfn id=dom-img-decode data-dfn-type=method><code>decode()</code></dfn>
+method, when invoked, must perform the following steps:</p>
+<ol><li><p>Let <var>promise</var> be a new promise.<li>
+<p><a href="webappapis.html#queue-a-microtask">Queue a microtask</a> to perform the following steps:</p>
+<div>
+<p>This is done because <a href="images.html#update-the-image-data">updating the image data</a>
+takes place in a microtask as well. Thus, to make code such as</p>
+<pre><code>img.src = &quot;stars.jpg&quot;;
+img.decode();</code></pre>
+<p>properly decode <code>stars.jpg</code>, we need to delay any processing by one
+microtask.</p>
+</div>
+<ol><li><p>Let <var>global</var> be <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#concept-relevant-global">relevant global
+object</a>.<li>
+<p>If any of the following are true:</p>
+<ul><li><p><a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a> is not <a href="document-sequences.html#fully-active">fully active</a>;
+or<li><p><a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="images.html#current-request">current request</a>'s <a href="images.html#img-req-state">state</a> is <a href="images.html#img-error">broken</a>,</ul>
+<p>then reject <var>promise</var> with an <a href=https://webidl.spec.whatwg.org/#encodingerror data-x-internal=encodingerror>"<code>EncodingError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</p>
+<li>
+<p>Otherwise, <a href="infrastructure.html#in-parallel">in parallel</a>, wait for one of the following cases to occur, and
+perform the corresponding actions:</p>
+<dl><dt>This <code><a href="embedded-content.html#the-img-element">img</a></code> element's <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a> stops being <a href="document-sequences.html#fully-active">fully
+active</a><dt>This <code><a href="embedded-content.html#the-img-element">img</a></code> element's <a href="images.html#current-request">current request</a> changes or is mutated<dt>This <code><a href="embedded-content.html#the-img-element">img</a></code> element's <a href="images.html#current-request">current request</a>'s <a href="images.html#img-req-state">state</a> becomes <a href="images.html#img-error">broken</a><dd><p><a href="webappapis.html#queue-a-global-task">Queue a global task</a> on the <a href="webappapis.html#dom-manipulation-task-source">DOM manipulation task source</a> with
+<var>global</var> to reject <var>promise</var> with an
+<a href=https://webidl.spec.whatwg.org/#encodingerror data-x-internal=encodingerror>"<code>EncodingError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<dt>This <code><a href="embedded-content.html#the-img-element">img</a></code> element's <a href="images.html#current-request">current request</a>'s <a href="images.html#img-req-state">state</a> becomes <a href="images.html#img-all">completely
+available</a><dd>
+<p><a href="images.html#img-decoding-process">Decode</a> the image.</p>
+<p>If decoding does not need to be performed for this image (for example because it is a
+vector graphic) or the decoding process completes successfully, then <a href="webappapis.html#queue-a-global-task">queue a global
+task</a> on the <a href="webappapis.html#dom-manipulation-task-source">DOM manipulation task source</a> with <var>global</var> to
+resolve <var>promise</var> with undefined.</p>
+<p>If decoding fails (for example due to invalid image data), then <a href="webappapis.html#queue-a-global-task">queue a global
+task</a> on the <a href="webappapis.html#dom-manipulation-task-source">DOM manipulation task source</a> with <var>global</var> to
+reject <var>promise</var> with an <a href=https://webidl.spec.whatwg.org/#encodingerror data-x-internal=encodingerror>"<code>EncodingError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</p>
+<p>User agents should ensure that the decoded media data stays readily available until at
+least the end of the next successful <a href="webappapis.html#update-the-rendering">update the rendering</a> step in the
+<a href="webappapis.html#event-loop">event loop</a>. This is an important part of the API contract, and should not be
+broken if at all possible. (Typically, this would only be violated in low-memory situations
+that require evicting decoded image data, or when the image is too large to keep in decoded
+form for this period of time.)</p>
+</dl>
+<p>Animated images will become <a href="images.html#img-all">completely available</a>
+only after all their frames are loaded. Thus, even though an implementation could decode the
+first frame before that point, the above steps will not do so, instead waiting until all
+frames are available.</p>
+</ol>
+<li><p>Return <var>promise</var>.</ol>
+</div>
+<div>
+<p>Without the <code><a href="embedded-content.html#dom-img-decode">decode()</a></code> method, the process of loading an
+<code><a href="embedded-content.html#the-img-element">img</a></code> element and then displaying it might look like the following:</p>
+<pre><code>const img = new Image();
+img.src = &quot;nebula.jpg&quot;;
+img.onload = () =&gt; {
+document.body.appendChild(img);
+};
+img.onerror = () =&gt; {
+document.body.appendChild(new Text(&quot;Could not load the nebula :(&quot;));
+};</code></pre>
+<p>However, this can cause notable dropped frames, as the paint that occurs after inserting the
+image into the DOM causes a synchronous decode on the main thread.</p>
+<p>This can instead be rewritten using the <code><a href="embedded-content.html#dom-img-decode">decode()</a></code>
+method:</p>
+<pre><code>const img = new Image();
+img.src = &quot;nebula.jpg&quot;;
+img.decode().then(() =&gt; {
+document.body.appendChild(img);
+}).catch(() =&gt; {
+document.body.appendChild(new Text(&quot;Could not load the nebula :(&quot;));
+});</code></pre>
+<p>This latter form avoids the dropped frames of the original, by allowing the user agent to
+decode the image <a href="infrastructure.html#in-parallel">in parallel</a>, and only inserting it into the DOM (and thus causing
+it to be painted) once the decoding process is complete.</p>
+</div>
+<div>
+<p>Because the <code><a href="embedded-content.html#dom-img-decode">decode()</a></code> method attempts to ensure that the
+decoded image data is available for at least one frame, it can be combined with the <code><a href="imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe">requestAnimationFrame()</a></code> API.
+This means it can be used with coding styles or frameworks that ensure that all DOM modifications
+are batched together as <a href="imagebitmap-and-animations.html#list-of-animation-frame-callbacks">animation frame
+callbacks</a>:</p>
+<pre><code>const container = document.querySelector(&quot;#container&quot;);
+const { containerWidth, containerHeight } = computeDesiredSize();
+requestAnimationFrame(() =&gt; {
+container.style.width = containerWidth;
+container.style.height = containerHeight;
+});
+// ...
+const img = new Image();
+img.src = &quot;supernova.jpg&quot;;
+img.decode().then(() =&gt; {
+requestAnimationFrame(() =&gt; container.appendChild(img));
+});</code></pre>
+</div>
+<div>
+<p>A legacy factory function is provided for creating <code><a href="embedded-content.html#htmlimageelement">HTMLImageElement</a></code> objects (in
+addition to the factory methods from DOM such as <code><a data-x-internal=dom-document-createelement href=https://dom.spec.whatwg.org/#dom-document-createelement>createElement()</a></code>): <dfn id=dom-image><code>Image(<var>width</var>, <var>height</var>)</code></dfn>. When invoked,
+the legacy factory function must perform the following steps:</p>
+<ol><li><p>Let <var>document</var> be the <a href="webappapis.html#current-global-object">current global object</a>'s <a href="nav-history-apis.html#concept-document-window">associated <code>Document</code></a>.<li><p>Let <var>img</var> be the result of <a href=https://dom.spec.whatwg.org/#concept-create-element data-x-internal=create-an-element>creating an
+element</a> given <var>document</var>, "<code>img</code>", and the <a href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML
+namespace</a>.<li><p>If <var>width</var> is given, then <a href=https://dom.spec.whatwg.org/#concept-element-attributes-set-value data-x-internal=concept-element-attributes-set-value>set
+an attribute value</a> for <var>img</var> using "<code><a href="embedded-content-other.html#attr-dim-width">width</a></code>"
+and <var>width</var>.<li><p>If <var>height</var> is given, then <a href=https://dom.spec.whatwg.org/#concept-element-attributes-set-value data-x-internal=concept-element-attributes-set-value>set an attribute value</a> for <var>img</var>
+using "<code><a href="embedded-content-other.html#attr-dim-height">height</a></code>" and <var>height</var>.<li><p>Return <var>img</var>.</ol>
+</div>
+<div>
+<p>A single image can have different appropriate alternative text depending on the context.</p>
+<p>In each of the following cases, the same image is used, yet the <code><a href="embedded-content.html#attr-img-alt">alt</a></code> text is different each time. The image is the coat of arms of the
+Carouge municipality in the canton Geneva in Switzerland.</p>
+<p>Here it is used as a supplementary icon:</p>
+<pre><code>&lt;p&gt;I lived in &lt;img src=&quot;carouge.svg&quot; alt=&quot;&quot;&gt; Carouge.&lt;/p&gt;</code></pre>
+<p>Here it is used as an icon representing the town:</p>
+<pre><code>&lt;p&gt;Home town: &lt;img src=&quot;carouge.svg&quot; alt=&quot;Carouge&quot;&gt;&lt;/p&gt;</code></pre>
+<p>Here it is used as part of a text on the town:</p>
+<pre><code>&lt;p&gt;Carouge has a coat of arms.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;carouge.svg&quot; alt=&quot;The coat of arms depicts a lion, sitting in front of a tree.&quot;&gt;&lt;/p&gt;
+&lt;p&gt;It is used as decoration all over the town.&lt;/p&gt;</code></pre>
+<p>Here it is used as a way to support a similar text where the description is given as well as,
+instead of as an alternative to, the image:</p>
+<pre><code>&lt;p&gt;Carouge has a coat of arms.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;carouge.svg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;The coat of arms depicts a lion, sitting in front of a tree.
+It is used as decoration all over the town.&lt;/p&gt;</code></pre>
+<p>Here it is used as part of a story:</p>
+<pre><code>&lt;p&gt;She picked up the folder and a piece of paper fell out.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;carouge.svg&quot; alt=&quot;Shaped like a shield, the paper had a
+red background, a green tree, and a yellow lion with its tongue
+hanging out and whose tail was shaped like an S.&quot;&gt;&lt;/p&gt;
+&lt;p&gt;She stared at the folder. S! The answer she had been looking for all
+this time was simply the letter S! How had she not seen that before? It all
+came together now. The phone call where Hector had referred to a lion&apos;s tail,
+the time Maria had stuck her tongue out...&lt;/p&gt;</code></pre>
+<p>Here it is not known at the time of publication what the image will be, only that it will be a
+coat of arms of some kind, and thus no replacement text can be provided, and instead only a brief
+caption for the image is provided, in the <code><a href="dom.html#attr-title">title</a></code> attribute:</p>
+<pre><code>&lt;p&gt;The last user to have uploaded a coat of arms uploaded this one:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;last-uploaded-coat-of-arms.cgi&quot; title=&quot;User-uploaded coat of arms.&quot;&gt;&lt;/p&gt;</code></pre>
+<p>Ideally, the author would find a way to provide real replacement text even in this case, e.g.
+by asking the previous user. Not providing replacement text makes the document more difficult to
+use for people who are unable to view images, e.g. blind users, or users or very low-bandwidth
+connections or who pay by the byte, or users who are forced to use a text-only web browser.</p>
+</div>
+<div>
+<p>Here are some more examples showing the same picture used in different contexts, with
+different appropriate alternate texts each time.</p>
+<pre><code>&lt;article&gt;
+&lt;h1&gt;My cats&lt;/h1&gt;
+&lt;h2&gt;Fluffy&lt;/h2&gt;
+&lt;p&gt;Fluffy is my favorite.&lt;/p&gt;
+&lt;img src=&quot;fluffy.jpg&quot; alt=&quot;She likes playing with a ball of yarn.&quot;&gt;
+&lt;p&gt;She&apos;s just too cute.&lt;/p&gt;
+&lt;h2&gt;Miles&lt;/h2&gt;
+&lt;p&gt;My other cat, Miles just eats and sleeps.&lt;/p&gt;
+&lt;/article&gt;</code></pre>
+<pre><code>&lt;article&gt;
+&lt;h1&gt;Photography&lt;/h1&gt;
+&lt;h2&gt;Shooting moving targets indoors&lt;/h2&gt;
+&lt;p&gt;The trick here is to know how to anticipate; to know at what speed and
+what distance the subject will pass by.&lt;/p&gt;
+&lt;img src=&quot;fluffy.jpg&quot; alt=&quot;A cat flying by, chasing a ball of yarn, can be
+photographed quite nicely using this technique.&quot;&gt;
+&lt;h2&gt;Nature by night&lt;/h2&gt;
+&lt;p&gt;To achieve this, you&apos;ll need either an extremely sensitive film, or
+immense flash lights.&lt;/p&gt;
+&lt;/article&gt;</code></pre>
+<pre><code>&lt;article&gt;
+&lt;h1&gt;About me&lt;/h1&gt;
+&lt;h2&gt;My pets&lt;/h2&gt;
+&lt;p&gt;I&apos;ve got a cat named Fluffy and a dog named Miles.&lt;/p&gt;
+&lt;img src=&quot;fluffy.jpg&quot; alt=&quot;Fluffy, my cat, tends to keep itself busy.&quot;&gt;
+&lt;p&gt;My dog Miles and I like go on long walks together.&lt;/p&gt;
+&lt;h2&gt;music&lt;/h2&gt;
+&lt;p&gt;After our walks, having emptied my mind, I like listening to Bach.&lt;/p&gt;
+&lt;/article&gt;</code></pre>
+<pre><code>&lt;article&gt;
+&lt;h1&gt;Fluffy and the Yarn&lt;/h1&gt;
+&lt;p&gt;Fluffy was a cat who liked to play with yarn. She also liked to jump.&lt;/p&gt;
+&lt;aside&gt;&lt;img src=&quot;fluffy.jpg&quot; alt=&quot;&quot; title=&quot;Fluffy&quot;&gt;&lt;/aside&gt;
+&lt;p&gt;She would play in the morning, she would play in the evening.&lt;/p&gt;
+&lt;/article&gt;</code></pre>
+</div>
+</body>
+</html>

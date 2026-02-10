@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+<li><a href="custom-elements.html#custom-element-conformance">Requirements for custom element constructors and
+reactions</a><ol><li><a href="custom-elements.html#preserving-custom-element-state-when-moved">Preserving custom element state when moved</a></ol><li><a href="custom-elements.html#custom-elements-core-concepts">Core concepts</a><li><a href="custom-elements.html#custom-elements-api">The <code>CustomElementRegistry</code> interface</a><li><a href="custom-elements.html#upgrades">Upgrades</a><li><a href="custom-elements.html#custom-element-reactions">Custom element reactions</a><li><a href="custom-elements.html#element-internals">Element internals</a><ol><li><a href="custom-elements.html#the-elementinternals-interface">The <code>ElementInternals</code> interface</a><li><a href="custom-elements.html#shadow-root-access">Shadow root access</a><li><a href="custom-elements.html#form-associated-custom-elements">Form-associated custom elements</a><li><a href="custom-elements.html#accessibility-semantics">Accessibility semantics</a><li><a href="custom-elements.html#custom-state-pseudo-class">Custom state pseudo-class</a></ol></ol></ol></ol><h3 id=custom-elements>Custom elements</h3></div>
+<h4 id=custom-elements-intro>Introduction</h4>
+<p><i>This section is non-normative.</i></p>
+<p><a href="custom-elements.html#custom-element">Custom elements</a> provide a way for authors to build their
+own fully-featured DOM elements. Although authors could always use non-standard elements in their
+documents, with application-specific behavior added after the fact by scripting or similar, such
+elements have historically been non-conforming and not very functional. By <a href="custom-elements.html#element-definition">defining</a> a custom element, authors can inform the parser how to
+properly construct an element and how elements of that class should react to changes.</p>
+<p>Custom elements are part of a larger effort to "rationalise the platform", by explaining
+existing platform features (like the elements of HTML) in terms of lower-level author-exposed
+extensibility points (like custom element definition). Although today there are many limitations
+on the capabilities of custom elements—both functionally and semantically—that prevent them from
+fully explaining the behaviors of HTML's existing elements, we hope to shrink this gap over
+time.</p>
+<h5 id=custom-elements-autonomous-example>Creating an autonomous custom element</h5>
+<p><i>This section is non-normative.</i></p>
+<p>For the purposes of illustrating how to create an <a href="custom-elements.html#autonomous-custom-element">autonomous custom element</a>, let's
+define a custom element that encapsulates rendering a small icon for a country flag. Our goal is
+to be able to use it like so:</p>
+<pre><code>&lt;flag-icon country=&quot;nl&quot;&gt;&lt;/flag-icon&gt;</code></pre>
+<p>To do this, we first declare a class for the custom element, extending
+<code><a href="dom.html#htmlelement">HTMLElement</a></code>:</p>
+<pre><code>class FlagIcon extends HTMLElement {
+constructor() {
+super();
+this._countryCode = null;
+}
+static observedAttributes = [&quot;country&quot;];
+attributeChangedCallback(name, oldValue, newValue) {
+// name will always be &quot;country&quot; due to observedAttributes
+this._countryCode = newValue;
+this._updateRendering();
+}
+connectedCallback() {
+this._updateRendering();
+}
+get country() {
+return this._countryCode;
+}
+set country(v) {
+this.setAttribute(&quot;country&quot;, v);
+}
+_updateRendering() {
+// Left as an exercise for the reader. But, you&apos;ll probably want to
+// check this.ownerDocument.defaultView to see if we&apos;ve been
+// inserted into a document with a browsing context, and avoid
+// doing any work if not.
+}
+}</code></pre>
+<p>We then need to use this class to define the element:</p>
+<pre><code>customElements.define(&quot;flag-icon&quot;, FlagIcon);</code></pre>
+<p>At this point, our above code will work! The parser, whenever it sees the <code>flag-icon</code> tag, will construct a new instance of our <code>FlagIcon</code> class, and tell our code about its new <code>country</code>
+attribute, which we then use to set the element's internal state and update its rendering (when
+appropriate).</p>
+<p>You can also create <code>flag-icon</code> elements using the DOM API:</p>
+<pre><code>const flagIcon = document.createElement(&quot;flag-icon&quot;)
+flagIcon.country = &quot;jp&quot;
+document.body.appendChild(flagIcon)</code></pre>
+<p>Finally, we can also use the <a href="custom-elements.html#custom-element-constructor">custom element constructor</a> itself. That is, the above
+code is equivalent to:</p>
+<pre><code>const flagIcon = new FlagIcon()
+flagIcon.country = &quot;jp&quot;
+document.body.appendChild(flagIcon)</code></pre>
+<h5 id=custom-elements-face-example>Creating a form-associated custom element</h5>
+<p><i>This section is non-normative.</i></p>
+<p>Adding a static <code>formAssociated</code> property, with a true value, makes an
+<a href="custom-elements.html#autonomous-custom-element">autonomous custom element</a> a <a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a>. The
+<code><a href="custom-elements.html#elementinternals">ElementInternals</a></code> interface helps you to implement functions and properties common
+to form control elements.</p>
+<pre><code>class MyCheckbox extends HTMLElement {
+static formAssociated = true;
+static observedAttributes = [&apos;checked&apos;];
+constructor() {
+super();
+this._internals = this.attachInternals();
+this.addEventListener(&apos;click&apos;, this._onClick.bind(this));
+}
+get form() { return this._internals.form; }
+get name() { return this.getAttribute(&apos;name&apos;); }
+get type() { return this.localName; }
+get checked() { return this.hasAttribute(&apos;checked&apos;); }
+set checked(flag) { this.toggleAttribute(&apos;checked&apos;, Boolean(flag)); }
+attributeChangedCallback(name, oldValue, newValue) {
+// name will always be &quot;checked&quot; due to observedAttributes
+this._internals.setFormValue(this.checked ? &apos;on&apos; : null);
+}
+_onClick(event) {
+this.checked = !this.checked;
+}
+}
+customElements.define(&apos;my-checkbox&apos;, MyCheckbox);</code></pre>
+<p>You can use the custom element <code>my-checkbox</code> like a built-in
+form-associated element. For example, putting it in <code><a href="forms.html#the-form-element">form</a></code> or <code><a href="forms.html#the-label-element">label</a></code>
+associates the <code>my-checkbox</code> element with them, and submitting the
+<code><a href="forms.html#the-form-element">form</a></code> will send data provided by <code>my-checkbox</code> implementation.
+</p>
+<pre><code>&lt;form action=&quot;...&quot; method=&quot;...&quot;&gt;
+&lt;label&gt;&lt;my-checkbox name=&quot;agreed&quot;&gt;&lt;/my-checkbox&gt; I read the agreement.&lt;/label&gt;
+&lt;input type=&quot;submit&quot;&gt;
+&lt;/form&gt;
+</code></pre>
+<h5 id=custom-elements-accessibility-example>Creating a custom element with default accessible roles, states, and properties</h5>
+<p><i>This section is non-normative.</i></p>
+<p>By using the appropriate properties of <code><a href="custom-elements.html#elementinternals">ElementInternals</a></code>, your custom element can
+have default accessibility semantics. The following code expands our form-associated checkbox from
+the previous section to properly set its default role and checkedness, as viewed by accessibility
+technology:</p>
+<pre><code>class MyCheckbox extends HTMLElement {
+static formAssociated = true;
+static observedAttributes = [&apos;checked&apos;];
+constructor() {
+super();
+this._internals = this.attachInternals();
+this.addEventListener(&apos;click&apos;, this._onClick.bind(this));
+<mark>    this._internals.role = &apos;checkbox&apos;;
+this._internals.ariaChecked = &apos;false&apos;;</mark>
+}
+get form() { return this._internals.form; }
+get name() { return this.getAttribute(&apos;name&apos;); }
+get type() { return this.localName; }
+get checked() { return this.hasAttribute(&apos;checked&apos;); }
+set checked(flag) { this.toggleAttribute(&apos;checked&apos;, Boolean(flag)); }
+attributeChangedCallback(name, oldValue, newValue) {
+// name will always be &quot;checked&quot; due to observedAttributes
+this._internals.setFormValue(this.checked ? &apos;on&apos; : null);
+<mark>    this._internals.ariaChecked = this.checked;</mark>
+}
+_onClick(event) {
+this.checked = !this.checked;
+}
+}
+customElements.define(&apos;my-checkbox&apos;, MyCheckbox);</code></pre>
+<p>Note that, like for built-in elements, these are only defaults, and can be overridden by the
+page author using the <code><a href="infrastructure.html#attr-aria-role">role</a></code> and <code><a href="infrastructure.html#attr-aria-*">aria-*</a></code> attributes:</p>
+<pre><code>&lt;!-- This markup is non-conforming --&gt;
+&lt;input type=&quot;checkbox&quot; checked role=&quot;button&quot; aria-checked=&quot;false&quot;&gt;</code></pre>
+<pre><code>&lt;!-- This markup is probably not what the custom element author intended --&gt;
+&lt;my-checkbox role=&quot;button&quot; checked aria-checked=&quot;false&quot;&gt;</code></pre>
+<p>Custom element authors are encouraged to state what aspects of their accessibility semantics
+are strong native semantics, i.e., should not be overridden by users of the custom element. In our
+example, the author of the <code>my-checkbox</code> element would state that its
+<a href=https://w3c.github.io/aria/#dfn-role data-x-internal=role>role</a> and <code><a data-x-internal=attr-aria-checked href=https://w3c.github.io/aria/#aria-checked>aria-checked</a></code> values are strong
+native semantics, thus discouraging code such as the above.</p>
+<h5 id=custom-elements-customized-builtin-example>Creating a customized built-in element</h5>
+<p><i>This section is non-normative.</i></p>
+<p><a href="custom-elements.html#customized-built-in-element">Customized built-in elements</a> are a distinct
+kind of <a href="custom-elements.html#custom-element">custom element</a>, which are defined slightly differently and used very
+differently compared to <a href="custom-elements.html#autonomous-custom-element">autonomous custom
+elements</a>. They exist to allow reuse of behaviors from the existing elements of HTML, by
+extending those elements with new custom functionality. This is important since many of the
+existing behaviors of HTML elements can unfortunately not be duplicated by using purely <a href="custom-elements.html#autonomous-custom-element">autonomous custom elements</a>. Instead, <a href="custom-elements.html#customized-built-in-element">customized built-in elements</a> allow the installation of
+custom construction behavior, lifecycle hooks, and prototype chain onto existing elements,
+essentially "mixing in" these capabilities on top of the already-existing element.</p>
+<p><a href="custom-elements.html#customized-built-in-element">Customized built-in elements</a> require a
+distinct syntax from <a href="custom-elements.html#autonomous-custom-element">autonomous custom elements</a>
+because user agents and other software key off an element's local name in order to identify the
+element's semantics and behavior. That is, the concept of <a href="custom-elements.html#customized-built-in-element">customized built-in elements</a> building on top of existing behavior depends
+crucially on the extended elements retaining their original local name.</p>
+<p>In this example, we'll be creating a <a href="custom-elements.html#customized-built-in-element">customized built-in element</a> named <code>plastic-button</code>, which behaves like a normal button but gets fancy animation
+effects added whenever you click on it. We start by defining a class, just like before, although
+this time we extend <code><a href="form-elements.html#htmlbuttonelement">HTMLButtonElement</a></code> instead of <code><a href="dom.html#htmlelement">HTMLElement</a></code>:</p>
+<pre><code>class PlasticButton extends HTMLButtonElement {
+constructor() {
+super();
+this.addEventListener(&quot;click&quot;, () =&gt; {
+// Draw some fancy animation effects!
+});
+}
+}</code></pre>
+<p>When defining our custom element, we have to also specify the <code><a href="custom-elements.html#dom-elementdefinitionoptions-extends">extends</a></code> option:</p>
+<pre><code>customElements.define(&quot;plastic-button&quot;, PlasticButton, { extends: &quot;button&quot; });</code></pre>
+<p>In general, the name of the element being extended cannot be determined simply by looking at
+what element interface it extends, as many elements share the same interface (such as
+<code><a href="text-level-semantics.html#the-q-element">q</a></code> and <code><a href="grouping-content.html#the-blockquote-element">blockquote</a></code> both sharing <code><a href="grouping-content.html#htmlquoteelement">HTMLQuoteElement</a></code>).</p>
+<p>To construct our <a href="custom-elements.html#customized-built-in-element">customized built-in element</a> from parsed HTML source text, we use
+the <code><a href="custom-elements.html#attr-is">is</a></code> attribute on a <code><a href="form-elements.html#the-button-element">button</a></code> element:</p>
+<pre><code>&lt;button is=&quot;plastic-button&quot;&gt;Click Me!&lt;/button&gt;</code></pre>
+<p>Trying to use a <a href="custom-elements.html#customized-built-in-element">customized built-in element</a> as an <a href="custom-elements.html#autonomous-custom-element">autonomous custom
+element</a> will <em>not</em> work; that is, <code>&lt;plastic-button>Click
+me?&lt;/plastic-button></code> will simply create an <code><a href="dom.html#htmlelement">HTMLElement</a></code> with no special
+behavior.</p>
+<p>If you need to create a customized built-in element programmatically, you can use the following
+form of <code><a data-x-internal=dom-document-createelement href=https://dom.spec.whatwg.org/#dom-document-createelement>createElement()</a></code>:</p>
+<pre><code>const plasticButton = document.createElement(&quot;button&quot;, { is: &quot;plastic-button&quot; });
+plasticButton.textContent = &quot;Click me!&quot;;</code></pre>
+<p>And as before, the constructor will also work:</p>
+<pre><code>const plasticButton2 = new PlasticButton();
+console.log(plasticButton2.localName);  // will output &quot;button&quot;
+console.assert(plasticButton2 instanceof PlasticButton);
+console.assert(plasticButton2 instanceof HTMLButtonElement);</code></pre>
+<p>Note that when creating a customized built-in element programmatically, the <code><a href="custom-elements.html#attr-is">is</a></code> attribute will not be present in the DOM, since it was not explicitly
+set. However, <a href="parsing.html#attr-is-during-serialization">it will be added to the output when
+serializing</a>:</p>
+<pre><code>console.assert(!plasticButton.hasAttribute(&quot;is&quot;));
+console.log(plasticButton.outerHTML); // will output &apos;&lt;button is=&quot;plastic-button&quot;&gt;&lt;/button&gt;&apos;</code></pre>
+<p>Regardless of how it is created, all of the ways in which <code><a href="form-elements.html#the-button-element">button</a></code> is special
+apply to such "plastic buttons" as well: their focus behavior, ability to participate in <a href="form-control-infrastructure.html#concept-form-submit">form submission</a>, the <code><a href="form-control-infrastructure.html#attr-fe-disabled">disabled</a></code> attribute, and so on.</p>
+<p id=customized-built-in-element-restrictions><a href="custom-elements.html#customized-built-in-element">Customized built-in elements</a> are designed to allow extension of existing HTML
+elements that have useful user-agent supplied behavior or APIs. As such, they can only extend
+existing HTML elements defined in this specification, and cannot extend legacy elements such as
+<code><a href="obsolete.html#bgsound">bgsound</a></code>, <code><a href="obsolete.html#blink">blink</a></code>, <code><a href="obsolete.html#isindex">isindex</a></code>, <code><a href="obsolete.html#keygen">keygen</a></code>,
+<code><a href="obsolete.html#multicol">multicol</a></code>, <code><a href="obsolete.html#nextid">nextid</a></code>, or <code><a href="obsolete.html#spacer">spacer</a></code> that have been defined to use
+<code><a href="dom.html#htmlunknownelement">HTMLUnknownElement</a></code> as their <a href=https://dom.spec.whatwg.org/#concept-element-interface data-x-internal=element-interface>element interface</a>.</p>
+<p>One reason for this requirement is future-compatibility: if a <a href="custom-elements.html#customized-built-in-element">customized built-in
+element</a> was defined that extended a currently-unknown element, for example <code>combobox</code>, this would prevent this specification from defining a <code>combobox</code> element in the future, as consumers of the derived <a href="custom-elements.html#customized-built-in-element">customized
+built-in element</a> would have come to depend on their base element having no interesting
+user-agent-supplied behavior.</p>
+<h5 id=custom-elements-autonomous-drawbacks>Drawbacks of autonomous custom elements</h5>
+<p><i>This section is non-normative.</i></p>
+<p>As specified below, and alluded to above, simply defining and using an element called
+<code>taco-button</code> does not mean that such elements <a href="dom.html#represents">represent</a> buttons. That is, tools such as web browsers, search engines,
+or accessibility technology will not automatically treat the resulting element as a button just
+based on its defined name.</p>
+<p>To convey the desired button semantics to a variety of users, while still using an
+<a href="custom-elements.html#autonomous-custom-element">autonomous custom element</a>, a number of techniques would need to be employed:</p>
+<ul><li><p>The addition of the <code><a href="interaction.html#attr-tabindex">tabindex</a></code> attribute would make the
+<code>taco-button</code> <a href="interaction.html#focusable">focusable</a>. Note that if the
+<code>taco-button</code> were to become logically disabled, the <code><a href="interaction.html#attr-tabindex">tabindex</a></code> attribute would need to be removed.<li><p>The addition of an ARIA role and various ARIA states and properties helps convey semantics
+to accessibility technology. For example, setting the <a href=https://w3c.github.io/aria/#dfn-role data-x-internal=role>role</a> to "<code><a data-x-internal=attr-aria-role-button href=https://w3c.github.io/aria/#button>button</a></code>" will convey the semantics that this is a button,
+enabling users to successfully interact with the control using usual button-like interactions in
+their accessibility technology. Setting the <code><a data-x-internal=attr-aria-label href=https://w3c.github.io/aria/#aria-label>aria-label</a></code>
+property is necessary to give the button an <a href=https://w3c.github.io/aria/#dfn-accessible-name data-x-internal=concept-accessible-name>accessible
+name</a>, instead of having accessibility technology traverse its child text nodes and
+announce them. And setting the <code><a data-x-internal=attr-aria-disabled href=https://w3c.github.io/aria/#aria-disabled>aria-disabled</a></code> state to
+"<code>true</code>" when the button is logically disabled conveys to accessibility
+technology the button's disabled state.<li><p>The addition of event handlers to handle commonly-expected button behaviors helps convey
+the semantics of the button to web browser users. In this case, the most relevant event handler
+would be one that proxies appropriate <code><a data-x-internal=event-keydown href=https://w3c.github.io/uievents/#event-type-keydown>keydown</a></code> events to
+become <code><a data-x-internal=event-click href=https://w3c.github.io/uievents/#event-type-click>click</a></code> events, so that you can activate the button both
+with keyboard and by clicking.<li><p>In addition to any default visual styling provided for <code>taco-button</code>
+elements, the visual styling will also need to be updated to reflect changes in logical state,
+such as becoming disabled; that is, whatever style sheet has rules for <code>taco-button</code> will also need to have rules for <code>taco-button[disabled]</code>.</ul>
+<p>With these points in mind, a full-featured <code>taco-button</code> that took on the
+responsibility of conveying button semantics (including the ability to be disabled) might look
+something like this:</p>
+<pre id=custom-elements-autonomous-drawbacks-example><code>class TacoButton extends HTMLElement {
+static observedAttributes = [&quot;disabled&quot;];
+constructor() {
+super();
+this._internals = this.attachInternals();
+this._internals.role = &quot;button&quot;;
+this.addEventListener(&quot;keydown&quot;, e =&gt; {
+if (e.code === &quot;Enter&quot; || e.code === &quot;Space&quot;) {
+this.dispatchEvent(new PointerEvent(&quot;click&quot;, {
+bubbles: true,
+cancelable: true
+}));
+}
+});
+this.addEventListener(&quot;click&quot;, e =&gt; {
+if (this.disabled) {
+e.preventDefault();
+e.stopImmediatePropagation();
+}
+});
+this._observer = new MutationObserver(() =&gt; {
+this._internals.ariaLabel = this.textContent;
+});
+}
+connectedCallback() {
+this.setAttribute(&quot;tabindex&quot;, &quot;0&quot;);
+this._observer.observe(this, {
+childList: true,
+characterData: true,
+subtree: true
+});
+}
+disconnectedCallback() {
+this._observer.disconnect();
+}
+get disabled() {
+return this.hasAttribute(&quot;disabled&quot;);
+}
+set disabled(flag) {
+this.toggleAttribute(&quot;disabled&quot;, Boolean(flag));
+}
+attributeChangedCallback(name, oldValue, newValue) {
+// name will always be &quot;disabled&quot; due to observedAttributes
+if (this.disabled) {
+this.removeAttribute(&quot;tabindex&quot;);
+this._internals.ariaDisabled = &quot;true&quot;;
+} else {
+this.setAttribute(&quot;tabindex&quot;, &quot;0&quot;);
+this._internals.ariaDisabled = &quot;false&quot;;
+}
+}
+}</code></pre>
+<p>Even with this rather-complicated element definition, the element is not a pleasure to use for
+consumers: it will be continually "sprouting" <code><a href="interaction.html#attr-tabindex">tabindex</a></code>
+attributes of its own volition, and its choice of <code>tabindex="0"</code> focusability
+behavior may not match the <code><a href="form-elements.html#the-button-element">button</a></code> behavior on the current platform. This is because
+as of now there is no way to specify default focus behavior for custom elements, forcing the use
+of the <code><a href="interaction.html#attr-tabindex">tabindex</a></code> attribute to do so (even though it is usually
+reserved for allowing the consumer to override default behavior).</p>
+<p>In contrast, a simple <a href="custom-elements.html#customized-built-in-element">customized built-in element</a>, as shown in the previous
+section, would automatically inherit the semantics and behavior of the <code><a href="form-elements.html#the-button-element">button</a></code>
+element, with no need to implement these behaviors manually. In general, for any elements with
+nontrivial behavior and semantics that build on top of existing elements of HTML, <a href="custom-elements.html#customized-built-in-element">customized built-in elements</a> will be easier to
+develop, maintain, and consume.</p>
+<h5 id=custom-elements-upgrades-examples>Upgrading elements after their creation</h5>
+<p><i>This section is non-normative.</i></p>
+<p>Because <a href="custom-elements.html#element-definition">element definition</a> can occur at any time, a non-custom element could be
+<a href=https://dom.spec.whatwg.org/#concept-create-element data-x-internal=create-an-element>created</a>, and then later become a <a href="custom-elements.html#custom-element">custom
+element</a> after an appropriate <a href="custom-elements.html#custom-element-definition">definition</a> is
+registered. We call this process "upgrading" the element, from a normal element into a custom
+element.</p>
+<p><a href="custom-elements.html#upgrades">Upgrades</a> enable scenarios where it may be
+preferable for <a href="custom-elements.html#custom-element-definition">custom element definitions</a> to be
+registered after relevant elements have been initially created, such as by the parser. They allow
+progressive enhancement of the content in the custom element. For example, in the following HTML
+document the element definition for <code>img-viewer</code> is loaded
+asynchronously:</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;title&gt;Image viewer example&lt;/title&gt;
+&lt;img-viewer filter=&quot;Kelvin&quot;&gt;
+&lt;img src=&quot;images/tree.jpg&quot; alt=&quot;A beautiful tree towering over an empty savannah&quot;&gt;
+&lt;/img-viewer&gt;
+&lt;script src=&quot;js/elements/img-viewer.js&quot; async&gt;&lt;/script&gt;</code></pre>
+<p>The definition for the <code>img-viewer</code> element here is loaded using a
+<code><a href="scripting.html#the-script-element">script</a></code> element marked with the <code><a href="scripting.html#attr-script-async">async</a></code>
+attribute, placed after the <code>&lt;img-viewer></code> tag in the markup. While the
+script is loading, the <code>img-viewer</code> element will be treated as an undefined
+element, similar to a <code><a href="text-level-semantics.html#the-span-element">span</a></code>. Once the script loads, it will define the <code>img-viewer</code> element, and the existing <code>img-viewer</code> element on
+the page will be upgraded, applying the custom element's definition (which presumably includes
+applying an image filter identified by the string "Kelvin", enhancing the image's visual
+appearance).</p>
+<hr>
+<p>Note that <a href="custom-elements.html#upgrades">upgrades</a> only apply to elements in the
+document tree. (Formally, elements that are <a href=https://dom.spec.whatwg.org/#connected data-x-internal=connected>connected</a>.) An element that is not
+inserted into a document will stay un-upgraded. An example illustrates this point:</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;title&gt;Upgrade edge-cases example&lt;/title&gt;
+&lt;example-element&gt;&lt;/example-element&gt;
+&lt;script&gt;
+&quot;use strict&quot;;
+const inDocument = document.querySelector(&quot;example-element&quot;);
+const outOfDocument = document.createElement(&quot;example-element&quot;);
+// Before the element definition, both are HTMLElement:
+console.assert(inDocument instanceof HTMLElement);
+console.assert(outOfDocument instanceof HTMLElement);
+class ExampleElement extends HTMLElement {}
+customElements.define(&quot;example-element&quot;, ExampleElement);
+// After element definition, the in-document element was upgraded:
+console.assert(inDocument instanceof ExampleElement);
+console.assert(!(outOfDocument instanceof ExampleElement));
+document.body.appendChild(outOfDocument);
+// Now that we&apos;ve moved the element into the document, it too was upgraded:
+console.assert(outOfDocument instanceof ExampleElement);
+&lt;/script&gt;</code></pre>
+<h5 id=scoped-custom-element-registries>Scoped custom element registries</h5>
+<p>To allow multiple libraries to co-exist without explicit coordination,
+<code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> can be used in a scoped fashion as well.</p>
+<pre><code>const scoped = new CustomElementRegistry();
+scoped.define(&quot;example-element&quot;, ExampleElement);
+const element = document.createElement(&quot;example-element&quot;, { customElementRegistry: scoped });</code></pre>
+<p>A node with an associated scoped <code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> will use that registry for
+all its operations, such as when invoking <code><a href="dynamic-markup-insertion.html#dom-element-sethtmlunsafe">setHTMLUnsafe()</a></code>.</p>
+<h5 id=exposing-custom-element-states>Exposing custom element states</h5>
+<p>Built-in elements provided by user agents have certain states that can change over time
+depending on user interaction and other factors, and are exposed to web authors through <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-classes</a>. For example, some form controls have the "invalid"
+state, which is exposed through the <code><a href="semantics-other.html#selector-invalid">:invalid</a></code>
+<a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a>.</p>
+<p>Like built-in elements, <a href="custom-elements.html#custom-element">custom elements</a> can have various
+states to be in too, and <a href="custom-elements.html#custom-element">custom element</a> authors want to expose these states in a
+similar fashion as the built-in elements.</p>
+<p>This is done via the <code><a href="semantics-other.html#selector-custom">:state()</a></code> pseudo-class. A custom
+element author can use the <code><a href="custom-elements.html#dom-elementinternals-states">states</a></code> property of
+<code><a href="custom-elements.html#elementinternals">ElementInternals</a></code> to add and remove such custom states, which are then exposed as
+arguments to the <code><a href="semantics-other.html#selector-custom">:state()</a></code> pseudo-class.
+<div>
+<p>The following shows how <code><a href="semantics-other.html#selector-custom">:state()</a></code> can be used to style a
+custom checkbox element. Assume that <code>LabeledCheckbox</code> doesn't expose its
+"checked" state via a content attribute.</p>
+<pre><code>&lt;script&gt;
+class LabeledCheckbox extends HTMLElement {
+constructor() {
+super();
+this._internals = this.attachInternals();
+this.addEventListener(&apos;click&apos;, this._onClick.bind(this));
+const shadowRoot = this.attachShadow({mode: &apos;closed&apos;});
+shadowRoot.innerHTML =
+`&lt;style&gt;
+:host::before {
+content: &apos;[ ]&apos;;
+white-space: pre;
+font-family: monospace;
+}
+:host(:state(checked))::before { content: &apos;[x]&apos; }
+&lt;/style&gt;
+&lt;slot&gt;Label&lt;/slot&gt;`;
+}
+get checked() { return this._internals.states.has(&apos;checked&apos;); }
+set checked(flag) {
+if (flag)
+this._internals.states.add(&apos;checked&apos;);
+else
+this._internals.states.delete(&apos;checked&apos;);
+}
+_onClick(event) {
+this.checked = !this.checked;
+}
+}
+customElements.define(&apos;labeled-checkbox&apos;, LabeledCheckbox);
+&lt;/script&gt;
+&lt;style&gt;
+labeled-checkbox { border: dashed red; }
+labeled-checkbox:state(checked) { border: solid; }
+&lt;/style&gt;
+&lt;labeled-checkbox&gt;You need to check this&lt;/labeled-checkbox&gt;</code></pre>
+</div>
+<div>
+<p>Custom pseudo-classes can even target shadow parts. An extension of the above example shows
+this:</p>
+<pre><code>&lt;script&gt;
+class QuestionBox extends HTMLElement {
+constructor() {
+super();
+const shadowRoot = this.attachShadow({mode: &apos;closed&apos;});
+shadowRoot.innerHTML =
+`&lt;div&gt;&lt;slot&gt;Question&lt;/slot&gt;&lt;/div&gt;
+&lt;labeled-checkbox part=&apos;checkbox&apos;&gt;Yes&lt;/labeled-checkbox&gt;`;
+}
+}
+customElements.define(&apos;question-box&apos;, QuestionBox);
+&lt;/script&gt;
+&lt;style&gt;
+question-box::part(checkbox) { color: red; }
+question-box::part(checkbox):state(checked) { color: green; }
+&lt;/style&gt;
+&lt;question-box&gt;Continue?&lt;/question-box&gt;</code></pre>
+</div>
+<h4 id=custom-element-conformance>Requirements for custom element constructors and
+reactions</h4>
+<p>When authoring <a href="custom-elements.html#custom-element-constructor">custom element constructors</a>,
+authors are bound by the following conformance requirements:</p>
+<ul><li><p>A parameter-less call to <code>super()</code> must be the first statement in the
+constructor body, to establish the correct prototype chain and <b>this</b> value before any
+further code is run.<li><p>A <code>return</code> statement must not appear anywhere inside the constructor
+body, unless it is a simple early-return (<code>return</code> or <code>return
+this</code>).<li><p>The constructor must not use the <code><a href="dynamic-markup-insertion.html#dom-document-write">document.write()</a></code>
+or <code><a href="dynamic-markup-insertion.html#dom-document-open">document.open()</a></code> methods.<li><p>The element's attributes and children must not be inspected, as in the non-<a href="custom-elements.html#upgrades">upgrade</a> case none will be present, and relying on
+upgrades makes the element less usable.<li><p>The element must not gain any attributes or children, as this violates the expectations of
+consumers who use the <code><a data-x-internal=dom-document-createelement href=https://dom.spec.whatwg.org/#dom-document-createelement>createElement</a></code> or <code><a data-x-internal=dom-document-createelementns href=https://dom.spec.whatwg.org/#dom-document-createelementns>createElementNS</a></code> methods.<li><p>In general, work should be deferred to <code>connectedCallback</code> as much as
+possible—especially work involving fetching resources or rendering. However, note that <code>connectedCallback</code> can be called more than once, so any initialization work that
+is truly one-time will need a guard to prevent it from running twice.<li><p>In general, the constructor should be used to set up initial state and default values, and
+to set up event listeners and possibly a <a href=https://dom.spec.whatwg.org/#concept-shadow-root data-x-internal=shadow-root>shadow root</a>.</ul>
+<p>Several of these requirements are checked during <a href=https://dom.spec.whatwg.org/#concept-create-element data-x-internal=create-an-element>element
+creation</a>, either directly or indirectly, and failing to follow them will result in a custom
+element that cannot be instantiated by the parser or DOM APIs. This is true even if the work is
+done inside a constructor-initiated <a href="webappapis.html#microtask">microtask</a>, as a <a href="webappapis.html#perform-a-microtask-checkpoint">microtask checkpoint</a> can occur immediately after construction.</p>
+<p>When authoring <a href="custom-elements.html#concept-custom-element-reaction">custom element reactions</a>,
+authors should avoid manipulating the node tree as this can lead to unexpected results.</p>
+<div>
+<p>An element's <code>connectedCallback</code> can be queued before the element is
+disconnected, but as the callback queue is still processed, it results in a <code>connectedCallback</code> for an element that is no longer connected:</p>
+<pre><code>class CParent extends HTMLElement {
+connectedCallback() {
+this.firstChild.remove();
+}
+}
+customElements.define(&quot;c-parent&quot;, CParent);
+class CChild extends HTMLElement {
+connectedCallback() {
+console.log(&quot;CChild connectedCallback: isConnected =&quot;, this.isConnected);
+}
+}
+customElements.define(&quot;c-child&quot;, CChild);
+const parent = new CParent(),
+child = new CChild();
+parent.append(child);
+document.body.append(parent);
+// Logs:
+// CChild connectedCallback: isConnected = false</code></pre>
+</div>
+<h5 id=preserving-custom-element-state-when-moved>Preserving custom element state when moved</h5>
+<p><i>This section is non-normative.</i></p>
+<p>When manipulating the DOM tree, an element can be <a href=https://dom.spec.whatwg.org/#concept-node-move-ext data-x-internal=concept-node-move-ext>moved</a> in the tree while connected. This applies to custom
+elements as well. By default, the "<code>disconnectedCallback</code>" and "<code>connectedCallback</code>" would be called on the element, one after the other. This is
+done to maintain compatibility with existing custom elements that predate the <code><a data-x-internal=dom-parentnode-movebefore href=https://dom.spec.whatwg.org/#dom-parentnode-movebefore>moveBefore()</a></code> method. This means that by default, custom
+elements reset their state as if they were removed and re-inserted. In the example <a href="custom-elements.html#custom-elements-autonomous-drawbacks-example">above</a>, the impact would be that the
+observer would be disconnected and re-connected, and the tab index would be reset.</p>
+<p>To opt in to a state-preserving behavior while <a href=https://dom.spec.whatwg.org/#concept-node-move-ext data-x-internal=concept-node-move-ext>moving</a>, the author can implement a "<code>connectedMoveCallback</code>". The existence of this callback, even if empty, would
+supersede the default behavior of calling "<code>disconnectedCallback</code>" and "<code>connectedCallback</code>". "<code>connectedMoveCallback</code>" can also be an
+appropriate place to execute logic that depends on the element's ancestors. For example:</p>
+<pre><code>class TacoButton extends HTMLElement {
+static observedAttributes = [&quot;disabled&quot;];
+constructor() {
+super();
+this._internals = this.attachInternals();
+this._internals.role = &quot;button&quot;;
+this._observer = new MutationObserver(() =&gt; {
+this._internals.ariaLabel = this.textContent;
+});
+}
+_notifyMain() {
+if (this.parentElement.tagName === &quot;MAIN&quot;) {
+// Execute logic that depends on ancestors.
+}
+}
+connectedCallback() {
+this.setAttribute(&quot;tabindex&quot;, &quot;0&quot;);
+this._observer.observe(this, {
+childList: true,
+characterData: true,
+subtree: true
+});
+this._notifyMain();
+}
+disconnectedCallback() {
+this._observer.disconnect();
+}
+// Implementing this function would avoid resetting the tab index or re-registering the
+// mutation observer when this element is moved inside the DOM without being disconnected.
+connectedMoveCallback() {
+// The parent can change during a state-preserving move.
+this._notifyMain();
+}
+}</code></pre>
+<h4 id=custom-elements-core-concepts>Core concepts</h4>
+<p>A <dfn id=custom-element>custom element</dfn> is an element that is <a href=https://dom.spec.whatwg.org/#concept-element-custom data-x-internal=concept-element-custom>custom</a>. Informally, this means that its constructor and
+prototype are defined by the author, instead of by the user agent. This author-supplied
+constructor function is called the <dfn id=custom-element-constructor>custom element constructor</dfn>.</p>
+<p>Two distinct types of <a href="custom-elements.html#custom-element">custom elements</a> can be defined:</p>
+</div><ul><li><p>An <dfn id=autonomous-custom-element>autonomous custom element</dfn>, which is defined with no <code><a href="custom-elements.html#dom-elementdefinitionoptions-extends">extends</a></code> option. These types of custom
+elements have a local name equal to their <a href="custom-elements.html#concept-custom-element-definition-name">defined name</a>.<li><p>A <dfn id=customized-built-in-element>customized built-in element</dfn>, which is defined with an <code><a href="custom-elements.html#dom-elementdefinitionoptions-extends">extends</a></code> option. These types of custom
+elements have a local name equal to the value passed in their <code><a href="custom-elements.html#dom-elementdefinitionoptions-extends">extends</a></code> option, and their <a href="custom-elements.html#concept-custom-element-definition-name">defined name</a> is used as the value of the
+<dfn id=attr-is data-dfn-type=element-attr><code>is</code></dfn> attribute, which
+therefore must be a <a href="custom-elements.html#valid-custom-element-name">valid custom element name</a>.</ul>
+<p>After a <a href="custom-elements.html#custom-element">custom element</a> is <a href=https://dom.spec.whatwg.org/#concept-create-element data-x-internal=create-an-element>created</a>,
+changing the value of the <code><a href="custom-elements.html#attr-is">is</a></code> attribute does not
+change the element's behavior, as it is saved on the element as its <a href=https://dom.spec.whatwg.org/#concept-element-is-value data-x-internal=concept-element-is-value><code>is</code> value</a>.</p>
+<p><a href="custom-elements.html#autonomous-custom-element">Autonomous custom elements</a> have the following
+element definition:</p>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dd>For <a href="custom-elements.html#form-associated-custom-element">form-associated custom elements</a>: <a href="forms.html#category-listed">Listed</a>, <a href="forms.html#category-label">labelable</a>, <a href="forms.html#category-submit">submittable</a>, and <a href="forms.html#category-reset">resettable</a> <a href="forms.html#form-associated-element">form-associated element</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#transparent">Transparent</a>.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a>, except the <code><a href="custom-elements.html#attr-is">is</a></code> attribute<dd><code><a href="form-control-infrastructure.html#attr-fae-form">form</a></code>, for <a href="custom-elements.html#form-associated-custom-element">form-associated custom elements</a> —  Associates the element with a <code><a href="forms.html#the-form-element">form</a></code> element
+<dd><code><a href="form-control-infrastructure.html#attr-fe-disabled">disabled</a></code>, for <a href="custom-elements.html#form-associated-custom-element">form-associated custom elements</a> —  Whether the form control is disabled
+<dd><code><a href="custom-elements.html#attr-face-readonly">readonly</a></code>, for <a href="custom-elements.html#form-associated-custom-element">form-associated custom elements</a> —  Affects <code><a href="form-control-infrastructure.html#dom-elementinternals-willvalidate">willValidate</a></code>, plus any behavior added by the custom element author
+<dd><code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code>, for <a href="custom-elements.html#form-associated-custom-element">form-associated custom elements</a> —  Name of the element to use for <a href="form-control-infrastructure.html#form-submission-2">form submission</a> and in the <code><a href="forms.html#dom-form-elements">form.elements</a></code> API
+<dd>Any other attribute that has no namespace (see prose).<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd>For <a href="custom-elements.html#form-associated-custom-element">form-associated custom elements</a>: <a href=https://w3c.github.io/html-aria/#el-form-associated-custom-element>for authors</a>; <a href=https://w3c.github.io/html-aam/#el-form-associated-custom-element>for implementers</a>.<dd>Otherwise: <a href=https://w3c.github.io/html-aria/#el-autonomous-custom-element>for authors</a>; <a href=https://w3c.github.io/html-aam/#el-autonomous-custom-element>for implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Supplied by the element's author (inherits from <code><a href="dom.html#htmlelement">HTMLElement</a></code>)</dl>
+<p>An <a href="custom-elements.html#autonomous-custom-element">autonomous custom element</a> does not have any special meaning: it
+<a href="dom.html#represents">represents</a> its children. A <a href="custom-elements.html#customized-built-in-element">customized built-in element</a> inherits the
+semantics of the element that it extends.</p>
+<p>Any namespace-less attribute that is relevant to the element's functioning, as determined by
+the element's author, may be specified on an <a href="custom-elements.html#autonomous-custom-element">autonomous custom element</a>, so long as
+the attribute name is a <a href=https://dom.spec.whatwg.org/#valid-attribute-local-name data-x-internal=valid-attribute-local-name>valid attribute local name</a> and contains no <a href=https://infra.spec.whatwg.org/#ascii-upper-alpha data-x-internal=uppercase-ascii-letters>ASCII upper alphas</a>. The exception is the <code><a href="custom-elements.html#attr-is">is</a></code> attribute, which must not be specified on an <a href="custom-elements.html#autonomous-custom-element">autonomous custom
+element</a> (and which will have no effect if it is).</p>
+<p><a href="custom-elements.html#customized-built-in-element">Customized built-in elements</a> follow the
+normal requirements for attributes, based on the elements they extend. To add custom
+attribute-based behavior, use <code><a href="dom.html#attr-data-*">data-*</a></code> attributes.</p>
+<hr>
+<div>
+<p>An <a href="custom-elements.html#autonomous-custom-element">autonomous custom element</a> is called a <dfn id=form-associated-custom-element>form-associated custom
+element</dfn> if the element is associated with a <a href="custom-elements.html#custom-element-definition">custom element definition</a> whose
+<a href="custom-elements.html#concept-custom-element-definition-form-associated">form-associated</a> field is
+set to true.</p>
+</div>
+<p>The <code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code> attribute represents the <a href="custom-elements.html#form-associated-custom-element">form-associated
+custom element</a>'s name. The <code><a href="form-control-infrastructure.html#attr-fe-disabled">disabled</a></code> attribute is
+used to make the <a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a> non-interactive and to prevent its
+<a href="custom-elements.html#face-submission-value">submission value</a> from being submitted. The <code><a href="form-control-infrastructure.html#attr-fae-form">form</a></code> attribute is used to explicitly associate the
+<a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a> with its <a href="form-control-infrastructure.html#form-owner">form owner</a>.</p>
+<p>The <dfn id=attr-face-readonly data-dfn-type=element-attr><code>readonly</code></dfn> attribute of <a href="custom-elements.html#form-associated-custom-element">form-associated custom elements</a> specifies that the element is <a href="form-control-infrastructure.html#barred-from-constraint-validation">barred
+from constraint validation</a>. User agents don't provide any other behavior for the attribute,
+but custom element authors should, where possible, use its presence to make their control
+non-editable in some appropriate fashion, similar to the behavior for the <a href="input.html#attr-input-readonly">readonly</a> attribute on built-in form controls.</p>
+<div>
+<p><strong>Constraint validation</strong>: If the <code><a href="custom-elements.html#attr-face-readonly">readonly</a></code> attribute is specified on a <a href="custom-elements.html#form-associated-custom-element">form-associated
+custom element</a>, the element is <a href="form-control-infrastructure.html#barred-from-constraint-validation">barred from constraint validation</a>.</p>
+</div>
+<div>
+<p>The <a href="form-control-infrastructure.html#concept-form-reset-control">reset algorithm</a> for <a href="custom-elements.html#form-associated-custom-element">form-associated custom elements</a> is to <a href="custom-elements.html#enqueue-a-custom-element-callback-reaction">enqueue
+a custom element callback reaction</a> with the element, callback name "<code>formResetCallback</code>", and « ».</p>
+</div>
+<hr>
+<div>
+<p>A string <var>name</var> is a <dfn id=valid-custom-element-name>valid custom element name</dfn> if all of the
+following are true:</p>
+<ul><li>
+<p><var>name</var> is a <a href=https://dom.spec.whatwg.org/#valid-element-local-name data-x-internal=valid-element-local-name>valid element local name</a>;</p>
+<p>This ensures the custom element can be created with <code><a data-x-internal=dom-document-createelement href=https://dom.spec.whatwg.org/#dom-document-createelement>createElement()</a></code>.</p>
+<li>
+<p><var>name</var>'s 0th <a href=https://infra.spec.whatwg.org/#code-point data-x-internal=code-point>code point</a> is an <a href=https://infra.spec.whatwg.org/#ascii-lower-alpha data-x-internal=lowercase-ascii-letters>ASCII lower alpha</a>;</p>
+<p>This ensures the HTML parser will treat the name as a tag name instead of as
+text.</p>
+<li>
+<p><var>name</var> does not contain any <a href=https://infra.spec.whatwg.org/#ascii-upper-alpha data-x-internal=uppercase-ascii-letters>ASCII upper
+alphas</a>;</p>
+<p>This ensures the user agent can always treat HTML elements
+ASCII-case-insensitively.</p>
+<li>
+<p><var>name</var> contains a U+002D (-); and</p>
+<p>This is used for namespacing and to ensure forward compatibility (since no
+elements will be added to HTML, SVG, or MathML with hyphen-containing local names going
+forward).</p>
+<li>
+<p><var>name</var> is not one of the following:</p>
+<ul><li>"<code>annotation-xml</code>"<li>"<code>color-profile</code>"<li>"<code>font-face</code>"<li>"<code>font-face-src</code>"<li>"<code>font-face-uri</code>"<li>"<code>font-face-format</code>"<li>"<code>font-face-name</code>"<li>"<code>missing-glyph</code>"</ul>
+<p>The list of names above is the summary of all hyphen-containing element names
+from the <a href="infrastructure.html#other-applicable-specifications">applicable specifications</a>, namely
+<cite>SVG 2</cite> and <cite>MathML</cite>. <a href="references.html#refsSVG">[SVG]</a> <a href="references.html#refsMATHML">[MATHML]</a></p>
+</ul>
+</div>
+<p>Apart from these restrictions, a large variety of names is allowed, to give maximum
+flexibility for use cases like <code>&lt;math-α></code> or <code>&lt;emotion-😍></code>.</p>
+<hr>
+<p>A <dfn id=custom-element-definition>custom element definition</dfn> describes a <a href="custom-elements.html#custom-element">custom element</a> and
+consists of:</p>
+<dl><dt>A <dfn id=concept-custom-element-definition-name>name</dfn><dd>A <a href="custom-elements.html#valid-custom-element-name">valid custom element name</a><dt>A <dfn id=concept-custom-element-definition-local-name>local name</dfn><dd>A local name<dt>A <dfn id=concept-custom-element-definition-constructor>constructor</dfn><dd>A Web IDL <code><a href="custom-elements.html#customelementconstructor">CustomElementConstructor</a></code> callback function type value wrapping
+the <a href="custom-elements.html#custom-element-constructor">custom element constructor</a><dt>A list of <dfn id=concept-custom-element-definition-observed-attributes>observed
+attributes</dfn><dd>A <code>sequence&lt;DOMString></code><dt>A collection of <dfn id=concept-custom-element-definition-lifecycle-callbacks>lifecycle callbacks</dfn><dd>A map, whose keys are the strings "<code>connectedCallback</code>", "<code>disconnectedCallback</code>", "<code>adoptedCallback</code>", "<code>connectedMoveCallback</code>", "<code>attributeChangedCallback</code>",
+"<code>formAssociatedCallback</code>", "<code>formDisabledCallback</code>",
+"<code>formResetCallback</code>", and "<code>formStateRestoreCallback</code>". The corresponding values are either a Web IDL <code><a data-x-internal=idl-function href=https://webidl.spec.whatwg.org/#common-Function>Function</a></code> callback function type value, or null. By default the value
+of each entry is null.<dt>A <dfn id=concept-custom-element-definition-construction-stack>construction
+stack</dfn><dd>A list, initially empty, that is manipulated by the <a href="custom-elements.html#concept-upgrade-an-element">upgrade an element</a> algorithm and the <a href="dom.html#html-element-constructors">HTML element constructors</a>. Each entry in the list will be
+either an element or an <dfn id=concept-already-constructed-marker><i>already
+constructed</i> marker</dfn>.<dt>A <dfn id=concept-custom-element-definition-form-associated>form-associated</dfn>
+boolean<dd>If this is true, user agent treats elements associated to this
+<a href="custom-elements.html#custom-element-definition">custom element definition</a> as <a href="custom-elements.html#form-associated-custom-element">form-associated custom elements</a>.<dt>A <dfn id=concept-custom-element-definition-disable-internals>disable
+internals</dfn> boolean<dd>Controls <code><a href="custom-elements.html#dom-attachinternals">attachInternals()</a></code>.
+<dt>A <dfn id=concept-custom-element-definition-disable-shadow>disable shadow</dfn> boolean<dd>Controls <code><a data-x-internal=dom-element-attachshadow href=https://dom.spec.whatwg.org/#dom-element-attachshadow>attachShadow()</a></code>.
+</dl>
+<div>
+<p>To <dfn id=look-up-a-custom-element-definition>look up a custom element definition</dfn>, given null or a
+<code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> object <var>registry</var>, string-or-null
+<var>namespace</var>, string <var>localName</var>, and string-or-null <var>is</var>, perform the
+following steps. They will return either a <a href="custom-elements.html#custom-element-definition">custom element definition</a> or null:</p>
+<ol><li><p>If <var>registry</var> is null, then return null.<li><p>If <var>namespace</var> is not the <a href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>, then return null.<li><p>If <var>registry</var>'s <a href="custom-elements.html#custom-element-definition-set">custom element definition set</a> <a href=https://infra.spec.whatwg.org/#list-contain data-x-internal=list-contains>contains</a> an item with <a href="custom-elements.html#concept-custom-element-definition-name">name</a> and <a href="custom-elements.html#concept-custom-element-definition-local-name">local name</a> both equal to
+<var>localName</var>, then return that item.<li><p>If <var>registry</var>'s <a href="custom-elements.html#custom-element-definition-set">custom element definition set</a> <a href=https://infra.spec.whatwg.org/#list-contain data-x-internal=list-contains>contains</a> an item with <a href="custom-elements.html#concept-custom-element-definition-name">name</a> equal to <var>is</var> and <a href="custom-elements.html#concept-custom-element-definition-local-name">local name</a> equal to
+<var>localName</var>, then return that item.<li><p>Return null.</ol>
+</div>
+<h4 id=custom-elements-api>The <code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> interface</h4></div>
+<p>Each <a href="webappapis.html#similar-origin-window-agent">similar-origin window agent</a> has an associated <dfn id=active-custom-element-constructor-map>active custom element constructor map</dfn>, which is a <a href=https://infra.spec.whatwg.org/#ordered-map data-x-internal=ordered-map>map</a> of constructors to <code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> objects.</p>
+</div><div>
+<p>The <code><a href="nav-history-apis.html#window">Window</a></code> <dfn id=dom-window-customelements data-dfn-type=attribute><code>customElements</code></dfn> getter steps are:</p>
+<ol><li>
+<p><a href=https://infra.spec.whatwg.org/#assert data-x-internal=assert>Assert</a>: <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="nav-history-apis.html#concept-document-window">associated
+<code>Document</code></a>'s <a href=https://dom.spec.whatwg.org/#document-custom-element-registry data-x-internal=document-custom-element-registry>custom element
+registry</a> is a <code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> object.</p>
+<p>A <code><a href="nav-history-apis.html#window">Window</a></code>'s <a href="nav-history-apis.html#concept-document-window">associated
+<code>Document</code></a> is always created with a new
+<code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> object.</p>
+<li><p>Return <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="nav-history-apis.html#concept-document-window">associated
+<code>Document</code></a>'s <a href=https://dom.spec.whatwg.org/#document-custom-element-registry data-x-internal=document-custom-element-registry>custom element
+registry</a>.</ol>
+</div>
+<pre><code data-var-scope>[Exposed=Window]
+interface <dfn id='customelementregistry' data-dfn-type='interface'>CustomElementRegistry</dfn> {
+<a href='custom-elements.html#dom-customelementregistry'>constructor</a>();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] undefined <a href='custom-elements.html#dom-customelementregistry-define'>define</a>(DOMString <var>name</var>, <a href='custom-elements.html#customelementconstructor'>CustomElementConstructor</a> <var>constructor</var>, optional <a href='custom-elements.html#elementdefinitionoptions'>ElementDefinitionOptions</a> <var>options</var> = {});
+(<a href='custom-elements.html#customelementconstructor'>CustomElementConstructor</a> or undefined) <a href='custom-elements.html#dom-customelementregistry-get'>get</a>(DOMString <var>name</var>);
+DOMString? <a href='custom-elements.html#dom-customelementregistry-getname'>getName</a>(CustomElementConstructor <var>constructor</var>);
+<a href='https://webidl.spec.whatwg.org/#idl-promise' data-x-internal='idl-promise'>Promise</a>&lt;<a href='custom-elements.html#customelementconstructor'>CustomElementConstructor</a>&gt; <a href='custom-elements.html#dom-customelementregistry-whendefined'>whenDefined</a>(DOMString <var>name</var>);
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] undefined <a href='custom-elements.html#dom-customelementregistry-upgrade'>upgrade</a>(<a href='https://dom.spec.whatwg.org/#interface-node' data-x-internal='node'>Node</a> <var>root</var>);
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] undefined <a href='custom-elements.html#dom-customelementregistry-initialize'>initialize</a>(<a href='https://dom.spec.whatwg.org/#interface-node' data-x-internal='node'>Node</a> <var>root</var>);
+};
+callback <dfn id='customelementconstructor' data-dfn-type='callback'>CustomElementConstructor</dfn> = <a href='dom.html#htmlelement'>HTMLElement</a> ();
+dictionary <dfn id='elementdefinitionoptions' data-dfn-type='dictionary'>ElementDefinitionOptions</dfn> {
+DOMString <dfn id='dom-elementdefinitionoptions-extends' data-dfn-type='dict-member'>extends</dfn>;
+};</code></pre>
+<p>Every <code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> has an <dfn id=is-scoped>is
+scoped</dfn>, a boolean, initially false.</p>
+<p>Every <code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> has a <dfn id=scoped-document-set>scoped
+document set</dfn>, a <a href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a> of <code><a href="dom.html#document">Document</a></code> objects, initially « ».</p>
+<p>Every <code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> has a <dfn id=custom-element-definition-set>custom element definition set</dfn>, a
+<a href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a> of <a href="custom-elements.html#custom-element-definition">custom element definitions</a>,
+initially « ». Lookup of items in this <a href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a> uses their <a href="custom-elements.html#concept-custom-element-definition-name">name</a>, <a href="custom-elements.html#concept-custom-element-definition-local-name">local name</a>, or <a href="custom-elements.html#concept-custom-element-definition-constructor">constructor</a>.</p>
+<p>Every <code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> also has an <dfn id=element-definition-is-running>element definition is running</dfn>
+boolean which is used to prevent reentrant invocations of <a href="custom-elements.html#element-definition">element definition</a>. It is
+initially false.</p>
+<p>Every <code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> also has a <dfn id=when-defined-promise-map>when-defined promise map</dfn>, a
+<a href=https://infra.spec.whatwg.org/#ordered-map data-x-internal=ordered-map>map</a> of <a href="custom-elements.html#valid-custom-element-name">valid custom
+element names</a> to promises. It is used to implement the <code><a href="custom-elements.html#dom-customelementregistry-whendefined">whenDefined()</a></code> method.</p>
+<div>
+<p>To <dfn id=look-up-a-custom-element-registry>look up a custom element registry</dfn>, given a <code><a data-x-internal=node href=https://dom.spec.whatwg.org/#interface-node>Node</a></code> object
+<var>node</var>:</p>
+<ol><li><p>If <var>node</var> is an <code><a data-x-internal=element href=https://dom.spec.whatwg.org/#interface-element>Element</a></code> object, then return <var>node</var>'s <a href=https://dom.spec.whatwg.org/#element-custom-element-registry data-x-internal=element-custom-element-registry>custom element registry</a>.<li><p>If <var>node</var> is a <code><a data-x-internal=shadowroot href=https://dom.spec.whatwg.org/#interface-shadowroot>ShadowRoot</a></code> object, then return <var>node</var>'s
+<a href=https://dom.spec.whatwg.org/#shadowroot-custom-element-registry data-x-internal=shadow-root-custom-element-registry>custom element registry</a>.<li><p>If <var>node</var> is a <code><a href="dom.html#document">Document</a></code> object, then return <var>node</var>'s <a href=https://dom.spec.whatwg.org/#document-custom-element-registry data-x-internal=document-custom-element-registry>custom element registry</a>.<li><p>Return null.</ol>
+</div>
+<dl><dt><code><var>registry</var> = <var>window</var>.<a href="custom-elements.html#dom-window-customelements" id=dom-window-customelements-dev>customElements</a></code><dd>Returns the global's associated <code><a href="dom.html#document">Document</a></code>'s <code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code>
+object.<dt><code><var>registry</var> = new <a href="custom-elements.html#dom-customelementregistry" id=dom-customelementregistry-dev>CustomElementRegistry</a>()</code><dd>Constructs a new <code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> object, for scoped usage.<dt><code><var>registry</var>.<a href="custom-elements.html#dom-customelementregistry-define" id=dom-customelementregistry-define-dev>define</a>(<var>name</var>,
+<var>constructor</var>)</code></div><dd>Defines a new <a href="custom-elements.html#custom-element">custom element</a>, mapping the given name to the given constructor
+as an <a href="custom-elements.html#autonomous-custom-element">autonomous custom element</a>.<dt><code><var>registry</var>.<a href="custom-elements.html#dom-customelementregistry-define">define</a>(<var>name</var>, <var>constructor</var>,
+{ extends: <var>baseLocalName</var> })</code><dd>Defines a new <a href="custom-elements.html#custom-element">custom element</a>, mapping the given name to the given constructor as
+a <a href="custom-elements.html#customized-built-in-element">customized built-in element</a> for the <a href="infrastructure.html#element-type">element type</a> identified by the
+supplied <var>baseLocalName</var>. A <a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> will be thrown upon trying to extend a <a href="custom-elements.html#custom-element">custom element</a> or
+an unknown element, or when <var>registry</var> is not a global
+<code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> object.<dt><code><var>registry</var>.<a href="custom-elements.html#dom-customelementregistry-get" id=dom-customelementregistry-get-dev>get</a>(<var>name</var>)</code></div><dd>Retrieves the <a href="custom-elements.html#custom-element-constructor">custom element constructor</a> defined for the given <a href="custom-elements.html#concept-custom-element-definition-name">name</a>. Returns undefined if there is no
+<a href="custom-elements.html#custom-element-definition">custom element definition</a> with the given <a href="custom-elements.html#concept-custom-element-definition-name">name</a>.<dt><code><var>registry</var>.<a href="custom-elements.html#dom-customelementregistry-getname" id=dom-customelementregistry-getname-dev>getName</a>(<var>constructor</var>)</code><dd>Retrieves the given name for a <a href="custom-elements.html#custom-element">custom element</a> defined for the given <a href="custom-elements.html#concept-custom-element-definition-constructor">constructor</a>. Returns null if there is no
+<a href="custom-elements.html#custom-element-definition">custom element definition</a> with the given <a href="custom-elements.html#concept-custom-element-definition-constructor">constructor</a>.<dt><code><var>registry</var>.<a href="custom-elements.html#dom-customelementregistry-whendefined" id=dom-customelementregistry-whendefined-dev>whenDefined</a>(<var>name</var>)</code></div><dd>Returns a promise that will be fulfilled with the <a href="custom-elements.html#custom-element">custom element</a>'s constructor
+when a <a href="custom-elements.html#custom-element">custom element</a> becomes defined with the given name. (If such a <a href="custom-elements.html#custom-element">custom
+element</a> is already defined, the returned promise will be immediately fulfilled.) Returns a
+promise rejected with a <a href=https://webidl.spec.whatwg.org/#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> if not
+given a <a href="custom-elements.html#valid-custom-element-name">valid custom element name</a>.<dt><code><var>registry</var>.<a href="custom-elements.html#dom-customelementregistry-upgrade" id=dom-customelementregistry-upgrade-dev>upgrade</a>(<var>root</var>)</code></div><dd><a href="custom-elements.html#concept-try-upgrade">Tries to upgrade</a> all <a href=https://dom.spec.whatwg.org/#concept-shadow-including-inclusive-descendant data-x-internal=shadow-including-inclusive-descendant>shadow-including
+inclusive descendant</a> elements of <var>root</var>, even if they are not
+<a href=https://dom.spec.whatwg.org/#connected data-x-internal=connected>connected</a>.<dt><code><var>registry</var>.<a href="custom-elements.html#dom-customelementregistry-initialize" id=dom-customelementregistry-initialize-dev>initialize</a>(<var>root</var>)</code><dd>Each <a href=https://dom.spec.whatwg.org/#concept-tree-inclusive-descendant data-x-internal=inclusive-descendant>inclusive descendant</a> of <var>root</var> with a null registry will have it
+updated to this <code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> object. A
+<a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> will be thrown if this
+<code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> object is not for scoped usage and either <var>root</var> is a
+<code><a href="dom.html#document">Document</a></code> node or <var>root</var>'s <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>'s <a href=https://dom.spec.whatwg.org/#document-custom-element-registry data-x-internal=document-custom-element-registry>custom element registry</a> is not this
+<code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> object.</dl>
+<div>
+<p>The <dfn id=dom-customelementregistry><code>new CustomElementRegistry()</code></dfn> constructor
+steps are to set <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#is-scoped">is scoped</a> to true.</p>
+</div>
+<p><dfn id=element-definition>Element definition</dfn> is a process of adding a <a href="custom-elements.html#custom-element-definition">custom element definition</a>
+to the <code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code>. This is accomplished by the <code><a href="custom-elements.html#dom-customelementregistry-define">define()</a></code> method.</p>
+<div>
+<p>The <dfn id=dom-customelementregistry-define data-dfn-type=method><code>define(<var>name</var>, <var>constructor</var>,
+<var>options</var>)</code></dfn> method steps are:</p>
+<ol><li><p>If <a href=https://tc39.es/ecma262/#sec-isconstructor data-x-internal=isconstructor>IsConstructor</a>(<var>constructor</var>) is false, then throw a
+<code><a data-x-internal=typeerror href=https://tc39.es/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code>.<li><p>If <var>name</var> is not a <a href="custom-elements.html#valid-custom-element-name">valid custom element name</a>, then throw a
+<a href=https://webidl.spec.whatwg.org/#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#custom-element-definition-set">custom element definition set</a> <a href=https://infra.spec.whatwg.org/#list-contain data-x-internal=list-contains>contains</a> an item with <a href="custom-elements.html#concept-custom-element-definition-name">name</a> <var>name</var>, then throw a
+<a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#custom-element-definition-set">custom element definition set</a> <a href=https://infra.spec.whatwg.org/#list-contain data-x-internal=list-contains>contains</a> an item with <a href="custom-elements.html#concept-custom-element-definition-constructor">constructor</a> <var>constructor</var>,
+then throw a <a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Let <var>localName</var> be <var>name</var>.<li><p>Let <var>extends</var> be <var>options</var>["<code><a href="custom-elements.html#dom-elementdefinitionoptions-extends">extends</a></code>"] if it <a href=https://infra.spec.whatwg.org/#map-exists data-x-internal=map-exists>exists</a>; otherwise null.<li>
+<p>If <var>extends</var> is not null:</p>
+<ol><li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#is-scoped">is scoped</a> is true, then throw a
+<a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If <var>extends</var> is a <a href="custom-elements.html#valid-custom-element-name">valid custom element name</a>, then throw a
+<a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If the <a href=https://dom.spec.whatwg.org/#concept-element-interface data-x-internal=element-interface>element interface</a> for <var>extends</var> and the <a href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML
+namespace</a> is <code><a href="dom.html#htmlunknownelement">HTMLUnknownElement</a></code> (e.g., if <var>extends</var> does not
+indicate an element definition in this specification), then throw a
+<a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Set <var>localName</var> to <var>extends</var>.</ol>
+<li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#element-definition-is-running">element definition is running</a> is true, then throw
+a <a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Set <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#element-definition-is-running">element definition is running</a> to true.<li><p>Let <var>formAssociated</var> be false.<li><p>Let <var>disableInternals</var> be false.
+<li><p>Let <var>disableShadow</var> be false.
+<li><p>Let <var>observedAttributes</var> be an empty <code>sequence&lt;DOMString></code>.<li>
+<p>Run the following steps while catching any exceptions:</p>
+<ol><li><p>Let <var>prototype</var> be ? <a href=https://tc39.es/ecma262/#sec-get-o-p data-x-internal=js-get>Get</a>(<var>constructor</var>,
+"prototype").<li><p>If <var>prototype</var> <a href=https://tc39.es/ecma262/#sec-object-type data-x-internal=js-object>is not an Object</a>, then throw a
+<code><a data-x-internal=typeerror href=https://tc39.es/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code> exception.<li><p>Let <var>lifecycleCallbacks</var> be the <a href=https://infra.spec.whatwg.org/#ordered-map data-x-internal=ordered-map>ordered map</a> «[ "<code>connectedCallback</code>" → null, "<code>disconnectedCallback</code>" →
+null, "<code>adoptedCallback</code>" → null, "<code>connectedMoveCallback</code>" → null, "<code>attributeChangedCallback</code>" → null ]».</p>
+<li>
+<p>For each <var>callbackName</var> of <a href=https://infra.spec.whatwg.org/#map-getting-the-keys data-x-internal=map-get-the-keys>the keys</a> of
+<var>lifecycleCallbacks</var>:</p>
+<ol><li><p>Let <var>callbackValue</var> be ? <a href=https://tc39.es/ecma262/#sec-get-o-p data-x-internal=js-get>Get</a>(<var>prototype</var>,
+<var>callbackName</var>).</p>
+<li><p>If <var>callbackValue</var> is not undefined, then <a href=https://infra.spec.whatwg.org/#map-set data-x-internal=map-set>set</a>
+<var>lifecycleCallbacks</var>[<var>callbackName</var>] to the result of <a href=https://webidl.spec.whatwg.org/#es-type-mapping data-x-internal=concept-idl-convert>converting</a> <var>callbackValue</var> to the Web IDL <code><a data-x-internal=idl-function href=https://webidl.spec.whatwg.org/#common-Function>Function</a></code> callback type.</ol>
+<li>
+<p>If <var>lifecycleCallbacks</var>["<code>attributeChangedCallback</code>"] is not
+null:</p>
+<ol><li><p>Let <var>observedAttributesIterable</var> be ? <a href=https://tc39.es/ecma262/#sec-get-o-p data-x-internal=js-get>Get</a>(<var>constructor</var>, "observedAttributes").<li><p>If <var>observedAttributesIterable</var> is not undefined, then set
+<var>observedAttributes</var> to the result of <a href=https://webidl.spec.whatwg.org/#es-type-mapping data-x-internal=concept-idl-convert>converting</a> <var>observedAttributesIterable</var> to a
+<code>sequence&lt;DOMString></code>. Rethrow any exceptions from the
+conversion.</ol>
+<li><p>Let <var>disabledFeatures</var> be an empty <code>sequence&lt;DOMString></code>.<li><p>Let <var>disabledFeaturesIterable</var> be ? <a href=https://tc39.es/ecma262/#sec-get-o-p data-x-internal=js-get>Get</a>(<var>constructor</var>, "disabledFeatures").<li><p>If <var>disabledFeaturesIterable</var> is not undefined, then set
+<var>disabledFeatures</var> to the result of <a href=https://webidl.spec.whatwg.org/#es-type-mapping data-x-internal=concept-idl-convert>converting</a> <var>disabledFeaturesIterable</var> to a <code>sequence&lt;DOMString></code>. Rethrow any exceptions from the conversion.<li><p>If <var>disabledFeatures</var> <a href=https://infra.spec.whatwg.org/#list-contain data-x-internal=list-contains>contains</a> "<code>internals</code>", then set <var>disableInternals</var> to true.<li><p>If <var>disabledFeatures</var> <a href=https://infra.spec.whatwg.org/#list-contain data-x-internal=list-contains>contains</a> "<code>shadow</code>", then set <var>disableShadow</var> to true.<li><p>Let <var>formAssociatedValue</var> be ? <a href=https://tc39.es/ecma262/#sec-get-o-p data-x-internal=js-get>Get</a>(
+<var>constructor</var>, "formAssociated").<li><p>Set <var>formAssociated</var> to the result of <a href=https://webidl.spec.whatwg.org/#es-type-mapping data-x-internal=concept-idl-convert>converting</a> <var>formAssociatedValue</var> to a <code>boolean</code>.<li>
+<p>If <var>formAssociated</var> is true, then for each <var>callbackName</var> of « "<code>formAssociatedCallback</code>", "<code>formResetCallback</code>", "<code>formDisabledCallback</code>", "<code>formStateRestoreCallback</code>"
+»:</p>
+<ol><li><p>Let <var>callbackValue</var> be ? <a href=https://tc39.es/ecma262/#sec-get-o-p data-x-internal=js-get>Get</a>(<var>prototype</var>,
+<var>callbackName</var>).<li><p>If <var>callbackValue</var> is not undefined, then <a href=https://infra.spec.whatwg.org/#map-set data-x-internal=map-set>set</a>
+<var>lifecycleCallbacks</var>[<var>callbackName</var>] to the result of <a href=https://webidl.spec.whatwg.org/#es-type-mapping data-x-internal=concept-idl-convert>converting</a> <var>callbackValue</var> to the Web IDL <code><a data-x-internal=idl-function href=https://webidl.spec.whatwg.org/#common-Function>Function</a></code> callback type.</ol>
+</ol>
+<p>Then, regardless of whether the above steps threw an exception or not: set
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#element-definition-is-running">element definition is running</a> to false.</p>
+<p>Finally, if the steps threw an exception, rethrow that exception.</p>
+<li><p>Let <var>definition</var> be a new <a href="custom-elements.html#custom-element-definition">custom element definition</a> with <a href="custom-elements.html#concept-custom-element-definition-name">name</a> <var>name</var>, <a href="custom-elements.html#concept-custom-element-definition-local-name">local name</a> <var>localName</var>,
+<a href="custom-elements.html#concept-custom-element-definition-constructor">constructor</a>
+<var>constructor</var>, <a href="custom-elements.html#concept-custom-element-definition-observed-attributes">observed attributes</a>
+<var>observedAttributes</var>, <a href="custom-elements.html#concept-custom-element-definition-lifecycle-callbacks">lifecycle callbacks</a>
+<var>lifecycleCallbacks</var>,
+<a href="custom-elements.html#concept-custom-element-definition-form-associated">form-associated</a>
+<var>formAssociated</var>, <a href="custom-elements.html#concept-custom-element-definition-disable-internals">disable internals</a>
+<var>disableInternals</var>, and <a href="custom-elements.html#concept-custom-element-definition-disable-shadow">disable shadow</a>
+<var>disableShadow</var>.<li><p><a href=https://infra.spec.whatwg.org/#set-append data-x-internal=set-append>Append</a> <var>definition</var> to <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s
+<a href="custom-elements.html#custom-element-definition-set">custom element definition set</a>.<li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#is-scoped">is scoped</a> is true, then for each <var>document</var>
+of <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#scoped-document-set">scoped document set</a>: <a href="custom-elements.html#upgrade-particular-elements-within-a-document">upgrade particular elements within
+a document</a> given <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>, <var>document</var>, <var>definition</var>, and
+<var>localName</var>.<li><p>Otherwise, <a href="custom-elements.html#upgrade-particular-elements-within-a-document">upgrade particular elements within a document</a> given
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>, <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#concept-relevant-global">relevant global object</a>'s <a href="nav-history-apis.html#concept-document-window">associated <code>Document</code></a>, <var>definition</var>,
+<var>localName</var>, and <var>name</var>.<li>
+<p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#when-defined-promise-map">when-defined promise map</a>[<var>name</var>] <a href=https://infra.spec.whatwg.org/#map-exists data-x-internal=map-exists>exists</a>:</p>
+<ol><li><p>Resolve <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#when-defined-promise-map">when-defined promise map</a>[<var>name</var>] with
+<var>constructor</var>.<li><p><a href=https://infra.spec.whatwg.org/#map-remove data-x-internal=map-remove>Remove</a> <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#when-defined-promise-map">when-defined promise
+map</a>[<var>name</var>].</ol>
+</ol>
+</div>
+<div>
+<p>To <dfn id=upgrade-particular-elements-within-a-document>upgrade particular elements within a document</dfn> given a
+<code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> object <var>registry</var>, a <code><a href="dom.html#document">Document</a></code> object
+<var>document</var>, a <a href="custom-elements.html#custom-element-definition">custom element definition</a> <var>definition</var>, a string
+<var>localName</var>, and optionally a string <var>name</var> (default <var>localName</var>):</p>
+<ol><li><p>Let <var>upgradeCandidates</var> be all elements that are <a href=https://dom.spec.whatwg.org/#concept-shadow-including-descendant data-x-internal=shadow-including-descendant>shadow-including descendants</a> of <var>document</var>, whose <a href=https://dom.spec.whatwg.org/#element-custom-element-registry data-x-internal=element-custom-element-registry>custom element registry</a> is <var>registry</var>,
+whose namespace is the <a href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a>, and whose local name is <var>localName</var>,
+in <a href=https://dom.spec.whatwg.org/#concept-shadow-including-tree-order data-x-internal=shadow-including-tree-order>shadow-including tree order</a>. Additionally, if <var>name</var> is not
+<var>localName</var>, only include elements whose <a href=https://dom.spec.whatwg.org/#concept-element-is-value data-x-internal=concept-element-is-value><code>is</code> value</a> is equal to <var>name</var>.<li><p>For each element <var>element</var> of <var>upgradeCandidates</var>: <a href="custom-elements.html#enqueue-a-custom-element-upgrade-reaction">enqueue a
+custom element upgrade reaction</a> given <var>element</var> and
+<var>definition</var>.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-customelementregistry-get data-dfn-type=method><code>get(<var>name</var>)</code></dfn> method steps are:</p>
+<ol><li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#custom-element-definition-set">custom element definition set</a> <a href=https://infra.spec.whatwg.org/#list-contain data-x-internal=list-contains>contains</a> an item with <a href="custom-elements.html#concept-custom-element-definition-name">name</a> <var>name</var>, then return that
+item's <a href="custom-elements.html#concept-custom-element-definition-constructor">constructor</a>.<li><p>Return undefined.</ol>
+</div>
+</div><div>
+<p>The <dfn id=dom-customelementregistry-getname data-dfn-type=method><code>getName(<var>constructor</var>)</code></dfn> method
+steps are:</p>
+<ol><li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#custom-element-definition-set">custom element definition set</a> <a href=https://infra.spec.whatwg.org/#list-contain data-x-internal=list-contains>contains</a> an item with <a href="custom-elements.html#concept-custom-element-definition-constructor">constructor</a>
+<var>constructor</var>, then return that item's <a href="custom-elements.html#concept-custom-element-definition-name">name</a>.<li><p>Return null.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-customelementregistry-whendefined data-dfn-type=method><code>whenDefined(<var>name</var>)</code></dfn> method
+steps are:</p>
+<ol><li><p>If <var>name</var> is not a <a href="custom-elements.html#valid-custom-element-name">valid custom element name</a>, then return <a href=https://webidl.spec.whatwg.org/#a-promise-rejected-with data-x-internal=a-promise-rejected-with>a
+promise rejected with</a> a <a href=https://webidl.spec.whatwg.org/#syntaxerror data-x-internal=syntaxerror>"<code>SyntaxError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#custom-element-definition-set">custom element definition set</a> <a href=https://infra.spec.whatwg.org/#list-contain data-x-internal=list-contains>contains</a> an item with <a href="custom-elements.html#concept-custom-element-definition-name">name</a> <var>name</var>, then return <a href=https://webidl.spec.whatwg.org/#a-promise-resolved-with data-x-internal=a-promise-resolved-with>a
+promise resolved with</a> that item's <a href="custom-elements.html#concept-custom-element-definition-constructor">constructor</a>.<li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#when-defined-promise-map">when-defined promise map</a>[<var>name</var>] does not
+<a href=https://infra.spec.whatwg.org/#map-exists data-x-internal=map-exists>exist</a>, then <a href=https://infra.spec.whatwg.org/#map-set data-x-internal=map-set>set</a>
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#when-defined-promise-map">when-defined promise map</a>[<var>name</var>] to a new
+promise.<li><p>Return <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#when-defined-promise-map">when-defined promise
+map</a>[<var>name</var>].</ol>
+</div>
+<div>
+<p>The <code><a href="custom-elements.html#dom-customelementregistry-whendefined">whenDefined()</a></code> method can be
+used to avoid performing an action until all appropriate <a href="custom-elements.html#custom-element">custom
+elements</a> are <a href=https://dom.spec.whatwg.org/#concept-element-defined data-x-internal=concept-element-defined>defined</a>. In this example, we
+combine it with the <code><a href="semantics-other.html#selector-defined">:defined</a></code> pseudo-class to hide a
+dynamically-loaded article's contents until we're sure that all of the <a href="custom-elements.html#autonomous-custom-element">autonomous custom elements</a> it uses are defined.</p>
+<pre><code>articleContainer.hidden = true;
+fetch(articleURL)
+.then(response =&gt; response.text())
+.then(text =&gt; {
+articleContainer.innerHTML = text;
+return Promise.all(
+[...articleContainer.querySelectorAll(&quot;:not(:defined)&quot;)]
+.map(el =&gt; customElements.whenDefined(el.localName))
+);
+})
+.then(() =&gt; {
+articleContainer.hidden = false;
+});</code></pre>
+</div>
+<div>
+<p>The <dfn id=dom-customelementregistry-upgrade data-dfn-type=method><code>upgrade(<var>root</var>)</code></dfn> method steps
+are:</p>
+<ol><li>
+<p>For each <a href=https://dom.spec.whatwg.org/#concept-shadow-including-inclusive-descendant data-x-internal=shadow-including-inclusive-descendant>shadow-including inclusive descendant</a> <var>candidate</var> of
+<var>root</var>, in <a href=https://dom.spec.whatwg.org/#concept-shadow-including-tree-order data-x-internal=shadow-including-tree-order>shadow-including tree order</a>:</p>
+<ol><li><p>If <var>candidate</var> is not an <code><a data-x-internal=element href=https://dom.spec.whatwg.org/#interface-element>Element</a></code> node, then
+<a href=https://infra.spec.whatwg.org/#iteration-continue data-x-internal=continue>continue</a>.<li><p>If <var>candidate</var>'s <a href=https://dom.spec.whatwg.org/#element-custom-element-registry data-x-internal=element-custom-element-registry>custom element
+registry</a> is not <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>, then <a href=https://infra.spec.whatwg.org/#iteration-continue data-x-internal=continue>continue</a>.<li><p><a href="custom-elements.html#concept-try-upgrade">Try to upgrade</a> <var>candidate</var>.</ol>
+</ol>
+</div>
+<div>
+<p>The <code><a href="custom-elements.html#dom-customelementregistry-upgrade">upgrade()</a></code> method allows upgrading
+of elements at will. Normally elements are automatically upgraded when they become
+<a href=https://dom.spec.whatwg.org/#connected data-x-internal=connected>connected</a>, but this method can be used if you need to upgrade before you're ready to
+connect the element.</p>
+<pre><code>const el = document.createElement(&quot;spider-man&quot;);
+class SpiderMan extends HTMLElement {}
+customElements.define(&quot;spider-man&quot;, SpiderMan);
+console.assert(!(el instanceof SpiderMan)); // not yet upgraded
+customElements.upgrade(el);
+console.assert(el instanceof SpiderMan);    // upgraded!</code></pre>
+</div>
+<div>
+<p>The <dfn id=dom-customelementregistry-initialize data-dfn-type=method><code>initialize(<var>root</var>)</code></dfn> method
+steps are:</p>
+<ol><li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#is-scoped">is scoped</a> is false and either <var>root</var> is a
+<code><a href="dom.html#document">Document</a></code> node or <var>root</var>'s <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>'s <a href=https://dom.spec.whatwg.org/#document-custom-element-registry data-x-internal=document-custom-element-registry>custom element registry</a> is not
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>, then throw a <a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If <var>root</var> is a <code><a href="dom.html#document">Document</a></code> node whose <a href=https://dom.spec.whatwg.org/#document-custom-element-registry data-x-internal=document-custom-element-registry>custom element registry</a> is null, then set
+<var>root</var>'s <a href=https://dom.spec.whatwg.org/#document-custom-element-registry data-x-internal=document-custom-element-registry>custom element registry</a>
+to <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>.<li><p>Otherwise, if <var>root</var> is a <code><a data-x-internal=shadowroot href=https://dom.spec.whatwg.org/#interface-shadowroot>ShadowRoot</a></code> node whose <a href=https://dom.spec.whatwg.org/#shadowroot-custom-element-registry data-x-internal=shadow-root-custom-element-registry>custom element registry</a> is null, then set
+<var>root</var>'s <a href=https://dom.spec.whatwg.org/#shadowroot-custom-element-registry data-x-internal=shadow-root-custom-element-registry>custom element
+registry</a> to <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>.<li>
+<p>For each <a href=https://dom.spec.whatwg.org/#concept-tree-inclusive-descendant data-x-internal=inclusive-descendant>inclusive descendant</a> <var>inclusiveDescendant</var> of <var>root</var>,
+in <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a>:</p>
+<ol><li><p>If <var>inclusiveDescendant</var> is not an <code><a data-x-internal=element href=https://dom.spec.whatwg.org/#interface-element>Element</a></code> node, then
+<a href=https://infra.spec.whatwg.org/#iteration-continue data-x-internal=continue>continue</a>.<li>
+<p>If <var>inclusiveDescendant</var>'s <a href=https://dom.spec.whatwg.org/#element-custom-element-registry data-x-internal=element-custom-element-registry>custom
+element registry</a> is null:</p>
+<ol><li><p>Set <var>inclusiveDescendant</var>'s <a href=https://dom.spec.whatwg.org/#element-custom-element-registry data-x-internal=element-custom-element-registry>custom element registry</a> to
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>.<li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#is-scoped">is scoped</a> is true, then <a href=https://infra.spec.whatwg.org/#set-append data-x-internal=set-append>append</a> <var>inclusiveDescendant</var>'s <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a> to
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#scoped-document-set">scoped document set</a>.</ol>
+<li><p>If <var>inclusiveDescendant</var>'s <a href=https://dom.spec.whatwg.org/#element-custom-element-registry data-x-internal=element-custom-element-registry>custom element registry</a> is not
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>, then <a href=https://infra.spec.whatwg.org/#iteration-continue data-x-internal=continue>continue</a>.<li><p><a href="custom-elements.html#concept-try-upgrade">Try to upgrade</a>
+<var>inclusiveDescendant</var>.</ol>
+</ol>
+</div>
+<p>Once the custom element registry of a node is initialized to a
+<code><a href="custom-elements.html#customelementregistry">CustomElementRegistry</a></code> object, it intentionally cannot be changed any further. This
+simplifies reasoning about code and allows implementations to optimize.</p>
+<h4 id=upgrades><dfn>Upgrades</dfn></h4>
+<div>
+<p>To <dfn id=concept-upgrade-an-element>upgrade an element</dfn>, given as input a
+<a href="custom-elements.html#custom-element-definition">custom element definition</a> <var>definition</var> and an element <var>element</var>,
+run the following steps:</p>
+<ol><li id=concept-upgrade-an-element-early-exit>
+<p>If <var>element</var>'s <a href=https://dom.spec.whatwg.org/#concept-element-custom-element-state data-x-internal=custom-element-state>custom element state</a> is not "<code>undefined</code>" or "<code>uncustomized</code>", then return.</p>
+<div>
+<p>One scenario where this can occur due to reentrant invocation of this algorithm, as in the
+following example:</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;x-foo id=&quot;a&quot;&gt;&lt;/x-foo&gt;
+&lt;x-foo id=&quot;b&quot;&gt;&lt;/x-foo&gt;
+&lt;script&gt;
+// Defining enqueues upgrade reactions for both &quot;a&quot; and &quot;b&quot;
+customElements.define(&quot;x-foo&quot;, class extends HTMLElement {
+constructor() {
+super();
+const b = document.querySelector(&quot;#b&quot;);
+b.remove();
+// While this constructor is running for &quot;a&quot;, &quot;b&quot; is still
+// undefined, and so inserting it into the document will enqueue a
+// second upgrade reaction for &quot;b&quot; in addition to the one enqueued
+// by defining x-foo.
+document.body.appendChild(b);
+}
+})
+&lt;/script&gt;</code></pre>
+<p>This step will thus bail out the algorithm early when <a href="custom-elements.html#concept-upgrade-an-element">upgrade an element</a> is invoked
+with "<code>b</code>" a second time.</p>
+</div>
+<li><p>Set <var>element</var>'s <a href=https://dom.spec.whatwg.org/#concept-element-custom-element-definition data-x-internal=concept-element-custom-element-definition>custom
+element definition</a> to <var>definition</var>.<li>
+<p>Set <var>element</var>'s <a href=https://dom.spec.whatwg.org/#concept-element-custom-element-state data-x-internal=custom-element-state>custom element state</a> to "<code>failed</code>".</p>
+<p>It will be set to "<code>custom</code>" <a href="custom-elements.html#concept-upgrade-an-element-set-state-to-custom">after the upgrade succeeds</a>. For now,
+we set it to "<code>failed</code>" so that any reentrant invocations will hit <a href="custom-elements.html#concept-upgrade-an-element-early-exit">the above early-exit step</a>.</p>
+<li><p>For each <var>attribute</var> in <var>element</var>'s <a href=https://dom.spec.whatwg.org/#concept-element-attribute data-x-internal=attribute-list>attribute list</a>, in
+order, <a href="custom-elements.html#enqueue-a-custom-element-callback-reaction">enqueue a custom element callback reaction</a> with <var>element</var>, callback
+name "<code>attributeChangedCallback</code>", and « <var>attribute</var>'s local name,
+null, <var>attribute</var>'s value, <var>attribute</var>'s namespace ».<li><p>If <var>element</var> is <a href=https://dom.spec.whatwg.org/#connected data-x-internal=connected>connected</a>, then <a href="custom-elements.html#enqueue-a-custom-element-callback-reaction">enqueue a custom element
+callback reaction</a> with <var>element</var>, callback name "<code>connectedCallback</code>", and « ».<li><p>Add <var>element</var> to the end of <var>definition</var>'s <a href="custom-elements.html#concept-custom-element-definition-construction-stack">construction stack</a>.<li><p>Let <var>C</var> be <var>definition</var>'s <a href="custom-elements.html#concept-custom-element-definition-constructor">constructor</a>.<li><p><a href=https://infra.spec.whatwg.org/#map-set data-x-internal=map-set>Set</a> the <a href=https://tc39.es/ecma262/#surrounding-agent data-x-internal=surrounding-agent>surrounding agent</a>'s <a href="custom-elements.html#active-custom-element-constructor-map">active custom
+element constructor map</a>[<var>C</var>] to <var>element</var>'s <a href=https://dom.spec.whatwg.org/#element-custom-element-registry data-x-internal=element-custom-element-registry>custom element registry</a>.<li>
+<p>Run the following steps while catching any exceptions:</p>
+<ol><li>
+<p>If <var>definition</var>'s <a href="custom-elements.html#concept-custom-element-definition-disable-shadow">disable shadow</a> is true and
+<var>element</var>'s <a href=https://dom.spec.whatwg.org/#concept-element-shadow-root data-x-internal=concept-element-shadow-root>shadow root</a> is
+non-null, then throw a <a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</p>
+<p>This is needed as <code><a data-x-internal=dom-element-attachshadow href=https://dom.spec.whatwg.org/#dom-element-attachshadow>attachShadow()</a></code> does not use <a href="custom-elements.html#look-up-a-custom-element-definition">look up a custom
+element definition</a> while <code><a href="custom-elements.html#dom-attachinternals">attachInternals()</a></code>
+does.</p>
+<li><p>Set <var>element</var>'s <a href=https://dom.spec.whatwg.org/#concept-element-custom-element-state data-x-internal=custom-element-state>custom element state</a> to "<code>precustomized</code>".<li>
+<p>Let <var>constructResult</var> be the result of <a href=https://webidl.spec.whatwg.org/#construct-a-callback-function data-x-internal=es-constructing-callback-functions>constructing</a> <var>C</var>, with no
+arguments.</p>
+<p>If <var>C</var> <a href="custom-elements.html#custom-element-conformance">non-conformantly</a>
+uses an API decorated with the <code><a href="custom-elements.html#cereactions">[CEReactions]</a></code> extended
+attribute, then the reactions enqueued at the beginning of this algorithm will execute during
+this step, before <var>C</var> finishes and control returns to this algorithm. Otherwise, they
+will execute after <var>C</var> and the rest of the upgrade process finishes.</p>
+<li>
+<p>If <a href=https://tc39.es/ecma262/#sec-samevalue data-x-internal=samevalue>SameValue</a>(<var>constructResult</var>, <var>element</var>) is false, then
+throw a <code><a data-x-internal=typeerror href=https://tc39.es/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code>.</p>
+<p>This can occur if <var>C</var> constructs another instance of the same custom
+element before calling <code>super()</code>, or if <var>C</var> uses JavaScript's
+<code>return</code>-override feature to return an arbitrary <code><a href="dom.html#htmlelement">HTMLElement</a></code>
+object from the constructor.</p>
+</ol>
+<p>Then, perform the following steps, regardless of whether the above steps threw an exception
+or not:</p>
+<ol><li>
+<p><a href=https://infra.spec.whatwg.org/#map-remove data-x-internal=map-remove>Remove</a> the <a href=https://tc39.es/ecma262/#surrounding-agent data-x-internal=surrounding-agent>surrounding agent</a>'s <a href="custom-elements.html#active-custom-element-constructor-map">active
+custom element constructor map</a>[<var>C</var>].</p>
+<p>This is a no-op if <var>C</var> immediately calls <code>super()</code> as it ought to do.</p>
+<li>
+<p>Remove the last entry from the end of <var>definition</var>'s <a href="custom-elements.html#concept-custom-element-definition-construction-stack">construction stack</a>.</p>
+<div>
+<p>Assuming <var>C</var> calls <code>super()</code> (as it will if it is <a href="custom-elements.html#custom-element-conformance">conformant</a>), and that the call succeeds, this will be
+the <a href="custom-elements.html#concept-already-constructed-marker"><i>already
+constructed</i> marker</a> that replaced the <var>element</var> we pushed at the beginning
+of this algorithm. (The <a href="dom.html#html-element-constructors">HTML element constructor</a>
+carries out this replacement.)</p>
+<p>If <var>C</var> does not call <code>super()</code> (i.e. it is not <a href="custom-elements.html#custom-element-conformance">conformant</a>), or if any step in the <a href="dom.html#html-element-constructors">HTML element constructor</a> throws, then this entry will
+still be <var>element</var>.</p>
+</div>
+</ol>
+<p>Finally, if the above steps threw an exception, then:</p>
+<ol><li><p>Set <var>element</var>'s <a href=https://dom.spec.whatwg.org/#concept-element-custom-element-definition data-x-internal=concept-element-custom-element-definition>custom
+element definition</a> to null.<li><p>Empty <var>element</var>'s <a href="custom-elements.html#custom-element-reaction-queue">custom element reaction queue</a>.</p>
+<li><p>Rethrow the exception (thus terminating this algorithm).</ol>
+<p>If the above steps threw an exception, then <var>element</var>'s <a href=https://dom.spec.whatwg.org/#concept-element-custom-element-state data-x-internal=custom-element-state>custom
+element state</a> will remain "<code>failed</code>" or "<code>precustomized</code>".</p>
+<li>
+<p>If <var>element</var> is a <a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a>, then:</p>
+<ol><li><p><a href="form-control-infrastructure.html#reset-the-form-owner">Reset the form owner</a> of <var>element</var>. If <var>element</var> is
+associated with a <code><a href="forms.html#the-form-element">form</a></code> element, then
+<a href="custom-elements.html#enqueue-a-custom-element-callback-reaction">enqueue a custom element callback reaction</a> with <var>element</var>, callback
+name "<code>formAssociatedCallback</code>", and « the associated <code><a href="forms.html#the-form-element">form</a></code>
+».<li><p>If <var>element</var> is <a href="form-control-infrastructure.html#concept-fe-disabled">disabled</a>, then
+<a href="custom-elements.html#enqueue-a-custom-element-callback-reaction">enqueue a custom element callback reaction</a> with <var>element</var>, callback name
+"<code>formDisabledCallback</code>", and « true ».</ol>
+<li id=concept-upgrade-an-element-set-state-to-custom><p>Set <var>element</var>'s <a href=https://dom.spec.whatwg.org/#concept-element-custom-element-state data-x-internal=custom-element-state>custom
+element state</a> to "<code>custom</code>".</ol>
+</div>
+<div>
+<p>To <dfn id=concept-try-upgrade>try to upgrade an element</dfn> given an element
+<var>element</var>:</p>
+<ol><li><p>Let <var>definition</var> be the result of <a href="custom-elements.html#look-up-a-custom-element-definition">looking up a custom element definition</a> given <var>element</var>'s <a href=https://dom.spec.whatwg.org/#element-custom-element-registry data-x-internal=element-custom-element-registry>custom element registry</a>, <var>element</var>'s
+<a href=https://dom.spec.whatwg.org/#concept-element-namespace data-x-internal=concept-element-namespace>namespace</a>, <var>element</var>'s <a href=https://dom.spec.whatwg.org/#concept-element-local-name data-x-internal=concept-element-local-name>local name</a>, and <var>element</var>'s <a href=https://dom.spec.whatwg.org/#concept-element-is-value data-x-internal=concept-element-is-value><code>is</code> value</a>.<li><p>If <var>definition</var> is not null, then <a href="custom-elements.html#enqueue-a-custom-element-upgrade-reaction">enqueue a custom element upgrade
+reaction</a> given <var>element</var> and <var>definition</var>.</ol>
+</div>
+<h4 id=custom-element-reactions>Custom element reactions</h4>
+<div>
+<p>A <a href="custom-elements.html#custom-element">custom element</a> possesses the ability to respond to certain occurrences by
+running author code:</p>
+<ul><li><p>When <a href="custom-elements.html#upgrades">upgraded</a>, its <a href="custom-elements.html#custom-element-constructor">constructor</a> is run, with no arguments.<li><p>When it <a href="infrastructure.html#becomes-connected">becomes connected</a>, its <code>connectedCallback</code> is
+called, with no arguments.<li><p>When it <a href="infrastructure.html#becomes-disconnected">becomes disconnected</a>, its <code>disconnectedCallback</code>
+is called, with no arguments.<li><p>When it is <a href=https://dom.spec.whatwg.org/#concept-node-move-ext data-x-internal=concept-node-move-ext>moved</a>, its <code>connectedMoveCallback</code> is called, with no arguments.<li><p>When it is <a href=https://dom.spec.whatwg.org/#concept-node-adopt data-x-internal=concept-node-adopt>adopted</a> into a new document, its <code>adoptedCallback</code> is called, given the old document and new document as
+arguments.<li><p>When any of its attributes are <a href=https://dom.spec.whatwg.org/#concept-element-attributes-change data-x-internal=concept-element-attributes-change>changed</a>, <a href=https://dom.spec.whatwg.org/#concept-element-attributes-append data-x-internal=concept-element-attributes-append>appended</a>, <a href=https://dom.spec.whatwg.org/#concept-element-attributes-remove data-x-internal=concept-element-attributes-remove>removed</a>, or <a href=https://dom.spec.whatwg.org/#concept-element-attributes-replace data-x-internal=concept-element-attributes-replace>replaced</a>, its <code>attributeChangedCallback</code> is called, given the attribute's local name, old value,
+new value, and namespace as arguments. (An attribute's old or new value is considered to be null
+when the attribute is added or removed, respectively.)<li><p>When the user agent <a href="form-control-infrastructure.html#reset-the-form-owner">resets the form owner</a> of a
+<a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a> and doing so changes the form owner, its <code>formAssociatedCallback</code> is called, given the new form owner (or null if no owner)
+as an argument.<li><p>When the form owner of a <a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a> is <a href="form-control-infrastructure.html#concept-form-reset">reset</a>, its <code>formResetCallback</code> is
+called.<li><p>When the <a href="form-control-infrastructure.html#concept-fe-disabled">disabled</a> state of a
+<a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a> is changed, its <code>formDisabledCallback</code> is called, given the new state as an
+argument.<li><p>When the user agent updates a <a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a>'s value on behalf of
+a user or <a href="browsing-the-web.html#restore-persisted-state">as part of navigation</a>, its <code>formStateRestoreCallback</code> is called, given the new state and a string indicating
+a reason, "<code>autocomplete</code>" or "<code>restore</code>", as
+arguments.</ul>
+<p>We call these reactions collectively <dfn id=concept-custom-element-reaction>custom
+element reactions</dfn>.</p>
+</div>
+<p>The way in which <a href="custom-elements.html#concept-custom-element-reaction">custom element reactions</a>
+are invoked is done with special care, to avoid running author code during the middle of delicate
+operations. Effectively, they are delayed until "just before returning to user script". This means
+that for most purposes they appear to execute synchronously, but in the case of complicated
+composite operations (like <a href=https://dom.spec.whatwg.org/#concept-node-clone data-x-internal=concept-node-clone>cloning</a>, or <a href=https://dom.spec.whatwg.org/#concept-range data-x-internal=concept-range>range</a> manipulation), they will instead be delayed until after all
+the relevant user agent processing steps have completed, and then run together as a batch.</p>
+<p>Additionally, the precise ordering of these reactions is managed via a
+somewhat-complicated stack-of-queues system, described below. The intention behind this system is
+to guarantee that <a href="custom-elements.html#concept-custom-element-reaction">custom element reactions</a> always are invoked in the
+same order as their triggering actions, at least within the local context of a single <a href="custom-elements.html#custom-element">custom
+element</a>. (Because <a href="custom-elements.html#concept-custom-element-reaction">custom element
+reaction</a> code can perform its own mutations, it is not possible to give a global ordering
+guarantee across multiple elements.)</p>
+<hr>
+<p>Each <a href="webappapis.html#similar-origin-window-agent">similar-origin window agent</a> has a <dfn id=custom-element-reactions-stack>custom element reactions stack</dfn>,
+which is initially empty. A <a href="webappapis.html#similar-origin-window-agent">similar-origin window agent</a>'s <dfn id=current-element-queue>current element
+queue</dfn> is the <a href="custom-elements.html#element-queue">element queue</a> at the top of its <a href="custom-elements.html#custom-element-reactions-stack">custom element reactions
+stack</a>. Each item in the stack is an <dfn id=element-queue>element queue</dfn>, which is initially empty as
+well. Each item in an <a href="custom-elements.html#element-queue">element queue</a> is an element. (The elements are not necessarily
+<a href=https://dom.spec.whatwg.org/#concept-element-custom data-x-internal=concept-element-custom>custom</a> yet, since this queue is used for <a href="custom-elements.html#upgrades">upgrades</a> as well.)</p>
+<p>Each <a href="custom-elements.html#custom-element-reactions-stack">custom element reactions stack</a> has an associated <dfn id=backup-element-queue>backup element
+queue</dfn>, which is an initially-empty <a href="custom-elements.html#element-queue">element queue</a>. Elements are pushed onto the
+<a href="custom-elements.html#backup-element-queue">backup element queue</a> during operations that affect the DOM without going through an
+API decorated with <code><a href="custom-elements.html#cereactions">[CEReactions]</a></code>, or through the parser's
+<a href="parsing.html#create-an-element-for-the-token">create an element for the token</a> algorithm. An example of this is a user-initiated
+editing operation which modifies the descendants or attributes of an <a href=https://w3c.github.io/editing/docs/execCommand/#editable data-x-internal=editable>editable</a>
+element. To prevent reentrancy when processing the <a href="custom-elements.html#backup-element-queue">backup element queue</a>, each
+<a href="custom-elements.html#custom-element-reactions-stack">custom element reactions stack</a> also has a <dfn id=processing-the-backup-element-queue>processing the backup element
+queue</dfn> flag, initially unset.</p>
+<p>All elements have an associated <dfn id=custom-element-reaction-queue>custom element reaction queue</dfn>, initially empty. Each
+item in the <a href="custom-elements.html#custom-element-reaction-queue">custom element reaction queue</a> is of one of two types:</p>
+<ul><li><p>An <dfn id=upgrade-reaction>upgrade reaction</dfn>, which will <a href="custom-elements.html#upgrades">upgrade</a> the custom element and contains a <a href="custom-elements.html#custom-element-definition">custom
+element definition</a>; or<li><p>A <dfn id=callback-reaction>callback reaction</dfn>, which will call a lifecycle callback, and contains a
+callback function as well as a list of arguments.</ul>
+<p>This is all summarized in the following schematic diagram:</p>
+<p><img src="../images/custom-element-reactions.svg" alt="A custom element reactions stack consists of a stack of element queues. Zooming in on a particular queue, we see that it contains a number of elements (in our example, <x-a>, then <x-b>, then <x-c>). Any particular element in the queue then has a custom element reaction queue. Zooming in on the custom element reaction queue, we see that it contains a variety of queued-up reactions (in our example, upgrade, then attribute changed, then another attribute changed, then connected)." style="width: 80%; max-width: 580px;"></p>
+<div>
+<p>To <dfn id=enqueue-an-element-on-the-appropriate-element-queue>enqueue an element on the appropriate element queue</dfn>, given an element
+<var>element</var>, run the following steps:</p>
+<ol><li><p>Let <var>reactionsStack</var> be <var>element</var>'s <a href="webappapis.html#relevant-agent">relevant agent</a>'s
+<a href="custom-elements.html#custom-element-reactions-stack">custom element reactions stack</a>.<li>
+<p>If <var>reactionsStack</var> is empty, then:</p>
+<ol><li><p>Add <var>element</var> to <var>reactionsStack</var>'s <a href="custom-elements.html#backup-element-queue">backup element
+queue</a>.<li><p>If <var>reactionsStack</var>'s <a href="custom-elements.html#processing-the-backup-element-queue">processing the backup element queue</a> flag is
+set, then return.<li><p>Set <var>reactionsStack</var>'s <a href="custom-elements.html#processing-the-backup-element-queue">processing the backup element queue</a>
+flag.<li>
+<p><a href="webappapis.html#queue-a-microtask">Queue a microtask</a> to perform the following steps:</p>
+<ol><li><p><a href="custom-elements.html#invoke-custom-element-reactions">Invoke custom element reactions</a> in <var>reactionsStack</var>'s
+<a href="custom-elements.html#backup-element-queue">backup element queue</a>.<li><p>Unset <var>reactionsStack</var>'s <a href="custom-elements.html#processing-the-backup-element-queue">processing the backup element queue</a>
+flag.</ol>
+</ol>
+<li><p>Otherwise, add <var>element</var> to <var>element</var>'s <a href="webappapis.html#relevant-agent">relevant agent</a>'s
+<a href="custom-elements.html#current-element-queue">current element queue</a>.</ol>
+</div>
+<div>
+<p>To <dfn id=enqueue-a-custom-element-callback-reaction>enqueue a custom element callback reaction</dfn>, given a <a href="custom-elements.html#custom-element">custom
+element</a> <var>element</var>, a callback name <var>callbackName</var>, and a list of
+arguments <var>args</var>, run the following steps:</p>
+<ol><li><p>Let <var>definition</var> be <var>element</var>'s <a href=https://dom.spec.whatwg.org/#concept-element-custom-element-definition data-x-internal=concept-element-custom-element-definition>custom element definition</a>.</p>
+<li><p>Let <var>callback</var> be the value of the entry in <var>definition</var>'s <a href="custom-elements.html#concept-custom-element-definition-lifecycle-callbacks">lifecycle callbacks</a> with
+key <var>callbackName</var>.<li>
+<p>If <var>callbackName</var> is "<code>connectedMoveCallback</code>" and
+<var>callback</var> is null:
+<ol><li><p>Let <var>disconnectedCallback</var> be the value of the entry in <var>definition</var>'s
+<a href="custom-elements.html#concept-custom-element-definition-lifecycle-callbacks">lifecycle callbacks</a>
+with key "<code>disconnectedCallback</code>".<li><p>Let <var>connectedCallback</var> be the value of the entry in <var>definition</var>'s
+<a href="custom-elements.html#concept-custom-element-definition-lifecycle-callbacks">lifecycle callbacks</a>
+with key "<code>connectedCallback</code>".<li><p>If <var>connectedCallback</var> and <var>disconnectedCallback</var> are null, then
+return.<li>
+<p>Set <var>callback</var> to the following steps:</p>
+<ol><li><p>If <var>disconnectedCallback</var> is not null, then call
+<var>disconnectedCallback</var> with no arguments.<li><p>If <var>connectedCallback</var> is not null, then call <var>connectedCallback</var>
+with no arguments.</ol>
+</ol>
+<li><p>If <var>callback</var> is null, then return.<li>
+<p>If <var>callbackName</var> is "<code>attributeChangedCallback</code>":</p>
+<ol><li><p>Let <var>attributeName</var> be the first element of <var>args</var>.<li><p>If <var>definition</var>'s <a href="custom-elements.html#concept-custom-element-definition-observed-attributes">observed attributes</a> does
+not contain <var>attributeName</var>, then return.</ol>
+<li><p>Add a new <a href="custom-elements.html#callback-reaction">callback reaction</a> to <var>element</var>'s <a href="custom-elements.html#custom-element-reaction-queue">custom element
+reaction queue</a>, with callback function <var>callback</var> and arguments
+<var>args</var>.<li><p><a href="custom-elements.html#enqueue-an-element-on-the-appropriate-element-queue">Enqueue an element on the appropriate element queue</a> given
+<var>element</var>.</ol>
+</div>
+<div>
+<p>To <dfn id=enqueue-a-custom-element-upgrade-reaction>enqueue a custom element upgrade reaction</dfn>, given an element
+<var>element</var> and <a href="custom-elements.html#custom-element-definition">custom element definition</a> <var>definition</var>, run the
+following steps:</p>
+<ol><li><p>Add a new <a href="custom-elements.html#upgrade-reaction">upgrade reaction</a> to <var>element</var>'s <a href="custom-elements.html#custom-element-reaction-queue">custom element
+reaction queue</a>, with <a href="custom-elements.html#custom-element-definition">custom element definition</a>
+<var>definition</var>.<li><p><a href="custom-elements.html#enqueue-an-element-on-the-appropriate-element-queue">Enqueue an element on the appropriate element queue</a> given
+<var>element</var>.</ol>
+</div>
+<div>
+<p>To <dfn id=invoke-custom-element-reactions>invoke custom element reactions</dfn> in an <a href="custom-elements.html#element-queue">element queue</a>
+<var>queue</var>, run the following steps:</p>
+<ol><li>
+<p>While <var>queue</var> is not <a href=https://infra.spec.whatwg.org/#list-is-empty data-x-internal=list-is-empty>empty</a>:</p>
+<ol><li><p>Let <var>element</var> be the result of <a href=https://infra.spec.whatwg.org/#queue-dequeue data-x-internal=dequeue>dequeuing</a>
+from <var>queue</var>.<li><p>Let <var>reactions</var> be <var>element</var>'s <a href="custom-elements.html#custom-element-reaction-queue">custom element reaction
+queue</a>.<li>
+<p>Repeat until <var>reactions</var> is empty:</p>
+<ol><li>
+<p>Remove the first element of <var>reactions</var>, and let <var>reaction</var> be that
+element. Switch on <var>reaction</var>'s type:</p>
+<dl><dt><a href="custom-elements.html#upgrade-reaction">upgrade reaction</a><dd>
+<p><a href="custom-elements.html#concept-upgrade-an-element">Upgrade</a> <var>element</var> using
+<var>reaction</var>'s <a href="custom-elements.html#custom-element-definition">custom element definition</a>.</p>
+<p>If this throws an exception, catch it, and <a href="webappapis.html#report-an-exception">report</a> it for <var>reaction</var>'s <a href="custom-elements.html#custom-element-definition">custom element
+definition</a>'s <a href="custom-elements.html#concept-custom-element-definition-constructor">constructor</a>'s corresponding
+JavaScript object's <a href=https://webidl.spec.whatwg.org/#dfn-associated-realm data-x-internal=associated-realm>associated realm</a>'s <a href="webappapis.html#concept-realm-global">global object</a>.</p>
+<dt><a href="custom-elements.html#callback-reaction">callback reaction</a><dd>
+<p><a href=https://webidl.spec.whatwg.org/#invoke-a-callback-function data-x-internal=es-invoking-callback-functions>Invoke</a> <var>reaction</var>'s
+callback function with <var>reaction</var>'s arguments and "<code>report</code>", and <i><a data-x-internal=dfn-callback-this-value href=https://webidl.spec.whatwg.org/#dfn-callback-this-value>callback this value</a></i>
+set to <var>element</var>.</p>
+</dl>
+</ol>
+</ol>
+</ol>
+</div>
+<hr>
+<p>To ensure <a href="custom-elements.html#concept-custom-element-reaction">custom element reactions</a> are
+triggered appropriately, we introduce the <dfn id=cereactions data-dfn-type=extended-attribute><code>[CEReactions]</code></dfn> IDL <a href=https://webidl.spec.whatwg.org/#dfn-extended-attribute data-x-internal=extended-attribute>extended attribute</a>. It
+indicates that the relevant algorithm is to be supplemented with additional steps in order to
+appropriately track and invoke <a href="custom-elements.html#concept-custom-element-reaction">custom element
+reactions</a>.</p>
+<p>The <code><a href="custom-elements.html#cereactions">[CEReactions]</a></code> extended attribute must take no
+arguments, and must not appear on anything other than an operation, attribute, setter, or deleter.
+Additionally, it must not appear on readonly attributes.</p>
+<div>
+<p>Operations, attributes, setters, or deleters annotated with the <code><a href="custom-elements.html#cereactions">[CEReactions]</a></code> extended attribute must run the following steps in place
+of the ones specified in their description:</p>
+<ol><li><p><a href=https://infra.spec.whatwg.org/#stack-push data-x-internal=stack-push>Push</a> a new <a href="custom-elements.html#element-queue">element queue</a> onto this object's
+<a href="webappapis.html#relevant-agent">relevant agent</a>'s <a href="custom-elements.html#custom-element-reactions-stack">custom element reactions stack</a>.<li><p>Run the originally-specified steps for this construct, catching any exceptions. If the
+steps return a value, let <var>value</var> be the returned value. If they throw an exception, let
+<var>exception</var> be the thrown exception.<li><p>Let <var>queue</var> be the result of <a href=https://infra.spec.whatwg.org/#stack-pop data-x-internal=stack-pop>popping</a> from this
+object's <a href="webappapis.html#relevant-agent">relevant agent</a>'s <a href="custom-elements.html#custom-element-reactions-stack">custom element reactions stack</a>.<li><p><a href="custom-elements.html#invoke-custom-element-reactions">Invoke custom element reactions</a> in <var>queue</var>.<li><p>If an exception <var>exception</var> was thrown by the original steps, rethrow
+<var>exception</var>.<li><p>If a value <var>value</var> was returned from the original steps, return
+<var>value</var>.</ol>
+</div>
+<div>
+<p>The intent behind this extended attribute is somewhat subtle. One way of accomplishing its
+goals would be to say that every operation, attribute, setter, and deleter on the platform
+must have these steps inserted, and to allow implementers to optimize away
+unnecessary cases (where no DOM mutation is possible that could cause <a href="custom-elements.html#concept-custom-element-reaction">custom element reactions</a> to occur).</p>
+<p>However, in practice this imprecision could lead to non-interoperable implementations of <a href="custom-elements.html#concept-custom-element-reaction">custom element reactions</a>, as some implementations
+might forget to invoke these steps in some cases. Instead, we settled on the approach of
+explicitly annotating all relevant IDL constructs, as a way of ensuring interoperable behavior
+and helping implementations easily pinpoint all cases where these steps are necessary.</p>
+</div>
+<p>Any nonstandard APIs introduced by the user agent that could modify the DOM in such a way as to
+cause <a href="custom-elements.html#enqueue-a-custom-element-callback-reaction">enqueuing a custom element
+callback reaction</a> or <a href="custom-elements.html#enqueue-a-custom-element-upgrade-reaction">enqueuing a
+custom element upgrade reaction</a>, for example by modifying any attributes or child elements,
+must also be decorated with the <code><a href="custom-elements.html#cereactions">[CEReactions]</a></code> attribute.</p>
+<div>
+<p>As of the time of this writing, the following nonstandard or not-yet-standardized APIs are
+known to fall into this category:</p>
+<ul><li><p><code><a href="input.html#htmlinputelement">HTMLInputElement</a></code>'s <code>webkitdirectory</code> and <code>incremental</code> IDL attributes<li><p><code><a href="semantics.html#htmllinkelement">HTMLLinkElement</a></code>'s <code>scope</code> IDL attribute</ul>
+</div>
+<h4 id=element-internals>Element internals</h4>
+<p>Certain capabilities are meant to be available to a custom element author, but not to a custom
+element consumer. These are provided by the <code><a href="custom-elements.html#dom-attachinternals">element.attachInternals()</a></code> method, which returns an instance of
+<code><a href="custom-elements.html#elementinternals">ElementInternals</a></code>. The properties and methods of <code><a href="custom-elements.html#elementinternals">ElementInternals</a></code> allow
+control over internal features which the user agent provides to all elements.</p>
+<dl><dt><code><var>element</var>.<a href="custom-elements.html#dom-attachinternals" id=dom-attachinternals-dev>attachInternals()</a></code><dd><p>Returns an <code><a href="custom-elements.html#elementinternals">ElementInternals</a></code> object targeting the <a href="custom-elements.html#custom-element">custom element</a>
+<var>element</var>. Throws an exception if <var>element</var> is not a <a href="custom-elements.html#custom-element">custom
+element</a>, if the "<code>internals</code>" feature was disabled as part of the
+element definition, or if it is called twice on the same element.</dl>
+<p>Each <code><a href="dom.html#htmlelement">HTMLElement</a></code> has an <dfn id=attached-internals>attached internals</dfn> (null or an
+<code><a href="custom-elements.html#elementinternals">ElementInternals</a></code> object), initially null.</p>
+</div><div>
+<p>The <dfn id=dom-attachinternals data-dfn-type=method><code>attachInternals()</code></dfn> method steps are:</p>
+<ol><li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href=https://dom.spec.whatwg.org/#concept-element-is-value data-x-internal=concept-element-is-value><code>is</code>
+value</a> is not null, then throw a <a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Let <var>definition</var> be the result of <a href="custom-elements.html#look-up-a-custom-element-definition">looking up a custom element definition</a> given <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href=https://dom.spec.whatwg.org/#element-custom-element-registry data-x-internal=element-custom-element-registry>custom element registry</a>, <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s
+<a href=https://dom.spec.whatwg.org/#concept-element-namespace data-x-internal=concept-element-namespace>namespace</a>, <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href=https://dom.spec.whatwg.org/#concept-element-local-name data-x-internal=concept-element-local-name>local name</a>, and null.<li><p>If <var>definition</var> is null, then throw a
+<a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If <var>definition</var>'s <a href="custom-elements.html#concept-custom-element-definition-disable-internals">disable internals</a> is true,
+then throw a <a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#attached-internals">attached internals</a> is non-null, then throw a
+<a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href=https://dom.spec.whatwg.org/#concept-element-custom-element-state data-x-internal=custom-element-state>custom element state</a> is not "<code>precustomized</code>" or "<code>custom</code>", then throw a
+<a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Set <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#attached-internals">attached internals</a> to a new
+<code><a href="custom-elements.html#elementinternals">ElementInternals</a></code> instance whose <a href="custom-elements.html#internals-target">target
+element</a> is <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>.<li><p>Return <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#attached-internals">attached internals</a>.</ol>
+</div>
+<h5 id=the-elementinternals-interface>The <code><a href="custom-elements.html#elementinternals">ElementInternals</a></code> interface</h5></div>
+<p>The IDL for the <code><a href="custom-elements.html#elementinternals">ElementInternals</a></code> interface is as follows, with the various operations and attributes
+defined in the following sections:</p>
+<pre><code>[Exposed=Window]
+interface <dfn id='elementinternals' data-dfn-type='interface'>ElementInternals</dfn> {
+// <a href='custom-elements.html#shadow-root-access'>Shadow root access</a>
+readonly attribute <code><a data-x-internal='shadowroot' href='https://dom.spec.whatwg.org/#interface-shadowroot'>ShadowRoot</a></code>? <a href='custom-elements.html#dom-elementinternals-shadowroot'>shadowRoot</a>;
+// <a href='custom-elements.html#form-associated-custom-elements'>Form-associated custom elements</a>
+undefined <a href='custom-elements.html#dom-elementinternals-setformvalue'>setFormValue</a>((<a href='https://w3c.github.io/FileAPI/#dfn-file' data-x-internal='file'>File</a> or <a href='https://webidl.spec.whatwg.org/#idl-USVString' data-x-internal='idl-usvstring'>USVString</a> or <a href='https://xhr.spec.whatwg.org/#formdata' data-x-internal='formdata'>FormData</a>)? value,
+optional (<a href='https://w3c.github.io/FileAPI/#dfn-file' data-x-internal='file'>File</a> or <a href='https://webidl.spec.whatwg.org/#idl-USVString' data-x-internal='idl-usvstring'>USVString</a> or <a href='https://xhr.spec.whatwg.org/#formdata' data-x-internal='formdata'>FormData</a>)? state);
+readonly attribute <a href='forms.html#htmlformelement'>HTMLFormElement</a>? <a href='form-control-infrastructure.html#dom-elementinternals-form'>form</a>;
+undefined <a href='custom-elements.html#dom-elementinternals-setvalidity'>setValidity</a>(optional <a href='custom-elements.html#validitystateflags'>ValidityStateFlags</a> flags = {},
+optional DOMString message,
+optional <a href='dom.html#htmlelement'>HTMLElement</a> anchor);
+readonly attribute boolean <a href='form-control-infrastructure.html#dom-elementinternals-willvalidate'>willValidate</a>;
+readonly attribute <a href='form-control-infrastructure.html#validitystate'>ValidityState</a> <a href='form-control-infrastructure.html#dom-elementinternals-validity'>validity</a>;
+readonly attribute DOMString <a href='custom-elements.html#dom-elementinternals-validationmessage'>validationMessage</a>;
+boolean <a href='form-control-infrastructure.html#dom-elementinternals-checkvalidity'>checkValidity</a>();
+boolean <a href='form-control-infrastructure.html#dom-elementinternals-reportvalidity'>reportValidity</a>();
+readonly attribute <a href='https://dom.spec.whatwg.org/#interface-nodelist' data-x-internal='nodelist'>NodeList</a> <a href='forms.html#dom-elementinternals-labels'>labels</a>;
+// <a href='custom-elements.html#custom-state-pseudo-class'>Custom state pseudo-class</a>
+[SameObject] readonly attribute <a href='custom-elements.html#customstateset'>CustomStateSet</a> <a href='custom-elements.html#dom-elementinternals-states'>states</a>;
+};
+// <a href='custom-elements.html#accessibility-semantics'>Accessibility semantics</a>
+<a href='custom-elements.html#elementinternals'>ElementInternals</a> includes <a href='https://w3c.github.io/aria/#ARIAMixin' data-x-internal='ariamixin'>ARIAMixin</a>;
+dictionary <dfn id='validitystateflags' data-dfn-type='dictionary'>ValidityStateFlags</dfn> {
+boolean valueMissing = false;
+boolean typeMismatch = false;
+boolean patternMismatch = false;
+boolean tooLong = false;
+boolean tooShort = false;
+boolean rangeUnderflow = false;
+boolean rangeOverflow = false;
+boolean stepMismatch = false;
+boolean badInput = false;
+boolean customError = false;
+};</code></pre>
+<p>Each <code><a href="custom-elements.html#elementinternals">ElementInternals</a></code> has a <dfn id=internals-target>target element</dfn>,
+which is a <a href="custom-elements.html#custom-element">custom element</a>.</p>
+<h5 id=shadow-root-access>Shadow root access</h5>
+<dl><dt><code><var>internals</var>.<a href="custom-elements.html#dom-elementinternals-shadowroot">shadowRoot</a></code><dd><p>Returns the <code><a data-x-internal=shadowroot href=https://dom.spec.whatwg.org/#interface-shadowroot>ShadowRoot</a></code> for <var>internals</var>'s <a href="custom-elements.html#internals-target">target element</a>, if the <a href="custom-elements.html#internals-target">target
+element</a> is a <a href=https://dom.spec.whatwg.org/#element-shadow-host data-x-internal=shadow-host>shadow host</a>, or null otherwise.</dl>
+</div><div>
+<p>The <dfn id=dom-elementinternals-shadowroot data-dfn-type=attribute><code>shadowRoot</code></dfn> getter steps are:</p>
+<ol><li><p>Let <var>target</var> be <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#internals-target">target
+element</a>.<li><p>If <var>target</var> is not a <a href=https://dom.spec.whatwg.org/#element-shadow-host data-x-internal=shadow-host>shadow host</a>, then return null.<li><p>Let <var>shadow</var> be <var>target</var>'s <a href=https://dom.spec.whatwg.org/#concept-element-shadow-root data-x-internal=concept-element-shadow-root>shadow root</a>.<li><p>If <var>shadow</var>'s <a href=https://dom.spec.whatwg.org/#shadowroot-available-to-element-internals data-x-internal=available-to-element-internals>available to element internals</a> is false, then return
+null.<li><p>Return <var>shadow</var>.</ol>
+</div>
+<h5 id=form-associated-custom-elements>Form-associated custom elements</h5>
+<dl><dt><code><var>internals</var>.<a href="custom-elements.html#dom-elementinternals-setformvalue">setFormValue</a>(<var>value</var>)</code><dd>
+<p>Sets both the <a href="custom-elements.html#face-state">state</a> and <a href="custom-elements.html#face-submission-value">submission value</a> of <var>internals</var>'s <a href="custom-elements.html#internals-target">target element</a> to <var>value</var>.</p>
+<p>If <var>value</var> is null, the element won't participate in form submission.</p>
+<dt><code><var>internals</var>.<a href="custom-elements.html#dom-elementinternals-setformvalue">setFormValue</a>(<var>value</var>,
+<var>state</var>)</code><dd>
+<p>Sets the <a href="custom-elements.html#face-submission-value">submission value</a> of
+<var>internals</var>'s <a href="custom-elements.html#internals-target">target element</a> to
+<var>value</var>, and its <a href="custom-elements.html#face-state">state</a> to <var>state</var>.</p>
+<p>If <var>value</var> is null, the element won't participate in form submission.</p>
+<dt><code><var>internals</var>.<a href="form-control-infrastructure.html#dom-elementinternals-form">form</a></code><dd><p>Returns the <a href="form-control-infrastructure.html#form-owner">form owner</a> of <var>internals</var>'s <a href="custom-elements.html#internals-target">target element</a>.<dt><code><var>internals</var>.<a href="custom-elements.html#dom-elementinternals-setvalidity">setValidity</a>(<var>flags</var>,
+<var>message</var> [, <var>anchor</var> ])</code><dd><p>Marks <var>internals</var>'s <a href="custom-elements.html#internals-target">target element</a> as
+suffering from the constraints indicated by the <var>flags</var> argument, and sets the element's
+validation message to <var>message</var>. If <var>anchor</var> is specified, the user agent might
+use it to indicate problems with the constraints of <var>internals</var>'s <a href="custom-elements.html#internals-target">target element</a> when the <a href="form-control-infrastructure.html#form-owner">form owner</a> is validated
+interactively or <code><a href="form-control-infrastructure.html#dom-elementinternals-reportvalidity">reportValidity()</a></code> is
+called.<dt><code><var>internals</var>.<a href="custom-elements.html#dom-elementinternals-setvalidity">setValidity</a>({})</code><dd><p>Marks <var>internals</var>'s <a href="custom-elements.html#internals-target">target element</a> as
+<a href="form-control-infrastructure.html#concept-fv-valid">satisfying its constraints</a>.<dt><code><var>internals</var>.<a href="form-control-infrastructure.html#dom-elementinternals-willvalidate">willValidate</a></code><dd><p>Returns true if <var>internals</var>'s <a href="custom-elements.html#internals-target">target
+element</a> will be validated when the form is submitted; false otherwise.<dt><code><var>internals</var>.<a href="form-control-infrastructure.html#dom-elementinternals-validity">validity</a></code><dd><p>Returns the <code><a href="form-control-infrastructure.html#validitystate">ValidityState</a></code> object for <var>internals</var>'s <a href="custom-elements.html#internals-target">target element</a>.<dt><code><var>internals</var>.<a href="custom-elements.html#dom-elementinternals-validationmessage">validationMessage</a></code><dd><p>Returns the error message that would be shown to the user if <var>internals</var>'s <a href="custom-elements.html#internals-target">target element</a> was to be checked for validity.<dt><code><var>valid</var> = <var>internals</var>.<a href="form-control-infrastructure.html#dom-elementinternals-checkvalidity">checkValidity()</a></code><dd><p>Returns true if <var>internals</var>'s <a href="custom-elements.html#internals-target">target
+element</a> has no validity problems; false otherwise. Fires an <code><a href="indices.html#event-invalid">invalid</a></code> event at the element in the latter case.<dt><code><var>valid</var> = <var>internals</var>.<a href="form-control-infrastructure.html#dom-elementinternals-reportvalidity">reportValidity()</a></code><dd><p>Returns true if <var>internals</var>'s <a href="custom-elements.html#internals-target">target
+element</a> has no validity problems; otherwise, returns false, fires an <code><a href="indices.html#event-invalid">invalid</a></code> event at the element, and (if the event isn't canceled)
+reports the problem to the user.<dt><code><var>internals</var>.<a href="forms.html#dom-elementinternals-labels">labels</a></code><dd><p>Returns a <code><a data-x-internal=nodelist href=https://dom.spec.whatwg.org/#interface-nodelist>NodeList</a></code> of all the <code><a href="forms.html#the-label-element">label</a></code> elements that
+<var>internals</var>'s <a href="custom-elements.html#internals-target">target element</a> is associated
+with.</dl>
+<p>Each <a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a> has <dfn id=face-submission-value>submission value</dfn>. It is used to provide one or more
+<a href="form-control-infrastructure.html#form-entry">entries</a> on form submission.
+The initial value of <a href="custom-elements.html#face-submission-value">submission value</a> is null, and
+<a href="custom-elements.html#face-submission-value">submission value</a> can be null, a string, a
+<code><a data-x-internal=file href=https://w3c.github.io/FileAPI/#dfn-file>File</a></code>, or a <a href=https://infra.spec.whatwg.org/#list data-x-internal=list>list</a> of <a href="form-control-infrastructure.html#form-entry">entries</a>.</p>
+<p>Each <a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a> has <dfn id=face-state>state</dfn>.
+It is information with which the user agent can restore a user's input for the element.
+The initial value of <a href="custom-elements.html#face-state">state</a> is null, and <a href="custom-elements.html#face-state">state</a> can be null, a string, a <code><a data-x-internal=file href=https://w3c.github.io/FileAPI/#dfn-file>File</a></code>, or a
+<a href=https://infra.spec.whatwg.org/#list data-x-internal=list>list</a> of <a href="form-control-infrastructure.html#form-entry">entries</a>.</p>
+<p>The <code><a href="custom-elements.html#dom-elementinternals-setformvalue">setFormValue()</a></code> method is used by
+the custom element author to set the element's <a href="custom-elements.html#face-submission-value">submission
+value</a> and <a href="custom-elements.html#face-state">state</a>, thus communicating these to the user
+agent.</p>
+<p>When the user agent believes it is a good idea to restore a <a href="custom-elements.html#form-associated-custom-element">form-associated custom
+element</a>'s <a href="custom-elements.html#face-state">state</a>, for example <a href="browsing-the-web.html#restore-persisted-state">after navigation</a> or restarting the user agent, they may <a href="custom-elements.html#enqueue-a-custom-element-callback-reaction">enqueue a
+custom element callback reaction</a> with that element, callback name "<code>formStateRestoreCallback</code>", and « the state to be restored, "<code>restore</code>" ».</p>
+<p>If the user agent has a form-filling assist feature, then when the feature is invoked, it may
+<a href="custom-elements.html#enqueue-a-custom-element-callback-reaction">enqueue a custom element callback reaction</a> with a <a href="custom-elements.html#form-associated-custom-element">form-associated custom
+element</a>, callback name "<code>formStateRestoreCallback</code>", and « the state
+value determined by history of state value and some heuristics, "<code>autocomplete</code>" ».</p>
+<p>In general, the <a href="custom-elements.html#face-state">state</a> is information specified by a user, and
+the <a href="custom-elements.html#face-submission-value">submission value</a> is a value after canonicalization
+or sanitization, suitable for submission to the server. The following examples makes this
+concrete:</p>
+<p>Suppose that we have a <a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a> which asks a
+user to specify a date. The user specifies <kbd>"3/15/2019"</kbd>, but the control wishes to
+submit <code>"2019-03-15"</code> to the server. <kbd>"3/15/2019"</kbd> would be a <a href="custom-elements.html#face-state">state</a> of the element, and <code>"2019-03-15"</code> would be
+a <a href="custom-elements.html#face-submission-value">submission value</a>.</p>
+<p>Suppose you develop a custom element emulating a the behavior of the existing
+<a href="input.html#checkbox-state-(type=checkbox)">checkbox</a> <code><a href="input.html#the-input-element">input</a></code> type. Its <a href="custom-elements.html#face-submission-value">submission value</a> would be the value of its <code>value</code> content attribute, or the string <code>"on"</code>. Its <a href="custom-elements.html#face-state">state</a> would be one of <code>"checked"</code>, <code>"unchecked"</code>, <code>"checked/indeterminate"</code>, or <code>"unchecked/indeterminate"</code>.</p>
+</div><div>
+<p>The <dfn id=dom-elementinternals-setformvalue data-dfn-type=method><code>setFormValue(<var>value</var>,
+<var>state</var>)</code></dfn> method steps are:</p>
+<ol><li><p>Let <var>element</var> be <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#internals-target">target
+element</a>.<li><p>If <var>element</var> is not a <a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a>, then throw a
+<a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Set <var>element</var>'s <a href="custom-elements.html#face-submission-value">submission value</a> to <var>value</var> if <var>value</var> is
+not a <code><a data-x-internal=formdata href=https://xhr.spec.whatwg.org/#formdata>FormData</a></code> object, or to a <a href=https://infra.spec.whatwg.org/#list-clone data-x-internal=list-clone>clone</a> of
+<var>value</var>'s <a href=https://xhr.spec.whatwg.org/#concept-formdata-entry-list data-x-internal=formdata-entry-list>entry list</a> otherwise.<li><p>If the <var>state</var> argument of the function is omitted, set <var>element</var>'s
+<a href="custom-elements.html#face-state">state</a> to its <a href="custom-elements.html#face-submission-value">submission
+value</a>.
+<li><p>Otherwise, if <var>state</var> is a <code><a data-x-internal=formdata href=https://xhr.spec.whatwg.org/#formdata>FormData</a></code> object, set <var>element</var>'s
+<a href="custom-elements.html#face-state">state</a> to a <a href=https://infra.spec.whatwg.org/#list-clone data-x-internal=list-clone>clone</a> of
+<var>state</var>'s <a href=https://xhr.spec.whatwg.org/#concept-formdata-entry-list data-x-internal=formdata-entry-list>entry list</a>.<li><p>Otherwise, set <var>element</var>'s <a href="custom-elements.html#face-state">state</a> to
+<var>state</var>.</ol>
+</div>
+<hr>
+<p>Each <a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a> has validity flags named
+<code>valueMissing</code>, <code>typeMismatch</code>,
+<code>patternMismatch</code>, <code>tooLong</code>,
+<code>tooShort</code>, <code>rangeUnderflow</code>,
+<code>rangeOverflow</code>, <code>stepMismatch</code>, and
+<code>customError</code>. They are false initially.</p>
+<p>Each <a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a> has a
+<dfn id=face-validation-message>validation message</dfn> string. It is the empty string
+initially.</p>
+<p>Each <a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a> has a
+<dfn id=face-validation-anchor>validation anchor</dfn> element. It is null initially.</p>
+</div><div>
+<p>The <dfn id=dom-elementinternals-setvalidity data-dfn-type=method><code>setValidity(<var>flags</var>, <var>message</var>,
+<var>anchor</var>)</code></dfn> method steps are:</p>
+<ol><li><p>Let <var>element</var> be <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#internals-target">target
+element</a>.<li><p>If <var>element</var> is not a <a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a>, then throw a
+<a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If <var>flags</var> contains one or more true values and <var>message</var> is not given
+or is the empty string, then throw a <code><a data-x-internal=typeerror href=https://tc39.es/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code>.<li><p>For each entry <var>flag</var> → <var>value</var> of <var>flags</var>, set
+<var>element</var>'s validity flag with the name <var>flag</var> to <var>value</var>.<li><p>Set <var>element</var>'s <a href="custom-elements.html#face-validation-message">validation message</a>
+to the empty string if <var>message</var> is not given or all of <var>element</var>'s validity
+flags are false, or to <var>message</var> otherwise.<li><p>If <var>element</var>'s <code>customError</code> validity flag is true, then set
+<var>element</var>'s <a href="form-control-infrastructure.html#custom-validity-error-message">custom validity error message</a> to <var>element</var>'s
+<a href="custom-elements.html#face-validation-message">validation message</a>. Otherwise, set
+<var>element</var>'s <a href="form-control-infrastructure.html#custom-validity-error-message">custom validity error message</a> to the empty string.<li><p>If <var>anchor</var> is not given, then set it to <var>element</var>.<li><p>Otherwise, if <var>anchor</var> is not a <a href=https://dom.spec.whatwg.org/#concept-shadow-including-inclusive-descendant data-x-internal=shadow-including-inclusive-descendant>shadow-including inclusive
+descendant</a> of <var>element</var>, then throw a <a href=https://webidl.spec.whatwg.org/#notfounderror data-x-internal=notfounderror>"<code>NotFoundError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Set <var>element</var>'s <a href="custom-elements.html#face-validation-anchor">validation anchor</a> to
+<var>anchor</var>.</ol>
+</div>
+</div><div>
+<p>The <dfn id=dom-elementinternals-validationmessage data-dfn-type=attribute><code>validationMessage</code></dfn> getter steps
+are:</p>
+<ol><li><p>Let <var>element</var> be <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#internals-target">target
+element</a>.<li><p>If <var>element</var> is not a <a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a>, then throw a
+<a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Return <var>element</var>'s <a href="custom-elements.html#face-validation-message">validation
+message</a>.</ol>
+</div>
+<div>
+<p>The <dfn id=face-entry-construction>entry construction algorithm</dfn> for a
+<a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a>, given an element <var>element</var> and an
+<a href="form-control-infrastructure.html#entry-list">entry list</a> <var>entry list</var>, consists of the following steps:</p>
+<ol><li>
+<p>If <var>element</var>'s <a href="custom-elements.html#face-submission-value">submission value</a> is a
+<a href=https://infra.spec.whatwg.org/#list data-x-internal=list>list</a> of <a href="form-control-infrastructure.html#form-entry">entries</a>, then <a href=https://infra.spec.whatwg.org/#list-append data-x-internal=list-append>append</a> each item of <var>element</var>'s <a href="custom-elements.html#face-submission-value">submission value</a> to <var>entry list</var>, and return.</p>
+<p>In this case, user agent does not refer to the
+<code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code> content attribute value. An implementation of
+<a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a> is responsible to decide names of
+<a href="form-control-infrastructure.html#form-entry">entries</a>. They can be the
+<code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code> content attribute value, they can be strings based on
+the <code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code> content attribute value, or they can be unrelated
+to the <code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code> content attribute.</p>
+<li><p>If the element does not have a <code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code> attribute
+specified, or its <code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code> attribute's value is the empty string,
+then return.<li><p>If the element's <a href="custom-elements.html#face-submission-value">submission value</a> is not
+null, <a href="form-control-infrastructure.html#create-an-entry">create an entry</a> with the <code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code> attribute
+value and the <a href="custom-elements.html#face-submission-value">submission value</a>, and <a href=https://infra.spec.whatwg.org/#list-append data-x-internal=list-append>append</a> it to <var>entry list</var>.</ol>
+</div>
+<h5 id=accessibility-semantics>Accessibility semantics</h5>
+<dl><dt><code><var>internals</var>.<a href=https://w3c.github.io/aria/#idl-def-ariamixin-role data-x-internal=dom-ariamixin-role>role</a> [ = <var>value</var> ]</code><dd><p>Sets or retrieves the default ARIA role for <var>internals</var>'s <a href="custom-elements.html#internals-target">target element</a>, which will be used unless the page author
+overrides it using the <code><a href="infrastructure.html#attr-aria-role">role</a></code> attribute.<dt><code><var>internals</var>.<a href=https://w3c.github.io/aria/#idl-def-ariamixin-ariaactivedescendantelement data-x-internal=dom-ariamixin-aria*>aria*</a> [ = <var>value</var> ]</code><dd><p>Sets or retrieves various default ARIA states or property values for
+<var>internals</var>'s <a href="custom-elements.html#internals-target">target element</a>, which will be used
+unless the page author overrides them using the <code><a href="infrastructure.html#attr-aria-*">aria-*</a></code>
+attributes.</dl>
+<p>Each <a href="custom-elements.html#custom-element">custom element</a> has an <dfn id=internal-content-attribute-map>internal content attribute map</dfn>, which is a
+<a href=https://infra.spec.whatwg.org/#ordered-map data-x-internal=ordered-map>map</a>, initially empty. See the <a href="dom.html#wai-aria">Requirements
+related to ARIA and to platform accessibility APIs</a> section for information on how this impacts
+platform accessibility APIs.</p>
+<h5 id=custom-state-pseudo-class>Custom state pseudo-class</h5>
+<dl><dt><code><var>internals</var>.<a href="custom-elements.html#dom-elementinternals-states">states</a>.add(<var>value</var>)</code><dd>
+<p>Adds the string <var>value</var> to the element's <a href="custom-elements.html#states-set">states set</a> to be exposed as a
+pseudo-class.</p>
+<dt><code><var>internals</var>.<a href="custom-elements.html#dom-elementinternals-states">states</a>.has(<var>value</var>)</code><dd>
+<p>Returns true if <var>value</var> is in the element's <a href="custom-elements.html#states-set">states set</a>, otherwise
+false.</p>
+<dt><code><var>internals</var>.<a href="custom-elements.html#dom-elementinternals-states">states</a>.delete(<var>value</var>)</code><dd>
+<p>If the element's <a href="custom-elements.html#states-set">states set</a> has <var>value</var>, then it will be removed and
+true will be returned. Otherwise, false will be returned.</p>
+<dt><code><var>internals</var>.<a href="custom-elements.html#dom-elementinternals-states">states</a>.clear()</code><dd>
+<p>Removes all values from the element's <a href="custom-elements.html#states-set">states set</a>.</p>
+<dt><code>for (const <var>stateName</var> of <var>internals</var>.<a href="custom-elements.html#dom-elementinternals-states">states</a>)</code><dt><code>for (const <var>stateName</var> of <var>internals</var>.<a href="custom-elements.html#dom-elementinternals-states">states</a>.entries())</code><dt><code>for (const <var>stateName</var> of <var>internals</var>.<a href="custom-elements.html#dom-elementinternals-states">states</a>.keys())</code><dt><code>for (const <var>stateName</var> of <var>internals</var>.<a href="custom-elements.html#dom-elementinternals-states">states</a>.values())</code><dd>
+<p>Iterates over all values in the element's <a href="custom-elements.html#states-set">states set</a>.</p>
+<dt><code><var>internals</var>.<a href="custom-elements.html#dom-elementinternals-states">states</a>.forEach(<var>callback</var>)</code><dd>
+<p>Iterates over all values in the element's <a href="custom-elements.html#states-set">states set</a> by calling
+<var>callback</var> once for each value.</p>
+<dt><code><var>internals</var>.<a href="custom-elements.html#dom-elementinternals-states">states</a>.size</code><dd>
+<p>Returns the number of values in the element's <a href="custom-elements.html#states-set">states set</a>.</p>
+</dl>
+<p>Each <a href="custom-elements.html#custom-element">custom element</a> has a <dfn id=states-set>states set</dfn>, which is a
+<code><a href="custom-elements.html#customstateset">CustomStateSet</a></code>, initially empty.</p>
+<pre><code>[Exposed=Window]
+interface <dfn id='customstateset' data-dfn-type='interface'>CustomStateSet</dfn> {
+setlike&lt;DOMString&gt;;
+};</code></pre>
+<div>
+<p>The <dfn id=dom-elementinternals-states data-dfn-type=attribute><code>states</code></dfn> getter steps are to return
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="custom-elements.html#internals-target">target element</a>'s <a href="custom-elements.html#states-set">states
+set</a>.</p>
+</div>
+<div>
+<p>The <a href="custom-elements.html#states-set">states set</a> can expose boolean states represented by existence/non-existence
+of string values. If an author wants to expose a state which can have three values, it can be
+converted to three exclusive boolean states. For example, a state called <code>readyState</code> with <code>"loading"</code>, <code>"interactive"</code>, and <code>"complete"</code> values can be mapped to
+three exclusive boolean states, <code>"loading"</code>, <code>"interactive"</code>, and <code>"complete"</code>:</p>
+<pre><code>// Change the readyState from anything to &quot;complete&quot;.
+this._readyState = &quot;complete&quot;;
+this._internals.states.delete(&quot;loading&quot;);
+this._internals.states.delete(&quot;interactive&quot;);
+this._internals.states.add(&quot;complete&quot;);</code></pre>
+</div>
+</body>
+</html>

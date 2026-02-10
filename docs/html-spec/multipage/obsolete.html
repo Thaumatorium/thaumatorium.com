@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+<li><a href="obsolete.html#non-conforming-features">Non-conforming features</a><li><a href="obsolete.html#requirements-for-implementations">Requirements for implementations</a><ol><li><a href="obsolete.html#the-marquee-element">The <code>marquee</code> element</a><li><a href="obsolete.html#frames">Frames</a><li><a href="obsolete.html#other-elements,-attributes-and-apis">Other elements, attributes and APIs</a></ol></ol></ol><h2 id=obsolete>Obsolete features</h2>
+<h3 id=obsolete-but-conforming-features>Obsolete but conforming features</h3>
+<p>Features listed in this section will trigger warnings in conformance checkers.</p>
+<p>Authors should not specify a <code><a href="obsolete.html#attr-img-border">border</a></code> attribute on an
+<code><a href="embedded-content.html#the-img-element">img</a></code> element. If the attribute is present, its value must be the string "<code>0</code>". CSS should be used instead.</p>
+<p>Authors should not specify a <code><a href="obsolete.html#attr-script-charset">charset</a></code> attribute on a
+<code><a href="scripting.html#the-script-element">script</a></code> element. If the attribute is present, its value must be an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII
+case-insensitive</a> match for "<code>utf-8</code>". (This has no effect in a
+document that conforms to the requirements elsewhere in this standard of being encoded as
+<a href=https://encoding.spec.whatwg.org/#utf-8 data-x-internal=utf-8>UTF-8</a>.)</p>
+<p>Authors should not specify a <code><a href="obsolete.html#attr-script-language">language</a></code> attribute on a
+<code><a href="scripting.html#the-script-element">script</a></code> element. If the attribute is present, its value must be an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII
+case-insensitive</a> match for the string "<code>JavaScript</code>" and either the
+<code><a href="scripting.html#attr-script-type">type</a></code> attribute must be omitted or its value must be an
+<a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the string "<code>text/javascript</code>".
+The attribute should be entirely omitted instead (with the value "<code>JavaScript</code>", it has no effect), or replaced with use of the <code><a href="scripting.html#attr-script-type">type</a></code> attribute.</p>
+<p>Authors should not specify a value for the <code><a href="scripting.html#attr-script-type">type</a></code>
+attribute on <code><a href="scripting.html#the-script-element">script</a></code> elements that is the empty string or a <a href=https://mimesniff.spec.whatwg.org/#javascript-mime-type-essence-match data-x-internal=javascript-mime-type-essence-match>JavaScript MIME type
+essence match</a>. Instead, they should omit the attribute, which has the same effect.</p>
+<p>Authors should not specify a <code><a href="obsolete.html#attr-style-type">type</a></code> attribute on a
+<code><a href="semantics.html#the-style-element">style</a></code> element. If the attribute is present, its value must be an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII
+case-insensitive</a> match for "<code><a href="indices.html#text/css">text/css</a></code>".</p>
+<p>Authors should not specify the <code><a href="obsolete.html#attr-a-name">name</a></code> attribute on
+<code><a href="text-level-semantics.html#the-a-element">a</a></code> elements. If the attribute is present, its value must not be the empty string and
+must neither be equal to the value of any of the <a href=https://dom.spec.whatwg.org/#concept-id data-x-internal=concept-id>IDs</a> in the
+element's <a href=https://dom.spec.whatwg.org/#concept-tree data-x-internal=tree>tree</a> other than the element's own <a href=https://dom.spec.whatwg.org/#concept-id data-x-internal=concept-id>ID</a>, if
+any, nor be equal to the value of any of the other <code><a href="obsolete.html#attr-a-name">name</a></code>
+attributes on <code><a href="text-level-semantics.html#the-a-element">a</a></code> elements in the element's <a href=https://dom.spec.whatwg.org/#concept-tree data-x-internal=tree>tree</a>. If this attribute is
+present and the element has an <a href=https://dom.spec.whatwg.org/#concept-id data-x-internal=concept-id>ID</a>, then the attribute's value
+must be equal to the element's <a href=https://dom.spec.whatwg.org/#concept-id data-x-internal=concept-id>ID</a>. In earlier versions of the
+language, this attribute was intended as a way to specify possible targets for <a href=https://url.spec.whatwg.org/#concept-url-fragment data-x-internal=concept-url-fragment>fragments</a> in <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URLs</a>. The <code><a href="dom.html#the-id-attribute">id</a></code> attribute should be used instead.</p>
+<p>Authors should not, but may despite requirements to the contrary elsewhere in this
+specification, specify the <code><a href="input.html#attr-input-maxlength">maxlength</a></code> and <code><a href="input.html#attr-input-size">size</a></code> attributes on <code><a href="input.html#the-input-element">input</a></code> elements whose <code><a href="input.html#attr-input-type">type</a></code> attributes are in the <a href="input.html#number-state-(type=number)">Number</a> state. One valid reason for using these attributes
+regardless is to help legacy user agents that do not support <code><a href="input.html#the-input-element">input</a></code> elements with
+<code>type="number"</code> to still render the text control with a useful width.</p>
+<h4 id=warnings-for-obsolete-but-conforming-features>Warnings for obsolete but conforming features</h4>
+<p>To ease the transition from HTML4 Transitional documents to the language defined in
+<em>this</em> specification, and to discourage certain features that are only allowed in very few
+circumstances, conformance checkers must warn the user when the following features are used in a
+document. These are generally old obsolete features that have no effect, and are allowed only to
+distinguish between likely mistakes (regular conformance errors) and mere vestigial markup or
+unusual and discouraged practices (these warnings).</p>
+<p>The following features must be categorized as described
+above:</p>
+<ul><li><p>The presence of a <code><a href="obsolete.html#attr-img-border">border</a></code> attribute on an
+<code><a href="embedded-content.html#the-img-element">img</a></code> element if its value is the string "<code>0</code>".<li><p>The presence of a <code><a href="obsolete.html#attr-script-charset">charset</a></code> attribute on a
+<code><a href="scripting.html#the-script-element">script</a></code> element if its value is an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for
+"<code>utf-8</code>".<li><p>The presence of a <code><a href="obsolete.html#attr-script-language">language</a></code> attribute on a
+<code><a href="scripting.html#the-script-element">script</a></code> element if its value is an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the
+string "<code>JavaScript</code>" and if there is no <code><a href="scripting.html#attr-script-type">type</a></code> attribute or there is and its value is an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII
+case-insensitive</a> match for the string "<code>text/javascript</code>".<li><p>The presence of a <code><a href="obsolete.html#attr-style-type">type</a></code> attribute on a
+<code><a href="scripting.html#the-script-element">script</a></code> element if its value is a <a href=https://mimesniff.spec.whatwg.org/#javascript-mime-type-essence-match data-x-internal=javascript-mime-type-essence-match>JavaScript MIME type essence
+match</a>.<li><p>The presence of a <code><a href="obsolete.html#attr-style-type">type</a></code> attribute on a
+<code><a href="semantics.html#the-style-element">style</a></code> element if its value is an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for
+"<code><a href="indices.html#text/css">text/css</a></code>".<li><p>The presence of a <code><a href="obsolete.html#attr-a-name">name</a></code> attribute on an <code><a href="text-level-semantics.html#the-a-element">a</a></code>
+element, if its value is not the empty string.<li><p>The presence of a <code><a href="input.html#attr-input-maxlength">maxlength</a></code> attribute on an
+<code><a href="input.html#the-input-element">input</a></code> element whose <code><a href="input.html#attr-input-type">type</a></code> attribute is in the
+<a href="input.html#number-state-(type=number)">Number</a> state.<li><p>The presence of a <code><a href="input.html#attr-input-size">size</a></code> attribute on an
+<code><a href="input.html#the-input-element">input</a></code> element whose <code><a href="input.html#attr-input-type">type</a></code> attribute is in the
+<a href="input.html#number-state-(type=number)">Number</a> state.</ul>
+<p>Conformance checkers must distinguish between pages that have no conformance errors and have
+none of these obsolete features, and pages that have no conformance errors but do have some of
+these obsolete features.</p>
+<p>For example, a validator could report some pages as "Valid HTML" and others as
+"Valid HTML with warnings".</p>
+<h3 id=non-conforming-features>Non-conforming features</h3>
+<p>Elements in the following list are entirely obsolete, and must not be used by authors:</p>
+<dl><dt><dfn id=applet data-dfn-type=element><code>applet</code></dfn><dd><p>Use <code><a href="iframe-embed-object.html#the-embed-element">embed</a></code> or <code><a href="iframe-embed-object.html#the-object-element">object</a></code> instead.<dt><dfn id=acronym data-dfn-type=element><code>acronym</code></dfn><dd><p>Use <code><a href="text-level-semantics.html#the-abbr-element">abbr</a></code> instead.<dt><dfn id=bgsound data-dfn-type=element><code>bgsound</code></dfn><dd><p>Use <code><a href="media.html#the-audio-element">audio</a></code> instead.<dt><dfn id=dir data-dfn-type=element><code>dir</code></dfn><dd><p>Use <code><a href="grouping-content.html#the-ul-element">ul</a></code> instead.<dt><code><a href="obsolete.html#frame">frame</a></code><dt><code><a href="obsolete.html#frameset">frameset</a></code><dt><dfn id=noframes data-dfn-type=element><code>noframes</code></dfn><dd><p>Either use <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> and CSS instead, or use server-side includes to generate complete pages with the various invariant parts merged in.<dt><dfn id=isindex data-dfn-type=element><code>isindex</code></dfn><dd><p>Use an explicit <code><a href="forms.html#the-form-element">form</a></code> and <a href="input.html#text-(type=text)-state-and-search-state-(type=search)">text control</a> combination instead.<dt><dfn id=keygen data-dfn-type=element><code>keygen</code></dfn><dd>
+<p>For enterprise device management use cases, use native on-device management capabilities.</p>
+<p>For certificate enrollment use cases, use the Web Cryptography API to generate a keypair for
+the certificate, and then export the certificate and key to allow the user to install them
+manually. <a href="references.html#refsWEBCRYPTO">[WEBCRYPTO]</a></p>
+<dt><dfn id=listing data-dfn-type=element><code>listing</code></dfn><dd><p>Use <code><a href="grouping-content.html#the-pre-element">pre</a></code> and <code><a href="text-level-semantics.html#the-code-element">code</a></code> instead.<dt><dfn id=menuitem data-dfn-type=element><code>menuitem</code></dfn><dd><p>To implement a custom context menu, use script to handle the <code><a data-x-internal=event-contextmenu href=https://w3c.github.io/uievents/#event-type-contextmenu>contextmenu</a></code> event.<dt><dfn id=nextid data-dfn-type=element><code>nextid</code></dfn><dd><p>Use GUIDs instead.<dt><dfn id=noembed data-dfn-type=element><code>noembed</code></dfn><dd><p>Use <code><a href="iframe-embed-object.html#the-object-element">object</a></code> instead of <code><a href="iframe-embed-object.html#the-embed-element">embed</a></code> when fallback is necessary.<dt id=the-param-element><dfn id=param data-dfn-type=element><code>param</code></dfn><dd><p>Use the <code><a href="iframe-embed-object.html#attr-object-data">data</a></code> attribute of the <code><a href="iframe-embed-object.html#the-object-element">object</a></code> element to set the
+URL of the external resource.<dt><dfn id=plaintext data-dfn-type=element><code>plaintext</code></dfn><dd><p>Use the "<code><a data-x-internal=text/plain href=https://www.rfc-editor.org/rfc/rfc2046#section-4.1.3>text/plain</a></code>" <a href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME type</a> instead.<dt><dfn id=rb data-dfn-type=element><code>rb</code></dfn><dt><dfn id=rtc data-dfn-type=element><code>rtc</code></dfn><dd><p>Providing the ruby base directly inside the <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element or using nested
+<code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> elements is sufficient.<dt><dfn id=strike data-dfn-type=element><code>strike</code></dfn><dd><p>Use <code><a href="edits.html#the-del-element">del</a></code> instead if the element is marking an edit, otherwise use <code><a href="text-level-semantics.html#the-s-element">s</a></code> instead.<dt><dfn id=xmp data-dfn-type=element><code>xmp</code></dfn><dd><p>Use <code><a href="grouping-content.html#the-pre-element">pre</a></code> and <code><a href="text-level-semantics.html#the-code-element">code</a></code> instead, and escape "<code>&lt;</code>" and "<code>&amp;</code>" characters as "<code>&amp;lt;</code>" and "<code>&amp;amp;</code>" respectively.<dt><dfn id=basefont data-dfn-type=element><code>basefont</code></dfn><dt><dfn id=big data-dfn-type=element><code>big</code></dfn><dt><dfn id=blink data-dfn-type=element><code>blink</code></dfn><dt><dfn id=center data-dfn-type=element><code>center</code></dfn><dt><dfn id=font data-dfn-type=element><code>font</code></dfn><dt><code><a href="obsolete.html#the-marquee-element">marquee</a></code><dt><dfn id=multicol data-dfn-type=element><code>multicol</code></dfn><dt><dfn id=nobr data-dfn-type=element><code>nobr</code></dfn><dt><dfn id=spacer data-dfn-type=element><code>spacer</code></dfn><dt><dfn id=tt data-dfn-type=element><code>tt</code></dfn><dd>
+<p>Use appropriate elements or CSS instead.</p>
+<p>Where the <code><a href="obsolete.html#tt">tt</a></code> element would have been used for marking up keyboard input,
+consider the <code><a href="text-level-semantics.html#the-kbd-element">kbd</a></code> element; for variables, consider the <code><a href="text-level-semantics.html#the-var-element">var</a></code> element; for
+computer code, consider the <code><a href="text-level-semantics.html#the-code-element">code</a></code> element; and for computer output, consider the
+<code><a href="text-level-semantics.html#the-samp-element">samp</a></code> element.</p>
+<p>Similarly, if the <code><a href="obsolete.html#big">big</a></code> element is being used to denote a heading, consider using
+the <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h1</a></code> element; if it is being used for marking up important passages, consider the
+<code><a href="text-level-semantics.html#the-strong-element">strong</a></code> element; and if it is being used for highlighting text for reference
+purposes, consider the <code><a href="text-level-semantics.html#the-mark-element">mark</a></code> element.</p>
+<p>See also the <a href="text-level-semantics.html#usage-summary">text-level semantics usage summary</a> for more
+suggestions with examples.</p>
+</dl>
+<hr>
+<p>The following attributes are obsolete (though the elements are still part of the language), and
+must not be used by authors:</p>
+<dl><dt><dfn id=attr-a-charset data-dfn-type=element-attr><code>charset</code></dfn> on <code><a href="text-level-semantics.html#the-a-element">a</a></code> elements<dt><dfn id=attr-link-charset data-dfn-type=element-attr><code>charset</code></dfn> on <code><a href="semantics.html#the-link-element">link</a></code> elements<dd><p>Use an HTTP `<code><a href="urls-and-fetching.html#content-type">Content-Type</a></code>` header on the linked resource instead.<dt><dfn id=attr-script-charset data-dfn-type=element-attr><code>charset</code></dfn> on <code><a href="scripting.html#the-script-element">script</a></code>
+elements (except as noted in the previous section)<dd><p>Omit the attribute. Both documents and scripts are required to use <a href=https://encoding.spec.whatwg.org/#utf-8 data-x-internal=utf-8>UTF-8</a>, so
+it is redundant to specify it on the <code><a href="scripting.html#the-script-element">script</a></code> element since it inherits from the
+document.<dt><dfn id=attr-a-coords data-dfn-type=element-attr><code>coords</code></dfn> on <code><a href="text-level-semantics.html#the-a-element">a</a></code> elements<dt><dfn id=attr-a-shape data-dfn-type=element-attr><code>shape</code></dfn> on <code><a href="text-level-semantics.html#the-a-element">a</a></code> elements<dd><p>Use <code><a href="image-maps.html#the-area-element">area</a></code> instead of <code><a href="text-level-semantics.html#the-a-element">a</a></code> for image maps.<dt><dfn id=attr-a-methods data-dfn-type=element-attr><code>methods</code></dfn> on <code><a href="text-level-semantics.html#the-a-element">a</a></code> elements<dt><dfn id=attr-link-methods data-dfn-type=element-attr><code>methods</code></dfn> on <code><a href="semantics.html#the-link-element">link</a></code> elements<dd><p>Use the HTTP OPTIONS feature instead.<dt><dfn id=attr-a-name data-dfn-type=element-attr><code>name</code></dfn> on <code><a href="text-level-semantics.html#the-a-element">a</a></code> elements (except as noted in the previous section)<dt><dfn id=attr-embed-name data-dfn-type=element-attr><code>name</code></dfn> on <code><a href="iframe-embed-object.html#the-embed-element">embed</a></code> elements<dt><dfn id=attr-img-name data-dfn-type=element-attr><code>name</code></dfn> on <code><a href="embedded-content.html#the-img-element">img</a></code> elements<dt><dfn id=attr-option-name data-dfn-type=element-attr><code>name</code></dfn> on <code><a href="form-elements.html#the-option-element">option</a></code> elements<dd><p>Use the <code><a href="dom.html#the-id-attribute">id</a></code> attribute instead.<dt><dfn id=attr-a-rev data-dfn-type=element-attr><code>rev</code></dfn> on <code><a href="text-level-semantics.html#the-a-element">a</a></code> elements<dt><dfn id=attr-link-rev data-dfn-type=element-attr><code>rev</code></dfn> on <code><a href="semantics.html#the-link-element">link</a></code> elements<dd><p>Use the <code><a href="links.html#attr-hyperlink-rel">rel</a></code>
+attribute instead, with an opposite term. (For example, instead of
+<code>rev="made"</code>, use <code>rel="author"</code>.)<dt><dfn id=attr-a-urn data-dfn-type=element-attr><code>urn</code></dfn> on <code><a href="text-level-semantics.html#the-a-element">a</a></code> elements<dt><dfn id=attr-link-urn data-dfn-type=element-attr><code>urn</code></dfn> on <code><a href="semantics.html#the-link-element">link</a></code> elements<dd><p>Specify the preferred persistent identifier using the <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute instead.<dt><dfn id=attr-form-accept data-dfn-type=element-attr><code>accept</code></dfn> on <code><a href="forms.html#the-form-element">form</a></code> elements<dd><p>Use the <code><a href="input.html#attr-input-accept">accept</a></code> attribute directly on the <code><a href="input.html#the-input-element">input</a></code> elements instead.<dt><dfn id=attr-area-hreflang data-dfn-type=element-attr><code>hreflang</code></dfn> on <code><a href="image-maps.html#the-area-element">area</a></code>
+elements<dt><dfn id=attr-area-type data-dfn-type=element-attr><code>type</code></dfn> on <code><a href="image-maps.html#the-area-element">area</a></code> elements<dd><p>These attributes do not do anything useful, and for historical reasons there are no
+corresponding IDL attributes on <code><a href="image-maps.html#the-area-element">area</a></code> elements. Omit them altogether.<dt><dfn id=attr-area-nohref data-dfn-type=element-attr><code>nohref</code></dfn> on <code><a href="image-maps.html#the-area-element">area</a></code> elements<dd><p>Omitting the <code><a href="links.html#attr-hyperlink-href">href</a></code>
+attribute is sufficient; the <code><a href="obsolete.html#attr-area-nohref">nohref</a></code> attribute is
+unnecessary. Omit it altogether.<dt><dfn id=attr-head-profile data-dfn-type=element-attr><code>profile</code></dfn> on <code><a href="semantics.html#the-head-element">head</a></code> elements<dd><p>Unnecessary. Omit it altogether.<dt><dfn id=attr-html-manifest data-dfn-type=element-attr><code>manifest</code></dfn> on <code><a href="semantics.html#the-html-element">html</a></code> elements<dd><p>Use service workers instead. <a href="references.html#refsSW">[SW]</a><dt><dfn id=attr-html-version data-dfn-type=element-attr><code>version</code></dfn> on <code><a href="semantics.html#the-html-element">html</a></code> elements<dd><p>Unnecessary. Omit it altogether.<dt><dfn id=attr-input-ismap data-dfn-type=element-attr><code>ismap</code></dfn> on <code><a href="input.html#the-input-element">input</a></code> elements<dd><p>Unnecessary. Omit it altogether. All <code><a href="input.html#the-input-element">input</a></code> elements with a <code><a href="input.html#attr-input-type">type</a></code> attribute in the <a href="input.html#image-button-state-(type=image)">Image
+Button</a> state are processed as server-side image maps.<dt><dfn id=attr-input-usemap data-dfn-type=element-attr><code>usemap</code></dfn> on <code><a href="input.html#the-input-element">input</a></code> elements<dt><dfn id=attr-object-usemap data-dfn-type=element-attr><code>usemap</code></dfn> on <code><a href="iframe-embed-object.html#the-object-element">object</a></code> elements<dd><p>Use the <code><a href="embedded-content.html#the-img-element">img</a></code> element for image maps.<dt><dfn id=attr-iframe-longdesc data-dfn-type=element-attr><code>longdesc</code></dfn> on <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> elements<dt><dfn id=attr-img-longdesc data-dfn-type=element-attr><code>longdesc</code></dfn> on <code><a href="embedded-content.html#the-img-element">img</a></code> elements<dd><p>Use a regular <code><a href="text-level-semantics.html#the-a-element">a</a></code> element to link to the
+description, or (in the case of images) use an <a href="image-maps.html#image-map">image
+map</a> to provide a link from the image to the image's
+description.<dt><dfn id=attr-img-lowsrc data-dfn-type=element-attr><code>lowsrc</code></dfn> on <code><a href="embedded-content.html#the-img-element">img</a></code> elements<dd><p>Use a progressive JPEG image (given in the <code><a href="embedded-content.html#attr-img-src">src</a></code> attribute),
+instead of using two separate images.<dt><dfn id=attr-link-target data-dfn-type=element-attr><code>target</code></dfn> on <code><a href="semantics.html#the-link-element">link</a></code> elements<dd><p>Unnecessary. Omit it altogether.<dt><dfn id=attr-menu-type data-dfn-type=element-attr><code>type</code></dfn> on <code><a href="grouping-content.html#the-menu-element">menu</a></code> elements<dd><p>To implement a custom context menu, use script to handle the <code><a data-x-internal=event-contextmenu href=https://w3c.github.io/uievents/#event-type-contextmenu>contextmenu</a></code> event. For toolbar menus, omit the
+attribute.<dt><dfn id=attr-menu-label data-dfn-type=element-attr><code>label</code></dfn> on <code><a href="grouping-content.html#the-menu-element">menu</a></code> elements<dt><dfn id=attr-contextmenu data-dfn-type=element-attr><code>contextmenu</code></dfn> on all elements<dt><dfn id=handler-onshow data-dfn-type=element-attr><code>onshow</code></dfn> on all elements<dd><p>To implement a custom context menu, use script to handle the <code><a data-x-internal=event-contextmenu href=https://w3c.github.io/uievents/#event-type-contextmenu>contextmenu</a></code> event.<dt><dfn id=attr-meta-scheme data-dfn-type=element-attr><code>scheme</code></dfn> on <code><a href="semantics.html#the-meta-element">meta</a></code> elements<dd><p>Use only one scheme per field, or make the scheme declaration part of the value.<dt><dfn id=attr-object-archive data-dfn-type=element-attr><code>archive</code></dfn> on <code><a href="iframe-embed-object.html#the-object-element">object</a></code> elements<dt><dfn id=attr-object-classid data-dfn-type=element-attr><code>classid</code></dfn> on <code><a href="iframe-embed-object.html#the-object-element">object</a></code> elements<dt><dfn id=attr-object-code data-dfn-type=element-attr><code>code</code></dfn> on <code><a href="iframe-embed-object.html#the-object-element">object</a></code> elements<dt><dfn id=attr-object-codebase data-dfn-type=element-attr><code>codebase</code></dfn> on <code><a href="iframe-embed-object.html#the-object-element">object</a></code> elements<dt><dfn id=attr-object-codetype data-dfn-type=element-attr><code>codetype</code></dfn> on <code><a href="iframe-embed-object.html#the-object-element">object</a></code> elements<dd><p>Use the <code><a href="iframe-embed-object.html#attr-object-data">data</a></code> and <code><a href="iframe-embed-object.html#attr-object-type">type</a></code> attributes to invoke <a href="infrastructure.html#plugin">plugins</a>.<dt><dfn id=attr-object-declare data-dfn-type=element-attr><code>declare</code></dfn> on <code><a href="iframe-embed-object.html#the-object-element">object</a></code> elements<dd><p>Repeat the <code><a href="iframe-embed-object.html#the-object-element">object</a></code> element completely each time the resource is to be reused.<dt><dfn id=attr-object-standby data-dfn-type=element-attr><code>standby</code></dfn> on <code><a href="iframe-embed-object.html#the-object-element">object</a></code> elements<dd><p>Optimize the linked resource so that it loads quickly or, at least, incrementally.<dt><dfn id=attr-object-typemustmatch data-dfn-type=element-attr><code>typemustmatch</code></dfn> on <code><a href="iframe-embed-object.html#the-object-element">object</a></code> elements<dd><p>Avoid using <code><a href="iframe-embed-object.html#the-object-element">object</a></code> elements with untrusted resources.<dt><dfn id=attr-script-language data-dfn-type=element-attr><code>language</code></dfn> on <code><a href="scripting.html#the-script-element">script</a></code> elements (except as noted in the previous section)<dd><p>Omit the attribute for JavaScript; for <a href="scripting.html#data-block">data blocks</a>, use
+the <code><a href="scripting.html#attr-script-type">type</a></code> attribute instead.<dt><dfn id=attr-script-event data-dfn-type=element-attr><code>event</code></dfn> on <code><a href="scripting.html#the-script-element">script</a></code> elements<dt><dfn id=attr-script-for data-dfn-type=element-attr><code>for</code></dfn> on <code><a href="scripting.html#the-script-element">script</a></code> elements<dd><p>Use DOM events mechanisms to register event listeners. <a href="references.html#refsDOM">[DOM]</a><dt><dfn id=attr-style-type data-dfn-type=element-attr><code>type</code></dfn> on <code><a href="semantics.html#the-style-element">style</a></code> elements (except as noted in the previous section)<dd><p>Omit the attribute for CSS; for <a href="scripting.html#data-block">data blocks</a>, use
+<code><a href="scripting.html#the-script-element">script</a></code> as the container instead of <code><a href="semantics.html#the-style-element">style</a></code>.<dt><dfn id=attr-table-datapagesize data-dfn-type=element-attr><code>datapagesize</code></dfn> on <code><a href="tables.html#the-table-element">table</a></code> elements<dd><p>Unnecessary. Omit it altogether.<dt><dfn id=attr-table-summary data-dfn-type=element-attr><code>summary</code></dfn> on <code><a href="tables.html#the-table-element">table</a></code> elements<dd><p>Use one of the <a href="tables.html#table-descriptions-techniques">techniques for describing
+tables</a> given in the <code><a href="tables.html#the-table-element">table</a></code> section instead.<dt><dfn id=attr-td-abbr data-dfn-type=element-attr><code>abbr</code></dfn> on <code><a href="tables.html#the-td-element">td</a></code> elements<dd><p>Use text that begins in an unambiguous and terse manner, and include any more elaborate text after that. The <code><a href="dom.html#attr-title">title</a></code> attribute can also be useful in including more detailed text, so that the cell's contents can be made terse. If it's a heading, use <code><a href="tables.html#the-th-element">th</a></code> (which has an <code><a href="tables.html#attr-th-abbr">abbr</a></code> attribute).</p>
+<dt><dfn id=attr-tdth-axis data-dfn-type=element-attr><code>axis</code></dfn> on <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> elements<dd><p>Use the <code><a href="tables.html#attr-th-scope">scope</a></code> attribute on the relevant <code><a href="tables.html#the-th-element">th</a></code>.</p>
+<dt><dfn id=attr-td-scope data-dfn-type=element-attr><code>scope</code></dfn> on <code><a href="tables.html#the-td-element">td</a></code> elements<dd><p>Use <code><a href="tables.html#the-th-element">th</a></code> elements for heading cells.</p>
+<dt><dfn id=attr-datasrc data-dfn-type=element-attr><code>datasrc</code></dfn> on <code><a href="text-level-semantics.html#the-a-element">a</a></code>, <code><a href="form-elements.html#the-button-element">button</a></code>, <code><a href="grouping-content.html#the-div-element">div</a></code>, <code><a href="obsolete.html#frame">frame</a></code>, <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code>, <code><a href="embedded-content.html#the-img-element">img</a></code>, <code><a href="input.html#the-input-element">input</a></code>, <code><a href="forms.html#the-label-element">label</a></code>, <code><a href="form-elements.html#the-legend-element">legend</a></code>, <code><a href="obsolete.html#the-marquee-element">marquee</a></code>, <code><a href="iframe-embed-object.html#the-object-element">object</a></code>, <code><a href="form-elements.html#the-option-element">option</a></code>, <code><a href="form-elements.html#the-select-element">select</a></code>, <code><a href="text-level-semantics.html#the-span-element">span</a></code>, <code><a href="tables.html#the-table-element">table</a></code>, and <code><a href="form-elements.html#the-textarea-element">textarea</a></code> elements<dt><dfn id=attr-datafld data-dfn-type=element-attr><code>datafld</code></dfn> on <code><a href="text-level-semantics.html#the-a-element">a</a></code>, <code><a href="form-elements.html#the-button-element">button</a></code>, <code><a href="grouping-content.html#the-div-element">div</a></code>, <code><a href="form-elements.html#the-fieldset-element">fieldset</a></code>, <code><a href="obsolete.html#frame">frame</a></code>, <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code>, <code><a href="embedded-content.html#the-img-element">img</a></code>, <code><a href="input.html#the-input-element">input</a></code>, <code><a href="forms.html#the-label-element">label</a></code>, <code><a href="form-elements.html#the-legend-element">legend</a></code>, <code><a href="obsolete.html#the-marquee-element">marquee</a></code>, <code><a href="iframe-embed-object.html#the-object-element">object</a></code>, <code><a href="form-elements.html#the-select-element">select</a></code>, <code><a href="text-level-semantics.html#the-span-element">span</a></code>, and <code><a href="form-elements.html#the-textarea-element">textarea</a></code> elements<dt><dfn id=attr-dataformatas data-dfn-type=element-attr><code>dataformatas</code></dfn> on <code><a href="form-elements.html#the-button-element">button</a></code>, <code><a href="grouping-content.html#the-div-element">div</a></code>, <code><a href="input.html#the-input-element">input</a></code>, <code><a href="forms.html#the-label-element">label</a></code>, <code><a href="form-elements.html#the-legend-element">legend</a></code>, <code><a href="obsolete.html#the-marquee-element">marquee</a></code>, <code><a href="iframe-embed-object.html#the-object-element">object</a></code>, <code><a href="form-elements.html#the-option-element">option</a></code>, <code><a href="form-elements.html#the-select-element">select</a></code>, <code><a href="text-level-semantics.html#the-span-element">span</a></code>, and <code><a href="tables.html#the-table-element">table</a></code> elements<dd><p>Use script and a mechanism such as <code><a data-x-internal=xmlhttprequest href=https://xhr.spec.whatwg.org/#xmlhttprequest>XMLHttpRequest</a></code> to populate the page dynamically. <a href="references.html#refsXHR">[XHR]</a><dt><dfn id=attr-dropzone data-dfn-type=element-attr><code>dropzone</code></dfn> on all elements<dd><p>Use script to handle the <code><a href="dnd.html#event-dnd-dragenter">dragenter</a></code> and <code><a href="dnd.html#event-dnd-dragover">dragover</a></code> events instead.<dt><dfn id=attr-body-alink data-dfn-type=element-attr><code>alink</code></dfn> on <code><a href="sections.html#the-body-element">body</a></code> elements<dt><dfn id=attr-body-bgcolor data-dfn-type=element-attr><code>bgcolor</code></dfn> on <code><a href="sections.html#the-body-element">body</a></code> elements<dt><dfn id=attr-body-bottommargin data-dfn-type=element-attr><code>bottommargin</code></dfn> on <code><a href="sections.html#the-body-element">body</a></code> elements<dt><dfn id=attr-body-leftmargin data-dfn-type=element-attr><code>leftmargin</code></dfn> on <code><a href="sections.html#the-body-element">body</a></code> elements<dt><dfn id=attr-body-link data-dfn-type=element-attr><code>link</code></dfn> on <code><a href="sections.html#the-body-element">body</a></code> elements<dt><dfn id=attr-body-marginheight data-dfn-type=element-attr><code>marginheight</code></dfn> on <code><a href="sections.html#the-body-element">body</a></code> elements<dt><dfn id=attr-body-marginwidth data-dfn-type=element-attr><code>marginwidth</code></dfn> on <code><a href="sections.html#the-body-element">body</a></code> elements<dt><dfn id=attr-body-rightmargin data-dfn-type=element-attr><code>rightmargin</code></dfn> on <code><a href="sections.html#the-body-element">body</a></code> elements<dt><dfn id=attr-body-text data-dfn-type=element-attr><code>text</code></dfn> on <code><a href="sections.html#the-body-element">body</a></code> elements<dt><dfn id=attr-body-topmargin data-dfn-type=element-attr><code>topmargin</code></dfn> on <code><a href="sections.html#the-body-element">body</a></code> elements<dt><dfn id=attr-body-vlink data-dfn-type=element-attr><code>vlink</code></dfn> on <code><a href="sections.html#the-body-element">body</a></code> elements<dt><dfn id=attr-br-clear data-dfn-type=element-attr><code>clear</code></dfn> on <code><a href="text-level-semantics.html#the-br-element">br</a></code> elements<dt><dfn id=attr-caption-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="tables.html#the-caption-element">caption</a></code> elements<dt><dfn id=attr-col-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="tables.html#the-col-element">col</a></code> elements<dt><dfn id=attr-col-char data-dfn-type=element-attr><code>char</code></dfn> on <code><a href="tables.html#the-col-element">col</a></code> elements<dt><dfn id=attr-col-charoff data-dfn-type=element-attr><code>charoff</code></dfn> on <code><a href="tables.html#the-col-element">col</a></code> elements<dt><dfn id=attr-col-valign data-dfn-type=element-attr><code>valign</code></dfn> on <code><a href="tables.html#the-col-element">col</a></code> elements<dt><dfn id=attr-col-width data-dfn-type=element-attr><code>width</code></dfn> on <code><a href="tables.html#the-col-element">col</a></code> elements<dt><dfn id=attr-div-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="grouping-content.html#the-div-element">div</a></code> elements<dt><dfn id=attr-dl-compact data-dfn-type=element-attr><code>compact</code></dfn> on <code><a href="grouping-content.html#the-dl-element">dl</a></code> elements<dt><dfn id=attr-embed-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="iframe-embed-object.html#the-embed-element">embed</a></code> elements<dt><dfn id=attr-embed-hspace data-dfn-type=element-attr><code>hspace</code></dfn> on <code><a href="iframe-embed-object.html#the-embed-element">embed</a></code> elements<dt><dfn id=attr-embed-vspace data-dfn-type=element-attr><code>vspace</code></dfn> on <code><a href="iframe-embed-object.html#the-embed-element">embed</a></code> elements<dt><dfn id=attr-hr-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="grouping-content.html#the-hr-element">hr</a></code> elements<dt><dfn id=attr-hr-color data-dfn-type=element-attr><code>color</code></dfn> on <code><a href="grouping-content.html#the-hr-element">hr</a></code> elements<dt><dfn id=attr-hr-noshade data-dfn-type=element-attr><code>noshade</code></dfn> on <code><a href="grouping-content.html#the-hr-element">hr</a></code> elements<dt><dfn id=attr-hr-size data-dfn-type=element-attr><code>size</code></dfn> on <code><a href="grouping-content.html#the-hr-element">hr</a></code> elements<dt><dfn id=attr-hr-width data-dfn-type=element-attr><code>width</code></dfn> on <code><a href="grouping-content.html#the-hr-element">hr</a></code> elements<dt><dfn id=attr-hx-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h1</a></code>—<code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h6</a></code> elements<dt><dfn id=attr-iframe-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> elements<dt><dfn id=attr-iframe-allowtransparency data-dfn-type=element-attr><code>allowtransparency</code></dfn> on <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> elements<dt><dfn id=attr-iframe-frameborder data-dfn-type=element-attr><code>frameborder</code></dfn> on <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> elements<dt><dfn id=attr-iframe-framespacing data-dfn-type=element-attr><code>framespacing</code></dfn> on <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> elements<dt><dfn id=attr-iframe-hspace data-dfn-type=element-attr><code>hspace</code></dfn> on <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> elements<dt><dfn id=attr-iframe-marginheight data-dfn-type=element-attr><code>marginheight</code></dfn> on <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> elements<dt><dfn id=attr-iframe-marginwidth data-dfn-type=element-attr><code>marginwidth</code></dfn> on <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> elements<dt><dfn id=attr-iframe-scrolling data-dfn-type=element-attr><code>scrolling</code></dfn> on <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> elements<dt><dfn id=attr-iframe-vspace data-dfn-type=element-attr><code>vspace</code></dfn> on <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> elements<dt><dfn id=attr-input-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="input.html#the-input-element">input</a></code> elements<dt><dfn id=attr-input-border data-dfn-type=element-attr><code>border</code></dfn> on <code><a href="input.html#the-input-element">input</a></code> elements<dt><dfn id=attr-input-hspace data-dfn-type=element-attr><code>hspace</code></dfn> on <code><a href="input.html#the-input-element">input</a></code> elements<dt><dfn id=attr-input-vspace data-dfn-type=element-attr><code>vspace</code></dfn> on <code><a href="input.html#the-input-element">input</a></code> elements<dt><dfn id=attr-img-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="embedded-content.html#the-img-element">img</a></code> elements<dt><dfn id=attr-img-border data-dfn-type=element-attr><code>border</code></dfn> on <code><a href="embedded-content.html#the-img-element">img</a></code> elements (except as noted in the previous section)<dt><dfn id=attr-img-hspace data-dfn-type=element-attr><code>hspace</code></dfn> on <code><a href="embedded-content.html#the-img-element">img</a></code> elements<dt><dfn id=attr-img-vspace data-dfn-type=element-attr><code>vspace</code></dfn> on <code><a href="embedded-content.html#the-img-element">img</a></code> elements<dt><dfn id=attr-legend-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="form-elements.html#the-legend-element">legend</a></code> elements<dt><dfn id=attr-li-type data-dfn-type=element-attr><code>type</code></dfn> on <code><a href="grouping-content.html#the-li-element">li</a></code> elements<dt><dfn id=attr-menu-compact data-dfn-type=element-attr><code>compact</code></dfn> on <code><a href="grouping-content.html#the-menu-element">menu</a></code> elements<dt><dfn id=attr-object-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="iframe-embed-object.html#the-object-element">object</a></code> elements<dt><dfn id=attr-object-border data-dfn-type=element-attr><code>border</code></dfn> on <code><a href="iframe-embed-object.html#the-object-element">object</a></code> elements<dt><dfn id=attr-object-hspace data-dfn-type=element-attr><code>hspace</code></dfn> on <code><a href="iframe-embed-object.html#the-object-element">object</a></code> elements<dt><dfn id=attr-object-vspace data-dfn-type=element-attr><code>vspace</code></dfn> on <code><a href="iframe-embed-object.html#the-object-element">object</a></code> elements<dt><dfn id=attr-ol-compact data-dfn-type=element-attr><code>compact</code></dfn> on <code><a href="grouping-content.html#the-ol-element">ol</a></code> elements<dt><dfn id=attr-p-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="grouping-content.html#the-p-element">p</a></code> elements<dt><dfn id=attr-pre-width data-dfn-type=element-attr><code>width</code></dfn> on <code><a href="grouping-content.html#the-pre-element">pre</a></code> elements<dt><dfn id=attr-table-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="tables.html#the-table-element">table</a></code> elements<dt><dfn id=attr-table-bgcolor data-dfn-type=element-attr><code>bgcolor</code></dfn> on <code><a href="tables.html#the-table-element">table</a></code> elements<dt><dfn id=attr-table-border data-dfn-type=element-attr><code>border</code></dfn> on <code><a href="tables.html#the-table-element">table</a></code> elements<dt><dfn id=attr-table-bordercolor data-dfn-type=element-attr><code>bordercolor</code></dfn> on <code><a href="tables.html#the-table-element">table</a></code> elements<dt><dfn id=attr-table-cellpadding data-dfn-type=element-attr><code>cellpadding</code></dfn> on <code><a href="tables.html#the-table-element">table</a></code> elements<dt><dfn id=attr-table-cellspacing data-dfn-type=element-attr><code>cellspacing</code></dfn> on <code><a href="tables.html#the-table-element">table</a></code> elements<dt><dfn id=attr-table-frame data-dfn-type=element-attr><code>frame</code></dfn> on <code><a href="tables.html#the-table-element">table</a></code> elements<dt><dfn id=attr-table-height data-dfn-type=element-attr><code>height</code></dfn> on <code><a href="tables.html#the-table-element">table</a></code> elements<dt><dfn id=attr-table-rules data-dfn-type=element-attr><code>rules</code></dfn> on <code><a href="tables.html#the-table-element">table</a></code> elements<dt><dfn id=attr-table-width data-dfn-type=element-attr><code>width</code></dfn> on <code><a href="tables.html#the-table-element">table</a></code> elements<dt><dfn id=attr-tbody-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="tables.html#the-tbody-element">tbody</a></code>, <code><a href="tables.html#the-thead-element">thead</a></code>, and <code><a href="tables.html#the-tfoot-element">tfoot</a></code> elements<dt><dfn id=attr-tbody-char data-dfn-type=element-attr><code>char</code></dfn> on <code><a href="tables.html#the-tbody-element">tbody</a></code>, <code><a href="tables.html#the-thead-element">thead</a></code>, and <code><a href="tables.html#the-tfoot-element">tfoot</a></code> elements<dt><dfn id=attr-tbody-charoff data-dfn-type=element-attr><code>charoff</code></dfn> on <code><a href="tables.html#the-tbody-element">tbody</a></code>, <code><a href="tables.html#the-thead-element">thead</a></code>, and <code><a href="tables.html#the-tfoot-element">tfoot</a></code> elements<dt><dfn id=attr-tbody-height data-dfn-type=element-attr><code>height</code></dfn> on <code><a href="tables.html#the-thead-element">thead</a></code>, <code><a href="tables.html#the-tbody-element">tbody</a></code>, and <code><a href="tables.html#the-tfoot-element">tfoot</a></code> elements<dt><dfn id=attr-tbody-valign data-dfn-type=element-attr><code>valign</code></dfn> on <code><a href="tables.html#the-tbody-element">tbody</a></code>, <code><a href="tables.html#the-thead-element">thead</a></code>, and <code><a href="tables.html#the-tfoot-element">tfoot</a></code> elements<dt><dfn id=attr-tdth-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> elements<dt><dfn id=attr-tdth-bgcolor data-dfn-type=element-attr><code>bgcolor</code></dfn> on <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> elements<dt><dfn id=attr-tdth-char data-dfn-type=element-attr><code>char</code></dfn> on <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> elements<dt><dfn id=attr-tdth-charoff data-dfn-type=element-attr><code>charoff</code></dfn> on <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> elements<dt><dfn id=attr-tdth-height data-dfn-type=element-attr><code>height</code></dfn> on <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> elements<dt><dfn id=attr-tdth-nowrap data-dfn-type=element-attr><code>nowrap</code></dfn> on <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> elements<dt><dfn id=attr-tdth-valign data-dfn-type=element-attr><code>valign</code></dfn> on <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> elements<dt><dfn id=attr-tdth-width data-dfn-type=element-attr><code>width</code></dfn> on <code><a href="tables.html#the-td-element">td</a></code> and <code><a href="tables.html#the-th-element">th</a></code> elements<dt><dfn id=attr-tr-align data-dfn-type=element-attr><code>align</code></dfn> on <code><a href="tables.html#the-tr-element">tr</a></code> elements<dt><dfn id=attr-tr-bgcolor data-dfn-type=element-attr><code>bgcolor</code></dfn> on <code><a href="tables.html#the-tr-element">tr</a></code> elements<dt><dfn id=attr-tr-char data-dfn-type=element-attr><code>char</code></dfn> on <code><a href="tables.html#the-tr-element">tr</a></code> elements<dt><dfn id=attr-tr-charoff data-dfn-type=element-attr><code>charoff</code></dfn> on <code><a href="tables.html#the-tr-element">tr</a></code> elements<dt><dfn id=attr-tr-height data-dfn-type=element-attr><code>height</code></dfn> on <code><a href="tables.html#the-tr-element">tr</a></code> elements<dt><dfn id=attr-tr-valign data-dfn-type=element-attr><code>valign</code></dfn> on <code><a href="tables.html#the-tr-element">tr</a></code> elements<dt><dfn id=attr-ul-compact data-dfn-type=element-attr><code>compact</code></dfn> on <code><a href="grouping-content.html#the-ul-element">ul</a></code> elements<dt><dfn id=attr-ul-type data-dfn-type=element-attr><code>type</code></dfn> on <code><a href="grouping-content.html#the-ul-element">ul</a></code> elements<dt><dfn id=attr-background data-dfn-type=element-attr><code>background</code></dfn> on <code><a href="sections.html#the-body-element">body</a></code>, <code><a href="tables.html#the-table-element">table</a></code>, <code><a href="tables.html#the-thead-element">thead</a></code>, <code><a href="tables.html#the-tbody-element">tbody</a></code>, <code><a href="tables.html#the-tfoot-element">tfoot</a></code>, <code><a href="tables.html#the-tr-element">tr</a></code>, <code><a href="tables.html#the-td-element">td</a></code>, and <code><a href="tables.html#the-th-element">th</a></code> elements<dd><p>Use CSS instead.</dl>
+<h3 id=requirements-for-implementations>Requirements for implementations</h3>
+<h4 id=the-marquee-element>The <dfn data-dfn-type=element><code>marquee</code></dfn> element</h4>
+<p>The <code><a href="obsolete.html#the-marquee-element">marquee</a></code> element is a presentational element that animates content. CSS
+transitions and animations are a more appropriate mechanism. <a href="references.html#refsCSSANIMATIONS">[CSSANIMATIONS]</a> <a href="references.html#refsCSSTRANSITIONS">[CSSTRANSITIONS]</a></p>
+<p>The <code><a href="obsolete.html#the-marquee-element">marquee</a></code> element must implement the <code><a href="obsolete.html#htmlmarqueeelement">HTMLMarqueeElement</a></code>
+interface.</p>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlmarqueeelement' data-dfn-type='interface'>HTMLMarqueeElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-marquee-behavior' data-dfn-type='attribute'>behavior</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-marquee-bgcolor' data-dfn-type='attribute'>bgColor</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-marquee-direction' data-dfn-type='attribute'>direction</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-marquee-height' data-dfn-type='attribute'>height</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute unsigned long <dfn id='dom-marquee-hspace' data-dfn-type='attribute'>hspace</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute long <a href='obsolete.html#dom-marquee-loop'>loop</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>, <a href='common-dom-interfaces.html#xattr-reflectdefault'>ReflectDefault=6</a>] attribute unsigned long <dfn id='dom-marquee-scrollamount' data-dfn-type='attribute'>scrollAmount</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>, <a href='common-dom-interfaces.html#xattr-reflectdefault'>ReflectDefault=85</a>] attribute unsigned long <dfn id='dom-marquee-scrolldelay' data-dfn-type='attribute'>scrollDelay</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-marquee-truespeed' data-dfn-type='attribute'>trueSpeed</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute unsigned long <dfn id='dom-marquee-vspace' data-dfn-type='attribute'>vspace</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-marquee-width' data-dfn-type='attribute'>width</dfn>;
+undefined <a href='obsolete.html#dom-marquee-start'>start</a>();
+undefined <a href='obsolete.html#dom-marquee-stop'>stop</a>();
+};</code></pre>
+<p>A <code><a href="obsolete.html#the-marquee-element">marquee</a></code> element can be <dfn id=concept-marquee-on>turned on</dfn> or <dfn id=concept-marquee-off>turned off</dfn>. When it is created, it is <a href="obsolete.html#concept-marquee-on">turned on</a>.</p>
+<div>
+<p>When the <dfn id=dom-marquee-start data-dfn-type=method><code>start()</code></dfn> method is called, the <code><a href="obsolete.html#the-marquee-element">marquee</a></code> element
+must be <a href="obsolete.html#concept-marquee-on">turned on</a>.</p>
+</div>
+<div>
+<p>When the <dfn id=dom-marquee-stop data-dfn-type=method><code>stop()</code></dfn> method is called, the <code><a href="obsolete.html#the-marquee-element">marquee</a></code> element
+must be <a href="obsolete.html#concept-marquee-off">turned off</a>.</p>
+</div>
+<hr>
+<p>The <dfn id=attr-marquee-behavior data-dfn-type=element-attr><code>behavior</code></dfn>
+content attribute on <code><a href="obsolete.html#the-marquee-element">marquee</a></code> elements is an <a href="common-microsyntaxes.html#enumerated-attribute">enumerated attribute</a> with
+the following keywords and states (all non-conforming):</p>
+<table><thead><tr><th>Keyword
+<th>State
+<tbody><tr><td><code>scroll</code>
+<td><dfn id=attr-marquee-behavior-scroll>scroll</dfn>
+<tr><td><code>slide</code>
+<td><dfn id=attr-marquee-behavior-slide>slide</dfn>
+<tr><td><code>alternate</code>
+<td><dfn id=attr-marquee-behavior-alternate>alternate</dfn>
+</table>
+<div>
+<p>The attribute's <i><a href="common-microsyntaxes.html#missing-value-default">missing value default</a></i> and <i><a href="common-microsyntaxes.html#invalid-value-default">invalid value default</a></i> are both the <a href="obsolete.html#attr-marquee-behavior-scroll">scroll</a> state.</p>
+</div>
+<hr>
+<p>The <dfn id=attr-marquee-direction data-dfn-type=element-attr><code>direction</code></dfn> content attribute on <code><a href="obsolete.html#the-marquee-element">marquee</a></code>
+elements is an <a href="common-microsyntaxes.html#enumerated-attribute">enumerated attribute</a> with the following keywords and states (all
+non-conforming):</p>
+<table><thead><tr><th>Keyword
+<th>State
+<tbody><tr><td><code>left</code>
+<td><dfn id=attr-marquee-direction-left>left</dfn>
+<tr><td><code>right</code>
+<td><dfn id=attr-marquee-direction-right>right</dfn>
+<tr><td><code>up</code>
+<td><dfn id=attr-marquee-direction-up>up</dfn>
+<tr><td><code>down</code>
+<td><dfn id=attr-marquee-direction-down>down</dfn>
+</table>
+<div>
+<p>The attribute's <i><a href="common-microsyntaxes.html#missing-value-default">missing value default</a></i> and <i><a href="common-microsyntaxes.html#invalid-value-default">invalid value default</a></i> are both the <a href="obsolete.html#attr-marquee-direction-left">left</a> state.</p>
+</div>
+<hr>
+<p>The <dfn id=attr-marquee-truespeed data-dfn-type=element-attr><code>truespeed</code></dfn> content attribute on <code><a href="obsolete.html#the-marquee-element">marquee</a></code>
+elements is a <a href="common-microsyntaxes.html#boolean-attribute">boolean attribute</a>.</p>
+<hr>
+<div>
+<p>A <code><a href="obsolete.html#the-marquee-element">marquee</a></code> element has a <dfn id=marquee-scroll-interval>marquee scroll interval</dfn>, which is obtained as
+follows:</p>
+<ol><li><p>If the element has a <code>scrolldelay</code> attribute,
+and parsing its value using the <a href="common-microsyntaxes.html#rules-for-parsing-non-negative-integers">rules for parsing non-negative integers</a> does not
+return an error, then let <var>delay</var> be the parsed value. Otherwise, let <var>delay</var>
+be 85.<li><p>If the element does not have a <code><a href="obsolete.html#attr-marquee-truespeed">truespeed</a></code>
+attribute, and the <var>delay</var> value is less than 60, then let <var>delay</var> be 60
+instead.<li><p>The <a href="obsolete.html#marquee-scroll-interval">marquee scroll interval</a> is <var>delay</var>, interpreted in
+milliseconds.</ol>
+</div>
+<hr>
+<div>
+<p>A <code><a href="obsolete.html#the-marquee-element">marquee</a></code> element has a <dfn id=marquee-scroll-distance>marquee scroll distance</dfn>, which, if the element
+has a <code>scrollamount</code> attribute, and
+parsing its value using the <a href="common-microsyntaxes.html#rules-for-parsing-non-negative-integers">rules for parsing non-negative integers</a> does not return
+an error, is the parsed value interpreted in <a href=https://drafts.csswg.org/css-values/#pxpx'" data-x-internal="'px'">CSS pixels</a>, and otherwise
+is 6 <a href=https://drafts.csswg.org/css-values/#pxpx'-2" data-x-internal="'px'">CSS pixels</a>.</p>
+</div>
+<hr>
+<div>
+<p>A <code><a href="obsolete.html#the-marquee-element">marquee</a></code> element has a <dfn id=marquee-loop-count>marquee loop count</dfn>, which, if the element has a
+<dfn id=attr-marquee-loop data-dfn-type=element-attr><code>loop</code></dfn> attribute, and
+parsing its value using the <a href="common-microsyntaxes.html#rules-for-parsing-integers">rules for parsing integers</a> does not return an error or a
+number less than 1, is the parsed value, and otherwise is −1.</p>
+</div>
+<div>
+<p>The <dfn id=dom-marquee-loop data-dfn-type=attribute><code>loop</code></dfn>
+IDL attribute, on getting, must return the element's <a href="obsolete.html#marquee-loop-count">marquee loop count</a>; and on
+setting, if the new value is different than the element's <a href="obsolete.html#marquee-loop-count">marquee loop count</a> and
+either greater than zero or equal to −1, must set the element's <code><a href="obsolete.html#attr-marquee-loop">loop</a></code> content attribute (adding it if necessary) to the
+<a href="common-microsyntaxes.html#valid-integer">valid integer</a> that represents the new value. (Other values are ignored.)</p>
+</div>
+<p>A <code><a href="obsolete.html#the-marquee-element">marquee</a></code> element also has a <dfn id=marquee-current-loop-index>marquee current loop index</dfn>, which is zero
+when the element is created.</p>
+<div>
+<p>The rendering layer will occasionally <dfn id=increment-the-marquee-current-loop-index>increment the marquee current loop index</dfn>,
+which must cause the following steps to be run:</p>
+<ol><li><p>If the <a href="obsolete.html#marquee-loop-count">marquee loop count</a> is −1, then return.</p>
+<li><p>Increment the <a href="obsolete.html#marquee-current-loop-index">marquee current loop index</a> by one.<li><p>If the <a href="obsolete.html#marquee-current-loop-index">marquee current loop index</a> is now greater than or equal to the
+element's <a href="obsolete.html#marquee-loop-count">marquee loop count</a>, <a href="obsolete.html#concept-marquee-off">turn off</a> the
+<code><a href="obsolete.html#the-marquee-element">marquee</a></code> element.</ol>
+</div>
+<hr>
+<h4 id=frames>Frames</h4>
+<p>The <dfn id=frameset data-dfn-type=element><code>frameset</code></dfn> element acts as <a href="dom.html#the-body-element-2">the body element</a> in
+documents that use frames.</p>
+<p>The <code><a href="obsolete.html#frameset">frameset</a></code> element must implement the <code><a href="obsolete.html#htmlframesetelement">HTMLFrameSetElement</a></code>
+interface.</p>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlframesetelement' data-dfn-type='interface'>HTMLFrameSetElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-frameset-cols' data-dfn-type='attribute'>cols</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-frameset-rows' data-dfn-type='attribute'>rows</dfn>;
+};
+<a href='obsolete.html#htmlframesetelement'>HTMLFrameSetElement</a> includes <a href='webappapis.html#windoweventhandlers'>WindowEventHandlers</a>;</code></pre>
+<p>The <code><a href="obsolete.html#frameset">frameset</a></code> element exposes as <a href="webappapis.html#event-handler-content-attributes">event handler content attributes</a> a
+number of the <a href="webappapis.html#event-handlers">event handlers</a> of the <code><a href="nav-history-apis.html#window">Window</a></code> object. It also mirrors their
+<a href="webappapis.html#event-handler-idl-attributes">event handler IDL attributes</a>.</p>
+<p>The <a href="webappapis.html#event-handlers">event handlers</a> of the <code><a href="nav-history-apis.html#window">Window</a></code> object named by the
+<a href="webappapis.html#window-reflecting-body-element-event-handler-set"><code>Window</code>-reflecting body element event handler set</a>, exposed on the
+<code><a href="obsolete.html#frameset">frameset</a></code> element, replace the generic <a href="webappapis.html#event-handlers">event handlers</a> with the same names
+normally supported by <a href="infrastructure.html#html-elements">HTML elements</a>.</p>
+<hr>
+<p>The <dfn id=frame data-dfn-type=element><code>frame</code></dfn> element has a <a href="document-sequences.html#content-navigable">content navigable</a> similar
+to the <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code> element, but rendered within a <code><a href="obsolete.html#frameset">frameset</a></code> element.</p>
+<div>
+<p>The <code><a href="obsolete.html#frame">frame</a></code> <a href="infrastructure.html#html-element-insertion-steps">HTML element insertion steps</a>, given
+<var>insertedNode</var>, are:</p>
+<ol><li><p>If <var>insertedNode</var> is not <a href=https://dom.spec.whatwg.org/#in-a-document-tree data-x-internal=in-a-document-tree>in a document tree</a>, then return.<li><p>If <var>insertedNode</var>'s <a href=https://dom.spec.whatwg.org/#concept-tree-root data-x-internal=root>root</a>'s <a href="document-sequences.html#concept-document-bc">browsing context</a> is null, then return.<li><p><a href="document-sequences.html#create-a-new-child-navigable">Create a new child navigable</a> for <var>insertedNode</var>.<li><p><a href="obsolete.html#process-the-frame-attributes">Process the <code>frame</code> attributes</a> for <var>insertedNode</var>, with
+<i><a href="obsolete.html#process-frame-initial-insertion">initialInsertion</a></i> set to true.</ol>
+</div>
+<div>
+<p>The <code><a href="obsolete.html#frame">frame</a></code> <a href="infrastructure.html#html-element-removing-steps">HTML element removing steps</a>, given <var>removedNode</var>,
+are to <a href="document-sequences.html#destroy-a-child-navigable">destroy a child navigable</a> given <var>removedNode</var>.</p>
+</div>
+<p>Whenever a <code><a href="obsolete.html#frame">frame</a></code> element with a non-null <a href="document-sequences.html#content-navigable">content navigable</a> has its
+<code>src</code> attribute set, changed, or removed, the user
+agent must <a href="obsolete.html#process-the-frame-attributes">process the <code>frame</code> attributes</a>.</p>
+<div>
+<p>To <dfn id=process-the-frame-attributes>process the <code>frame</code> attributes</dfn> for an element <var>element</var>, with
+an optional boolean <dfn id=process-frame-initial-insertion><var>initialInsertion</var></dfn>:</p>
+<ol><li><p>Let <var>url</var> be the result of running the <a href="iframe-embed-object.html#shared-attribute-processing-steps-for-iframe-and-frame-elements">shared attribute processing steps
+for <code>iframe</code> and <code>frame</code> elements</a> given <var>element</var> and
+<var>initialInsertion</var>.<li><p>If <var>url</var> is null, then return.<li>
+<p>If <var>url</var> <a href="urls-and-fetching.html#matches-about:blank">matches <code>about:blank</code></a> and
+<var>initialInsertion</var> is true, then:</p>
+<ol><li><p><a href=https://dom.spec.whatwg.org/#concept-event-fire data-x-internal=concept-event-fire>Fire an event</a> named <code><a href="indices.html#event-load">load</a></code> at <var>element</var>.<li><p>Return.</ol>
+<li><p><a href="iframe-embed-object.html#navigate-an-iframe-or-frame">Navigate an <code>iframe</code> or <code>frame</code></a> given
+<var>element</var>, <var>url</var>, the empty string, and <var>initialInsertion</var>.</ol>
+</div>
+<p>The <code><a href="obsolete.html#frame">frame</a></code> element <a href="iframe-embed-object.html#potentially-delays-the-load-event">potentially delays the load event</a>.</p>
+<p>The <code><a href="obsolete.html#frame">frame</a></code> element must implement the <code><a href="obsolete.html#htmlframeelement">HTMLFrameElement</a></code> interface.</p>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlframeelement' data-dfn-type='interface'>HTMLFrameElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-frame-name' data-dfn-type='attribute'>name</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-frame-scrolling' data-dfn-type='attribute'>scrolling</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflecturl'>ReflectURL</a>] attribute USVString <dfn id='dom-frame-src' data-dfn-type='attribute'>src</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-frame-frameborder' data-dfn-type='attribute'>frameBorder</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflecturl'>ReflectURL</a>] attribute USVString <dfn id='dom-frame-longdesc' data-dfn-type='attribute'>longDesc</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-frame-noresize' data-dfn-type='attribute'>noResize</dfn>;
+readonly attribute <a href='dom.html#document'>Document</a>? <a href='obsolete.html#dom-frame-contentdocument'>contentDocument</a>;
+readonly attribute <a href='nav-history-apis.html#windowproxy'>WindowProxy</a>? <a href='obsolete.html#dom-frame-contentwindow'>contentWindow</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-frame-marginheight' data-dfn-type='attribute'>marginHeight</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-frame-marginwidth' data-dfn-type='attribute'>marginWidth</dfn>;
+};</code></pre>
+<div>
+<p>The <dfn id=dom-frame-contentdocument data-dfn-type=attribute><code>contentDocument</code></dfn> getter steps are to return
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="document-sequences.html#concept-bcc-content-document">content document</a>.</p>
+</div>
+<div>
+<p>The <dfn id=dom-frame-contentwindow data-dfn-type=attribute><code>contentWindow</code></dfn> getter steps are to return
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="document-sequences.html#content-window">content window</a>.</p>
+</div>
+<h4 id=other-elements,-attributes-and-apis>Other elements, attributes and APIs</h4>
+<p>User agents must treat <code><a href="obsolete.html#acronym">acronym</a></code> elements in a manner
+equivalent to <code><a href="text-level-semantics.html#the-abbr-element">abbr</a></code> elements in terms of semantics and
+for purposes of rendering.</p>
+<hr>
+<pre><code>partial interface <a id='HTMLAnchorElement-partial' href='text-level-semantics.html#htmlanchorelement'>HTMLAnchorElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-a-coords' data-dfn-type='attribute'>coords</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-a-charset' data-dfn-type='attribute'>charset</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-a-name' data-dfn-type='attribute'>name</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-a-rev' data-dfn-type='attribute'>rev</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-a-shape' data-dfn-type='attribute'>shape</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLAreaElement-partial' href='image-maps.html#htmlareaelement'>HTMLAreaElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-area-nohref' data-dfn-type='attribute'>noHref</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLBodyElement-partial' href='sections.html#htmlbodyelement'>HTMLBodyElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-body-text' data-dfn-type='attribute'>text</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-body-link' data-dfn-type='attribute'>link</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-body-vlink' data-dfn-type='attribute'>vLink</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-body-alink' data-dfn-type='attribute'>aLink</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-body-bgcolor' data-dfn-type='attribute'>bgColor</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-body-background' data-dfn-type='attribute'>background</dfn>;
+};</code></pre>
+<p>The <code><a href="obsolete.html#dom-body-background">background</a></code> IDL attribute does not
+use <a href="common-dom-interfaces.html#xattr-reflecturl">ReflectURL</a> or <code><a data-x-internal=idl-usvstring href=https://webidl.spec.whatwg.org/#idl-USVString>USVString</a></code> for historical reasons.</p>
+<hr>
+<pre><code>partial interface <a id='HTMLBRElement-partial' href='text-level-semantics.html#htmlbrelement'>HTMLBRElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-br-clear' data-dfn-type='attribute'>clear</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLTableCaptionElement-partial' href='tables.html#htmltablecaptionelement'>HTMLTableCaptionElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-caption-align' data-dfn-type='attribute'>align</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLTableColElement-partial' href='tables.html#htmltablecolelement'>HTMLTableColElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-col-align' data-dfn-type='attribute'>align</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>=&quot;<a href='obsolete.html#attr-col-char'>char</a>&quot;] attribute DOMString <dfn id='dom-col-ch' data-dfn-type='attribute'>ch</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>=&quot;<a href='obsolete.html#attr-col-charoff'>charoff</a>&quot;] attribute DOMString <dfn id='dom-col-choff' data-dfn-type='attribute'>chOff</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-col-valign' data-dfn-type='attribute'>vAlign</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-col-width' data-dfn-type='attribute'>width</dfn>;
+};</code></pre>
+<hr>
+<p>User agents must treat <code><a href="obsolete.html#dir">dir</a></code> elements in a manner equivalent to <code><a href="grouping-content.html#the-ul-element">ul</a></code>
+elements in terms of semantics and for purposes of rendering.</p>
+<p>The <code><a href="obsolete.html#dir">dir</a></code> element must implement the <code><a href="obsolete.html#htmldirectoryelement">HTMLDirectoryElement</a></code>
+interface.</p>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmldirectoryelement' data-dfn-type='interface'>HTMLDirectoryElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-dir-compact' data-dfn-type='attribute'>compact</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLDivElement-partial' href='grouping-content.html#htmldivelement'>HTMLDivElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-div-align' data-dfn-type='attribute'>align</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLDListElement-partial' href='grouping-content.html#htmldlistelement'>HTMLDListElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-dl-compact' data-dfn-type='attribute'>compact</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLEmbedElement-partial' href='iframe-embed-object.html#htmlembedelement'>HTMLEmbedElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-embed-align' data-dfn-type='attribute'>align</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-embed-name' data-dfn-type='attribute'>name</dfn>;
+};</code></pre>
+<hr>
+<p>The <code><a href="obsolete.html#font">font</a></code> element must implement the <code><a href="obsolete.html#htmlfontelement">HTMLFontElement</a></code> interface.</p>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlfontelement' data-dfn-type='interface'>HTMLFontElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-font-color' data-dfn-type='attribute'>color</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-font-face' data-dfn-type='attribute'>face</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-font-size' data-dfn-type='attribute'>size</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLHeadingElement-partial' href='sections.html#htmlheadingelement'>HTMLHeadingElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-hx-align' data-dfn-type='attribute'>align</dfn>;
+};</code></pre>
+<hr>
+<p>The <dfn id=dom-head-profile data-dfn-type=attribute><code>profile</code></dfn> IDL attribute on <code><a href="semantics.html#the-head-element">head</a></code> elements (with
+the <code><a href="semantics.html#htmlheadelement">HTMLHeadElement</a></code> interface) is intentionally omitted. Unless so required by <a href="infrastructure.html#other-applicable-specifications">another applicable specification</a>, implementations
+would therefore not support this attribute. (It is mentioned here as it was defined in a previous
+version of <cite>DOM</cite>.)</p>
+<hr>
+<pre><code>partial interface <a id='HTMLHRElement-partial' href='grouping-content.html#htmlhrelement'>HTMLHRElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-hr-align' data-dfn-type='attribute'>align</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-hr-color' data-dfn-type='attribute'>color</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-hr-noshade' data-dfn-type='attribute'>noShade</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-hr-size' data-dfn-type='attribute'>size</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-hr-width' data-dfn-type='attribute'>width</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLHtmlElement-partial' href='semantics.html#htmlhtmlelement'>HTMLHtmlElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-html-version' data-dfn-type='attribute'>version</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLIFrameElement-partial' href='iframe-embed-object.html#htmliframeelement'>HTMLIFrameElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-iframe-align' data-dfn-type='attribute'>align</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-iframe-scrolling' data-dfn-type='attribute'>scrolling</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-iframe-frameborder' data-dfn-type='attribute'>frameBorder</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflecturl'>ReflectURL</a>] attribute USVString <dfn id='dom-iframe-longdesc' data-dfn-type='attribute'>longDesc</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-iframe-marginheight' data-dfn-type='attribute'>marginHeight</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-iframe-marginwidth' data-dfn-type='attribute'>marginWidth</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLImageElement-partial' href='embedded-content.html#htmlimageelement'>HTMLImageElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-img-name' data-dfn-type='attribute'>name</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflecturl'>ReflectURL</a>] attribute USVString <dfn id='dom-img-lowsrc' data-dfn-type='attribute'>lowsrc</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-img-align' data-dfn-type='attribute'>align</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute unsigned long <dfn id='dom-img-hspace' data-dfn-type='attribute'>hspace</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute unsigned long <dfn id='dom-img-vspace' data-dfn-type='attribute'>vspace</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflecturl'>ReflectURL</a>] attribute USVString <dfn id='dom-img-longdesc' data-dfn-type='attribute'>longDesc</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-img-border' data-dfn-type='attribute'>border</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLInputElement-partial' href='input.html#htmlinputelement'>HTMLInputElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-input-align' data-dfn-type='attribute'>align</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-input-usemap' data-dfn-type='attribute'>useMap</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLLegendElement-partial' href='form-elements.html#htmllegendelement'>HTMLLegendElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-legend-align' data-dfn-type='attribute'>align</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLLIElement-partial' href='grouping-content.html#htmllielement'>HTMLLIElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-li-type' data-dfn-type='attribute'>type</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLLinkElement-partial' href='semantics.html#htmllinkelement'>HTMLLinkElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-link-charset' data-dfn-type='attribute'>charset</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-link-rev' data-dfn-type='attribute'>rev</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-link-target' data-dfn-type='attribute'>target</dfn>;
+};</code></pre>
+<hr>
+<p>User agents must treat <code><a href="obsolete.html#listing">listing</a></code> elements in a manner equivalent to <code><a href="grouping-content.html#the-pre-element">pre</a></code>
+elements in terms of semantics and for purposes of rendering.</p>
+<hr>
+<pre><code>partial interface <a id='HTMLMenuElement-partial' href='grouping-content.html#htmlmenuelement'>HTMLMenuElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-menu-compact' data-dfn-type='attribute'>compact</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLMetaElement-partial' href='semantics.html#htmlmetaelement'>HTMLMetaElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-meta-scheme' data-dfn-type='attribute'>scheme</dfn>;
+};</code></pre>
+<p>User agents may treat the <code><a href="obsolete.html#attr-meta-scheme">scheme</a></code> content attribute on the
+<code><a href="semantics.html#the-meta-element">meta</a></code> element as an extension of the element's <code><a href="semantics.html#attr-meta-name">name</a></code> content attribute when processing a <code><a href="semantics.html#the-meta-element">meta</a></code> element
+with a <code><a href="semantics.html#attr-meta-name">name</a></code> attribute whose value is one that the user agent
+recognizes as supporting the <code><a href="obsolete.html#attr-meta-scheme">scheme</a></code> attribute.</p>
+<p>User agents are encouraged to ignore the <code><a href="obsolete.html#attr-meta-scheme">scheme</a></code> attribute
+and instead process the value given to the metadata name as if it had been specified for each
+expected value of the <code><a href="obsolete.html#attr-meta-scheme">scheme</a></code> attribute.</p>
+<div>
+<p>For example, if the user agent acts on <code><a href="semantics.html#the-meta-element">meta</a></code> elements with <code><a href="semantics.html#attr-meta-name">name</a></code> attributes having the value "eGMS.subject.keyword", and knows
+that the <code><a href="obsolete.html#attr-meta-scheme">scheme</a></code> attribute is used with this metadata name,
+then it could take the <code><a href="obsolete.html#attr-meta-scheme">scheme</a></code> attribute into account,
+acting as if it was an extension of the <code><a href="semantics.html#attr-meta-name">name</a></code> attribute. Thus
+the following two <code><a href="semantics.html#the-meta-element">meta</a></code> elements could be treated as two elements giving values for
+two different metadata names, one consisting of a combination of "eGMS.subject.keyword" and
+"LGCL", and the other consisting of a combination of "eGMS.subject.keyword" and "ORLY":</p>
+<pre><code>&lt;!-- this markup is invalid --&gt;
+&lt;meta name=&quot;eGMS.subject.keyword&quot; scheme=&quot;LGCL&quot; content=&quot;Abandoned vehicles&quot;&gt;
+&lt;meta name=&quot;eGMS.subject.keyword&quot; scheme=&quot;ORLY&quot; content=&quot;Mah car: kthxbye&quot;&gt;</code></pre>
+<p>The suggested processing of this markup, however, would be equivalent to the following:</p>
+<pre><code>&lt;meta name=&quot;eGMS.subject.keyword&quot; content=&quot;Abandoned vehicles&quot;&gt;
+&lt;meta name=&quot;eGMS.subject.keyword&quot; content=&quot;Mah car: kthxbye&quot;&gt;</code></pre>
+</div>
+<hr>
+</div><pre><code>partial interface <a id='HTMLObjectElement-partial' href='iframe-embed-object.html#htmlobjectelement'>HTMLObjectElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-object-align' data-dfn-type='attribute'>align</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-object-archive' data-dfn-type='attribute'>archive</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-object-code' data-dfn-type='attribute'>code</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-object-declare' data-dfn-type='attribute'>declare</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute unsigned long <dfn id='dom-object-hspace' data-dfn-type='attribute'>hspace</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-object-standby' data-dfn-type='attribute'>standby</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute unsigned long <dfn id='dom-object-vspace' data-dfn-type='attribute'>vspace</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflecturl'>ReflectURL</a>] attribute DOMString <dfn id='dom-object-codebase' data-dfn-type='attribute'>codeBase</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-object-codetype' data-dfn-type='attribute'>codeType</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-object-usemap' data-dfn-type='attribute'>useMap</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-object-border' data-dfn-type='attribute'>border</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLOListElement-partial' href='grouping-content.html#htmlolistelement'>HTMLOListElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-ol-compact' data-dfn-type='attribute'>compact</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLParagraphElement-partial' href='grouping-content.html#htmlparagraphelement'>HTMLParagraphElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-p-align' data-dfn-type='attribute'>align</dfn>;
+};</code></pre>
+<hr>
+<p>The <code><a href="obsolete.html#param">param</a></code> element must implement the <code><a href="obsolete.html#htmlparamelement">HTMLParamElement</a></code> interface.</p>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlparamelement' data-dfn-type='interface'>HTMLParamElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-param-name' data-dfn-type='attribute'>name</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-param-value' data-dfn-type='attribute'>value</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-param-type' data-dfn-type='attribute'>type</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-param-valuetype' data-dfn-type='attribute'>valueType</dfn>;
+};</code></pre>
+<hr>
+<p>User agents must treat <code><a href="obsolete.html#plaintext">plaintext</a></code> elements in a manner equivalent to
+<code><a href="grouping-content.html#the-pre-element">pre</a></code> elements in terms of semantics and for purposes of rendering. (The parser has
+special behavior for this element, though.)</p>
+<hr>
+<pre><code>partial interface <a id='HTMLPreElement-partial' href='grouping-content.html#htmlpreelement'>HTMLPreElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute long <dfn id='dom-pre-width' data-dfn-type='attribute'>width</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLStyleElement-partial' href='semantics.html#htmlstyleelement'>HTMLStyleElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-style-type' data-dfn-type='attribute'>type</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLScriptElement-partial' href='scripting.html#htmlscriptelement'>HTMLScriptElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-script-charset' data-dfn-type='attribute'>charset</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-script-event' data-dfn-type='attribute'>event</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>=&quot;<a href='obsolete.html#attr-script-for'>for</a>&quot;] attribute DOMString <dfn id='dom-script-htmlfor' data-dfn-type='attribute'>htmlFor</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLTableElement-partial' href='tables.html#htmltableelement'>HTMLTableElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-table-align' data-dfn-type='attribute'>align</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-table-border' data-dfn-type='attribute'>border</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-table-frame' data-dfn-type='attribute'>frame</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-table-rules' data-dfn-type='attribute'>rules</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-table-summary' data-dfn-type='attribute'>summary</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-table-width' data-dfn-type='attribute'>width</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-table-bgcolor' data-dfn-type='attribute'>bgColor</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-table-cellpadding' data-dfn-type='attribute'>cellPadding</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-table-cellspacing' data-dfn-type='attribute'>cellSpacing</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLTableSectionElement-partial' href='tables.html#htmltablesectionelement'>HTMLTableSectionElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-tbody-align' data-dfn-type='attribute'>align</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>=&quot;<a href='obsolete.html#attr-tbody-char'>char</a>&quot;] attribute DOMString <dfn id='dom-tbody-ch' data-dfn-type='attribute'>ch</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>=&quot;<a href='obsolete.html#attr-tbody-charoff'>charoff</a>&quot;] attribute DOMString <dfn id='dom-tbody-choff' data-dfn-type='attribute'>chOff</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-tbody-valign' data-dfn-type='attribute'>vAlign</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLTableCellElement-partial' href='tables.html#htmltablecellelement'>HTMLTableCellElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-tdth-align' data-dfn-type='attribute'>align</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-tdth-axis' data-dfn-type='attribute'>axis</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-tdth-height' data-dfn-type='attribute'>height</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-tdth-width' data-dfn-type='attribute'>width</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>=&quot;<a href='obsolete.html#attr-tdth-char'>char</a>&quot;] attribute DOMString <dfn id='dom-tdth-ch' data-dfn-type='attribute'>ch</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>=&quot;<a href='obsolete.html#attr-tdth-charoff'>charoff</a>&quot;] attribute DOMString <dfn id='dom-tdth-choff' data-dfn-type='attribute'>chOff</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-tdth-nowrap' data-dfn-type='attribute'>noWrap</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-tdth-valign' data-dfn-type='attribute'>vAlign</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-tdth-bgcolor' data-dfn-type='attribute'>bgColor</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLTableRowElement-partial' href='tables.html#htmltablerowelement'>HTMLTableRowElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-tr-align' data-dfn-type='attribute'>align</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>=&quot;<a href='obsolete.html#attr-tr-char'>char</a>&quot;] attribute DOMString <dfn id='dom-tr-ch' data-dfn-type='attribute'>ch</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>=&quot;<a href='obsolete.html#attr-tr-charoff'>charoff</a>&quot;] attribute DOMString <dfn id='dom-tr-choff' data-dfn-type='attribute'>chOff</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-tr-valign' data-dfn-type='attribute'>vAlign</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <dfn id='dom-tr-bgcolor' data-dfn-type='attribute'>bgColor</dfn>;
+};</code></pre>
+<hr>
+<pre><code>partial interface <a id='HTMLUListElement-partial' href='grouping-content.html#htmlulistelement'>HTMLUListElement</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-ul-compact' data-dfn-type='attribute'>compact</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-ul-type' data-dfn-type='attribute'>type</dfn>;
+};</code></pre>
+<hr>
+<p>User agents must treat <code><a href="obsolete.html#xmp">xmp</a></code> elements in a manner equivalent to <code><a href="grouping-content.html#the-pre-element">pre</a></code>
+elements in terms of semantics and for purposes of rendering. (The parser has special behavior for
+this element though.)</p>
+<hr>
+<pre><code>partial interface <a id='Document-partial' href='dom.html#document'>Document</a> {
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <a href='obsolete.html#dom-document-fgcolor'>fgColor</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <a href='obsolete.html#dom-document-linkcolor'>linkColor</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <a href='obsolete.html#dom-document-vlinkcolor'>vlinkColor</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <a href='obsolete.html#dom-document-alinkcolor'>alinkColor</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute [<a href='https://webidl.spec.whatwg.org/#LegacyNullToEmptyString' data-x-internal='legacynulltoemptystring'>LegacyNullToEmptyString</a>] DOMString <a href='obsolete.html#dom-document-bgcolor'>bgColor</a>;
+[SameObject] readonly attribute <a href='https://dom.spec.whatwg.org/#interface-htmlcollection' data-x-internal='htmlcollection'>HTMLCollection</a> <a href='obsolete.html#dom-document-anchors'>anchors</a>;
+[SameObject] readonly attribute <a href='https://dom.spec.whatwg.org/#interface-htmlcollection' data-x-internal='htmlcollection'>HTMLCollection</a> <a href='obsolete.html#dom-document-applets'>applets</a>;
+undefined <a href='obsolete.html#dom-document-clear'>clear</a>();
+undefined <a href='obsolete.html#dom-document-captureevents'>captureEvents</a>();
+undefined <a href='obsolete.html#dom-document-releaseevents'>releaseEvents</a>();
+[SameObject] readonly attribute <a href='common-dom-interfaces.html#htmlallcollection'>HTMLAllCollection</a> <a href='obsolete.html#dom-document-all'>all</a>;
+};</code></pre>
+<div>
+<p>The attributes of the <code><a href="dom.html#document">Document</a></code> object listed in the first column of the following
+table must <a href="common-dom-interfaces.html#reflect">reflect</a> the content attribute on <a href="dom.html#the-body-element-2">the body element</a> with the
+name given in the corresponding cell in the second column on the same row, if <a href="dom.html#the-body-element-2">the body
+element</a> is a <code><a href="sections.html#the-body-element">body</a></code> element (as opposed to a <code><a href="obsolete.html#frameset">frameset</a></code> element).
+When there is no <a href="dom.html#the-body-element-2">body element</a> or if it is a
+<code><a href="obsolete.html#frameset">frameset</a></code> element, the attributes must instead return the empty string on getting and
+do nothing on setting.</p>
+<table><thead><tr><th> IDL attribute
+<th> Content attribute
+<tbody><tr><td><dfn id=dom-document-fgcolor data-dfn-type=attribute><code>fgColor</code></dfn>
+<td><code><a href="obsolete.html#attr-body-text">text</a></code>
+<tr><td><dfn id=dom-document-linkcolor data-dfn-type=attribute><code>linkColor</code></dfn>
+<td><code><a href="obsolete.html#attr-body-link">link</a></code>
+<tr><td><dfn id=dom-document-vlinkcolor data-dfn-type=attribute><code>vlinkColor</code></dfn>
+<td><code><a href="obsolete.html#attr-body-vlink">vlink</a></code>
+<tr><td><dfn id=dom-document-alinkcolor data-dfn-type=attribute><code>alinkColor</code></dfn>
+<td><code><a href="obsolete.html#attr-body-alink">alink</a></code>
+<tr><td><dfn id=dom-document-bgcolor data-dfn-type=attribute><code>bgColor</code></dfn>
+<td><code><a href="obsolete.html#attr-body-bgcolor">bgcolor</a></code>
+</table>
+</div>
+<hr>
+<div>
+<p>The <dfn id=dom-document-anchors data-dfn-type=attribute><code>anchors</code></dfn>
+attribute must return an <code><a data-x-internal=htmlcollection href=https://dom.spec.whatwg.org/#interface-htmlcollection>HTMLCollection</a></code> rooted at the <code><a href="dom.html#document">Document</a></code> node,
+whose filter matches only <code><a href="text-level-semantics.html#the-a-element">a</a></code> elements with <code><a href="obsolete.html#attr-a-name">name</a></code>
+attributes.</p>
+</div>
+<div>
+<p>The <dfn id=dom-document-applets data-dfn-type=attribute><code>applets</code></dfn>
+attribute must return an <code><a data-x-internal=htmlcollection href=https://dom.spec.whatwg.org/#interface-htmlcollection>HTMLCollection</a></code> rooted at the <code><a href="dom.html#document">Document</a></code> node,
+whose filter matches nothing. (It exists for historical reasons.)</p>
+</div>
+<div>
+<p>The <dfn id=dom-document-clear data-dfn-type=method><code>clear()</code></dfn>,
+<dfn id=dom-document-captureevents data-dfn-type=method><code>captureEvents()</code></dfn>,
+and <dfn id=dom-document-releaseevents data-dfn-type=method><code>releaseEvents()</code></dfn> methods must do nothing.</p>
+</div>
+<hr>
+<div>
+<p>The <dfn id=dom-document-all data-dfn-type=attribute><code>all</code></dfn> attribute
+must return an <code><a href="common-dom-interfaces.html#htmlallcollection">HTMLAllCollection</a></code> rooted at the <code><a href="dom.html#document">Document</a></code> node, whose
+filter matches all elements.</p>
+</div>
+<hr>
+<pre><code>partial interface <a id='Window-partial' href='nav-history-apis.html#window'>Window</a> {
+undefined <a href='obsolete.html#dom-window-captureevents'>captureEvents</a>();
+undefined <a href='obsolete.html#dom-window-releaseevents'>releaseEvents</a>();
+[Replaceable, SameObject] readonly attribute <a href='obsolete.html#external'>External</a> <a href='obsolete.html#dom-external'>external</a>;
+};</code></pre>
+<div>
+<p>The <dfn id=dom-window-captureevents data-dfn-type=method><code>captureEvents()</code></dfn> and <dfn id=dom-window-releaseevents data-dfn-type=method><code>releaseEvents()</code></dfn> methods must do nothing.</p>
+</div>
+<div>
+<p>The <dfn id=dom-external data-dfn-type=attribute><code>external</code></dfn> attribute of
+the <code><a href="nav-history-apis.html#window">Window</a></code> interface must return an instance of the <code><a href="obsolete.html#external">External</a></code>
+interface:</p>
+</div>
+<pre><code>[Exposed=Window]
+interface <dfn id='external' data-dfn-type='interface'>External</dfn> {
+undefined <a href='obsolete.html#dom-external-addsearchprovider'>AddSearchProvider</a>();
+undefined <a href='obsolete.html#dom-external-issearchproviderinstalled'>IsSearchProviderInstalled</a>();
+};</code></pre>
+<div>
+<p>The <dfn id=dom-external-addsearchprovider data-dfn-type=method><code>AddSearchProvider()</code></dfn> and <dfn id=dom-external-issearchproviderinstalled data-dfn-type=method><code>IsSearchProviderInstalled()</code></dfn> methods
+must do nothing.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+<li><a href="dnd.html#the-dragevent-interface">The <code>DragEvent</code> interface</a><li><a href="dnd.html#drag-and-drop-processing-model">Processing model</a><li><a href="dnd.html#dndevents">Events summary</a><li><a href="dnd.html#the-draggable-attribute">The <code>draggable</code> attribute</a><li><a href="dnd.html#security-risks-in-the-drag-and-drop-model">Security risks in the drag-and-drop model</a></ol></ol></ol><h3 id=dnd><dfn>Drag and drop</dfn></h3></div>
+<p>This section defines an event-based drag-and-drop mechanism.</p>
+<p>This specification does not define exactly what a <em>drag-and-drop operation</em> actually
+is.</p>
+<p>On a visual medium with a pointing device, a drag operation could be the default action of a
+<code><a data-x-internal=event-mousedown href=https://w3c.github.io/uievents/#event-type-mousedown>mousedown</a></code> event that is followed by a series of <code><a data-x-internal=event-mousemove href=https://w3c.github.io/uievents/#event-type-mousemove>mousemove</a></code> events, and the drop could be triggered by the mouse
+being released.</p>
+<p>When using an input modality other than a pointing device, users would probably have to
+explicitly indicate their intention to perform a drag-and-drop operation, stating what they wish
+to drag and where they wish to drop it, respectively.</p>
+<p>However it is implemented, drag-and-drop operations must have a starting point (e.g. where the
+mouse was clicked, or the start of the selection or element that was selected for the drag), may
+have any number of intermediate steps (elements that the mouse moves over during a drag, or
+elements that the user picks as possible drop points as they cycle through possibilities), and must
+either have an end point (the element above which the mouse button was released, or the element
+that was finally selected), or be canceled. The end point must be the last element selected as a
+possible drop point before the drop occurs (so if the operation is not canceled, there must be at
+least one element in the middle step).</p>
+<h4 id=event-drag>Introduction</h4>
+<p><i>This section is non-normative.</i></p>
+<p>To make an element draggable, give the element a <code><a href="dnd.html#attr-draggable">draggable</a></code>
+attribute, and set an event listener for <code><a href="dnd.html#event-dnd-dragstart">dragstart</a></code> that
+stores the data being dragged.</p>
+<p>The event handler typically needs to check that it's not a text selection that is being
+dragged, and then needs to store data into the <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object and set the
+allowed effects (copy, move, link, or some combination).</p>
+<p>For example:</p>
+<pre><code>&lt;p&gt;What fruits do you like?&lt;/p&gt;
+&lt;ol ondragstart=&quot;dragStartHandler(event)&quot;&gt;
+&lt;li draggable=&quot;true&quot;
+&lt;li draggable=&quot;true&quot;
+&lt;li draggable=&quot;true&quot;
+&lt;/ol&gt;
+&lt;script&gt;
+var internalDNDType = &apos;text/x-example&apos;; // set this to something specific to your site
+function dragStartHandler(event) {
+if (event.target instanceof HTMLLIElement) {
+// use the element&apos;s attribute as the value to be moving:
+event.dataTransfer.setData(internalDNDType, event.target.dataset.value);
+event.dataTransfer.effectAllowed = &apos;move&apos;; // only allow moves
+} else {
+event.preventDefault(); // don&apos;t allow selection to be dragged
+}
+}
+&lt;/script&gt;</code></pre>
+<hr>
+<p>To accept a drop, the drop target has to listen to the following events:</p>
+<ol><li>The <code><a href="dnd.html#event-dnd-dragenter">dragenter</a></code> event handler reports
+whether or not the drop target is potentially willing to accept the drop, by canceling the
+event.<li>The <code><a href="dnd.html#event-dnd-dragover">dragover</a></code> event handler specifies what feedback
+will be shown to the user, by setting the <code><a href="dnd.html#dom-datatransfer-dropeffect">dropEffect</a></code> attribute of the
+<code><a href="dnd.html#datatransfer">DataTransfer</a></code> associated with the event. This event also needs to be canceled.<li>The <code><a href="dnd.html#event-dnd-drop">drop</a></code> event handler has a final chance to accept or
+reject the drop. If the drop is accepted, the event handler must perform the drop operation on
+the target. This event needs to be canceled, so that the <code><a href="dnd.html#dom-datatransfer-dropeffect">dropEffect</a></code> attribute's value can be used by the
+source. Otherwise, the drop operation is rejected.</ol>
+<p>For example:</p>
+<pre><code>&lt;p&gt;Drop your favorite fruits below:&lt;/p&gt;
+&lt;ol ondragenter=&quot;dragEnterHandler(event)&quot; ondragover=&quot;dragOverHandler(event)&quot;
+ondrop=&quot;dropHandler(event)&quot;&gt;
+&lt;/ol&gt;
+&lt;script&gt;
+var internalDNDType = &apos;text/x-example&apos;; // set this to something specific to your site
+function dragEnterHandler(event) {
+var items = event.dataTransfer.items;
+for (var i = 0; i &lt; items.length; ++i) {
+var item = items[i];
+if (item.kind == &apos;string&apos; &amp;&amp; item.type == internalDNDType) {
+event.preventDefault();
+return;
+}
+}
+}
+function dragOverHandler(event) {
+event.dataTransfer.dropEffect = &apos;move&apos;;
+event.preventDefault();
+}
+function dropHandler(event) {
+var li = document.createElement(&apos;li&apos;);
+var data = event.dataTransfer.getData(internalDNDType);
+if (data == &apos;fruit-apple&apos;) {
+li.textContent = &apos;Apples&apos;;
+} else if (data == &apos;fruit-orange&apos;) {
+li.textContent = &apos;Oranges&apos;;
+} else if (data == &apos;fruit-pear&apos;) {
+li.textContent = &apos;Pears&apos;;
+} else {
+li.textContent = &apos;Unknown Fruit&apos;;
+}
+event.target.appendChild(li);
+}
+&lt;/script&gt;</code></pre>
+<hr>
+<p>To remove the original element (the one that was dragged) from the display, the <code><a href="dnd.html#event-dnd-dragend">dragend</a></code> event can be used.</p>
+<p>For our example here, that means updating the original markup to handle that event:</p>
+<pre><code>&lt;p&gt;What fruits do you like?&lt;/p&gt;
+&lt;ol ondragstart=&quot;dragStartHandler(event)&quot; ondragend=&quot;dragEndHandler(event)&quot;&gt;
+<em>...as before...</em>
+&lt;/ol&gt;
+&lt;script&gt;
+function dragStartHandler(event) {
+// <em>...as before...</em>
+}
+function dragEndHandler(event) {
+if (event.dataTransfer.dropEffect == &apos;move&apos;) {
+// remove the dragged element
+event.target.parentNode.removeChild(event.target);
+}
+}
+&lt;/script&gt;</code></pre>
+<h4 id=the-drag-data-store>The drag data store</h4>
+<p>The data that underlies a drag-and-drop operation, known as the <dfn id=drag-data-store>drag data store</dfn>,
+consists of the following information:</p>
+<ul><li><p>A <dfn id=drag-data-store-item-list>drag data store item list</dfn>, which is a list of items representing the dragged
+data, each consisting of the following information:</p>
+<dl><dt><dfn id=the-drag-data-item-kind>The drag data item kind</dfn><dd>
+<p>The kind of data:</p>
+<dl><dt><i>Text</i><dd>
+<p>Text.</p>
+<dt><i>File</i><dd>
+<p>Binary data with a filename.</p>
+</dl>
+<dt><dfn id=the-drag-data-item-type-string>The drag data item type string</dfn><dd>
+<p>A Unicode string giving the type or format of the data, generally given by a <a href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME
+type</a>. Some values that are not <a href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME types</a> are
+special-cased for legacy reasons. The API does not enforce the use of <a href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME types</a>; other values can be used as well. In all cases, however, the values
+are all <a href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII lowercase</a> by the API.</p>
+<p>There is a limit of one <i>text</i> item per <a href="dnd.html#the-drag-data-item-type-string">item type string</a>.</p>
+<dt>The actual data<dd><p>A Unicode or binary string, in some cases with a filename (itself a Unicode string),
+as per <a href="dnd.html#the-drag-data-item-kind">the drag data item kind</a>.</dl>
+<p>The <a href="dnd.html#drag-data-store-item-list">drag data store item list</a> is ordered in the order that the items were added
+to the list; most recently added last.</p>
+<li>
+<p>The following information, used to generate the UI feedback during the drag:</p>
+<ul><li>User-agent-defined default feedback information, known as the <dfn id=drag-data-store-default-feedback>drag data store default
+feedback</dfn>.<li>Optionally, a bitmap image and the coordinate of a point within that image, known as the
+<dfn id=drag-data-store-bitmap>drag data store bitmap</dfn> and <dfn id=drag-data-store-hot-spot-coordinate>drag data store hot spot coordinate</dfn>.</ul>
+<li>
+<p>A <dfn id=drag-data-store-mode>drag data store mode</dfn>, which is one of the following:</p>
+<dl><dt><dfn id=concept-dnd-rw>Read/write mode</dfn><dd>
+<p>For the <code><a href="dnd.html#event-dnd-dragstart">dragstart</a></code> event. New data can be added to the
+<a href="dnd.html#drag-data-store">drag data store</a>.</p>
+<dt><dfn id=concept-dnd-ro>Read-only mode</dfn><dd>
+<p>For the <code><a href="dnd.html#event-dnd-drop">drop</a></code> event. The list of items representing dragged
+data can be read, including the data. No new data can be added.</p>
+<dt><dfn id=concept-dnd-p>Protected mode</dfn><dd>
+<p>For all other events. The formats and kinds in the <a href="dnd.html#drag-data-store">drag data store</a> list of
+items representing dragged data can be enumerated, but the data itself is unavailable and no
+new data can be added.</p>
+</dl>
+<li>
+<p>A <dfn id=drag-data-store-allowed-effects-state>drag data store allowed effects state</dfn>, which is a string.</p>
+</ul>
+<div>
+<p>When a <a href="dnd.html#drag-data-store">drag data store</a> is <dfn id=create-a-drag-data-store>created</dfn>, it
+must be initialized such that its <a href="dnd.html#drag-data-store-item-list">drag data store item list</a> is empty, it has no
+<a href="dnd.html#drag-data-store-default-feedback">drag data store default feedback</a>, it has no <a href="dnd.html#drag-data-store-bitmap">drag data store bitmap</a> and
+<a href="dnd.html#drag-data-store-hot-spot-coordinate">drag data store hot spot coordinate</a>, its <a href="dnd.html#drag-data-store-mode">drag data store mode</a> is <a href="dnd.html#concept-dnd-p">protected mode</a>, and its <a href="dnd.html#drag-data-store-allowed-effects-state">drag data store allowed effects
+state</a> is the string "<code><a href="dnd.html#dom-datatransfer-effectallowed-uninitialized">uninitialized</a></code>".</p>
+</div>
+<h4 id=the-datatransfer-interface>The <code><a href="dnd.html#datatransfer">DataTransfer</a></code> interface</h4></div>
+<p><code><a href="dnd.html#datatransfer">DataTransfer</a></code> objects are used to expose the <a href="dnd.html#drag-data-store">drag data store</a> that
+underlies a drag-and-drop operation.</p>
+<pre><code>[Exposed=Window]
+interface <dfn id='datatransfer' data-dfn-type='interface'>DataTransfer</dfn> {
+<a href='dnd.html#dom-datatransfer'>constructor</a>();
+attribute DOMString <a href='dnd.html#dom-datatransfer-dropeffect'>dropEffect</a>;
+attribute DOMString <a href='dnd.html#dom-datatransfer-effectallowed'>effectAllowed</a>;
+[SameObject] readonly attribute <a href='dnd.html#datatransferitemlist'>DataTransferItemList</a> <a href='dnd.html#dom-datatransfer-items'>items</a>;
+undefined <a href='dnd.html#dom-datatransfer-setdragimage'>setDragImage</a>(Element image, long x, long y);
+/* old interface */
+readonly attribute FrozenArray&lt;DOMString&gt; <a href='dnd.html#dom-datatransfer-types'>types</a>;
+DOMString <a href='dnd.html#dom-datatransfer-getdata'>getData</a>(DOMString format);
+undefined <a href='dnd.html#dom-datatransfer-setdata'>setData</a>(DOMString format, DOMString data);
+undefined <a href='dnd.html#dom-datatransfer-cleardata'>clearData</a>(optional DOMString format);
+[SameObject] readonly attribute <a href='https://w3c.github.io/FileAPI/#filelist-section' data-x-internal='filelist'>FileList</a> <a href='dnd.html#dom-datatransfer-files'>files</a>;
+};</code></pre>
+<dl><dt><code><var>dataTransfer</var> = new <a href="dnd.html#dom-datatransfer" id=dom-datatransfer-dev>DataTransfer</a>()</code></div><dd>
+<p>Creates a new <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object with an empty <a href="dnd.html#drag-data-store">drag data
+store</a>.</p>
+<dt><code><var>dataTransfer</var>.<a href="dnd.html#dom-datatransfer-dropeffect" id=dom-datatransfer-dropeffect-dev>dropEffect</a> [ = <var>value</var> ]</code></div><dd>
+<p>Returns the kind of operation that is currently selected. If the kind of operation isn't one
+of those that is allowed by the <code><a href="dnd.html#dom-datatransfer-effectallowed">effectAllowed</a></code> attribute, then the operation will
+fail.</p>
+<p>Can be set, to change the selected operation.</p>
+<p>The possible values are "<code><a href="dnd.html#dom-datatransfer-dropeffect-none">none</a></code>", "<code><a href="dnd.html#dom-datatransfer-dropeffect-copy">copy</a></code>", "<code><a href="dnd.html#dom-datatransfer-dropeffect-link">link</a></code>", and "<code><a href="dnd.html#dom-datatransfer-dropeffect-move">move</a></code>".</p>
+<dt><code><var>dataTransfer</var>.<a href="dnd.html#dom-datatransfer-effectallowed" id=dom-datatransfer-effectallowed-dev>effectAllowed</a> [ = <var>value</var> ]</code></div><dd>
+<p>Returns the kinds of operations that are to be allowed.</p>
+<p>Can be set (during the <code><a href="dnd.html#event-dnd-dragstart">dragstart</a></code> event), to change
+the allowed operations.</p>
+<p>The possible values are "<code><a href="dnd.html#dom-datatransfer-effectallowed-none">none</a></code>",
+"<code><a href="dnd.html#dom-datatransfer-effectallowed-copy">copy</a></code>", "<code><a href="dnd.html#dom-datatransfer-effectallowed-copylink">copyLink</a></code>", "<code><a href="dnd.html#dom-datatransfer-effectallowed-copymove">copyMove</a></code>", "<code><a href="dnd.html#dom-datatransfer-effectallowed-link">link</a></code>", "<code><a href="dnd.html#dom-datatransfer-effectallowed-linkmove">linkMove</a></code>", "<code><a href="dnd.html#dom-datatransfer-effectallowed-move">move</a></code>", "<code><a href="dnd.html#dom-datatransfer-effectallowed-all">all</a></code>", and "<code><a href="dnd.html#dom-datatransfer-effectallowed-uninitialized">uninitialized</a></code>",</p>
+<dt><code><var>dataTransfer</var>.<a href="dnd.html#dom-datatransfer-items" id=dom-datatransfer-items-dev>items</a></code></div><dd><p>Returns a <code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> object, with the drag data.<dt><code><var>dataTransfer</var>.<a href="dnd.html#dom-datatransfer-setdragimage" id=dom-datatransfer-setdragimage-dev>setDragImage</a>(<var>element</var>, <var>x</var>, <var>y</var>)</code></div><dd>
+<p>Uses the given element to update the drag feedback, replacing any previously specified
+feedback.</p>
+<dt><code><var>dataTransfer</var>.<a href="dnd.html#dom-datatransfer-types" id=dom-datatransfer-types-dev>types</a></code></div><dd>
+<p>Returns a <a href=https://webidl.spec.whatwg.org/#dfn-frozen-array-type data-x-internal=frozen-array>frozen array</a> listing the formats that were set in the <code><a href="dnd.html#event-dnd-dragstart">dragstart</a></code> event. In addition, if any files are being
+dragged, then one of the types will be the string "<code>Files</code>".</p>
+<dt><code><var>data</var> = <var>dataTransfer</var>.<a href="dnd.html#dom-datatransfer-getdata" id=dom-datatransfer-getdata-dev>getData</a>(<var>format</var>)</code></div><dd><p>Returns the specified data. If there is no such data, returns the empty string.<dt><code><var>dataTransfer</var>.<a href="dnd.html#dom-datatransfer-setdata" id=dom-datatransfer-setdata-dev>setData</a>(<var>format</var>, <var>data</var>)</code></div><dd><p>Adds the specified data.<dt><code><var>dataTransfer</var>.<a href="dnd.html#dom-datatransfer-cleardata" id=dom-datatransfer-cleardata-dev>clearData</a>([ <var>format</var> ])</code></div><dd><p>Removes the data of the specified formats. Removes all data if the argument is
+omitted.<dt><code><var>dataTransfer</var>.<a href="dnd.html#dom-datatransfer-files" id=dom-datatransfer-files-dev>files</a></code></div><dd><p>Returns a <code><a data-x-internal=filelist href=https://w3c.github.io/FileAPI/#filelist-section>FileList</a></code> of the files being dragged, if any.</dl>
+<p><code><a href="dnd.html#datatransfer">DataTransfer</a></code> objects that are created as part of <a href="dnd.html#dndevents">drag-and-drop events</a> are only valid while those events are being fired.</p>
+<p>A <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object is associated with a <a href="dnd.html#drag-data-store">drag data store</a> while it
+is valid.</p>
+<div>
+<p>A <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object has an associated <dfn id=concept-datatransfer-types>types array</dfn>, which is a
+<code><a data-x-internal=frozen-array href=https://webidl.spec.whatwg.org/#dfn-frozen-array-type>FrozenArray&lt;DOMString></a></code>, initially empty. When the contents
+of the <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object's <a href="dnd.html#drag-data-store-item-list">drag data store item list</a> change, or when
+the <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object becomes no longer associated with a <a href="dnd.html#drag-data-store">drag data
+store</a>, run the following steps:</p>
+<ol><li><p>Let <var>L</var> be an empty sequence.<li>
+<p>If the <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object is still associated with a <a href="dnd.html#drag-data-store">drag data
+store</a>, then:</p>
+<ol><li><p>For each item in the <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object's <a href="dnd.html#drag-data-store-item-list">drag data store item
+list</a>  whose <a href="dnd.html#the-drag-data-item-kind">kind</a>
+is <i>text</i>, add an entry to <var>L</var> consisting of the item's <a href="dnd.html#the-drag-data-item-type-string">type string</a>.<li><p>If there are any items in the <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object's <a href="dnd.html#drag-data-store-item-list">drag data store
+item list</a> whose <a href="dnd.html#the-drag-data-item-kind">kind</a> is <i>File</i>, then
+add an entry to <var>L</var> consisting of the string "<code>Files</code>". (This
+value can be distinguished from the other values because it is not lowercase.)</ol>
+<li><p>Set the <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object's <a href="dnd.html#concept-datatransfer-types">types
+array</a> to the result of <a href=https://webidl.spec.whatwg.org/#dfn-create-frozen-array data-x-internal=creating-a-frozen-array>creating a frozen array</a> from <var>L</var>.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-datatransfer data-dfn-type=constructor><code>DataTransfer()</code></dfn> constructor, when invoked, must return a
+newly created <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object initialized as follows:</p>
+<ol><li><p>Set the <a href="dnd.html#drag-data-store">drag data store</a>'s <a href="dnd.html#drag-data-store-item-list">item
+list</a> to be an empty list.<li><p>Set the <a href="dnd.html#drag-data-store">drag data store</a>'s <a href="dnd.html#drag-data-store-mode">mode</a> to
+<a href="dnd.html#concept-dnd-rw">read/write mode</a>.<li><p>Set the <code><a href="dnd.html#dom-datatransfer-dropeffect">dropEffect</a></code> and
+<code><a href="dnd.html#dom-datatransfer-effectallowed">effectAllowed</a></code> to "none".</ol>
+</div>
+<div>
+<p>The <dfn id=dom-datatransfer-dropeffect data-dfn-type=attribute><code>dropEffect</code></dfn> attribute controls the drag-and-drop
+feedback that the user is given during a drag-and-drop operation. When the
+<code><a href="dnd.html#datatransfer">DataTransfer</a></code> object is created, the <code><a href="dnd.html#dom-datatransfer-dropeffect">dropEffect</a></code> attribute is set to a string value. On
+getting, it must return its current value. On setting, if the new value is one of "<dfn id=dom-datatransfer-dropeffect-none><code>none</code></dfn>", "<dfn id=dom-datatransfer-dropeffect-copy><code>copy</code></dfn>", "<dfn id=dom-datatransfer-dropeffect-link><code>link</code></dfn>", or "<dfn id=dom-datatransfer-dropeffect-move><code>move</code></dfn>", then the attribute's current value
+must be set to the new value. Other values must be ignored.</p>
+</div>
+<div>
+<p>The <dfn id=dom-datatransfer-effectallowed data-dfn-type=attribute><code>effectAllowed</code></dfn> attribute is used in the
+drag-and-drop processing model to initialize the <code><a href="dnd.html#dom-datatransfer-dropeffect">dropEffect</a></code> attribute during the <code><a href="dnd.html#event-dnd-dragenter">dragenter</a></code> and <code><a href="dnd.html#event-dnd-dragover">dragover</a></code> events. When the <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object is
+created, the <code><a href="dnd.html#dom-datatransfer-effectallowed">effectAllowed</a></code> attribute is set
+to a string value. On getting, it must return its current value. On setting, if the <a href="dnd.html#drag-data-store">drag data
+store</a>'s <a href="dnd.html#drag-data-store-mode">mode</a> is the <a href="dnd.html#concept-dnd-rw">read/write mode</a> and the new value is one of "<dfn id=dom-datatransfer-effectallowed-none><code>none</code></dfn>", "<dfn id=dom-datatransfer-effectallowed-copy><code>copy</code></dfn>", "<dfn id=dom-datatransfer-effectallowed-copylink><code>copyLink</code></dfn>", "<dfn id=dom-datatransfer-effectallowed-copymove><code>copyMove</code></dfn>", "<dfn id=dom-datatransfer-effectallowed-link><code>link</code></dfn>", "<dfn id=dom-datatransfer-effectallowed-linkmove><code>linkMove</code></dfn>", "<dfn id=dom-datatransfer-effectallowed-move><code>move</code></dfn>", "<dfn id=dom-datatransfer-effectallowed-all><code>all</code></dfn>", or "<dfn id=dom-datatransfer-effectallowed-uninitialized><code>uninitialized</code></dfn>", then the attribute's
+current value must be set to the new value. Otherwise, it must be left unchanged.</p>
+</div>
+<div>
+<p>The <dfn id=dom-datatransfer-items data-dfn-type=attribute><code>items</code></dfn>
+attribute must return a <code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> object associated with the
+<code><a href="dnd.html#datatransfer">DataTransfer</a></code> object.</p>
+</div>
+<div>
+<p>The <dfn id=dom-datatransfer-setdragimage data-dfn-type=method><code>setDragImage(<var>image</var>, <var>x</var>,
+<var>y</var>)</code></dfn> method must run the following steps:</p>
+<ol><li><p>If the <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object is no longer associated with a <a href="dnd.html#drag-data-store">drag data
+store</a>, return. Nothing happens.<li><p>If the <a href="dnd.html#drag-data-store">drag data store</a>'s <a href="dnd.html#drag-data-store-mode">mode</a> is
+not the <a href="dnd.html#concept-dnd-rw">read/write mode</a>, return. Nothing
+happens.<li><p>If <var>image</var> is an <code><a href="embedded-content.html#the-img-element">img</a></code> element, then set the <a href="dnd.html#drag-data-store-bitmap">drag data store
+bitmap</a> to the element's image (at its <a href=https://drafts.csswg.org/css-images/#natural-dimensions data-x-internal=natural-dimensions>natural
+size</a>); otherwise, set the <a href="dnd.html#drag-data-store-bitmap">drag data store bitmap</a> to an image generated from
+the given element (the exact mechanism for doing so is not currently specified).<li><p>Set the <a href="dnd.html#drag-data-store-hot-spot-coordinate">drag data store hot spot coordinate</a> to the given <var>x</var>,
+<var>y</var> coordinate.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-datatransfer-types data-dfn-type=attribute><code>types</code></dfn>
+attribute must return this <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object's <a href="dnd.html#concept-datatransfer-types">types array</a>.</p>
+</div>
+<div>
+<p>The <dfn id=dom-datatransfer-getdata data-dfn-type=method><code>getData(<var>format</var>)</code></dfn> method must run the
+following steps:</p>
+<ol><li><p>If the <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object is no longer associated with a <a href="dnd.html#drag-data-store">drag data
+store</a>, then return the empty string.<li><p>If the <a href="dnd.html#drag-data-store">drag data store</a>'s <a href="dnd.html#drag-data-store-mode">mode</a> is
+the <a href="dnd.html#concept-dnd-p">protected mode</a>, then return the empty string.<li><p>Let <var>format</var> be the first argument, <a href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII
+lowercase</a>.<li><p>Let <var>convert-to-URL</var> be false.<li><p>If <var>format</var> equals "<code>text</code>", change it to "<code>text/plain</code>".<li><p>If <var>format</var> equals "<code>url</code>", change it to "<code>text/uri-list</code>" and set <var>convert-to-URL</var> to true.<li><p>If there is no item in the <a href="dnd.html#drag-data-store-item-list">drag data store item list</a> whose <a href="dnd.html#the-drag-data-item-kind">kind</a> is <i>text</i> and whose <a href="dnd.html#the-drag-data-item-type-string">type string</a> is equal to <var>format</var>, return the empty string.<li><p>Let <var>result</var> be the data of the item in the <a href="dnd.html#drag-data-store-item-list">drag data store item
+list</a> whose <a href="dnd.html#the-drag-data-item-kind">kind</a> is <i>Plain Unicode
+string</i> and whose <a href="dnd.html#the-drag-data-item-type-string">type string</a> is equal to
+<var>format</var>.<li><p>If <var>convert-to-URL</var> is true, then parse <var>result</var> as appropriate for
+<code>text/uri-list</code> data, and then set <var>result</var> to the first URL from
+the list, if any, or the empty string otherwise. <a href="references.html#refsRFC2483">[RFC2483]</a><li><p>Return <var>result</var>.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-datatransfer-setdata data-dfn-type=method><code>setData(<var>format</var>, <var>data</var>)</code></dfn> method
+must run the following steps:</p>
+<ol><li><p>If the <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object is no longer associated with a <a href="dnd.html#drag-data-store">drag data
+store</a>, return. Nothing happens.<li><p>If the <a href="dnd.html#drag-data-store">drag data store</a>'s <a href="dnd.html#drag-data-store-mode">mode</a> is
+not the <a href="dnd.html#concept-dnd-rw">read/write mode</a>, return. Nothing
+happens.<li><p>Let <var>format</var> be the first argument, <a href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII
+lowercase</a>.<li>
+<p>If <var>format</var> equals "<code>text</code>", change it to "<code>text/plain</code>".</p>
+<p>If <var>format</var> equals "<code>url</code>", change it to "<code>text/uri-list</code>".</p>
+<li><p>Remove the item in the <a href="dnd.html#drag-data-store-item-list">drag data store item list</a> whose <a href="dnd.html#the-drag-data-item-kind">kind</a> is <i>text</i> and whose <a href="dnd.html#the-drag-data-item-type-string">type string</a> is equal to <var>format</var>, if there is
+one.<li><p>Add an item to the <a href="dnd.html#drag-data-store-item-list">drag data store item list</a> whose <a href="dnd.html#the-drag-data-item-kind">kind</a> is <i>text</i>, whose <a href="dnd.html#the-drag-data-item-type-string">type string</a> is equal to <var>format</var>, and whose data is the string
+given by the method's second argument.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-datatransfer-cleardata data-dfn-type=method><code>clearData(<var>format</var>)</code></dfn> method must run the
+following steps:</p>
+<ol><li><p>If the <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object is no longer associated with a <a href="dnd.html#drag-data-store">drag data
+store</a>, return. Nothing happens.<li><p>If the <a href="dnd.html#drag-data-store">drag data store</a>'s <a href="dnd.html#drag-data-store-mode">mode</a> is
+not the <a href="dnd.html#concept-dnd-rw">read/write mode</a>, return. Nothing
+happens.<li><p>If the method was called with no arguments, remove each item in the <a href="dnd.html#drag-data-store-item-list">drag data store
+item list</a> whose <a href="dnd.html#the-drag-data-item-kind">kind</a> is <i>Plain Unicode
+string</i>, and return.<li><p>Set <var>format</var> to <var>format</var>, <a href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII
+lowercase</a>.<li>
+<p>If <var>format</var> equals "<code>text</code>", change it to "<code>text/plain</code>".</p>
+<p>If <var>format</var> equals "<code>url</code>", change it to "<code>text/uri-list</code>".</p>
+<li><p>Remove the item in the <a href="dnd.html#drag-data-store-item-list">drag data store item list</a> whose <a href="dnd.html#the-drag-data-item-kind">kind</a> is <i>text</i> and whose <a href="dnd.html#the-drag-data-item-type-string">type string</a> is equal to <var>format</var>, if there is
+one.</ol>
+</div>
+<p>The <code><a href="dnd.html#dom-datatransfer-cleardata">clearData()</a></code> method does not
+affect whether any files were included in the drag, so the <code><a href="dnd.html#dom-datatransfer-types">types</a></code> attribute's list might still not be empty after
+calling <code><a href="dnd.html#dom-datatransfer-cleardata">clearData()</a></code> (it would still contain the
+"<code>Files</code>" string if any files were included in the drag).</p>
+<div>
+<p>The <dfn id=dom-datatransfer-files data-dfn-type=attribute><code>files</code></dfn>
+attribute must return a <a href="infrastructure.html#live">live</a> <code><a data-x-internal=filelist href=https://w3c.github.io/FileAPI/#filelist-section>FileList</a></code> sequence consisting of
+<code><a data-x-internal=file href=https://w3c.github.io/FileAPI/#dfn-file>File</a></code> objects representing the files found by the following steps. Furthermore, for a
+given <code><a data-x-internal=filelist href=https://w3c.github.io/FileAPI/#filelist-section>FileList</a></code> object and a given underlying file, the same <code><a data-x-internal=file href=https://w3c.github.io/FileAPI/#dfn-file>File</a></code> object
+must be used each time.</p>
+<ol><li><p>Start with an empty list <var>L</var>.<li><p>If the <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object is no longer associated with a <a href="dnd.html#drag-data-store">drag data
+store</a>, the <code><a data-x-internal=filelist href=https://w3c.github.io/FileAPI/#filelist-section>FileList</a></code> is empty. Return the empty list <var>L</var>.<li><p>If the <a href="dnd.html#drag-data-store">drag data store</a>'s <a href="dnd.html#drag-data-store-mode">mode</a> is
+the <a href="dnd.html#concept-dnd-p">protected mode</a>, return the empty list
+<var>L</var>.<li><p>For each item in the <a href="dnd.html#drag-data-store-item-list">drag data store item list</a>
+whose <a href="dnd.html#the-drag-data-item-kind">kind</a> is <i>File</i>, add the item's data (the file, in particular its name and contents, as well as
+its <a href="dnd.html#the-drag-data-item-type-string">type</a>) to the list <var>L</var>.<li><p>The files found by these steps are those in the list <var>L</var>.</ol>
+</div>
+<p>This version of the API does not expose the types of the files during the
+drag.</p>
+<h5 id=the-datatransferitemlist-interface>The <code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> interface</h5></div>
+<p>Each <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object is associated with a <code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code>
+object.</p>
+<pre><code>[Exposed=Window]
+interface <dfn id='datatransferitemlist' data-dfn-type='interface'>DataTransferItemList</dfn> {
+readonly attribute unsigned long <a href='dnd.html#dom-datatransferitemlist-length'>length</a>;
+<a href='dnd.html#dom-datatransferitemlist-item'>getter</a> <a href='dnd.html#datatransferitem'>DataTransferItem</a> (unsigned long index);
+<a href='dnd.html#datatransferitem'>DataTransferItem</a>? <a href='dnd.html#dom-datatransferitemlist-add'>add</a>(DOMString data, DOMString type);
+<a href='dnd.html#datatransferitem'>DataTransferItem</a>? <a href='dnd.html#dom-datatransferitemlist-add'>add</a>(<a href='https://w3c.github.io/FileAPI/#dfn-file' data-x-internal='file'>File</a> data);
+undefined <a href='dnd.html#dom-datatransferitemlist-remove'>remove</a>(unsigned long index);
+undefined <a href='dnd.html#dom-datatransferitemlist-clear'>clear</a>();
+};</code></pre>
+<dl><dt><code><var>items</var>.<a href="dnd.html#dom-datatransferitemlist-length" id=dom-datatransferitemlist-length-dev>length</a></code></div><dd><p>Returns the number of items in the <a href="dnd.html#drag-data-store">drag data store</a>.<dt><code><var>items</var>[<var>index</var>]</code><dd>
+<p>Returns the <code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object representing the <var>index</var>th entry in
+the <a href="dnd.html#drag-data-store">drag data store</a>.</p>
+<dt><code><var>items</var>.<a href="dnd.html#dom-datatransferitemlist-remove" id=dom-datatransferitemlist-remove-dev>remove</a>(<var>index</var>)</code></div><dd><p>Removes the <var>index</var>th entry in the <a href="dnd.html#drag-data-store">drag data store</a>.<dt><code><var>items</var>.<a href="dnd.html#dom-datatransferitemlist-clear" id=dom-datatransferitemlist-clear-dev>clear</a>()</code></div><dd><p>Removes all the entries in the <a href="dnd.html#drag-data-store">drag data store</a>.<dt><code><var>items</var>.<a href="dnd.html#dom-datatransferitemlist-add" id=dom-datatransferitemlist-add-dev>add</a>(<var>data</var>)</code></div><dt><code><var>items</var>.<a href="dnd.html#dom-datatransferitemlist-add">add</a>(<var>data</var>, <var>type</var>)</code><dd>
+<p>Adds a new entry for the given data to the <a href="dnd.html#drag-data-store">drag data store</a>. If the data is plain
+text  then a <var>type</var> string has to be provided also.</p>
+</dl>
+<div>
+<p>While the <code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> object's <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object is
+associated with a <a href="dnd.html#drag-data-store">drag data store</a>, the <code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> object's
+<i>mode</i> is the same as the <a href="dnd.html#drag-data-store-mode">drag data store mode</a>. When the
+<code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> object's <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object is <em>not</em>
+associated with a <a href="dnd.html#drag-data-store">drag data store</a>, the <code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> object's
+<i>mode</i> is the <i>disabled mode</i>. The <a href="dnd.html#drag-data-store">drag data store</a> referenced in this
+section (which is used only when the <code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> object is not in the
+<i>disabled mode</i>) is the <a href="dnd.html#drag-data-store">drag data store</a> with which the
+<code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> object's <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object is associated.</p>
+</div>
+<div>
+<p>The <dfn id=dom-datatransferitemlist-length data-dfn-type=attribute><code>length</code></dfn> attribute must return zero if the
+object is in the <i>disabled mode</i>; otherwise it must return the number of items in the
+<a href="dnd.html#drag-data-store-item-list">drag data store item list</a>.</p>
+</div>
+<div>
+<p>When a <code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> object is not in the <i>disabled mode</i>, its
+<a href=https://webidl.spec.whatwg.org/#dfn-supported-property-indices data-x-internal=supported-property-indices>supported property indices</a> are the <a href=https://infra.spec.whatwg.org/#list-get-the-indices data-x-internal=indices>indices</a> of the <a href="dnd.html#drag-data-store-item-list">drag data store
+item list</a>.</p>
+</div>
+<div>
+<p id=dom-datatransferitemlist-item>To <a href=https://webidl.spec.whatwg.org/#dfn-determine-the-value-of-an-indexed-property data-x-internal=determine-the-value-of-an-indexed-property>determine the value of an indexed property</a>
+<var>i</var> of a <code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> object, the user agent must return a
+<code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object representing the <var>i</var>th item in the
+<a href="dnd.html#drag-data-store">drag data store</a>. The same object must be returned each time a particular item is
+obtained from this <code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> object. The <code><a href="dnd.html#datatransferitem">DataTransferItem</a></code>
+object must be associated with the same <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object as the
+<code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> object when it is first created.</p>
+</div>
+<div>
+<p>The <dfn id=dom-datatransferitemlist-add data-dfn-type=method><code>add()</code></dfn> method must run the following steps:</p>
+<ol><li><p>If the <code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> object is not in the <i><a href="dnd.html#concept-dnd-rw">read/write mode</a></i>, return null.<li>
+<p>Jump to the appropriate set of steps from the following list:</p>
+<dl><dt>If the first argument to the method is a string<dd>
+<p>If there is already an item in the <a href="dnd.html#drag-data-store-item-list">drag data store item list</a> whose <a href="dnd.html#the-drag-data-item-kind">kind</a> is <i>text</i> and whose <a href="dnd.html#the-drag-data-item-type-string">type string</a> is equal to the value of the
+method's second argument, <a href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII lowercase</a>, then throw a
+<a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</p>
+<p>Otherwise, add an item to the <a href="dnd.html#drag-data-store-item-list">drag data store item list</a> whose <a href="dnd.html#the-drag-data-item-kind">kind</a> is <i>text</i>, whose <a href="dnd.html#the-drag-data-item-type-string">type string</a> is equal to the value of the method's second
+argument, <a href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII lowercase</a>, and whose data is the string given by the
+method's first argument.</p>
+<dt>If the first argument to the method is a <code><a data-x-internal=file href=https://w3c.github.io/FileAPI/#dfn-file>File</a></code><dd>
+<p>Add an item to the <a href="dnd.html#drag-data-store-item-list">drag data store item list</a> whose <a href="dnd.html#the-drag-data-item-kind">kind</a> is <i>File</i>, whose <a href="dnd.html#the-drag-data-item-type-string">type
+string</a> is the <code><a data-x-internal=dom-blob-type href=https://w3c.github.io/FileAPI/#dfn-type>type</a></code> of the <code><a data-x-internal=file href=https://w3c.github.io/FileAPI/#dfn-file>File</a></code>,
+<a href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII lowercase</a>, and whose data is the same as the
+<code><a data-x-internal=file href=https://w3c.github.io/FileAPI/#dfn-file>File</a></code>'s data.</p>
+</dl>
+<li><p><a href="dnd.html#dom-datatransferitemlist-item">Determine the value of the indexed property</a>
+corresponding to the newly added item, and return that value (a newly created
+<code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object).</ol>
+</div>
+<div>
+<p>The <dfn id=dom-datatransferitemlist-remove data-dfn-type=method><code>remove(<var>index</var>)</code></dfn> method must run
+these steps:</p>
+<ol><li><p>If the <code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> object is not in the <i><a href="dnd.html#concept-dnd-rw">read/write mode</a></i>, throw an
+<a href=https://webidl.spec.whatwg.org/#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If the <a href="dnd.html#drag-data-store">drag data store</a> does not contain an <var>index</var>th item, then
+return.<li><p>Remove the <var>index</var>th item from the <a href="dnd.html#drag-data-store">drag data store</a>.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-datatransferitemlist-clear data-dfn-type=method><code>clear()</code></dfn> method, if the
+<code><a href="dnd.html#datatransferitemlist">DataTransferItemList</a></code> object is in the <i><a href="dnd.html#concept-dnd-rw">read/write mode</a></i>,
+must remove all the items from the <a href="dnd.html#drag-data-store">drag data store</a>. Otherwise, it must do
+nothing.</p>
+</div>
+<h5 id=the-datatransferitem-interface>The <code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> interface</h5></div>
+<p>Each <code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object is associated with a <code><a href="dnd.html#datatransfer">DataTransfer</a></code>
+object.</p>
+<pre><code>[Exposed=Window]
+interface <dfn id='datatransferitem' data-dfn-type='interface'>DataTransferItem</dfn> {
+readonly attribute DOMString <a href='dnd.html#dom-datatransferitem-kind'>kind</a>;
+readonly attribute DOMString <a href='dnd.html#dom-datatransferitem-type'>type</a>;
+undefined <a href='dnd.html#dom-datatransferitem-getasstring'>getAsString</a>(<a href='dnd.html#functionstringcallback'>FunctionStringCallback</a>? _callback);
+<a href='https://w3c.github.io/FileAPI/#dfn-file' data-x-internal='file'>File</a>? <a href='dnd.html#dom-datatransferitem-getasfile'>getAsFile</a>();
+};
+callback <dfn id='functionstringcallback' data-dfn-type='callback'>FunctionStringCallback</dfn> = undefined (DOMString data);</code></pre>
+<dl><dt><code><var>item</var>.<a href="dnd.html#dom-datatransferitem-kind" id=dom-datatransferitem-kind-dev>kind</a></code></div><dd>
+<p>Returns <a href="dnd.html#the-drag-data-item-kind">the drag data item kind</a>, one of: "string",
+"file".</p>
+<dt><code><var>item</var>.<a href="dnd.html#dom-datatransferitem-type" id=dom-datatransferitem-type-dev>type</a></code></div><dd><p>Returns <a href="dnd.html#the-drag-data-item-type-string">the drag data item type string</a>.<dt><code><var>item</var>.<a href="dnd.html#dom-datatransferitem-getasstring" id=dom-datatransferitem-getasstring-dev>getAsString</a>(<var>callback</var>)</code></div><dd>
+<p>Invokes the callback with the string data as the argument, if <a href="dnd.html#the-drag-data-item-kind">the drag data item
+kind</a> is <i>text</i>.</p>
+<dt><code><var>file</var> = <var>item</var>.<a href="dnd.html#dom-datatransferitem-getasfile" id=dom-datatransferitem-getasfile-dev>getAsFile</a>()</code></div><dd>
+<p>Returns a <code><a data-x-internal=file href=https://w3c.github.io/FileAPI/#dfn-file>File</a></code> object, if <a href="dnd.html#the-drag-data-item-kind">the drag data item kind</a> is
+<i>File</i>.</p>
+</dl>
+<div>
+<p>While the <code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object's <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object is associated
+with a <a href="dnd.html#drag-data-store">drag data store</a> and that <a href="dnd.html#drag-data-store">drag data store</a>'s <a href="dnd.html#drag-data-store-item-list">drag data store
+item list</a> still contains the item that the <code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object represents,
+the <code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object's <i>mode</i> is the same as the <a href="dnd.html#drag-data-store-mode">drag data store
+mode</a>. When the <code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object's <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object is
+<em>not</em> associated with a <a href="dnd.html#drag-data-store">drag data store</a>, or if the item that the
+<code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object represents has been removed from the relevant <a href="dnd.html#drag-data-store-item-list">drag data
+store item list</a>, the <code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object's <i>mode</i> is the <i>disabled
+mode</i>. The <a href="dnd.html#drag-data-store">drag data store</a> referenced in this section (which is used only when the
+<code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object is not in the <i>disabled mode</i>) is the <a href="dnd.html#drag-data-store">drag data
+store</a> with which the <code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object's <code><a href="dnd.html#datatransfer">DataTransfer</a></code>
+object is associated.</p>
+</div>
+<div>
+<p>The <dfn id=dom-datatransferitem-kind data-dfn-type=attribute><code>kind</code></dfn> attribute must return the empty string if the
+<code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object is in the <i>disabled mode</i>; otherwise it must return the
+string given in the cell from the second column of the following table from the row whose cell in
+the first column contains <a href="dnd.html#the-drag-data-item-kind">the drag data item kind</a> of the item represented by the
+<code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object:</p>
+<table><thead><tr><th> Kind <th> String
+<tbody><tr><td> <i>Text</i> <td> "<code>string</code>"
+<tr><td> <i>File</i> <td> "<code>file</code>"
+</table>
+</div>
+<div>
+<p>The <dfn id=dom-datatransferitem-type data-dfn-type=attribute><code>type</code></dfn> attribute must return the empty string if the
+<code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object is in the <i>disabled mode</i>; otherwise it must return
+<a href="dnd.html#the-drag-data-item-type-string">the drag data item type string</a> of the item represented by the
+<code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object.</p>
+</div>
+<div>
+<p>The <dfn id=dom-datatransferitem-getasstring data-dfn-type=method><code>getAsString(<var>callback</var>)</code></dfn> method
+must run the following steps:</p>
+<ol><li><p>If the <var>callback</var> is null, return.<li><p>If the <code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object is not in the <i><a href="dnd.html#concept-dnd-rw">read/write mode</a></i> or the <i><a href="dnd.html#concept-dnd-ro">read-only mode</a></i>,
+return. The callback is never invoked.<li><p>If <a href="dnd.html#the-drag-data-item-kind">the drag data item kind</a> is not <i>text</i>, then return.
+The callback is never invoked.<li><p>Otherwise, <a href="webappapis.html#queue-a-task">queue a task</a> to invoke <var>callback</var>, passing the
+actual data of the item represented by the <code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object as the
+argument.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-datatransferitem-getasfile data-dfn-type=method><code>getAsFile()</code></dfn> method must run the following
+steps:</p>
+<ol><li><p>If the <code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object is not in the <i><a href="dnd.html#concept-dnd-rw">read/write mode</a></i> or the <i><a href="dnd.html#concept-dnd-ro">read-only mode</a></i>,
+then return null.<li><p>If <a href="dnd.html#the-drag-data-item-kind">the drag data item kind</a> is not <i>File</i>, then return null.<li><p>Return a new <code><a data-x-internal=file href=https://w3c.github.io/FileAPI/#dfn-file>File</a></code> object representing the actual data of the item represented
+by the <code><a href="dnd.html#datatransferitem">DataTransferItem</a></code> object.</p>
+</ol>
+</div>
+<h4 id=the-dragevent-interface>The <code><a href="dnd.html#dragevent">DragEvent</a></code> interface</h4></div>
+<p>The drag-and-drop processing model involves several events. They all use the
+<code><a href="dnd.html#dragevent">DragEvent</a></code> interface.</p>
+<pre><code>[Exposed=Window]
+interface <dfn id='dragevent' data-dfn-type='interface'>DragEvent</dfn> : <a href='https://w3c.github.io/uievents/#mouseevent' data-x-internal='mouseevent'>MouseEvent</a> {
+constructor(DOMString type, optional <a href='dnd.html#drageventinit'>DragEventInit</a> eventInitDict = {});
+readonly attribute <a href='dnd.html#datatransfer'>DataTransfer</a>? <a href='dnd.html#dom-dragevent-datatransfer'>dataTransfer</a>;
+};
+dictionary <dfn id='drageventinit' data-dfn-type='dictionary'>DragEventInit</dfn> : <a href='https://w3c.github.io/uievents/#dictdef-mouseeventinit' data-x-internal='mouseeventinit'>MouseEventInit</a> {
+<a href='dnd.html#datatransfer'>DataTransfer</a>? dataTransfer = null;
+};</code></pre>
+<dl><dt><code><var>event</var>.<a href="dnd.html#dom-dragevent-datatransfer" id=dom-dragevent-datatransfer-dev>dataTransfer</a></code></div><dd><p>Returns the <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object for the event.</dl>
+<p>Although, for consistency with other event interfaces, the <code><a href="dnd.html#dragevent">DragEvent</a></code>
+interface has a constructor, it is not particularly useful. In particular, there's no way to
+create a useful <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object from script, as <code><a href="dnd.html#datatransfer">DataTransfer</a></code> objects
+have a processing and security model that is coordinated by the browser during drag-and-drops.</p>
+<div>
+<p>The <dfn id=dom-dragevent-datatransfer data-dfn-type=attribute><code>dataTransfer</code></dfn> attribute of the
+<code><a href="dnd.html#dragevent">DragEvent</a></code> interface must return the value it was initialized to. It represents the
+context information for the event.</p>
+</div>
+<div>
+<p>When a user agent is required to <dfn id=fire-a-dnd-event>fire a DND event</dfn> named <var>e</var> at an element,
+using a particular <a href="dnd.html#drag-data-store">drag data store</a>, and optionally with a specific <var>related
+target</var>, the user agent must run the following steps:</p>
+<ol><li>Let <var>dataDragStoreWasChanged</var> be false.<li><p>If no specific <var>related target</var> was provided, set <var>related target</var> to
+null.<li><p>Let <var>window</var> be the <a href="webappapis.html#concept-relevant-global">relevant global object</a> of the
+<code><a href="dom.html#document">Document</a></code> object of the specified target element.<li>
+<p>If <var>e</var> is <code><a href="dnd.html#event-dnd-dragstart">dragstart</a></code>, then set the
+<a href="dnd.html#drag-data-store-mode">drag data store mode</a> to the <a href="dnd.html#concept-dnd-rw">read/write mode</a>
+and set <var>dataDragStoreWasChanged</var> to true.</p>
+<p>If <var>e</var> is <code><a href="dnd.html#event-dnd-drop">drop</a></code>, set the <a href="dnd.html#drag-data-store-mode">drag data store
+mode</a> to the <a href="dnd.html#concept-dnd-ro">read-only mode</a>.</p>
+<li><p>Let <var>dataTransfer</var> be a newly created <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object
+associated with the given <a href="dnd.html#drag-data-store">drag data store</a>.<li><p id=effectAllowed-initialisation>Set the <code><a href="dnd.html#dom-datatransfer-effectallowed">effectAllowed</a></code> attribute to the <a href="dnd.html#drag-data-store">drag data
+store</a>'s <a href="dnd.html#drag-data-store-allowed-effects-state">drag data store allowed effects state</a>.<li>
+<p id=dropEffect-initialisation>Set the <code><a href="dnd.html#dom-datatransfer-dropeffect">dropEffect</a></code> attribute to "<code><a href="dnd.html#dom-datatransfer-dropeffect-none">none</a></code>" if <var>e</var> is <code><a href="dnd.html#event-dnd-dragstart">dragstart</a></code>, <code><a href="dnd.html#event-dnd-drag">drag</a></code>, or
+<code><a href="dnd.html#event-dnd-dragleave">dragleave</a></code>; to the value corresponding to the
+<a href="dnd.html#current-drag-operation">current drag operation</a> if <var>e</var> is <code><a href="dnd.html#event-dnd-drop">drop</a></code>
+or <code><a href="dnd.html#event-dnd-dragend">dragend</a></code>; and to a value based on the <code><a href="dnd.html#dom-datatransfer-effectallowed">effectAllowed</a></code> attribute's value and the
+drag-and-drop source, as given by the following table, otherwise (i.e. if <var>e</var> is <code><a href="dnd.html#event-dnd-dragenter">dragenter</a></code> or <code><a href="dnd.html#event-dnd-dragover">dragover</a></code>):</p>
+<table><thead><tr><th><code><a href="dnd.html#dom-datatransfer-effectallowed">effectAllowed</a></code><th><code><a href="dnd.html#dom-datatransfer-dropeffect">dropEffect</a></code><tbody><tr><td>"<code><a href="dnd.html#dom-datatransfer-effectallowed-none">none</a></code>"<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-none">none</a></code>"<tr><td>"<code><a href="dnd.html#dom-datatransfer-effectallowed-copy">copy</a></code>"<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-copy">copy</a></code>"<tr><td>"<code><a href="dnd.html#dom-datatransfer-effectallowed-copylink">copyLink</a></code>"<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-copy">copy</a></code>", or, <a href="dnd.html#concept-platform-dropeffect-override">if appropriate</a>, "<code><a href="dnd.html#dom-datatransfer-dropeffect-link">link</a></code>"<tr><td>"<code><a href="dnd.html#dom-datatransfer-effectallowed-copymove">copyMove</a></code>"<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-copy">copy</a></code>", or, <a href="dnd.html#concept-platform-dropeffect-override">if appropriate</a>, "<code><a href="dnd.html#dom-datatransfer-dropeffect-move">move</a></code>"<tr><td>"<code><a href="dnd.html#dom-datatransfer-effectallowed-all">all</a></code>"<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-copy">copy</a></code>", or, <a href="dnd.html#concept-platform-dropeffect-override">if appropriate</a>, either "<code><a href="dnd.html#dom-datatransfer-dropeffect-link">link</a></code>" or "<code><a href="dnd.html#dom-datatransfer-dropeffect-move">move</a></code>"<tr><td>"<code><a href="dnd.html#dom-datatransfer-effectallowed-link">link</a></code>"<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-link">link</a></code>"<tr><td>"<code><a href="dnd.html#dom-datatransfer-effectallowed-linkmove">linkMove</a></code>"<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-link">link</a></code>", or, <a href="dnd.html#concept-platform-dropeffect-override">if appropriate</a>, "<code><a href="dnd.html#dom-datatransfer-dropeffect-move">move</a></code>"<tr><td>"<code><a href="dnd.html#dom-datatransfer-effectallowed-move">move</a></code>"<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-move">move</a></code>"<tr><td>"<code><a href="dnd.html#dom-datatransfer-effectallowed-uninitialized">uninitialized</a></code>" when what is being dragged is a selection from a text control<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-move">move</a></code>", or, <a href="dnd.html#concept-platform-dropeffect-override">if appropriate</a>, either "<code><a href="dnd.html#dom-datatransfer-dropeffect-copy">copy</a></code>" or "<code><a href="dnd.html#dom-datatransfer-dropeffect-link">link</a></code>"<tr><td>"<code><a href="dnd.html#dom-datatransfer-effectallowed-uninitialized">uninitialized</a></code>" when what is being dragged is a selection<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-copy">copy</a></code>", or, <a href="dnd.html#concept-platform-dropeffect-override">if appropriate</a>, either "<code><a href="dnd.html#dom-datatransfer-dropeffect-link">link</a></code>" or "<code><a href="dnd.html#dom-datatransfer-dropeffect-move">move</a></code>"<tr><td>"<code><a href="dnd.html#dom-datatransfer-effectallowed-uninitialized">uninitialized</a></code>" when what is being dragged is an <code><a href="text-level-semantics.html#the-a-element">a</a></code> element with an <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-link">link</a></code>", or, <a href="dnd.html#concept-platform-dropeffect-override">if appropriate</a>, either "<code><a href="dnd.html#dom-datatransfer-dropeffect-copy">copy</a></code>" or "<code><a href="dnd.html#dom-datatransfer-dropeffect-move">move</a></code>"<tr><td>Any other case<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-copy">copy</a></code>", or, <a href="dnd.html#concept-platform-dropeffect-override">if appropriate</a>, either "<code><a href="dnd.html#dom-datatransfer-dropeffect-link">link</a></code>" or "<code><a href="dnd.html#dom-datatransfer-dropeffect-move">move</a></code>"</table>
+<p>Where the table above provides <dfn id=concept-platform-dropeffect-override>possibly
+appropriate alternatives</dfn>, user agents may instead use the listed alternative values if
+platform conventions dictate that the user has requested those alternate effects.</p>
+<p>For example, Windows platform conventions are such that dragging while
+holding the "alt" key indicates a preference for linking the data, rather than moving or copying
+it. Therefore, on a Windows system, if "<code><a href="dnd.html#dom-datatransfer-dropeffect-link">link</a></code>" is an option according to
+the table above while the "alt" key is depressed, the user agent could select that instead of
+"<code><a href="dnd.html#dom-datatransfer-dropeffect-copy">copy</a></code>" or "<code><a href="dnd.html#dom-datatransfer-dropeffect-move">move</a></code>".</p>
+<li><p>Let <var>event</var> be the result of <a href=https://dom.spec.whatwg.org/#concept-event-create data-x-internal=creating-an-event>creating an event</a> using
+<code><a href="dnd.html#dragevent">DragEvent</a></code>.<li><p>Initialize <var>event</var>'s <code><a data-x-internal=dom-event-type href=https://dom.spec.whatwg.org/#dom-event-type>type</a></code> attribute to
+<var>e</var>, its <code><a data-x-internal=dom-event-bubbles href=https://dom.spec.whatwg.org/#dom-event-bubbles>bubbles</a></code> attribute to true, its <code><a data-x-internal=dom-uievent-view href=https://w3c.github.io/uievents/#dom-uievent-view>view</a></code> attribute to <var>window</var>, its <code><a data-x-internal=dom-mouseevent-relatedtarget href=https://w3c.github.io/uievents/#dom-mouseevent-relatedtarget>relatedTarget</a></code> attribute to <var>related
+target</var>, and its <code><a href="dnd.html#dom-dragevent-datatransfer">dataTransfer</a></code> attribute to
+<var>dataTransfer</var>.<li><p>If <var>e</var> is not <code><a href="dnd.html#event-dnd-dragleave">dragleave</a></code> or <code><a href="dnd.html#event-dnd-dragend">dragend</a></code>, then initialize <var>event</var>'s <code><a data-x-internal=dom-event-cancelable href=https://dom.spec.whatwg.org/#dom-event-cancelable>cancelable</a></code> attribute to true.<li>
+<p>Initialize <var>event</var>'s mouse and key attributes according to the state of
+the input devices as they would be for user interaction events.</p>
+<p>If there is no relevant pointing device, then initialize <var>event</var>'s <code>screenX</code>, <code>screenY</code>, <code><a data-x-internal=mouseevent-clientx href=https://drafts.csswg.org/cssom-view/#dom-mouseevent-clientx>clientX</a></code>, <code><a data-x-internal=mouseevent-clienty href=https://drafts.csswg.org/cssom-view/#dom-mouseevent-clienty>clientY</a></code>,
+and <code>button</code> attributes to 0.</p>
+<li><p><a href=https://dom.spec.whatwg.org/#concept-event-dispatch data-x-internal=concept-event-dispatch>Dispatch</a> <var>event</var> at the specified
+target element.<li><p>Set the <a href="dnd.html#drag-data-store-allowed-effects-state">drag data store allowed effects state</a> to the current value of
+<var>dataTransfer</var>'s <code><a href="dnd.html#dom-datatransfer-effectallowed">effectAllowed</a></code>
+attribute. (It can only have changed value if <var>e</var> is <code><a href="dnd.html#event-dnd-dragstart">dragstart</a></code>.)<li><p>If <var>dataDragStoreWasChanged</var> is true, then set the <a href="dnd.html#drag-data-store-mode">drag data store
+mode</a> back to the <a href="dnd.html#concept-dnd-p">protected mode</a>.<li><p>Break the association between <var>dataTransfer</var> and the <a href="dnd.html#drag-data-store">drag data
+store</a>.</ol>
+</div>
+<h4 id=drag-and-drop-processing-model>Processing model</h4>
+<div>
+<p>When the user attempts to begin a drag operation, the user agent must run the following steps.
+User agents must act as if these steps were run even if the drag actually started in another
+document or application and the user agent was not aware that the drag was occurring until it
+intersected with a document under the user agent's purview.</p>
+<ol><li>
+<p>Determine what is being dragged, as follows:</p>
+<p>If the drag operation was invoked on a selection, then it is the selection that is being
+dragged.</p>
+<p>Otherwise, if the drag operation was invoked on a <code><a href="dom.html#document">Document</a></code>, it is the first
+element, going up the ancestor chain, starting at the node that the user tried to drag, that has
+the IDL attribute <code><a href="dnd.html#dom-draggable">draggable</a></code> set to true. If there is no such
+element, then nothing is being dragged; return, the drag-and-drop operation is never
+started.</p>
+<p>Otherwise, the drag operation was invoked outside the user agent's purview. What is being
+dragged is defined by the document or application where the drag was started.</p>
+<p><code><a href="embedded-content.html#the-img-element">img</a></code> elements and <code><a href="text-level-semantics.html#the-a-element">a</a></code> elements with an <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute have their <code><a href="dnd.html#dom-draggable">draggable</a></code> attribute set to true by default.</p>
+<li><p><a href="dnd.html#create-a-drag-data-store">Create a drag data store</a>. All the DND events fired subsequently by the steps
+in this section must use this <a href="dnd.html#drag-data-store">drag data store</a>.<li>
+<p>Establish which DOM node is the <dfn id=source-node>source node</dfn>, as follows:</p>
+<p>If it is a selection that is being dragged, then the <a href="dnd.html#source-node">source node</a> is the
+<code><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> node that the user started the drag on (typically the <code><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> node
+that the user originally clicked). If the user did not specify a particular node, for example if
+the user just told the user agent to begin a drag of "the selection", then the <a href="dnd.html#source-node">source
+node</a> is the first <code><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> node containing a part of the selection.</p>
+<p>Otherwise, if it is an element that is being dragged, then the <a href="dnd.html#source-node">source node</a> is
+the element that is being dragged.</p>
+<p>Otherwise, the <a href="dnd.html#source-node">source node</a> is part of another document or application. When this
+specification requires that an event be dispatched at the <a href="dnd.html#source-node">source node</a> in this case,
+the user agent must instead follow the platform-specific conventions relevant to that
+situation.</p>
+<p>Multiple events are fired on the <a href="dnd.html#source-node">source node</a> during the course of
+the drag-and-drop operation.</p>
+<li>
+<p>Determine the <dfn id=list-of-dragged-nodes>list of dragged nodes</dfn>, as follows:</p>
+<p>If it is a selection that is being dragged, then the <a href="dnd.html#list-of-dragged-nodes">list of dragged nodes</a>
+contains, in <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a>, every node that is partially or completely included in the
+selection (including all their ancestors).</p>
+<p>Otherwise, the <a href="dnd.html#list-of-dragged-nodes">list of dragged nodes</a> contains only the <a href="dnd.html#source-node">source node</a>,
+if any.</p>
+<li>
+<p>If it is a selection that is being dragged, then add an item to the <a href="dnd.html#drag-data-store-item-list">drag data store
+item list</a>, with its properties set as follows:</p>
+<dl><dt><a href="dnd.html#the-drag-data-item-type-string">The drag data item type string</a>
+<dd>"<code><a data-x-internal=text/plain href=https://www.rfc-editor.org/rfc/rfc2046#section-4.1.3>text/plain</a></code>"<dt><a href="dnd.html#the-drag-data-item-kind">The drag data item kind</a>
+<dd><i>Text</i><dt>The actual data<dd>The text of the selection</dl>
+<p>Otherwise, if any files are being dragged, then add one item per file to the <a href="dnd.html#drag-data-store-item-list">drag data
+store item list</a>, with their properties set as follows:</p>
+<dl><dt><a href="dnd.html#the-drag-data-item-type-string">The drag data item type string</a>
+<dd>The MIME type of the file, if known, or "<code><a data-x-internal=application/octet-stream href=https://www.rfc-editor.org/rfc/rfc2046#section-4.5.1>application/octet-stream</a></code>" otherwise.<dt><a href="dnd.html#the-drag-data-item-kind">The drag data item kind</a>
+<dd><i>File</i><dt>The actual data<dd>The file's contents and name.</dl>
+<p>Dragging files can currently only happen from outside a <a href="document-sequences.html#navigable">navigable</a>,
+for example from a file system manager application.</p>
+<p>If the drag initiated outside of the application, the user agent must add items to the
+<a href="dnd.html#drag-data-store-item-list">drag data store item list</a> as appropriate for the data being dragged, honoring
+platform conventions where appropriate; however, if the platform conventions do not use <a href=https://mimesniff.spec.whatwg.org/#mime-type data-x-internal=mime-type>MIME types</a> to label dragged data, the user agent must make a
+best-effort attempt to map the types to MIME types, and, in any case, all the <a href="dnd.html#the-drag-data-item-type-string">drag data item type strings</a> must be <a href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII
+lowercase</a>.</p>
+<p>User agents may also add one or more items representing the selection or dragged element(s)
+in other forms, e.g. as HTML.</p>
+<li>
+<p>If the <a href="dnd.html#list-of-dragged-nodes">list of dragged nodes</a> is not empty, then <a href="microdata.html#extracting-json">extract the microdata from those nodes into a JSON form</a>, and add one item to the
+<a href="dnd.html#drag-data-store-item-list">drag data store item list</a>, with its properties set as follows:</p>
+<dl><dt><a href="dnd.html#the-drag-data-item-type-string">The drag data item type string</a>
+<dd><code><a href="iana.html#application/microdata+json">application/microdata+json</a></code><dt><a href="dnd.html#the-drag-data-item-kind">The drag data item kind</a>
+<dd><i>Text</i><dt>The actual data<dd>The resulting JSON string.</dl>
+<li>
+<p>Run the following substeps:</p>
+<ol><li><p>Let <var>urls</var> be « ».<li>
+<p>For each <var>node</var> in the <a href="dnd.html#list-of-dragged-nodes">list of dragged nodes</a>:</p>
+<dl><dt>If the node is an <code><a href="text-level-semantics.html#the-a-element">a</a></code> element with an <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute<dd>Add to <var>urls</var> the result of <a href="urls-and-fetching.html#encoding-parsing-and-serializing-a-url">encoding-parsing-and-serializing a URL</a>
+given the element's <code><a href="links.html#attr-hyperlink-href">href</a></code> content attribute's value,
+relative to the element's <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>.<dt>If the node is an <code><a href="embedded-content.html#the-img-element">img</a></code> element with a <code><a href="embedded-content.html#attr-img-src">src</a></code>
+attribute<dd>Add to <var>urls</var> the result of <a href="urls-and-fetching.html#encoding-parsing-and-serializing-a-url">encoding-parsing-and-serializing a URL</a>
+given the element's <code><a href="embedded-content.html#attr-img-src">src</a></code> content attribute's value, relative to
+the element's <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>.</dl>
+<li><p>If <var>urls</var> is still empty, then return.<li><p>Let <var>url string</var> be the result of concatenating the strings in <var>urls</var>,
+in the order they were added, separated by a U+000D CARRIAGE RETURN U+000A LINE FEED character
+pair (CRLF).<li><p>Add one item to the <a href="dnd.html#drag-data-store-item-list">drag data store item list</a>, with its properties set as
+follows:</p>
+<dl><dt><a href="dnd.html#the-drag-data-item-type-string">The drag data item type string</a>
+<dd><code><a href="indices.html#text/uri-list">text/uri-list</a></code><dt><a href="dnd.html#the-drag-data-item-kind">The drag data item kind</a>
+<dd><i>Text</i><dt>The actual data<dd><var>url string</var></dl>
+</ol>
+<li>
+<p>Update the <a href="dnd.html#drag-data-store-default-feedback">drag data store default feedback</a> as appropriate for the user agent
+(if the user is dragging the selection, then the selection would likely be the basis for this
+feedback; if the user is dragging an element, then that element's rendering would be used; if
+the drag began outside the user agent, then the platform conventions for determining the drag
+feedback should be used).</p>
+<li>
+<p><a href="dnd.html#fire-a-dnd-event">Fire a DND event</a> named <code><a href="dnd.html#event-dnd-dragstart">dragstart</a></code> at the
+<a href="dnd.html#source-node">source node</a>.</p>
+<p>If the event is canceled, then the drag-and-drop operation should not occur; return.</p>
+<p>Since events with no event listeners registered are, almost by definition, never
+canceled, drag-and-drop is always available to the user if the author does not specifically
+prevent it.</p>
+<li><p><a href=https://w3c.github.io/pointerevents/#dfn-fire-a-pointer-event data-x-internal=fire-a-pointer-event>Fire a pointer event</a> at the <a href="dnd.html#source-node">source node</a> named <code><a data-x-internal=event-pointercancel href=https://w3c.github.io/pointerevents/#the-pointercancel-event>pointercancel</a></code>, and fire any other follow-up events as
+required by <cite>Pointer Events</cite>. <a href="references.html#refsPOINTEREVENTS">[POINTEREVENTS]</a><li>
+<p><a href="dnd.html#initiate-the-drag-and-drop-operation">Initiate the drag-and-drop operation</a> in a manner consistent with platform
+conventions, and as described below.</p>
+<p id=base-dnd-feedback>The drag-and-drop feedback must be generated from the first of the
+following sources that is available:</p>
+<ol><li>The <a href="dnd.html#drag-data-store-bitmap">drag data store bitmap</a>, if any. In this case, the <a href="dnd.html#drag-data-store-hot-spot-coordinate">drag data store
+hot spot coordinate</a> should be used as hints for where to put the cursor relative to the
+resulting image. The values are expressed as distances in <a href=https://drafts.csswg.org/css-values/#pxpx'" data-x-internal="'px'">CSS pixels</a>
+from the left side and from the top side of the image respectively. <a href="references.html#refsCSS">[CSS]</a><li>The <a href="dnd.html#drag-data-store-default-feedback">drag data store default feedback</a>.</ol>
+</ol>
+</div>
+<p>From the moment that the user agent is to <dfn id=initiate-the-drag-and-drop-operation>initiate the drag-and-drop operation</dfn>,
+until the end of the drag-and-drop operation, device input events (e.g. mouse and keyboard events)
+must be suppressed.</p>
+<p>During the drag operation, the element directly indicated by the user as the drop target is
+called the <dfn id=immediate-user-selection>immediate user selection</dfn>. (Only elements can be selected by the user; other
+nodes must not be made available as drop targets.) However, the <a href="dnd.html#immediate-user-selection">immediate user
+selection</a> is not necessarily the <dfn id=current-target-element>current target element</dfn>, which is the element
+currently selected for the drop part of the drag-and-drop operation.</p>
+<p>The <a href="dnd.html#immediate-user-selection">immediate user selection</a> changes as the user selects different elements
+(either by pointing at them with a pointing device, or by selecting them in some other way). The
+<a href="dnd.html#current-target-element">current target element</a> changes when the <a href="dnd.html#immediate-user-selection">immediate user selection</a>
+changes, based on the results of event listeners in the document, as described below.</p>
+<p>Both the <a href="dnd.html#current-target-element">current target element</a> and the <a href="dnd.html#immediate-user-selection">immediate user selection</a> can
+be null, which means no target element is selected. They can also both be elements in other
+(DOM-based) documents, or other (non-web) programs altogether. (For example, a user could drag
+text to a word-processor.) The <a href="dnd.html#current-target-element">current target element</a> is initially null.</p>
+<p>In addition, there is also a <dfn id=current-drag-operation>current drag operation</dfn>, which can take on the values
+"<dfn id=concept-current-drag-operation-none><code>none</code></dfn>", "<dfn id=concept-current-drag-operation-copy><code>copy</code></dfn>", "<dfn id=concept-current-drag-operation-link><code>link</code></dfn>", and "<dfn id=concept-current-drag-operation-move><code>move</code></dfn>". Initially, it has the value
+"<code><a href="dnd.html#concept-current-drag-operation-none">none</a></code>". It is updated by the user agent
+as described in the steps below.</p>
+<div>
+<p>User agents must, as soon as the drag operation is <a href="dnd.html#initiate-the-drag-and-drop-operation">initiated</a> and every 350ms (±200ms) thereafter for as long as the drag
+operation is ongoing, <a href="webappapis.html#queue-a-task">queue a task</a> to perform the following steps in sequence:</p>
+<ol><li>
+<p>If the user agent is still performing the previous iteration of the sequence (if any) when
+the next iteration becomes due, return for this iteration (effectively "skipping
+missed frames" of the drag-and-drop operation).</p>
+<li>
+<p><a href="dnd.html#fire-a-dnd-event">Fire a DND event</a> named <code><a href="dnd.html#event-dnd-drag">drag</a></code> at the
+<a href="dnd.html#source-node">source node</a>. If this event is canceled, the user agent must set the <a href="dnd.html#current-drag-operation">current
+drag operation</a> to "<code><a href="dnd.html#concept-current-drag-operation-none">none</a></code>" (no
+drag operation).</p>
+<li>
+<p>If the <code><a href="dnd.html#event-dnd-drag">drag</a></code> event was not canceled and the user has not
+ended the drag-and-drop operation, check the state of the drag-and-drop operation, as
+follows:</p>
+<ol><li>
+<p>If the user is indicating a different <a href="dnd.html#immediate-user-selection">immediate user selection</a> than during the
+last iteration (or if this is the first iteration), and if this <a href="dnd.html#immediate-user-selection">immediate user
+selection</a> is not the same as the <a href="dnd.html#current-target-element">current target element</a>, then update the
+<a href="dnd.html#current-target-element">current target element</a> as follows:</p>
+<dl><dt>If the new <a href="dnd.html#immediate-user-selection">immediate user selection</a> is null<dd><p>Set the <a href="dnd.html#current-target-element">current target element</a> to null also.<dt>If the new <a href="dnd.html#immediate-user-selection">immediate user selection</a> is in a non-DOM document or
+application<dd><p>Set the <a href="dnd.html#current-target-element">current target element</a> to the <a href="dnd.html#immediate-user-selection">immediate user
+selection</a>.<dt>Otherwise<dd>
+<p><a href="dnd.html#fire-a-dnd-event">Fire a DND event</a> named <code><a href="dnd.html#event-dnd-dragenter">dragenter</a></code>
+at the <a href="dnd.html#immediate-user-selection">immediate user selection</a>.</p>
+<p>If the event is canceled, then set the <a href="dnd.html#current-target-element">current target element</a> to the
+<a href="dnd.html#immediate-user-selection">immediate user selection</a>.</p>
+<p>Otherwise, run the appropriate step from the following list:</p>
+<dl><dt>If the <a href="dnd.html#immediate-user-selection">immediate user selection</a> is a text control (e.g.,
+<code><a href="form-elements.html#the-textarea-element">textarea</a></code>, or an <code><a href="input.html#the-input-element">input</a></code> element whose <code><a href="input.html#attr-input-type">type</a></code> attribute is in the <a href="input.html#text-(type=text)-state-and-search-state-(type=search)">Text</a> state) or an <a href="interaction.html#editing-host">editing host</a> or
+<a href=https://w3c.github.io/editing/docs/execCommand/#editable data-x-internal=editable>editable</a> element, and the <a href="dnd.html#drag-data-store-item-list">drag data store item list</a> has an item
+with <a href="dnd.html#the-drag-data-item-type-string">the drag data item type string</a> "<code><a data-x-internal=text/plain href=https://www.rfc-editor.org/rfc/rfc2046#section-4.1.3>text/plain</a></code>" and <a href="dnd.html#the-drag-data-item-kind">the
+drag data item kind</a> <i>text</i><dd><p>Set the <a href="dnd.html#current-target-element">current target element</a> to the <a href="dnd.html#immediate-user-selection">immediate user
+selection</a> anyway.<dt>If the <a href="dnd.html#immediate-user-selection">immediate user selection</a> is <a href="dom.html#the-body-element-2">the body element</a><dd><p>Leave the <a href="dnd.html#current-target-element">current target element</a> unchanged.<dt>Otherwise<dd>
+<p><a href="dnd.html#fire-a-dnd-event">Fire a DND event</a> named <code><a href="dnd.html#event-dnd-dragenter">dragenter</a></code>
+at <a href="dom.html#the-body-element-2">the body element</a>, if there is one, or at the <code><a href="dom.html#document">Document</a></code> object,
+if not. Then, set the <a href="dnd.html#current-target-element">current target element</a> to <a href="dom.html#the-body-element-2">the body
+element</a>, regardless of whether that event was canceled or not.</p>
+</dl>
+</dl>
+<li>
+<p>If the previous step caused the <a href="dnd.html#current-target-element">current target element</a> to change, and if the
+previous target element was not null or a part of a non-DOM document, then <a href="dnd.html#fire-a-dnd-event">fire a DND
+event</a> named <code><a href="dnd.html#event-dnd-dragleave">dragleave</a></code> at the previous target
+element, with the new <a href="dnd.html#current-target-element">current target element</a> as the specific <i>related
+target</i>.</p>
+<li>
+<p>If the <a href="dnd.html#current-target-element">current target element</a> is a DOM element, then <a href="dnd.html#fire-a-dnd-event">fire a DND
+event</a> named <code><a href="dnd.html#event-dnd-dragover">dragover</a></code> at this <a href="dnd.html#current-target-element">current
+target element</a>.</p>
+<p>If the <code><a href="dnd.html#event-dnd-dragover">dragover</a></code> event is not canceled, run the
+appropriate step from the following list:</p>
+<dl><dt>If the <a href="dnd.html#current-target-element">current target element</a> is a text control (e.g.,
+<code><a href="form-elements.html#the-textarea-element">textarea</a></code>, or an <code><a href="input.html#the-input-element">input</a></code> element whose <code><a href="input.html#attr-input-type">type</a></code> attribute is in the <a href="input.html#text-(type=text)-state-and-search-state-(type=search)">Text</a> state) or an <a href="interaction.html#editing-host">editing host</a> or
+<a href=https://w3c.github.io/editing/docs/execCommand/#editable data-x-internal=editable>editable</a> element, and the <a href="dnd.html#drag-data-store-item-list">drag data store item list</a> has an item
+with <a href="dnd.html#the-drag-data-item-type-string">the drag data item type string</a> "<code><a data-x-internal=text/plain href=https://www.rfc-editor.org/rfc/rfc2046#section-4.1.3>text/plain</a></code>" and <a href="dnd.html#the-drag-data-item-kind">the drag
+data item kind</a> <i>text</i><dd><p>Set the <a href="dnd.html#current-drag-operation">current drag operation</a> to either "<code><a href="dnd.html#concept-current-drag-operation-copy">copy</a></code>" or "<code><a href="dnd.html#concept-current-drag-operation-move">move</a></code>", as appropriate given the platform
+conventions.<dt>Otherwise<dd><p>Reset the <a href="dnd.html#current-drag-operation">current drag operation</a> to "<code><a href="dnd.html#concept-current-drag-operation-none">none</a></code>".</dl>
+<p>Otherwise (if the <code><a href="dnd.html#event-dnd-dragover">dragover</a></code> event <em>is</em>
+canceled), set the <a href="dnd.html#current-drag-operation">current drag operation</a> based on the values of the <code><a href="dnd.html#dom-datatransfer-effectallowed">effectAllowed</a></code> and <code><a href="dnd.html#dom-datatransfer-dropeffect">dropEffect</a></code> attributes of the
+<code><a href="dnd.html#dragevent">DragEvent</a></code> object's <code><a href="dnd.html#dom-dragevent-datatransfer">dataTransfer</a></code>
+object as they stood after the event <a href=https://dom.spec.whatwg.org/#concept-event-dispatch data-x-internal=concept-event-dispatch>dispatch</a>
+finished, as per the following table:</p>
+<table><thead><tr><th><code><a href="dnd.html#dom-datatransfer-effectallowed">effectAllowed</a></code><th><code><a href="dnd.html#dom-datatransfer-dropeffect">dropEffect</a></code><th>Drag operation<tbody><tr><td>"<code><a href="dnd.html#dom-datatransfer-effectallowed-uninitialized">uninitialized</a></code>", "<code><a href="dnd.html#dom-datatransfer-effectallowed-copy">copy</a></code>", "<code><a href="dnd.html#dom-datatransfer-effectallowed-copylink">copyLink</a></code>", "<code><a href="dnd.html#dom-datatransfer-effectallowed-copymove">copyMove</a></code>", or "<code><a href="dnd.html#dom-datatransfer-effectallowed-all">all</a></code>"<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-copy">copy</a></code>"<td>"<code><a href="dnd.html#concept-current-drag-operation-copy">copy</a></code>"<tr><td>"<code><a href="dnd.html#dom-datatransfer-effectallowed-uninitialized">uninitialized</a></code>", "<code><a href="dnd.html#dom-datatransfer-effectallowed-link">link</a></code>", "<code><a href="dnd.html#dom-datatransfer-effectallowed-copylink">copyLink</a></code>", "<code><a href="dnd.html#dom-datatransfer-effectallowed-linkmove">linkMove</a></code>", or "<code><a href="dnd.html#dom-datatransfer-effectallowed-all">all</a></code>"<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-link">link</a></code>"<td>"<code><a href="dnd.html#concept-current-drag-operation-link">link</a></code>"<tr><td>"<code><a href="dnd.html#dom-datatransfer-effectallowed-uninitialized">uninitialized</a></code>", "<code><a href="dnd.html#dom-datatransfer-effectallowed-move">move</a></code>", "<code><a href="dnd.html#dom-datatransfer-effectallowed-copymove">copyMove</a></code>", "<code><a href="dnd.html#dom-datatransfer-effectallowed-linkmove">linkMove</a></code>", or "<code><a href="dnd.html#dom-datatransfer-effectallowed-all">all</a></code>"<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-move">move</a></code>"<td>"<code><a href="dnd.html#concept-current-drag-operation-move">move</a></code>"<tr><td colspan=2>Any other case<td>"<code><a href="dnd.html#concept-current-drag-operation-none">none</a></code>"</table>
+<li>
+<p>Otherwise, if the <a href="dnd.html#current-target-element">current target element</a> is not a DOM element, use
+platform-specific mechanisms to determine what drag operation is being performed (none, copy,
+link, or move), and set the <a href="dnd.html#current-drag-operation">current drag operation</a> accordingly.</p>
+<li>
+<p>Update the drag feedback (e.g. the mouse cursor) to match the <a href="dnd.html#current-drag-operation">current drag
+operation</a>, as follows:</p>
+<table><thead><tr><th>Drag operation<th>Feedback<tbody><tr><td>"<code><a href="dnd.html#concept-current-drag-operation-copy">copy</a></code>"<td>Data will be copied if dropped here.<tr><td>"<code><a href="dnd.html#concept-current-drag-operation-link">link</a></code>"<td>Data will be linked if dropped here.<tr><td>"<code><a href="dnd.html#concept-current-drag-operation-move">move</a></code>"<td>Data will be moved if dropped here.<tr><td>"<code><a href="dnd.html#concept-current-drag-operation-none">none</a></code>"<td>No operation allowed, dropping here will cancel the drag-and-drop operation.</table>
+</ol>
+<li>
+<p>Otherwise, if the user ended the drag-and-drop operation (e.g. by releasing the mouse button
+in a mouse-driven drag-and-drop interface), or if the <code><a href="dnd.html#event-dnd-drag">drag</a></code>
+event was canceled, then this will be the last iteration. Run the following steps, then stop the
+drag-and-drop operation:</p>
+<ol><li>
+<p>If the <a href="dnd.html#current-drag-operation">current drag operation</a> is "<code><a href="dnd.html#concept-current-drag-operation-none">none</a></code>" (no drag operation), or if the user
+ended the drag-and-drop operation by canceling it (e.g. by hitting the <kbd><kbd>Escape</kbd></kbd> key),
+or if the <a href="dnd.html#current-target-element">current target element</a> is null, then the drag operation failed. Run
+these substeps:</p>
+<ol><li><p>Let <var>dropped</var> be false.<li><p>If the <a href="dnd.html#current-target-element">current target element</a> is a DOM element, <a href="dnd.html#fire-a-dnd-event">fire a DND
+event</a> named <code><a href="dnd.html#event-dnd-dragleave">dragleave</a></code> at it; otherwise, if
+it is not null, use platform-specific conventions for drag cancelation.<li><p>Set the <a href="dnd.html#current-drag-operation">current drag operation</a> to "<code><a href="dnd.html#concept-current-drag-operation-none">none</a></code>".</ol>
+<p>Otherwise, the drag operation might be a success; run these substeps:</p>
+<ol><li><p>Let <var>dropped</var> be true.<li><p>If the <a href="dnd.html#current-target-element">current target element</a> is a DOM element, <a href="dnd.html#fire-a-dnd-event">fire a DND
+event</a> named <code><a href="dnd.html#event-dnd-drop">drop</a></code> at it; otherwise, use
+platform-specific conventions for indicating a drop.<li>
+<p>If the event is canceled, set the <a href="dnd.html#current-drag-operation">current drag operation</a> to the value of the
+<code><a href="dnd.html#dom-datatransfer-dropeffect">dropEffect</a></code> attribute of the
+<code><a href="dnd.html#dragevent">DragEvent</a></code> object's <code><a href="dnd.html#dom-dragevent-datatransfer">dataTransfer</a></code>
+object as it stood after the event <a href=https://dom.spec.whatwg.org/#concept-event-dispatch data-x-internal=concept-event-dispatch>dispatch</a>
+finished.</p>
+<p>Otherwise, the event is not canceled; perform the event's default action, which depends
+on the exact target as follows:</p>
+<dl><dt>If the <a href="dnd.html#current-target-element">current target element</a> is a text control (e.g.,
+<code><a href="form-elements.html#the-textarea-element">textarea</a></code>, or an <code><a href="input.html#the-input-element">input</a></code> element whose <code><a href="input.html#attr-input-type">type</a></code> attribute is in the <a href="input.html#text-(type=text)-state-and-search-state-(type=search)">Text</a> state) or an <a href="interaction.html#editing-host">editing host</a> or
+<a href=https://w3c.github.io/editing/docs/execCommand/#editable data-x-internal=editable>editable</a> element, and the <a href="dnd.html#drag-data-store-item-list">drag data store item list</a> has an item
+with <a href="dnd.html#the-drag-data-item-type-string">the drag data item type string</a> "<code><a data-x-internal=text/plain href=https://www.rfc-editor.org/rfc/rfc2046#section-4.1.3>text/plain</a></code>" and <a href="dnd.html#the-drag-data-item-kind">the
+drag data item kind</a> <i>text</i><dd><p>Insert the actual data of the first item in the <a href="dnd.html#drag-data-store-item-list">drag data store item
+list</a> to have <a href="dnd.html#the-drag-data-item-type-string">a drag data item type
+string</a> of "<code><a data-x-internal=text/plain href=https://www.rfc-editor.org/rfc/rfc2046#section-4.1.3>text/plain</a></code>" and <a href="dnd.html#the-drag-data-item-kind">a drag
+data item kind</a> that is <i>text</i> into the text control or
+<a href="interaction.html#editing-host">editing host</a> or <a href=https://w3c.github.io/editing/docs/execCommand/#editable data-x-internal=editable>editable</a> element in a manner consistent with
+platform-specific conventions (e.g. inserting it at the current mouse cursor position, or
+inserting it at the end of the field).<dt>Otherwise<dd><p>Reset the <a href="dnd.html#current-drag-operation">current drag operation</a> to "<code><a href="dnd.html#concept-current-drag-operation-none">none</a></code>".</dl>
+</ol>
+<li>
+<p><a href="dnd.html#fire-a-dnd-event">Fire a DND event</a> named <code><a href="dnd.html#event-dnd-dragend">dragend</a></code> at the
+<a href="dnd.html#source-node">source node</a>.</p>
+<li>
+<p>Run the appropriate steps from the following list as the default action of the <code><a href="dnd.html#event-dnd-dragend">dragend</a></code> event:</p>
+<dl><dt>If <var>dropped</var> is true, the <a href="dnd.html#current-target-element">current target element</a> is a <i>text
+control</i> (see below), the <a href="dnd.html#current-drag-operation">current drag operation</a> is "<code><a href="dnd.html#concept-current-drag-operation-move">move</a></code>", and the source of the
+drag-and-drop operation is a selection in the DOM that is entirely contained within an
+<a href="interaction.html#editing-host">editing host</a><dd><p><a href=https://w3c.github.io/editing/docs/execCommand/#delete-the-selection data-x-internal=delete-the-selection>Delete the selection</a>.<dt>If <var>dropped</var> is true, the <a href="dnd.html#current-target-element">current target element</a> is a <i>text
+control</i> (see below), the <a href="dnd.html#current-drag-operation">current drag operation</a> is "<code><a href="dnd.html#concept-current-drag-operation-move">move</a></code>", and the source of the
+drag-and-drop operation is a selection in a text control<dd><p>The user agent should delete the dragged selection from the relevant text
+control.<dt>If <var>dropped</var> is false or if the <a href="dnd.html#current-drag-operation">current drag operation</a> is "<code><a href="dnd.html#concept-current-drag-operation-none">none</a></code>"<dd><p>The drag was canceled. If the platform conventions dictate that this be represented to
+the user (e.g. by animating the dragged selection going back to the source of the
+drag-and-drop operation), then do so.<dt>Otherwise<dd><p>The event has no default action.</dl>
+<p>For the purposes of this step, a <i>text control</i> is a <code><a href="form-elements.html#the-textarea-element">textarea</a></code> element or
+an <code><a href="input.html#the-input-element">input</a></code> element whose <code><a href="input.html#attr-input-type">type</a></code> attribute is in
+one of the
+<a href="input.html#text-(type=text)-state-and-search-state-(type=search)">Text</a>,
+<a href="input.html#text-(type=text)-state-and-search-state-(type=search)">Search</a>,
+<a href="input.html#telephone-state-(type=tel)">Tel</a>,
+<a href="input.html#url-state-(type=url)">URL</a>,
+<a href="input.html#email-state-(type=email)">Email</a>,
+<a href="input.html#password-state-(type=password)">Password</a>, or
+<a href="input.html#number-state-(type=number)">Number</a>
+states.</p>
+</ol>
+</ol>
+</div>
+<p>User agents are encouraged to consider how to react to drags near the edge of
+scrollable regions. For example, if a user drags a link to the bottom of the <a href=https://drafts.csswg.org/css2/#viewport data-x-internal=viewport>viewport</a>
+on a long page, it might make sense to scroll the page so that the user can drop the link lower on
+the page.</p>
+<p>This model is independent of which <code><a href="dom.html#document">Document</a></code> object the nodes involved
+are from; the events are fired as described above and the rest of the processing model runs as
+described above, irrespective of how many documents are involved in the operation.</p>
+<h4 id=dndevents>Events summary</h4>
+<p><i>This section is non-normative.</i></p>
+<p>The following events are involved in the drag-and-drop
+model.</p>
+<table><thead><tr><th> Event name <th> Target <th> Cancelable? <th> <a href="dnd.html#drag-data-store-mode">Drag data store mode</a> <th> <code><a href="dnd.html#dom-datatransfer-dropeffect">dropEffect</a></code> <th> Default Action <tbody><tr><td><dfn id=event-dnd-dragstart data-dfn-type=event><code>dragstart</code></dfn></div><td><a href="dnd.html#source-node">Source node</a><td>✓ Cancelable<td><a href="dnd.html#concept-dnd-rw">Read/write mode</a>
+<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-none">none</a></code>"<td>Initiate the drag-and-drop operation<tr><td><dfn id=event-dnd-drag data-dfn-type=event><code>drag</code></dfn></div><td><a href="dnd.html#source-node">Source node</a><td>✓ Cancelable<td><a href="dnd.html#concept-dnd-p">Protected mode</a>
+<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-none">none</a></code>"<td>Continue the drag-and-drop operation<tr><td><dfn id=event-dnd-dragenter data-dfn-type=event><code>dragenter</code></dfn></div><td><a href="dnd.html#immediate-user-selection">Immediate user selection</a> or <a href="dom.html#the-body-element-2">the body element</a><td>✓ Cancelable<td><a href="dnd.html#concept-dnd-p">Protected mode</a>
+<td><a href="dnd.html#dropEffect-initialisation">Based on <code>effectAllowed</code> value</a><td>Reject <a href="dnd.html#immediate-user-selection">immediate user selection</a> as potential <a href="dnd.html#current-target-element">target element</a><tr><td><dfn id=event-dnd-dragleave data-dfn-type=event><code>dragleave</code></dfn></div><td><a href="dnd.html#current-target-element">Previous target element</a><td>—<td><a href="dnd.html#concept-dnd-p">Protected mode</a>
+<td>"<code><a href="dnd.html#dom-datatransfer-dropeffect-none">none</a></code>"<td>None<tr><td><dfn id=event-dnd-dragover data-dfn-type=event><code>dragover</code></dfn></div><td><a href="dnd.html#current-target-element">Current target element</a><td>✓ Cancelable<td><a href="dnd.html#concept-dnd-p">Protected mode</a>
+<td><a href="dnd.html#dropEffect-initialisation">Based on <code>effectAllowed</code> value</a><td>Reset the <a href="dnd.html#current-drag-operation">current drag operation</a> to "none"<tr><td><dfn id=event-dnd-drop data-dfn-type=event><code>drop</code></dfn></div><td><a href="dnd.html#current-target-element">Current target element</a><td>✓ Cancelable<td><a href="dnd.html#concept-dnd-ro">Read-only mode</a>
+<td><a href="dnd.html#current-drag-operation">Current drag operation</a><td>Varies<tr><td><dfn id=event-dnd-dragend data-dfn-type=event><code>dragend</code></dfn></div><td><a href="dnd.html#source-node">Source node</a><td>—<td><a href="dnd.html#concept-dnd-p">Protected mode</a>
+<td><a href="dnd.html#current-drag-operation">Current drag operation</a><td>Varies</table>
+<p>All of these events bubble, are composed, and the <code><a href="dnd.html#dom-datatransfer-effectallowed">effectAllowed</a></code> attribute always has the value it had
+after the <code><a href="dnd.html#event-dnd-dragstart">dragstart</a></code> event, defaulting to "<code><a href="dnd.html#dom-datatransfer-effectallowed-uninitialized">uninitialized</a></code>" in the <code><a href="dnd.html#event-dnd-dragstart">dragstart</a></code> event.</p>
+<h4 id=the-draggable-attribute>The <code><a href="dnd.html#attr-draggable">draggable</a></code> attribute</h4></div>
+<p>All <a href="infrastructure.html#html-elements">HTML elements</a> may have the <dfn id=attr-draggable data-dfn-type=element-attr><code>draggable</code></dfn> content attribute set. The <code><a href="dnd.html#attr-draggable">draggable</a></code> attribute is an <a href="common-microsyntaxes.html#enumerated-attribute">enumerated attribute</a> with
+the following keywords and states:</p>
+<table><thead><tr><th>Keyword
+<th>State
+<th>Brief description
+<tbody><tr><td><dfn id=attr-draggable-true data-dfn-type=attr-value><code>true</code></dfn>
+<td><dfn id=attr-draggable-true-state>True</dfn>
+<td>The element will be draggable.
+<tr><td><dfn id=attr-draggable-false data-dfn-type=attr-value><code>false</code></dfn>
+<td><dfn id=attr-draggable-false-state>False</dfn>
+<td>The element will not be draggable.
+</table>
+<div>
+<p>The attribute's <i><a href="common-microsyntaxes.html#missing-value-default">missing value default</a></i> and <i><a href="common-microsyntaxes.html#invalid-value-default">invalid value default</a></i> are both the <dfn id=attr-draggable-auto-state>Auto</dfn> state. The auto state uses the default behavior of
+the user agent.</p>
+</div>
+<p>An element with a <code><a href="dnd.html#attr-draggable">draggable</a></code> attribute should also have a
+<code><a href="dom.html#attr-title">title</a></code> attribute that names the element for the purpose of
+non-visual interactions. </p>
+<dl><dt><code><var>element</var>.<a href="dnd.html#dom-draggable" id=dom-draggable-dev>draggable</a> [ = <var>value</var> ]</code><dd>
+<p>Returns true if the element is draggable; otherwise, returns false.</p>
+<p>Can be set, to override the default and set the <code><a href="dnd.html#attr-draggable">draggable</a></code> content attribute.</p>
+</dl>
+<p>The <dfn id=dom-draggable data-dfn-type=attribute><code>draggable</code></dfn> IDL
+attribute, whose value depends on the content attribute's in the way described below, controls
+whether or not the element is draggable. Generally, only text selections are draggable, but
+elements whose <code><a href="dnd.html#dom-draggable">draggable</a></code> IDL attribute is true become
+draggable as well.</p>
+<div>
+<p>If an element's <code><a href="dnd.html#attr-draggable">draggable</a></code> content attribute has the state
+<a href="dnd.html#attr-draggable-true-state">True</a>, the <code><a href="dnd.html#dom-draggable">draggable</a></code> IDL attribute must return true.</p>
+<p>Otherwise, if the element's <code><a href="dnd.html#attr-draggable">draggable</a></code> content attribute
+has the state <a href="dnd.html#attr-draggable-false-state">False</a>, the <code><a href="dnd.html#dom-draggable">draggable</a></code> IDL attribute must return false.</p>
+<p>Otherwise, the element's <code><a href="dnd.html#attr-draggable">draggable</a></code> content attribute has
+the state <a href="dnd.html#attr-draggable-auto-state">Auto</a>. If the element is an
+<code><a href="embedded-content.html#the-img-element">img</a></code> element, an <code><a href="iframe-embed-object.html#the-object-element">object</a></code> element that <a href="dom.html#represents">represents</a> an image, or
+an <code><a href="text-level-semantics.html#the-a-element">a</a></code> element with an <code><a href="links.html#attr-hyperlink-href">href</a></code> content
+attribute, the <code><a href="dnd.html#dom-draggable">draggable</a></code> IDL attribute must return true;
+otherwise, the <code><a href="dnd.html#dom-draggable">draggable</a></code> IDL attribute must return false.</p>
+</div>
+<div>
+<p>If the <code><a href="dnd.html#dom-draggable">draggable</a></code> IDL attribute is set to the value false,
+the <code><a href="dnd.html#attr-draggable">draggable</a></code> content attribute must be set to the literal
+value "<code>false</code>". If the <code><a href="dnd.html#dom-draggable">draggable</a></code> IDL
+attribute is set to the value true, the <code><a href="dnd.html#attr-draggable">draggable</a></code> content
+attribute must be set to the literal value "<code>true</code>".</p>
+</div>
+<h4 id=security-risks-in-the-drag-and-drop-model>Security risks in the drag-and-drop model</h4>
+<p>User agents must not make the data added to the <code><a href="dnd.html#datatransfer">DataTransfer</a></code> object during the
+<code><a href="dnd.html#event-dnd-dragstart">dragstart</a></code> event available to scripts until the <code><a href="dnd.html#event-dnd-drop">drop</a></code> event, because otherwise, if a user were to drag sensitive
+information from one document to a second document, crossing a hostile third document in the
+process, the hostile document could intercept the data.</p>
+<p>For the same reason, user agents must consider a drop to be successful only if the user
+specifically ended the drag operation — if any scripts end the drag operation, it must be
+considered unsuccessful (canceled) and the <code><a href="dnd.html#event-dnd-drop">drop</a></code> event must not be
+fired.</p>
+<p>User agents should take care to not start drag-and-drop operations in response to script
+actions. For example, in a mouse-and-window environment, if a script moves a window while the user
+has their mouse button depressed, the UA would not consider that to start a drag. This is important
+because otherwise UAs could cause data to be dragged from sensitive sources and dropped into
+hostile documents without the user's consent.</p>
+<p>User agents should filter potentially active (scripted) content (e.g. HTML) when it is dragged
+and when it is dropped, using a safelist of known-safe features. Similarly, <a href=https://url.spec.whatwg.org/#syntax-url-relative data-x-internal=relative-url>relative URLs</a> should be turned into absolute URLs to avoid references changing in
+unexpected ways. This specification does not specify how this is performed.</p>
+<div>
+<p>Consider a hostile page providing some content and getting the user to select and drag and
+drop (or indeed, copy and paste) that content to a victim page's <code><a href="interaction.html#attr-contenteditable">contenteditable</a></code> region. If the browser does not ensure that
+only safe content is dragged, potentially unsafe content such as scripts and event handlers in
+the selection, once dropped (or pasted) into the victim site, get the privileges of the victim
+site. This would thus enable a cross-site scripting attack.</p>
+</div>
+</body>
+</html>

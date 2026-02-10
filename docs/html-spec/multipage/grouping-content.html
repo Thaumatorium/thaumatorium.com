@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+</ol></ol><h3 id=grouping-content>Grouping content</h3>
+<h4 id=the-p-element>The <dfn data-dfn-type=element><code>p</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#flow-content-2">flow content</a> is expected.<dd>As a child of an <code><a href="sections.html#the-hgroup-element">hgroup</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>A <code><a href="grouping-content.html#the-p-element">p</a></code> element's <a href="syntax.html#syntax-end-tag">end tag</a> can be omitted if the
+<code><a href="grouping-content.html#the-p-element">p</a></code> element is immediately followed by an <code><a href="sections.html#the-address-element">address</a></code>, <code><a href="sections.html#the-article-element">article</a></code>,
+<code><a href="sections.html#the-aside-element">aside</a></code>, <code><a href="grouping-content.html#the-blockquote-element">blockquote</a></code>, <code><a href="interactive-elements.html#the-details-element">details</a></code>, <code><a href="interactive-elements.html#the-dialog-element">dialog</a></code>,
+<code><a href="grouping-content.html#the-div-element">div</a></code>, <code><a href="grouping-content.html#the-dl-element">dl</a></code>, <code><a href="form-elements.html#the-fieldset-element">fieldset</a></code>, <code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code>,
+<code><a href="grouping-content.html#the-figure-element">figure</a></code>, <code><a href="sections.html#the-footer-element">footer</a></code>, <code><a href="forms.html#the-form-element">form</a></code>, <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h1</a></code>, <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h2</a></code>,
+<code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h3</a></code>, <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h4</a></code>, <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h5</a></code>, <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h6</a></code>, <code><a href="sections.html#the-header-element">header</a></code>,
+<code><a href="sections.html#the-hgroup-element">hgroup</a></code>, <code><a href="grouping-content.html#the-hr-element">hr</a></code>, <code><a href="grouping-content.html#the-main-element">main</a></code>, <code><a href="grouping-content.html#the-menu-element">menu</a></code>, <code><a href="sections.html#the-nav-element">nav</a></code>,
+<code><a href="grouping-content.html#the-ol-element">ol</a></code>, <code><a href="grouping-content.html#the-p-element">p</a></code>, <code><a href="grouping-content.html#the-pre-element">pre</a></code>, <code><a href="grouping-content.html#the-search-element">search</a></code>, <code><a href="sections.html#the-section-element">section</a></code>,
+<code><a href="tables.html#the-table-element">table</a></code>, or <code><a href="grouping-content.html#the-ul-element">ul</a></code> element, or if there is no more content in the parent
+element and the parent element is an <a href="infrastructure.html#html-elements">HTML element</a> that is not
+an <code><a href="text-level-semantics.html#the-a-element">a</a></code>, <code><a href="media.html#the-audio-element">audio</a></code>, <code><a href="edits.html#the-del-element">del</a></code>, <code><a href="edits.html#the-ins-element">ins</a></code>, <code><a href="image-maps.html#the-map-element">map</a></code>,
+<code><a href="scripting.html#the-noscript-element">noscript</a></code>, or <code><a href="media.html#the-video-element">video</a></code> element, or an <a href="custom-elements.html#autonomous-custom-element">autonomous custom
+element</a>.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-p>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-p>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlparagraphelement' data-dfn-type='interface'>HTMLParagraphElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+// <a href='obsolete.html#HTMLParagraphElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>The <code><a href="grouping-content.html#the-p-element">p</a></code> element <a href="dom.html#represents">represents</a> a <a href="dom.html#paragraph">paragraph</a>.</p>
+<p>While paragraphs are usually represented in visual media by blocks of text that
+are physically separated from adjacent blocks through blank lines, a style sheet or user agent
+would be equally justified in presenting paragraph breaks in a different manner, for instance
+using inline pilcrows (¶).</p>
+<div>
+<p>The following examples are conforming HTML fragments:</p>
+<pre><code>&lt;p&gt;The little kitten gently seated herself on a piece of
+carpet. Later in her life, this would be referred to as the time the
+cat sat on the mat.&lt;/p&gt;</code></pre>
+<pre><code>&lt;fieldset&gt;
+&lt;legend&gt;Personal information&lt;/legend&gt;
+&lt;p&gt;
+&lt;label&gt;Name: &lt;input name=&quot;n&quot;&gt;&lt;/label&gt;
+&lt;label&gt;&lt;input name=&quot;anon&quot; type=&quot;checkbox&quot;&gt; Hide from other users&lt;/label&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Address: &lt;textarea name=&quot;a&quot;&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;</code></pre>
+<pre><code>&lt;p&gt;There was once an example from Femley,&lt;br&gt;
+Whose markup was of dubious quality.&lt;br&gt;
+The validator complained,&lt;br&gt;
+So the author was pained,&lt;br&gt;
+To move the error from the markup to the rhyming.&lt;/p&gt;</code></pre>
+</div>
+<p>The <code><a href="grouping-content.html#the-p-element">p</a></code> element should not be used when a more specific element is more
+appropriate.</p>
+<div>
+<p>The following example is technically correct:</p>
+<pre><code>&lt;section&gt;
+&lt;!-- ... --&gt;
+&lt;p&gt;Last modified: 2001-04-23&lt;/p&gt;
+&lt;p&gt;Author: fred@example.com&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+<p>However, it would be better marked-up as:</p>
+<pre><code>&lt;section&gt;
+&lt;!-- ... --&gt;
+&lt;footer&gt;Last modified: 2001-04-23&lt;/footer&gt;
+&lt;address&gt;Author: fred@example.com&lt;/address&gt;
+&lt;/section&gt;</code></pre>
+<p>Or:</p>
+<pre><code>&lt;section&gt;
+&lt;!-- ... --&gt;
+&lt;footer&gt;
+&lt;p&gt;Last modified: 2001-04-23&lt;/p&gt;
+&lt;address&gt;Author: fred@example.com&lt;/address&gt;
+&lt;/footer&gt;
+&lt;/section&gt;</code></pre>
+</div>
+<div>
+<p>List elements (in particular, <code><a href="grouping-content.html#the-ol-element">ol</a></code> and <code><a href="grouping-content.html#the-ul-element">ul</a></code> elements) cannot be children
+of <code><a href="grouping-content.html#the-p-element">p</a></code> elements. When a sentence contains a bulleted list, therefore, one might wonder
+how it should be marked up.</p>
+<div>
+<p>For instance, this fantastic sentence has bullets relating to</p>
+<ul><li>wizards,
+<li>faster-than-light travel, and
+<li>telepathy,
+</ul>
+<p>and is further discussed below.</p>
+</div>
+<p>The solution is to realize that a <i><a href="dom.html#paragraph">paragraph</a></i>, in HTML terms, is not a
+logical concept, but a structural one. In the fantastic example above, there are actually
+<em>five</em> <a href="dom.html#paragraph">paragraphs</a> as defined by this specification: one
+before the list, one for each bullet, and one after the list.</p>
+<div>
+<p>The markup for the above example could therefore be:</p>
+<pre><code>&lt;p&gt;For instance, this fantastic sentence has bullets relating to&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;wizards,
+&lt;li&gt;faster-than-light travel, and
+&lt;li&gt;telepathy,
+&lt;/ul&gt;
+&lt;p&gt;and is further discussed below.&lt;/p&gt;</code></pre>
+</div>
+<p>Authors wishing to conveniently style such "logical" paragraphs consisting of multiple
+"structural" paragraphs can use the <code><a href="grouping-content.html#the-div-element">div</a></code> element instead of the <code><a href="grouping-content.html#the-p-element">p</a></code>
+element.</p>
+<div>
+<p>Thus for instance the above example could become the following:</p>
+<pre><code>&lt;div&gt;For instance, this fantastic sentence has bullets relating to
+&lt;ul&gt;
+&lt;li&gt;wizards,
+&lt;li&gt;faster-than-light travel, and
+&lt;li&gt;telepathy,
+&lt;/ul&gt;
+and is further discussed below.&lt;/div&gt;</code></pre>
+<p>This example still has five structural paragraphs, but now the author can style just the
+<code><a href="grouping-content.html#the-div-element">div</a></code> instead of having to consider each part of the example separately.</p>
+</div>
+</div>
+<h4 id=the-hr-element>The <dfn data-dfn-type=element><code>hr</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#select-element-inner-content-elements-2"><code>select</code> element inner content elements</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#flow-content-2">flow content</a> is expected.<dd>As a child of a <code><a href="form-elements.html#the-select-element">select</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#concept-content-nothing">Nothing</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>No <a href="syntax.html#syntax-end-tag">end tag</a>.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-hr>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-hr>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlhrelement' data-dfn-type='interface'>HTMLHRElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+// <a href='obsolete.html#HTMLHRElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>The <code><a href="grouping-content.html#the-hr-element">hr</a></code> element <a href="dom.html#represents">represents</a> a <a href="dom.html#paragraph">paragraph</a>-level thematic
+break, e.g., a scene change in a story, or a transition to another topic within a section of a
+reference book; alternatively, it represents a separator between a set of options of a
+<code><a href="form-elements.html#the-select-element">select</a></code> element.</p>
+<div>
+<p>The following fictional extract from a project manual shows two sections that use the
+<code><a href="grouping-content.html#the-hr-element">hr</a></code> element to separate topics within the section.</p>
+<pre><code>&lt;section&gt;
+&lt;h1&gt;Communication&lt;/h1&gt;
+&lt;p&gt;There are various methods of communication. This section
+covers a few of the important ones used by the project.&lt;/p&gt;
+<strong>&lt;hr&gt;</strong>
+&lt;p&gt;Communication stones seem to come in pairs and have mysterious
+properties:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;They can transfer thoughts in two directions once activated
+if used alone.&lt;/li&gt;
+&lt;li&gt;If used with another device, they can transfer one&apos;s
+consciousness to another body.&lt;/li&gt;
+&lt;li&gt;If both stones are used with another device, the
+consciousnesses switch bodies.&lt;/li&gt;
+&lt;/ul&gt;
+<strong>&lt;hr&gt;</strong>
+&lt;p&gt;Radios use the electromagnetic spectrum in the meter range and
+longer.&lt;/p&gt;
+<strong>&lt;hr&gt;</strong>
+&lt;p&gt;Signal flares use the electromagnetic spectrum in the
+nanometer range.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section&gt;
+&lt;h1&gt;Food&lt;/h1&gt;
+&lt;p&gt;All food at the project is rationed:&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;Potatoes&lt;/dt&gt;
+&lt;dd&gt;Two per day&lt;/dd&gt;
+&lt;dt&gt;Soup&lt;/dt&gt;
+&lt;dd&gt;One bowl per day&lt;/dd&gt;
+&lt;/dl&gt;
+<strong>&lt;hr&gt;</strong>
+&lt;p&gt;Cooking is done by the chefs on a set rotation.&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+<p>There is no need for an <code><a href="grouping-content.html#the-hr-element">hr</a></code> element between the sections themselves, since the
+<code><a href="sections.html#the-section-element">section</a></code> elements and the <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h1</a></code> elements imply thematic changes
+themselves.</p>
+</div>
+<div>
+<p>The following extract from <cite>Pandora's Star</cite> by Peter F. Hamilton shows two
+paragraphs that precede a scene change and the paragraph that follows it. The scene change,
+represented in the printed book by a gap containing a solitary centered star between the second
+and third paragraphs, is here represented using the <code><a href="grouping-content.html#the-hr-element">hr</a></code> element.</p>
+<pre lang=en-GB><code>&lt;p&gt;Dudley was ninety-two, in his second life, and fast approaching
+time for another rejuvenation. Despite his body having the physical
+age of a standard fifty-year-old, the prospect of a long degrading
+campaign within academia was one he regarded with dread. For a
+supposedly advanced civilization, the Intersolar Commonwealth could be
+appallingly backward at times, not to mention cruel.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Maybe it won&apos;t be that bad&lt;/i&gt;, he told himself. The lie was
+comforting enough to get him through the rest of the night&apos;s
+shift.&lt;/p&gt;
+<strong>&lt;hr&gt;</strong>
+&lt;p&gt;The Carlton AllLander drove Dudley home just after dawn. Like the
+astronomer, the vehicle was old and worn, but perfectly capable of
+doing its job. It had a cheap diesel engine, common enough on a
+semi-frontier world like Gralmond, although its drive array was a
+thoroughly modern photoneural processor. With its high suspension and
+deep-tread tyres it could plough along the dirt track to the
+observatory in all weather and seasons, including the metre-deep snow
+of Gralmond&apos;s winters.&lt;/p&gt;</code></pre>
+</div>
+<p>The <code><a href="grouping-content.html#the-hr-element">hr</a></code> element does not affect the document's
+<a href="sections.html#outline">outline</a>.</p>
+<h4 id=the-pre-element>The <dfn data-dfn-type=element><code>pre</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#flow-content-2">flow content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-pre>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-pre>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlpreelement' data-dfn-type='interface'>HTMLPreElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+// <a href='obsolete.html#HTMLPreElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>The <code><a href="grouping-content.html#the-pre-element">pre</a></code> element <a href="dom.html#represents">represents</a> a block of preformatted text, in which
+structure is represented by typographic conventions rather than by elements.</p>
+<p>In <a href="syntax.html#syntax">the HTML syntax</a>, a leading newline character immediately following
+the <code><a href="grouping-content.html#the-pre-element">pre</a></code> element start tag is stripped.</p>
+<p>Some examples of cases where the <code><a href="grouping-content.html#the-pre-element">pre</a></code> element could be used:</p>
+<ul><li>Including an email, with paragraphs indicated by blank lines, lists indicated by lines
+prefixed with a bullet, and so on.<li>Including fragments of computer code, with structure indicated according to the conventions
+of that language.<li>Displaying ASCII art.</ul>
+<p>Authors are encouraged to consider how preformatted text will be experienced when
+the formatting is lost, as will be the case for users of speech synthesizers, braille displays,
+and the like. For cases like ASCII art, it is likely that an alternative presentation, such as a
+textual description, would be more universally accessible to the readers of the document.</p>
+<p>To represent a block of computer code, the <code><a href="grouping-content.html#the-pre-element">pre</a></code> element can be used with a
+<code><a href="text-level-semantics.html#the-code-element">code</a></code> element; to represent a block of computer output the <code><a href="grouping-content.html#the-pre-element">pre</a></code> element
+can be used with a <code><a href="text-level-semantics.html#the-samp-element">samp</a></code> element. Similarly, the <code><a href="text-level-semantics.html#the-kbd-element">kbd</a></code> element can be used
+within a <code><a href="grouping-content.html#the-pre-element">pre</a></code> element to indicate text that the user is to enter.</p>
+<p>This element <a href="dom.html#bidireq">has rendering requirements involving the
+bidirectional algorithm</a>.</p>
+<div>
+<p>In the following snippet, a sample of computer code is presented.</p>
+<pre><code>&lt;p&gt;This is the &lt;code&gt;Panel&lt;/code&gt; constructor:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function Panel(element, canClose, closeHandler) {
+this.element = element;
+this.canClose = canClose;
+this.closeHandler = function () { if (closeHandler) closeHandler() };
+}&lt;/code&gt;&lt;/pre&gt;</code></pre>
+</div>
+<div>
+<p>In the following snippet, <code><a href="text-level-semantics.html#the-samp-element">samp</a></code> and <code><a href="text-level-semantics.html#the-kbd-element">kbd</a></code> elements are mixed in the
+contents of a <code><a href="grouping-content.html#the-pre-element">pre</a></code> element to show a session of Zork I.</p>
+<pre><code>&lt;pre&gt;&lt;samp&gt;You are in an open field west of a big white house with a boarded
+front door.
+There is a small mailbox here.
+&gt;&lt;/samp&gt; &lt;kbd&gt;open mailbox&lt;/kbd&gt;
+&lt;samp&gt;Opening the mailbox reveals:
+A leaflet.
+&gt;&lt;/samp&gt;&lt;/pre&gt;</code></pre>
+</div>
+<div>
+<p>The following shows a contemporary poem that uses the <code><a href="grouping-content.html#the-pre-element">pre</a></code> element to preserve its
+unusual formatting, which forms an intrinsic part of the poem itself.</p>
+<pre><code>&lt;pre&gt;                maxling
+it is with a          heart
+heavy
+that i admit loss of a feline
+so           loved
+a friend lost to the
+unknown
+(night)
+~cdr 11dec07&lt;/pre&gt;</code></pre>
+</div>
+<h4 id=the-blockquote-element>The <dfn data-dfn-type=element><code>blockquote</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#flow-content-2">flow content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="grouping-content.html#attr-blockquote-cite">cite</a></code> —  Link to the source of the quotation or more information about the edit
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-blockquote>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-blockquote>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlquoteelement' data-dfn-type='interface'>HTMLQuoteElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflecturl'>ReflectURL</a>] attribute USVString <dfn id='dom-quote-cite' data-dfn-type='attribute'>cite</dfn>;
+};</code></pre>
+<p>The <code><a href="grouping-content.html#htmlquoteelement">HTMLQuoteElement</a></code> interface is also used by the <code><a href="text-level-semantics.html#the-q-element">q</a></code>
+element.</p>
+</dl>
+<p>The <code><a href="grouping-content.html#the-blockquote-element">blockquote</a></code> element <a href="dom.html#represents">represents</a> a section that is quoted from
+another source.</p>
+<p>Content inside a <code><a href="grouping-content.html#the-blockquote-element">blockquote</a></code> must be quoted from another source, whose address, if
+it has one, may be cited in the <dfn id=attr-blockquote-cite data-dfn-type=element-attr><code>cite</code></dfn> attribute.</p>
+<p>If the <code><a href="grouping-content.html#attr-blockquote-cite">cite</a></code> attribute is present, it must be a
+<a href="urls-and-fetching.html#valid-url-potentially-surrounded-by-spaces">valid URL potentially surrounded by spaces</a>. To obtain the
+corresponding citation link, the value of the attribute must be <a href="urls-and-fetching.html#encoding-parsing-a-url">parsed</a> relative to the element's <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>. User agents may
+allow users to follow such citation links, but they are primarily intended for private use (e.g.,
+by server-side scripts collecting statistics about a site's use of quotations), not for
+readers.</p>
+<p>The content of a <code><a href="grouping-content.html#the-blockquote-element">blockquote</a></code> may be abbreviated or may have context added in the
+conventional manner for the text's language.</p>
+<div>
+<p>For example, in English this is traditionally done using square brackets. Consider a page with
+the sentence "Jane ate the cracker. She then said she liked apples and fish."; it could be quoted
+as follows:</p>
+<pre><code>&lt;blockquote&gt;
+&lt;p&gt;[Jane] then said she liked [...] fish.&lt;/p&gt;
+&lt;/blockquote&gt;</code></pre>
+</div>
+<p>Attribution for the quotation, if any, must be placed outside the <code><a href="grouping-content.html#the-blockquote-element">blockquote</a></code>
+element.</p>
+<div>
+<p>For example, here the attribution is given in a paragraph after the quote:</p>
+<pre><code>&lt;blockquote&gt;
+&lt;p&gt;I contend that we are both atheists. I just believe in one fewer
+god than you do. When you understand why you dismiss all the other
+possible gods, you will understand why I dismiss yours.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;— Stephen Roberts&lt;/p&gt;</code></pre>
+<p>The other examples below show other ways of showing attribution.</p>
+</div>
+<div>
+<p>Here a <code><a href="grouping-content.html#the-blockquote-element">blockquote</a></code> element is used in conjunction with a <code><a href="grouping-content.html#the-figure-element">figure</a></code>
+element and its <code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code> to clearly relate a quote to its attribution (which is
+not part of the quote and therefore doesn't belong inside the <code><a href="grouping-content.html#the-blockquote-element">blockquote</a></code>
+itself):</p>
+<pre><code>&lt;figure&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The truth may be puzzling. It may take some work to grapple with.
+It may be counterintuitive. It may contradict deeply held
+prejudices. It may not be consonant with what we desperately want to
+be true. But our preferences do not determine what&apos;s true. We have a
+method, and that method helps us to reach not absolute truth, only
+asymptotic approaches to the truth — never there, just closer
+and closer, always finding vast new oceans of undiscovered
+possibilities. Cleverly designed experiments are the key.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;figcaption&gt;Carl Sagan, in &quot;&lt;cite&gt;Wonder and Skepticism&lt;/cite&gt;&quot;, from
+the &lt;cite&gt;Skeptical Inquirer&lt;/cite&gt; Volume 19, Issue 1 (January-February
+1995)&lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre>
+</div>
+<div>
+<p>This next example shows the use of <code><a href="text-level-semantics.html#the-cite-element">cite</a></code> alongside <code><a href="grouping-content.html#the-blockquote-element">blockquote</a></code>:</p>
+<pre><code>&lt;p&gt;His next piece was the aptly named &lt;cite&gt;Sonnet 130&lt;/cite&gt;:&lt;/p&gt;
+&lt;blockquote cite=&quot;https://quotes.example.org/s/sonnet130.html&quot;&gt;
+&lt;p&gt;My mistress&apos; eyes are nothing like the sun,&lt;br&gt;
+Coral is far more red, than her lips red,&lt;br&gt;
+...</code></pre>
+</div>
+<div>
+<p>This example shows how a forum post could use <code><a href="grouping-content.html#the-blockquote-element">blockquote</a></code> to show what post a user
+is replying to. The <code><a href="sections.html#the-article-element">article</a></code> element is used for each post, to mark up the
+threading.</p>
+<pre><code>&lt;article&gt;
+&lt;h1&gt;&lt;a href=&quot;https://bacon.example.com/?blog=109431&quot;&gt;Bacon on a crowbar&lt;/a&gt;&lt;/h1&gt;
+&lt;article&gt;
+&lt;header&gt;&lt;strong&gt;t3yw&lt;/strong&gt; 12 points 1 hour ago&lt;/header&gt;
+&lt;p&gt;I bet a narwhal would love that.&lt;/p&gt;
+&lt;footer&gt;&lt;a href=&quot;?pid=29578&quot;&gt;permalink&lt;/a&gt;&lt;/footer&gt;
+&lt;article&gt;
+&lt;header&gt;&lt;strong&gt;greg&lt;/strong&gt; 8 points 1 hour ago&lt;/header&gt;
+&lt;blockquote&gt;&lt;p&gt;I bet a narwhal would love that.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;Dude narwhals don&apos;t eat bacon.&lt;/p&gt;
+&lt;footer&gt;&lt;a href=&quot;?pid=29579&quot;&gt;permalink&lt;/a&gt;&lt;/footer&gt;
+&lt;article&gt;
+&lt;header&gt;&lt;strong&gt;t3yw&lt;/strong&gt; 15 points 1 hour ago&lt;/header&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;&lt;p&gt;I bet a narwhal would love that.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;Dude narwhals don&apos;t eat bacon.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Next thing you&apos;ll be saying they don&apos;t get capes and wizard
+hats either!&lt;/p&gt;
+&lt;footer&gt;&lt;a href=&quot;?pid=29580&quot;&gt;permalink&lt;/a&gt;&lt;/footer&gt;
+&lt;article&gt;
+&lt;article&gt;
+&lt;header&gt;&lt;strong&gt;boing&lt;/strong&gt; -5 points 1 hour ago&lt;/header&gt;
+&lt;p&gt;narwhals are worse than ceiling cat&lt;/p&gt;
+&lt;footer&gt;&lt;a href=&quot;?pid=29581&quot;&gt;permalink&lt;/a&gt;&lt;/footer&gt;
+&lt;/article&gt;
+&lt;/article&gt;
+&lt;/article&gt;
+&lt;/article&gt;
+&lt;article&gt;
+&lt;header&gt;&lt;strong&gt;fred&lt;/strong&gt; 1 points 23 minutes ago&lt;/header&gt;
+&lt;blockquote&gt;&lt;p&gt;I bet a narwhal would love that.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;I bet they&apos;d love to peel a banana too.&lt;/p&gt;
+&lt;footer&gt;&lt;a href=&quot;?pid=29582&quot;&gt;permalink&lt;/a&gt;&lt;/footer&gt;
+&lt;/article&gt;
+&lt;/article&gt;
+&lt;/article&gt;</code></pre>
+</div>
+<div>
+<p>This example shows the use of a <code><a href="grouping-content.html#the-blockquote-element">blockquote</a></code> for short snippets, demonstrating that
+one does not have to use <code><a href="grouping-content.html#the-p-element">p</a></code> elements inside <code><a href="grouping-content.html#the-blockquote-element">blockquote</a></code> elements:</p>
+<pre><code>&lt;p&gt;He began his list of &quot;lessons&quot; with the following:&lt;/p&gt;
+&lt;blockquote&gt;One should never assume that his side of
+the issue will be recognized, let alone that it will
+be conceded to have merits.&lt;/blockquote&gt;
+&lt;p&gt;He continued with a number of similar points, ending with:&lt;/p&gt;
+&lt;blockquote&gt;Finally, one should be prepared for the threat
+of breakdown in negotiations at any given moment and not
+be cowed by the possibility.&lt;/blockquote&gt;
+&lt;p&gt;We shall now discuss these points...</code></pre>
+</div>
+<p><a href="semantics-other.html#conversations">Examples of how to represent a conversation</a> are shown
+in a later section; it is not appropriate to use the <code><a href="text-level-semantics.html#the-cite-element">cite</a></code> and <code><a href="grouping-content.html#the-blockquote-element">blockquote</a></code>
+elements for this purpose.</p>
+<h4 id=the-ol-element>The <dfn data-dfn-type=element><code>ol</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd>If the element's children include at least one <code><a href="grouping-content.html#the-li-element">li</a></code> element: <a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#flow-content-2">flow content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>Zero or more <code><a href="grouping-content.html#the-li-element">li</a></code> and <a href="dom.html#script-supporting-elements-2">script-supporting</a> elements.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="grouping-content.html#attr-ol-reversed">reversed</a></code> —  Number the list backwards
+<dd><code><a href="grouping-content.html#attr-ol-start">start</a></code> —  <a href="grouping-content.html#concept-ol-start">Starting value</a> of the list
+<dd><code><a href="grouping-content.html#attr-ol-type">type</a></code> —  Kind of list marker
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-ol>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-ol>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlolistelement' data-dfn-type='interface'>HTMLOListElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-ol-reversed' data-dfn-type='attribute'>reversed</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>, <a href='common-dom-interfaces.html#xattr-reflectdefault'>ReflectDefault=1</a>] attribute long <dfn id='dom-ol-start' data-dfn-type='attribute'>start</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-ol-type' data-dfn-type='attribute'>type</dfn>;
+// <a href='obsolete.html#HTMLOListElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>The <code><a href="grouping-content.html#the-ol-element">ol</a></code> element <a href="dom.html#represents">represents</a> a list of items, where the items have been
+intentionally ordered, such that changing the order would change the meaning of the document.</p>
+<p>The items of the list are the <code><a href="grouping-content.html#the-li-element">li</a></code> element child nodes of the <code><a href="grouping-content.html#the-ol-element">ol</a></code>
+element, in <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a>.</p>
+</div><p>The <dfn id=attr-ol-reversed data-dfn-type=element-attr><code>reversed</code></dfn> attribute
+is a <a href="common-microsyntaxes.html#boolean-attribute">boolean attribute</a>. If present, it indicates that the list is a descending list
+(..., 3, 2, 1). If the attribute is omitted, the list is an ascending list (1, 2, 3, ...).</p>
+<p>The <dfn id=attr-ol-start data-dfn-type=element-attr><code>start</code></dfn> attribute, if
+present, must be a <a href="common-microsyntaxes.html#valid-integer">valid integer</a>. It is used to determine the <a href="grouping-content.html#concept-ol-start">starting value</a> of the list.</p>
+<div>
+<p>An <code><a href="grouping-content.html#the-ol-element">ol</a></code> element has a <dfn id=concept-ol-start>starting value</dfn>, which is
+an integer determined as follows:</p>
+<ol><li>
+<p>If the <code><a href="grouping-content.html#the-ol-element">ol</a></code> element has a <code><a href="grouping-content.html#attr-ol-start">start</a></code> attribute,
+then:</p>
+<ol><li><p>Let <var>parsed</var> be the result of <a href="common-microsyntaxes.html#rules-for-parsing-integers">parsing
+the value of the attribute as an integer</a>.<li><p>If <var>parsed</var> is not an error, then return <var>parsed</var>.</ol>
+<li><p>If the <code><a href="grouping-content.html#the-ol-element">ol</a></code> element has a <code><a href="grouping-content.html#attr-ol-reversed">reversed</a></code>
+attribute, then return the number of <a href="grouping-content.html#list-owner">owned <code>li</code>
+elements</a>.<li><p>Return 1.</ol>
+</div>
+<p>The <dfn id=attr-ol-type data-dfn-type=element-attr><code>type</code></dfn> attribute can be
+used to specify the kind of marker to use in the list, in the cases where that matters (e.g.
+because items are to be <a href="dom.html#referenced">referenced</a> by their number/letter). The attribute, if
+specified, must have a value that is <a href=https://infra.spec.whatwg.org/#string-is data-x-internal=identical-to>identical to</a> one of the characters given in the
+first cell of one of the rows of the following table. The <code><a href="grouping-content.html#attr-ol-type">type</a></code> attribute represents the state given in the cell in the second
+column of the row whose first cell matches the attribute's value; if none of the cells match, or
+if the attribute is omitted, then the attribute represents the <a href="grouping-content.html#attr-ol-type-state-decimal">decimal</a> state.</p>
+<table><thead><tr><th>Keyword
+<th>State
+<th>Description
+<th colspan=8>Examples for values 1-3 and 3999-4001
+<tbody><tr><td><dfn id=attr-ol-type-keyword-decimal data-dfn-type=attr-value><code>1</code></dfn>
+(U+0031)
+<td><dfn id=attr-ol-type-state-decimal>decimal</dfn>
+<td>Decimal numbers
+<td><samp>1.</samp> <td><samp>2.</samp> <td><samp>3.</samp> <td>... <td><samp>3999.</samp> <td><samp>4000.</samp> <td><samp>4001.</samp> <td>...
+<tr><td><dfn id=attr-ol-type-keyword-lower-alpha data-dfn-type=attr-value><code>a</code></dfn> (U+0061)
+<td><dfn id=attr-ol-type-state-lower-alpha>lower-alpha</dfn>
+<td>Lowercase latin alphabet
+<td><samp>a.</samp> <td><samp>b.</samp> <td><samp>c.</samp> <td>... <td><samp>ewu.</samp> <td><samp>ewv.</samp> <td><samp>eww.</samp> <td>...
+<tr><td><dfn id=attr-ol-type-keyword-upper-alpha data-dfn-type=attr-value><code>A</code></dfn> (U+0041)
+<td><dfn id=attr-ol-type-state-upper-alpha>upper-alpha</dfn>
+<td>Uppercase latin alphabet
+<td><samp>A.</samp> <td><samp>B.</samp> <td><samp>C.</samp> <td>... <td><samp>EWU.</samp> <td><samp>EWV.</samp> <td><samp>EWW.</samp> <td>...
+<tr><td><dfn id=attr-ol-type-keyword-lower-roman data-dfn-type=attr-value><code>i</code></dfn> (U+0069)
+<td><dfn id=attr-ol-type-state-lower-roman>lower-roman</dfn>
+<td>Lowercase roman numerals
+<td><samp>i.</samp> <td><samp>ii.</samp> <td><samp>iii.</samp> <td>... <td><samp>mmmcmxcix.</samp> <td><samp>i̅v̅.</samp> <td><samp>i̅v̅i.</samp> <td>...
+<tr><td><dfn id=attr-ol-type-keyword-upper-roman data-dfn-type=attr-value><code>I</code></dfn> (U+0049)
+<td><dfn id=attr-ol-type-state-upper-roman>upper-roman</dfn>
+<td>Uppercase roman numerals
+<td><samp>I.</samp> <td><samp>II.</samp> <td><samp>III.</samp> <td>... <td><samp>MMMCMXCIX.</samp> <td><samp>I̅V̅.</samp> <td><samp>I̅V̅I.</samp> <td>...
+</table>
+<p>User agents should render the items of the list in a manner consistent with the state of the
+<code><a href="grouping-content.html#attr-ol-type">type</a></code> attribute of the <code><a href="grouping-content.html#the-ol-element">ol</a></code> element. Numbers less than
+or equal to zero should always use the decimal system regardless of the <code><a href="grouping-content.html#attr-ol-type">type</a></code> attribute.</p>
+<p>For CSS user agents, a mapping for this attribute to the
+<alist-style-type'" href=https://drafts.csswg.org/css-lists/#propdef-list-style-type data-x-internal="'list-style-type'">'list-style-type'</a> CSS property is given <a href="rendering.html#decohints">in the Rendering
+section</a> (the mapping is straightforward: the states above have the same names as their
+corresponding CSS values).</p>
+<p>It is possible to redefine the default CSS list styles used to implement this
+attribute in CSS user agents; doing so will affect how list items are rendered.</p>
+<p>Due to <a href="common-dom-interfaces.html#xattr-reflectdefault">[ReflectDefault]</a> the <code><a href="grouping-content.html#dom-ol-start">start</a></code> IDL attribute does not necessarily match the list's <a href="grouping-content.html#concept-ol-start">starting value</a>, in cases where the <code><a href="grouping-content.html#attr-ol-start">start</a></code> content attribute is omitted and the <code><a href="grouping-content.html#attr-ol-reversed">reversed</a></code> content attribute is specified.</p>
+<div>
+<p>The following markup shows a list where the order matters, and where the <code><a href="grouping-content.html#the-ol-element">ol</a></code>
+element is therefore appropriate. Compare this list to the equivalent list in the <code><a href="grouping-content.html#the-ul-element">ul</a></code>
+section to see an example of the same items using the <code><a href="grouping-content.html#the-ul-element">ul</a></code> element.</p>
+<pre><code>&lt;p&gt;I have lived in the following countries (given in the order of when
+I first lived there):&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Switzerland
+&lt;li&gt;United Kingdom
+&lt;li&gt;United States
+&lt;li&gt;Norway
+&lt;/ol&gt;</code></pre>
+<p>Note how changing the order of the list changes the meaning of the document. In the following
+example, changing the relative order of the first two items has changed the birthplace of the
+author:</p>
+<pre><code>&lt;p&gt;I have lived in the following countries (given in the order of when
+I first lived there):&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;United Kingdom
+&lt;li&gt;Switzerland
+&lt;li&gt;United States
+&lt;li&gt;Norway
+&lt;/ol&gt;</code></pre>
+</div>
+<h4 id=the-ul-element>The <dfn data-dfn-type=element><code>ul</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd>If the element's children include at least one <code><a href="grouping-content.html#the-li-element">li</a></code> element: <a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#flow-content-2">flow content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>Zero or more <code><a href="grouping-content.html#the-li-element">li</a></code> and <a href="dom.html#script-supporting-elements-2">script-supporting</a> elements.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-ul>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-ul>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlulistelement' data-dfn-type='interface'>HTMLUListElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+// <a href='obsolete.html#HTMLUListElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>The <code><a href="grouping-content.html#the-ul-element">ul</a></code> element <a href="dom.html#represents">represents</a> a list of items, where the order of the
+items is not important — that is, where changing the order would not materially change the
+meaning of the document.</p>
+<p>The items of the list are the <code><a href="grouping-content.html#the-li-element">li</a></code> element child nodes of the <code><a href="grouping-content.html#the-ul-element">ul</a></code>
+element.</p>
+<div>
+<p>The following markup shows a list where the order does not matter, and where the
+<code><a href="grouping-content.html#the-ul-element">ul</a></code> element is therefore appropriate. Compare this list to the equivalent list in the
+<code><a href="grouping-content.html#the-ol-element">ol</a></code> section to see an example of the same items using the <code><a href="grouping-content.html#the-ol-element">ol</a></code>
+element.</p>
+<pre><code>&lt;p&gt;I have lived in the following countries:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Norway
+&lt;li&gt;Switzerland
+&lt;li&gt;United Kingdom
+&lt;li&gt;United States
+&lt;/ul&gt;</code></pre>
+<p>Note that changing the order of the list does not change the meaning of the document. The
+items in the snippet above are given in alphabetical order, but in the snippet below they are
+given in order of the size of their current account balance in 2007, without changing the meaning
+of the document whatsoever:</p>
+<pre><code>&lt;p&gt;I have lived in the following countries:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Switzerland
+&lt;li&gt;Norway
+&lt;li&gt;United Kingdom
+&lt;li&gt;United States
+&lt;/ul&gt;</code></pre>
+</div>
+<h4 id=the-menu-element>The <dfn id=menus data-dfn-type=element><code>menu</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd>If the element's children include at least one <code><a href="grouping-content.html#the-li-element">li</a></code> element: <a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#flow-content-2">flow content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>Zero or more <code><a href="grouping-content.html#the-li-element">li</a></code> and <a href="dom.html#script-supporting-elements-2">script-supporting</a> elements.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-menu>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-menu>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlmenuelement' data-dfn-type='interface'>HTMLMenuElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+// <a href='obsolete.html#HTMLMenuElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>The <code><a href="grouping-content.html#the-menu-element">menu</a></code> element <a href="dom.html#represents">represents</a> a toolbar consisting of its contents, in
+the form of an unordered list of items (represented by <code><a href="grouping-content.html#the-li-element">li</a></code> elements), each of
+which represents a command that the user can perform or activate.</p>
+<p>The <code><a href="grouping-content.html#the-menu-element">menu</a></code> element is simply a semantic alternative to <code><a href="grouping-content.html#the-ul-element">ul</a></code>
+to express an unordered list of commands (a "toolbar").</p>
+<div>
+<p>In this example, a text-editing application uses a <code><a href="grouping-content.html#the-menu-element">menu</a></code> element to provide a
+series of editing commands:</p>
+<pre><code>&lt;menu&gt;
+&lt;li&gt;&lt;button onclick=&quot;copy()&quot;&gt;&lt;img src=&quot;copy.svg&quot; alt=&quot;Copy&quot;&gt;&lt;/button&gt;&lt;/li&gt;
+&lt;li&gt;&lt;button onclick=&quot;cut()&quot;&gt;&lt;img src=&quot;cut.svg&quot; alt=&quot;Cut&quot;&gt;&lt;/button&gt;&lt;/li&gt;
+&lt;li&gt;&lt;button onclick=&quot;paste()&quot;&gt;&lt;img src=&quot;paste.svg&quot; alt=&quot;Paste&quot;&gt;&lt;/button&gt;&lt;/li&gt;
+&lt;/menu&gt;</code></pre>
+<p>Note that the styling to make this look like a conventional toolbar menu is up to the
+application.</p>
+</div>
+<h4 id=the-li-element>The <dfn data-dfn-type=element><code>li</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Inside <code><a href="grouping-content.html#the-ol-element">ol</a></code> elements.<dd>Inside <code><a href="grouping-content.html#the-ul-element">ul</a></code> elements.<dd>Inside <code><a href="grouping-content.html#the-menu-element">menu</a></code> elements.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>An <code><a href="grouping-content.html#the-li-element">li</a></code> element's <a href="syntax.html#syntax-end-tag">end tag</a> can be omitted if the
+<code><a href="grouping-content.html#the-li-element">li</a></code> element is immediately followed by another <code><a href="grouping-content.html#the-li-element">li</a></code> element or if there is
+no more content in the parent element.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd>If the element is not a child of an <code><a href="grouping-content.html#the-ul-element">ul</a></code> or <code><a href="grouping-content.html#the-menu-element">menu</a></code> element: <code><a href="grouping-content.html#attr-li-value">value</a></code> —  <a href="grouping-content.html#ordinal-value">Ordinal value</a> of the list item
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-li>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-li>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmllielement' data-dfn-type='interface'>HTMLLIElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute long <dfn id='dom-li-value' data-dfn-type='attribute'>value</dfn>;
+// <a href='obsolete.html#HTMLLIElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>The <code><a href="grouping-content.html#the-li-element">li</a></code> element <a href="dom.html#represents">represents</a> a list item. If its parent element is an
+<code><a href="grouping-content.html#the-ol-element">ol</a></code>, <code><a href="grouping-content.html#the-ul-element">ul</a></code>, or <code><a href="grouping-content.html#the-menu-element">menu</a></code> element, then the element is an item of the
+parent element's list, as defined for those elements. Otherwise, the list item has no defined
+list-related relationship to any other <code><a href="grouping-content.html#the-li-element">li</a></code> element.</p>
+<p>The <dfn id=attr-li-value data-dfn-type=element-attr><code>value</code></dfn> attribute, if
+present, must be a <a href="common-microsyntaxes.html#valid-integer">valid integer</a>. It is used to determine the <a href="grouping-content.html#ordinal-value">ordinal
+value</a> of the list item, when the <code><a href="grouping-content.html#the-li-element">li</a></code>'s <a href="grouping-content.html#list-owner">list owner</a> is an
+<code><a href="grouping-content.html#the-ol-element">ol</a></code> element.</p>
+<hr>
+<div>
+<p>Any element whose <a href=https://drafts.csswg.org/css-cascade/#computed-value data-x-internal=computed-value>computed value</a> of <adisplay'" href=https://drafts.csswg.org/css2/#display-prop data-x-internal="'display'">'display'</a> is 'list-item' has a
+<dfn id=list-owner>list owner</dfn>, which is determined as follows:</p>
+<ol><li><p>If the element is not <a href="rendering.html#being-rendered">being rendered</a>, return null; the element has no
+<a href="grouping-content.html#list-owner">list owner</a>.</p>
+<li><p>Let <var>ancestor</var> be the element's parent.<li><p>If the element has an <code><a href="grouping-content.html#the-ol-element">ol</a></code>, <code><a href="grouping-content.html#the-ul-element">ul</a></code>, or <code><a href="grouping-content.html#the-menu-element">menu</a></code> ancestor, set
+<var>ancestor</var> to the closest such ancestor element.<li>
+<p>Return the closest inclusive ancestor of <var>ancestor</var> that produces a <a href=https://drafts.csswg.org/css-display/#css-box data-x-internal=css-box>CSS
+box</a>.</p>
+<p>Such an element will always exist, as at the very least the <a href=https://dom.spec.whatwg.org/#document-element data-x-internal=document-element>document
+element</a> will always produce a <a href=https://drafts.csswg.org/css-display/#css-box data-x-internal=css-box>CSS box</a>.</p>
+</ol>
+</div>
+<div>
+<p>To determine the <dfn id=ordinal-value>ordinal value</dfn> of each element owned by a given <a href="grouping-content.html#list-owner">list
+owner</a> <var>owner</var>, perform the following steps:</p>
+<ol><li><p>Let <var>i</var> be 1.<li><p>If <var>owner</var> is an <code><a href="grouping-content.html#the-ol-element">ol</a></code> element, let <var>numbering</var> be
+<var>owner</var>'s <a href="grouping-content.html#concept-ol-start">starting value</a>. Otherwise, let
+<var>numbering</var> be 1.<li><p><i>Loop</i>: If <var>i</var> is greater than the number of <a href="grouping-content.html#list-owner">list items that <var>owner</var> owns</a>, then return; all
+of <var>owner</var>'s <a href="grouping-content.html#list-owner">owned list items</a> have been assigned <a href="grouping-content.html#ordinal-value">ordinal values</a>.<li><p>Let <var>item</var> be the <var>i</var>th of <var>owner</var>'s <a href="grouping-content.html#list-owner">owned list items</a>, in <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a>.</p>
+<li>
+<p>If <var>item</var> is an <code><a href="grouping-content.html#the-li-element">li</a></code> element that has a <code><a href="grouping-content.html#attr-li-value">value</a></code> attribute, then:</p>
+<ol><li><p>Let <var>parsed</var> be the result of <a href="common-microsyntaxes.html#rules-for-parsing-integers">parsing
+the value of the attribute as an integer</a>.<li><p>If <var>parsed</var> is not an error, then set <var>numbering</var> to
+<var>parsed</var>.</ol>
+<li><p>The <a href="grouping-content.html#ordinal-value">ordinal value</a> of <var>item</var> is <var>numbering</var>.<li><p>If <var>owner</var> is an <code><a href="grouping-content.html#the-ol-element">ol</a></code> element, and <var>owner</var> has a <code><a href="grouping-content.html#attr-ol-reversed">reversed</a></code> attribute, decrement <var>numbering</var> by 1;
+otherwise, increment <var>numbering</var> by 1.<li><p>Increment <var>i</var> by 1.<li><p>Go to the step labeled <i>loop</i>.</p>
+</ol>
+</div>
+<hr>
+<div>
+<p>The element's <code><a href="grouping-content.html#dom-li-value">value</a></code> IDL attribute does not directly
+correspond to its <a href="grouping-content.html#ordinal-value">ordinal value</a>; it simply <a href="common-dom-interfaces.html#reflect">reflects</a>
+the content attribute. For example, given this list:
+<pre><code>&lt;ol&gt;
+&lt;li&gt;Item 1
+&lt;li value=&quot;3&quot;&gt;Item 3
+&lt;li&gt;Item 4
+&lt;/ol&gt;</code></pre>
+<p>The <a href="grouping-content.html#ordinal-value">ordinal values</a> are 1, 3, and 4, whereas the <code><a href="grouping-content.html#dom-li-value">value</a></code> IDL attributes return 0, 3, 0 on getting.</p>
+</div>
+<div>
+<p>The following example, the top ten movies are listed (in reverse order). Note the way the list
+is given a title by using a <code><a href="grouping-content.html#the-figure-element">figure</a></code> element and its <code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code>
+element.</p>
+<pre><code>&lt;figure&gt;
+&lt;figcaption&gt;The top 10 movies of all time&lt;/figcaption&gt;
+&lt;ol&gt;
+&lt;li value=&quot;10&quot;&gt;&lt;cite&gt;Josie and the Pussycats&lt;/cite&gt;, 2001&lt;/li&gt;
+&lt;li value=&quot;9&quot;&gt;&lt;cite lang=&quot;sh&quot;&gt;Црна мачка, бели мачор&lt;/cite&gt;, 1998&lt;/li&gt;
+&lt;li value=&quot;8&quot;&gt;&lt;cite&gt;A Bug&apos;s Life&lt;/cite&gt;, 1998&lt;/li&gt;
+&lt;li value=&quot;7&quot;&gt;&lt;cite&gt;Toy Story&lt;/cite&gt;, 1995&lt;/li&gt;
+&lt;li value=&quot;6&quot;&gt;&lt;cite&gt;Monsters, Inc&lt;/cite&gt;, 2001&lt;/li&gt;
+&lt;li value=&quot;5&quot;&gt;&lt;cite&gt;Cars&lt;/cite&gt;, 2006&lt;/li&gt;
+&lt;li value=&quot;4&quot;&gt;&lt;cite&gt;Toy Story 2&lt;/cite&gt;, 1999&lt;/li&gt;
+&lt;li value=&quot;3&quot;&gt;&lt;cite&gt;Finding Nemo&lt;/cite&gt;, 2003&lt;/li&gt;
+&lt;li value=&quot;2&quot;&gt;&lt;cite&gt;The Incredibles&lt;/cite&gt;, 2004&lt;/li&gt;
+&lt;li value=&quot;1&quot;&gt;&lt;cite&gt;Ratatouille&lt;/cite&gt;, 2007&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/figure&gt;</code></pre>
+<p>The markup could also be written as follows, using the <code><a href="grouping-content.html#attr-ol-reversed">reversed</a></code> attribute on the <code><a href="grouping-content.html#the-ol-element">ol</a></code> element:</p>
+<pre><code>&lt;figure&gt;
+&lt;figcaption&gt;The top 10 movies of all time&lt;/figcaption&gt;
+&lt;ol reversed&gt;
+&lt;li&gt;&lt;cite&gt;Josie and the Pussycats&lt;/cite&gt;, 2001&lt;/li&gt;
+&lt;li&gt;&lt;cite lang=&quot;sh&quot;&gt;Црна мачка, бели мачор&lt;/cite&gt;, 1998&lt;/li&gt;
+&lt;li&gt;&lt;cite&gt;A Bug&apos;s Life&lt;/cite&gt;, 1998&lt;/li&gt;
+&lt;li&gt;&lt;cite&gt;Toy Story&lt;/cite&gt;, 1995&lt;/li&gt;
+&lt;li&gt;&lt;cite&gt;Monsters, Inc&lt;/cite&gt;, 2001&lt;/li&gt;
+&lt;li&gt;&lt;cite&gt;Cars&lt;/cite&gt;, 2006&lt;/li&gt;
+&lt;li&gt;&lt;cite&gt;Toy Story 2&lt;/cite&gt;, 1999&lt;/li&gt;
+&lt;li&gt;&lt;cite&gt;Finding Nemo&lt;/cite&gt;, 2003&lt;/li&gt;
+&lt;li&gt;&lt;cite&gt;The Incredibles&lt;/cite&gt;, 2004&lt;/li&gt;
+&lt;li&gt;&lt;cite&gt;Ratatouille&lt;/cite&gt;, 2007&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/figure&gt;</code></pre>
+</div>
+<p>While it is conforming to include heading elements (e.g. <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h1</a></code>) inside
+<code><a href="grouping-content.html#the-li-element">li</a></code> elements, it likely does not convey the semantics that the author intended. A
+heading starts a new section, so a heading in a list implicitly splits the list into spanning
+multiple sections.</p>
+<h4 id=the-dl-element>The <dfn data-dfn-type=element><code>dl</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd>If the element's children include at least one name-value group: <a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#flow-content-2">flow content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>Either: Zero or more groups each consisting of one or more <code><a href="grouping-content.html#the-dt-element">dt</a></code> elements followed by one or more <code><a href="grouping-content.html#the-dd-element">dd</a></code> elements, optionally intermixed with <a href="dom.html#script-supporting-elements-2">script-supporting elements</a>.<dd>Or: One or more <code><a href="grouping-content.html#the-div-element">div</a></code> elements, optionally intermixed with <a href="dom.html#script-supporting-elements-2">script-supporting elements</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-dl>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-dl>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmldlistelement' data-dfn-type='interface'>HTMLDListElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+// <a href='obsolete.html#HTMLDListElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>The <code><a href="grouping-content.html#the-dl-element">dl</a></code> element <a href="dom.html#represents">represents</a> an association list consisting of zero or
+more name-value groups (a description list). A name-value group consists of one or more names
+(<code><a href="grouping-content.html#the-dt-element">dt</a></code> elements, possibly as children of a <code><a href="grouping-content.html#the-div-element">div</a></code> element child) followed by
+one or more values (<code><a href="grouping-content.html#the-dd-element">dd</a></code> elements, possibly as children of a <code><a href="grouping-content.html#the-div-element">div</a></code> element
+child), ignoring any nodes other than <code><a href="grouping-content.html#the-dt-element">dt</a></code> and <code><a href="grouping-content.html#the-dd-element">dd</a></code> element children, and
+<code><a href="grouping-content.html#the-dt-element">dt</a></code> and <code><a href="grouping-content.html#the-dd-element">dd</a></code> elements that are children of <code><a href="grouping-content.html#the-div-element">div</a></code> element
+children. Within a single <code><a href="grouping-content.html#the-dl-element">dl</a></code> element, there should not be more than one
+<code><a href="grouping-content.html#the-dt-element">dt</a></code> element for each name.</p>
+<p>Name-value groups may be terms and definitions, metadata topics and values, questions and
+answers, or any other groups of name-value data.</p>
+<p>The values within a group are alternatives; multiple paragraphs forming part of the same value
+must all be given within the same <code><a href="grouping-content.html#the-dd-element">dd</a></code> element.</p>
+<p>The order of the list of groups, and of the names and values within each group, may be
+significant.</p>
+<p>In order to annotate groups with <a href="microdata.html#microdata">microdata</a> attributes, or other <a href="dom.html#global-attributes">global
+attributes</a> that apply to whole groups, or just for styling purposes, each group in a
+<code><a href="grouping-content.html#the-dl-element">dl</a></code> element can be wrapped in a <code><a href="grouping-content.html#the-div-element">div</a></code> element. This does not change the
+semantics of the <code><a href="grouping-content.html#the-dl-element">dl</a></code> element.</p>
+<div>
+<div>
+<p>The name-value groups of a <code><a href="grouping-content.html#the-dl-element">dl</a></code> element <var>dl</var> are determined using the
+following algorithm. A name-value group has a name (a list of <code><a href="grouping-content.html#the-dt-element">dt</a></code> elements, initially
+empty) and a value (a list of <code><a href="grouping-content.html#the-dd-element">dd</a></code> elements, initially empty).</p>
+<ol><li><p>Let <var>groups</var> be an empty list of name-value groups.<li><p>Let <var>current</var> be a new name-value group.<li><p>Let <var>seenDd</var> be false.<li><p>Let <var>child</var> be <var>dl</var>'s <a href=https://dom.spec.whatwg.org/#concept-tree-first-child data-x-internal=first-child>first child</a>.<li><p>Let <var>grandchild</var> be null.<li>
+<p>While <var>child</var> is not null:</p>
+<ol><li>
+<p>If <var>child</var> is a <code><a href="grouping-content.html#the-div-element">div</a></code> element, then:</p>
+<ol><li><p>Let <var>grandchild</var> be <var>child</var>'s <a href=https://dom.spec.whatwg.org/#concept-tree-first-child data-x-internal=first-child>first child</a>.<li>
+<p>While <var>grandchild</var> is not null:</p>
+<ol><li><p><a href="grouping-content.html#process-dt-or-dd">Process <code>dt</code> or <code>dd</code></a> for
+<var>grandchild</var>.<li><p>Set <var>grandchild</var> to <var>grandchild</var>'s <a href=https://dom.spec.whatwg.org/#concept-tree-next-sibling data-x-internal=next-sibling>next
+sibling</a>.</ol>
+</ol>
+<li><p>Otherwise, <a href="grouping-content.html#process-dt-or-dd">process <code>dt</code> or <code>dd</code></a> for
+<var>child</var>.<li><p>Set <var>child</var> to <var>child</var>'s <a href=https://dom.spec.whatwg.org/#concept-tree-next-sibling data-x-internal=next-sibling>next sibling</a>.</ol>
+<li><p>If <var>current</var> is not empty, then append <var>current</var> to
+<var>groups</var>.<li><p>Return <var>groups</var>.</ol>
+</div>
+<div>
+<p>To <dfn id=process-dt-or-dd>process <code>dt</code> or <code>dd</code></dfn> for a node <var>node</var> means to
+follow these steps:</p>
+<ol><li><p>Let <var>groups</var>, <var>current</var>, and <var>seenDd</var> be the same variables as
+those of the same name in the algorithm that invoked these steps.<li>
+<p>If <var>node</var> is a <code><a href="grouping-content.html#the-dt-element">dt</a></code> element, then:</p>
+<ol><li><p>If <var>seenDd</var> is true, then append <var>current</var> to <var>groups</var>, set
+<var>current</var> to a new name-value group, and set <var>seenDd</var> to false.<li><p>Append <var>node</var> to <var>current</var>'s name.</ol>
+<li><p>Otherwise, if <var>node</var> is a <code><a href="grouping-content.html#the-dd-element">dd</a></code> element, then append <var>node</var> to
+<var>current</var>'s value and set <var>seenDd</var> to true.</ol>
+</div>
+</div>
+<p>When a name-value group has an empty list as name or value, it is often due to
+accidentally using <code><a href="grouping-content.html#the-dd-element">dd</a></code> elements in the place of <code><a href="grouping-content.html#the-dt-element">dt</a></code> elements and vice
+versa. Conformance checkers can spot such mistakes and might be able to advise authors how to
+correctly use the markup.</p>
+<div>
+<p>In the following example, one entry ("Authors") is linked to two values ("John" and
+"Luke").</p>
+<pre><code>&lt;dl&gt;
+&lt;dt&gt; Authors
+&lt;dd&gt; John
+&lt;dd&gt; Luke
+&lt;dt&gt; Editor
+&lt;dd&gt; Frank
+&lt;/dl&gt;</code></pre>
+</div>
+<div>
+<p>In the following example, one definition is linked to two terms.</p>
+<pre><code>&lt;dl&gt;
+&lt;dt lang=&quot;en-US&quot;&gt; &lt;dfn&gt;color&lt;/dfn&gt; &lt;/dt&gt;
+<span lang='en-GB'>&lt;dt lang=&quot;en-GB&quot;&gt; &lt;dfn&gt;colour&lt;/dfn&gt; &lt;/dt&gt;</span>
+&lt;dd&gt; A sensation which (in humans) derives from the ability of
+the fine structure of the eye to distinguish three differently
+filtered analyses of a view. &lt;/dd&gt;
+&lt;/dl&gt;</code></pre>
+</div>
+<div>
+<p>The following example illustrates the use of the <code><a href="grouping-content.html#the-dl-element">dl</a></code> element to mark up metadata
+of sorts. At the end of the example, one group has two metadata labels ("Authors" and "Editors")
+and two values ("Robert Rothman" and "Daniel Jackson"). This example also uses the
+<code><a href="grouping-content.html#the-div-element">div</a></code> element around the groups of <code><a href="grouping-content.html#the-dt-element">dt</a></code> and <code><a href="grouping-content.html#the-dd-element">dd</a></code> element, to aid
+with styling.</p>
+<pre><code>&lt;dl&gt;
+&lt;div&gt;
+&lt;dt&gt; Last modified time &lt;/dt&gt;
+&lt;dd&gt; 2004-12-23T23:33Z &lt;/dd&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;dt&gt; Recommended update interval &lt;/dt&gt;
+&lt;dd&gt; 60s &lt;/dd&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;dt&gt; Authors &lt;/dt&gt;
+&lt;dt&gt; Editors &lt;/dt&gt;
+&lt;dd&gt; Robert Rothman &lt;/dd&gt;
+&lt;dd&gt; Daniel Jackson &lt;/dd&gt;
+&lt;/div&gt;
+&lt;/dl&gt;</code></pre>
+</div>
+<div>
+<p>The following example shows the <code><a href="grouping-content.html#the-dl-element">dl</a></code> element used to give a set of instructions.
+The order of the instructions here is important (in the other examples, the order of the blocks
+was not important).</p>
+<pre><code>&lt;p&gt;Determine the victory points as follows (use the
+first matching case):&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt; If you have exactly five gold coins &lt;/dt&gt;
+&lt;dd&gt; You get five victory points &lt;/dd&gt;
+&lt;dt&gt; If you have one or more gold coins, and you have one or more silver coins &lt;/dt&gt;
+&lt;dd&gt; You get two victory points &lt;/dd&gt;
+&lt;dt&gt; If you have one or more silver coins &lt;/dt&gt;
+&lt;dd&gt; You get one victory point &lt;/dd&gt;
+&lt;dt&gt; Otherwise &lt;/dt&gt;
+&lt;dd&gt; You get no victory points &lt;/dd&gt;
+&lt;/dl&gt;</code></pre>
+</div>
+<div>
+<p>The following snippet shows a <code><a href="grouping-content.html#the-dl-element">dl</a></code> element being used as a glossary. Note the use
+of <code><a href="text-level-semantics.html#the-dfn-element">dfn</a></code> to indicate the word being defined.</p>
+<pre><code>&lt;dl&gt;
+&lt;dt&gt;&lt;dfn&gt;Apartment&lt;/dfn&gt;, n.&lt;/dt&gt;
+&lt;dd&gt;An execution context grouping one or more threads with one or
+more COM objects.&lt;/dd&gt;
+&lt;dt&gt;&lt;dfn&gt;Flat&lt;/dfn&gt;, n.&lt;/dt&gt;
+&lt;dd&gt;A deflated tire.&lt;/dd&gt;
+&lt;dt&gt;&lt;dfn&gt;Home&lt;/dfn&gt;, n.&lt;/dt&gt;
+&lt;dd&gt;The user&apos;s login directory.&lt;/dd&gt;
+&lt;/dl&gt;</code></pre>
+</div>
+<div>
+<p>This example uses <a href="microdata.html#microdata">microdata</a> attributes in a <code><a href="grouping-content.html#the-dl-element">dl</a></code> element, together
+with the <code><a href="grouping-content.html#the-div-element">div</a></code> element, to annotate the ice cream desserts at a French restaurant.</p>
+<pre lang=fr><code>&lt;dl&gt;
+&lt;div itemscope itemtype=&quot;http://schema.org/Product&quot;&gt;
+&lt;dt itemprop=&quot;name&quot;&gt;Café ou Chocolat Liégeois
+&lt;dd itemprop=&quot;offers&quot; itemscope itemtype=&quot;http://schema.org/Offer&quot;&gt;
+&lt;span itemprop=&quot;price&quot;&gt;3.50&lt;/span&gt;
+&lt;data itemprop=&quot;priceCurrency&quot; value=&quot;EUR&quot;&gt;€&lt;/data&gt;
+&lt;dd itemprop=&quot;description&quot;&gt;
+2 boules Café ou Chocolat, 1 boule Vanille, sauce café ou chocolat, chantilly
+&lt;/div&gt;
+&lt;div itemscope itemtype=&quot;http://schema.org/Product&quot;&gt;
+&lt;dt itemprop=&quot;name&quot;&gt;Américaine
+&lt;dd itemprop=&quot;offers&quot; itemscope itemtype=&quot;http://schema.org/Offer&quot;&gt;
+&lt;span itemprop=&quot;price&quot;&gt;3.50&lt;/span&gt;
+&lt;data itemprop=&quot;priceCurrency&quot; value=&quot;EUR&quot;&gt;€&lt;/data&gt;
+&lt;dd itemprop=&quot;description&quot;&gt;
+1 boule Crème brûlée, 1 boule Vanille, 1 boule Caramel, chantilly
+&lt;/div&gt;
+&lt;/dl&gt;</code></pre>
+<p>Without the <code><a href="grouping-content.html#the-div-element">div</a></code> element the markup would need to use the <code><a href="microdata.html#attr-itemref">itemref</a></code> attribute to link the data in the <code><a href="grouping-content.html#the-dd-element">dd</a></code> elements
+with the item, as follows.</p>
+<pre lang=fr><code>&lt;dl&gt;
+&lt;dt itemscope itemtype=&quot;http://schema.org/Product&quot; itemref=&quot;1-offer 1-description&quot;&gt;
+&lt;span itemprop=&quot;name&quot;&gt;Café ou Chocolat Liégeois&lt;/span&gt;
+&lt;dd id=&quot;1-offer&quot; itemprop=&quot;offers&quot; itemscope itemtype=&quot;http://schema.org/Offer&quot;&gt;
+&lt;span itemprop=&quot;price&quot;&gt;3.50&lt;/span&gt;
+&lt;data itemprop=&quot;priceCurrency&quot; value=&quot;EUR&quot;&gt;€&lt;/data&gt;
+&lt;dd id=&quot;1-description&quot; itemprop=&quot;description&quot;&gt;
+2 boules Café ou Chocolat, 1 boule Vanille, sauce café ou chocolat, chantilly
+&lt;dt itemscope itemtype=&quot;http://schema.org/Product&quot; itemref=&quot;2-offer 2-description&quot;&gt;
+&lt;span itemprop=&quot;name&quot;&gt;Américaine&lt;/span&gt;
+&lt;dd id=&quot;2-offer&quot; itemprop=&quot;offers&quot; itemscope itemtype=&quot;http://schema.org/Offer&quot;&gt;
+&lt;span itemprop=&quot;price&quot;&gt;3.50&lt;/span&gt;
+&lt;data itemprop=&quot;priceCurrency&quot; value=&quot;EUR&quot;&gt;€&lt;/data&gt;
+&lt;dd id=&quot;2-description&quot; itemprop=&quot;description&quot;&gt;
+1 boule Crème brûlée, 1 boule Vanille, 1 boule Caramel, chantilly
+&lt;/dl&gt;</code></pre>
+</div>
+<p>The <code><a href="grouping-content.html#the-dl-element">dl</a></code> element is inappropriate for marking up dialogue. See some <a href="semantics-other.html#conversations">examples of how to mark up dialogue</a>.</p>
+<h4 id=the-dt-element>The <dfn data-dfn-type=element><code>dt</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Before <code><a href="grouping-content.html#the-dd-element">dd</a></code> or <code><a href="grouping-content.html#the-dt-element">dt</a></code> elements inside <code><a href="grouping-content.html#the-dl-element">dl</a></code> elements.<dd>Before <code><a href="grouping-content.html#the-dd-element">dd</a></code> or <code><a href="grouping-content.html#the-dt-element">dt</a></code> elements inside <code><a href="grouping-content.html#the-div-element">div</a></code> elements that are children of a <code><a href="grouping-content.html#the-dl-element">dl</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>, but with no <code><a href="sections.html#the-header-element">header</a></code>, <code><a href="sections.html#the-footer-element">footer</a></code>, <a href="dom.html#sectioning-content-2">sectioning content</a>, or <a href="dom.html#heading-content-2">heading content</a> descendants.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>A <code><a href="grouping-content.html#the-dt-element">dt</a></code> element's <a href="syntax.html#syntax-end-tag">end tag</a> can be omitted if the
+<code><a href="grouping-content.html#the-dt-element">dt</a></code> element is immediately followed by another <code><a href="grouping-content.html#the-dt-element">dt</a></code> element or a
+<code><a href="grouping-content.html#the-dd-element">dd</a></code> element.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-dt>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-dt>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="grouping-content.html#the-dt-element">dt</a></code> element <a href="dom.html#represents">represents</a> the term, or name, part of a
+term-description group in a description list (<code><a href="grouping-content.html#the-dl-element">dl</a></code> element).</p>
+<p>The <code><a href="grouping-content.html#the-dt-element">dt</a></code> element itself, when used in a <code><a href="grouping-content.html#the-dl-element">dl</a></code> element, does
+not indicate that its contents are a term being defined, but this can be indicated using the
+<code><a href="text-level-semantics.html#the-dfn-element">dfn</a></code> element.</p>
+<div>
+<p>This example shows a list of frequently asked questions (a FAQ) marked up using the
+<code><a href="grouping-content.html#the-dt-element">dt</a></code> element for questions and the <code><a href="grouping-content.html#the-dd-element">dd</a></code> element for answers.</p>
+<pre><code>&lt;article&gt;
+&lt;h1&gt;FAQ&lt;/h1&gt;
+&lt;dl&gt;
+&lt;dt&gt;What do we want?&lt;/dt&gt;
+&lt;dd&gt;Our data.&lt;/dd&gt;
+&lt;dt&gt;When do we want it?&lt;/dt&gt;
+&lt;dd&gt;Now.&lt;/dd&gt;
+&lt;dt&gt;Where is it?&lt;/dt&gt;
+&lt;dd&gt;We are not sure.&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/article&gt;</code></pre>
+</div>
+<h4 id=the-dd-element>The <dfn data-dfn-type=element><code>dd</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>After <code><a href="grouping-content.html#the-dt-element">dt</a></code> or <code><a href="grouping-content.html#the-dd-element">dd</a></code> elements inside <code><a href="grouping-content.html#the-dl-element">dl</a></code> elements.<dd>After <code><a href="grouping-content.html#the-dt-element">dt</a></code> or <code><a href="grouping-content.html#the-dd-element">dd</a></code> elements inside <code><a href="grouping-content.html#the-div-element">div</a></code> elements that are children of a <code><a href="grouping-content.html#the-dl-element">dl</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>A <code><a href="grouping-content.html#the-dd-element">dd</a></code> element's <a href="syntax.html#syntax-end-tag">end tag</a> can be omitted if the
+<code><a href="grouping-content.html#the-dd-element">dd</a></code> element is immediately followed by another <code><a href="grouping-content.html#the-dd-element">dd</a></code> element or a
+<code><a href="grouping-content.html#the-dt-element">dt</a></code> element, or if there is no more content in the parent element.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-dd>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-dd>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="grouping-content.html#the-dd-element">dd</a></code> element <a href="dom.html#represents">represents</a> the description, definition, or value, part
+of a term-description group in a description list (<code><a href="grouping-content.html#the-dl-element">dl</a></code> element).</p>
+<div>
+<p>A <code><a href="grouping-content.html#the-dl-element">dl</a></code> can be used to define a vocabulary list, like in a dictionary. In the
+following example, each entry, given by a <code><a href="grouping-content.html#the-dt-element">dt</a></code> with a <code><a href="text-level-semantics.html#the-dfn-element">dfn</a></code>, has several
+<code><a href="grouping-content.html#the-dd-element">dd</a></code>s, showing the various parts of the definition.</p>
+<pre><code>&lt;dl&gt;
+&lt;dt&gt;&lt;dfn&gt;happiness&lt;/dfn&gt;&lt;/dt&gt;
+&lt;dd
+&lt;dd
+&lt;dd&gt;The state of being happy.&lt;/dd&gt;
+&lt;dd&gt;Good fortune; success. &lt;q&gt;Oh &lt;b&gt;happiness&lt;/b&gt;! It worked!&lt;/q&gt;&lt;/dd&gt;
+&lt;dt&gt;&lt;dfn&gt;rejoice&lt;/dfn&gt;&lt;/dt&gt;
+&lt;dd
+&lt;dd&gt;&lt;i To be delighted oneself.&lt;/dd&gt;
+&lt;dd&gt;&lt;i To cause one to be delighted.&lt;/dd&gt;
+&lt;/dl&gt;</code></pre>
+</div>
+<h4 id=the-figure-element>The <dfn data-dfn-type=element><code>figure</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#flow-content-2">flow content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>Either: one <code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code> element followed by <a href="dom.html#flow-content-2">flow content</a>.<dd>Or: <a href="dom.html#flow-content-2">flow content</a> followed by one <code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code> element.<dd>Or: <a href="dom.html#flow-content-2">flow content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-figure>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-figure>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="grouping-content.html#the-figure-element">figure</a></code> element <a href="dom.html#represents">represents</a> some <a href="dom.html#flow-content-2">flow content</a>,
+optionally with a caption, that is self-contained (like a complete sentence) and is typically
+<a href="dom.html#referenced">referenced</a> as a single unit from the main flow of the document.</p>
+<p>"Self-contained" in this context does not necessarily mean independent. For
+example, each sentence in a paragraph is self-contained; an image that is part of a sentence would
+be inappropriate for <code><a href="grouping-content.html#the-figure-element">figure</a></code>, but an entire sentence made of images would be
+fitting.</p>
+<p>The element can thus be used to annotate illustrations, diagrams, photos, code listings,
+etc.</p>
+<div id=figure-note-about-references>
+<p>When a <code><a href="grouping-content.html#the-figure-element">figure</a></code> is referred to from the main content of the document by identifying
+it by its caption (e.g., by figure number), it enables such content to be easily moved away from
+that primary content, e.g., to the side of the page, to dedicated pages, or to an appendix,
+without affecting the flow of the document.</p>
+<p>If a <code><a href="grouping-content.html#the-figure-element">figure</a></code> element is <a href="dom.html#referenced">referenced</a> by its relative position, e.g.,
+"in the photograph above" or "as the next figure shows", then moving the figure would disrupt the
+page's meaning. Authors are encouraged to consider using labels to refer to figures, rather than
+using such relative references, so that the page can easily be restyled without affecting the
+page's meaning.</p>
+</div>
+<p>The first <code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code> element child of the element, if any,
+represents the caption of the <code><a href="grouping-content.html#the-figure-element">figure</a></code> element's contents. If there is no child
+<code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code> element, then there is no caption.</p>
+<p>A <code><a href="grouping-content.html#the-figure-element">figure</a></code> element's contents are part of the surrounding flow. If the purpose of
+the page is to display the figure, for example a photograph on an image sharing site, the
+<code><a href="grouping-content.html#the-figure-element">figure</a></code> and <code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code> elements can be used to explicitly provide a
+caption for that figure. For content that is only tangentially related, or that serves a separate
+purpose than the surrounding flow, the <code><a href="sections.html#the-aside-element">aside</a></code> element should be used (and can itself
+wrap a <code><a href="grouping-content.html#the-figure-element">figure</a></code>). For example, a pull quote that repeats content from an
+<code><a href="sections.html#the-article-element">article</a></code> would be more appropriate in an <code><a href="sections.html#the-aside-element">aside</a></code> than in a
+<code><a href="grouping-content.html#the-figure-element">figure</a></code>, because it isn't part of the content, it's a repetition of the content for
+the purposes of enticing readers or highlighting key topics.</p>
+<div>
+<p>This example shows the <code><a href="grouping-content.html#the-figure-element">figure</a></code> element to mark up a code listing.</p>
+<pre><code>&lt;p&gt;In &lt;a href=&quot;#l4&quot;&gt;listing 4&lt;/a&gt; we see the primary core interface
+API declaration.&lt;/p&gt;
+&lt;figure id=&quot;l4&quot;&gt;
+&lt;figcaption&gt;Listing 4. The primary core interface API declaration.&lt;/figcaption&gt;
+&lt;pre&gt;&lt;code&gt;interface PrimaryCore {
+boolean verifyDataLine();
+undefined sendData(sequence&amp;lt;byte&gt; data);
+undefined initSelfDestruct();
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/figure&gt;
+&lt;p&gt;The API is designed to use UTF-8.&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>Here we see a <code><a href="grouping-content.html#the-figure-element">figure</a></code> element to mark up a photo that is the main content of the
+page (as in a gallery).</p>
+<pre><code>&lt;!DOCTYPE HTML&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;title&gt;Bubbles at work — My Gallery™&lt;/title&gt;
+&lt;figure&gt;
+&lt;img src=&quot;bubbles-work.jpeg&quot;
+alt=&quot;Bubbles, sitting in his office chair, works on his
+latest project intently.&quot;&gt;
+&lt;figcaption&gt;Bubbles at work&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;nav&gt;&lt;a href=&quot;19414.html&quot;&gt;Prev&lt;/a&gt; — &lt;a href=&quot;19416.html&quot;&gt;Next&lt;/a&gt;&lt;/nav&gt;</code></pre>
+</div>
+<div>
+<p>In this example, we see an image that is <em>not</em> a figure, as well as an image and a
+video that are. The first image is literally part of the example's second sentence, so it's not a
+self-contained unit, and thus <code><a href="grouping-content.html#the-figure-element">figure</a></code> would be inappropriate.</p>
+<pre><code>&lt;h2&gt;Malinko&apos;s comics&lt;/h2&gt;
+&lt;p&gt;This case centered on some sort of &quot;intellectual property&quot;
+infringement related to a comic (see Exhibit A). The suit started
+after a trailer ending with these words:
+&lt;blockquote&gt;
+&lt;img src=&quot;promblem-packed-action.png&quot; alt=&quot;ROUGH COPY! Promblem-Packed Action!&quot;&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;...was aired. A lawyer, armed with a Bigger Notebook, launched a
+preemptive strike using snowballs. A complete copy of the trailer is
+included with Exhibit B.
+&lt;figure&gt;
+&lt;img src=&quot;ex-a.png&quot; alt=&quot;Two squiggles on a dirty piece of paper.&quot;&gt;
+&lt;figcaption&gt;Exhibit A. The alleged &lt;cite&gt;rough copy&lt;/cite&gt; comic.&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;figure&gt;
+&lt;video src=&quot;ex-b.mov&quot;&gt;&lt;/video&gt;
+&lt;figcaption&gt;Exhibit B. The &lt;cite&gt;Rough Copy&lt;/cite&gt; trailer.&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;The case was resolved out of court.</code></pre>
+</div>
+<div>
+<p>Here, a part of a poem is marked up using <code><a href="grouping-content.html#the-figure-element">figure</a></code>.</p>
+<pre><code>&lt;figure&gt;
+&lt;p&gt;&apos;Twas brillig, and the slithy toves&lt;br&gt;
+Did gyre and gimble in the wabe;&lt;br&gt;
+All mimsy were the borogoves,&lt;br&gt;
+And the mome raths outgrabe.&lt;/p&gt;
+&lt;figcaption&gt;&lt;cite&gt;Jabberwocky&lt;/cite&gt; (first verse). Lewis Carroll, 1832-98&lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre>
+</div>
+<div>
+<p>In this example, which could be part of a much larger work discussing a castle, nested
+<code><a href="grouping-content.html#the-figure-element">figure</a></code> elements are used to provide both a group caption and individual captions for
+each figure in the group:</p>
+<pre><code>&lt;figure&gt;
+&lt;figcaption&gt;The castle through the ages: 1423, 1858, and 1999 respectively.&lt;/figcaption&gt;
+&lt;figure&gt;
+&lt;figcaption&gt;Etching. Anonymous, ca. 1423.&lt;/figcaption&gt;
+&lt;img src=&quot;castle1423.jpeg&quot; alt=&quot;The castle has one tower, and a tall wall around it.&quot;&gt;
+&lt;/figure&gt;
+&lt;figure&gt;
+&lt;figcaption&gt;Oil-based paint on canvas. Maria Towle, 1858.&lt;/figcaption&gt;
+&lt;img src=&quot;castle1858.jpeg&quot; alt=&quot;The castle now has two towers and two walls.&quot;&gt;
+&lt;/figure&gt;
+&lt;figure&gt;
+&lt;figcaption&gt;Film photograph. Peter Jankle, 1999.&lt;/figcaption&gt;
+&lt;img src=&quot;castle1999.jpeg&quot; alt=&quot;The castle lies in ruins, the original tower all that remains in one piece.&quot;&gt;
+&lt;/figure&gt;
+&lt;/figure&gt;</code></pre>
+</div>
+<div>
+<p>The previous example could also be more succinctly written as follows (using <code><a href="dom.html#attr-title">title</a></code> attributes in place of the nested
+<code><a href="grouping-content.html#the-figure-element">figure</a></code>/<code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code> pairs):</p>
+<pre><code>&lt;figure&gt;
+&lt;img src=&quot;castle1423.jpeg&quot; title=&quot;Etching. Anonymous, ca. 1423.&quot;
+alt=&quot;The castle has one tower, and a tall wall around it.&quot;&gt;
+&lt;img src=&quot;castle1858.jpeg&quot; title=&quot;Oil-based paint on canvas. Maria Towle, 1858.&quot;
+alt=&quot;The castle now has two towers and two walls.&quot;&gt;
+&lt;img src=&quot;castle1999.jpeg&quot; title=&quot;Film photograph. Peter Jankle, 1999.&quot;
+alt=&quot;The castle lies in ruins, the original tower all that remains in one piece.&quot;&gt;
+&lt;figcaption&gt;The castle through the ages: 1423, 1858, and 1999 respectively.&lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre>
+</div>
+<div>
+<p>The figure is sometimes <a href="dom.html#referenced">referenced</a> only implicitly from the content:</p>
+<pre><code>&lt;article&gt;
+&lt;h1&gt;Fiscal negotiations stumble in Congress as deadline nears&lt;/h1&gt;
+&lt;figure&gt;
+&lt;img src=&quot;obama-reid.jpeg&quot; alt=&quot;Obama and Reid sit together smiling in the Oval Office.&quot;&gt;
+&lt;figcaption&gt;Barack Obama and Harry Reid. White House press photograph.&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Negotiations in Congress to end the fiscal impasse sputtered on Tuesday, leaving both chambers
+grasping for a way to reopen the government and raise the country&apos;s borrowing authority with a
+Thursday deadline drawing near.&lt;/p&gt;
+...
+&lt;/article&gt;</code></pre>
+</div>
+<h4 id=the-figcaption-element>The <dfn data-dfn-type=element><code>figcaption</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>As the first or last child of a <code><a href="grouping-content.html#the-figure-element">figure</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-figcaption>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-figcaption>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code> element <a href="dom.html#represents">represents</a> a caption or legend for the rest of
+the contents of the <code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code> element's parent <code><a href="grouping-content.html#the-figure-element">figure</a></code> element, if any.</p>
+<div>
+<p>The element can contain additional information about the source:</p>
+<pre><code>&lt;figcaption&gt;
+&lt;p&gt;A duck.&lt;/p&gt;
+&lt;p&gt;&lt;small&gt;Photograph courtesy of 🌟 News.&lt;/small&gt;&lt;/p&gt;
+&lt;/figcaption&gt;</code></pre>
+<pre><code>&lt;figcaption&gt;
+&lt;p&gt;Average rent for 3-room apartments, excluding non-profit apartments&lt;/p&gt;
+&lt;p&gt;Zürich’s Statistics Office — &lt;time datetime=2017-11-14&gt;14 November 2017&lt;/time&gt;&lt;/p&gt;
+&lt;/figcaption&gt;</code></pre>
+</div>
+<h4 id=the-main-element>The <dfn data-dfn-type=element><code>main</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#flow-content-2">flow content</a> is expected, but only if it is a <a href="grouping-content.html#hierarchically-correct-main-element">hierarchically correct
+<code>main</code> element</a>.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-main>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-main>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="grouping-content.html#the-main-element">main</a></code> element <a href="dom.html#represents">represents</a> the dominant contents of the
+document.</p>
+<p>A document must not have more than one <code><a href="grouping-content.html#the-main-element">main</a></code> element that does not have the <code><a href="interaction.html#attr-hidden">hidden</a></code> attribute specified.</p>
+<div>
+<p>A <dfn id=hierarchically-correct-main-element>hierarchically correct <code>main</code> element</dfn> is one whose ancestor elements
+are limited to <code><a href="semantics.html#the-html-element">html</a></code>, <code><a href="sections.html#the-body-element">body</a></code>, <code><a href="grouping-content.html#the-div-element">div</a></code>, <code><a href="forms.html#the-form-element">form</a></code> without
+an <a href=https://w3c.github.io/aria/#dfn-accessible-name data-x-internal=concept-accessible-name>accessible name</a>, and <a href="custom-elements.html#autonomous-custom-element">autonomous custom elements</a>. Each <code><a href="grouping-content.html#the-main-element">main</a></code> element must be a
+<a href="grouping-content.html#hierarchically-correct-main-element">hierarchically correct <code>main</code> element</a>.</p>
+</div>
+<div>
+<p>In this example, the author has used a presentation where each component of the page is
+rendered in a box. To wrap the main content of the page (as opposed to the header, the footer,
+the navigation bar, and a sidebar), the <code><a href="grouping-content.html#the-main-element">main</a></code> element is used.</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;title&gt;RPG System 17&lt;/title&gt;
+&lt;style&gt;
+header, nav, aside, main, footer {
+margin: 0.5em; border: thin solid; padding: 0.5em;
+background: #EFF; color: black; box-shadow: 0 0 0.25em #033;
+}
+h1, h2, p { margin: 0; }
+nav, main { float: left; }
+aside { float: right; }
+footer { clear: both; }
+&lt;/style&gt;
+&lt;header&gt;
+&lt;h1&gt;System Eighteen&lt;/h1&gt;
+&lt;/header&gt;
+&lt;nav&gt;
+&lt;a href=&quot;../16/&quot;&gt;← System 17&lt;/a&gt;
+&lt;a href=&quot;../18/&quot;&gt;RPXIX →&lt;/a&gt;
+&lt;/nav&gt;
+&lt;aside&gt;
+&lt;p&gt;This system has no HP mechanic, so there&apos;s no healing.
+&lt;/aside&gt;
+&lt;main&gt;
+&lt;h2&gt;Character creation&lt;/h2&gt;
+&lt;p&gt;Attributes (magic, strength, agility) are purchased at the cost of one point per level.&lt;/p&gt;
+&lt;h2&gt;Rolls&lt;/h2&gt;
+&lt;p&gt;Each encounter, roll the dice for all your skills. If you roll more than the opponent, you win.&lt;/p&gt;
+&lt;/main&gt;
+&lt;footer&gt;
+&lt;p&gt;Copyright © 2013
+&lt;/footer&gt;
+&lt;/html&gt;</code></pre>
+<p>In the following example, multiple <code><a href="grouping-content.html#the-main-element">main</a></code> elements are used and script is used to
+make navigation work without a server roundtrip and to set the <code><a href="interaction.html#attr-hidden">hidden</a></code> attribute on those that are not current:
+<pre><code>&lt;!doctype html&gt;
+&lt;html lang=en-CA&gt;
+&lt;meta charset=utf-8&gt;
+&lt;title&gt; … &lt;/title&gt;
+&lt;link rel=stylesheet href=spa.css&gt;
+&lt;script src=spa.js async&gt;&lt;/script&gt;
+&lt;nav&gt;
+&lt;a href=/&gt;Home&lt;/a&gt;
+&lt;a href=/about&gt;About&lt;/a&gt;
+&lt;a href=/contact&gt;Contact&lt;/a&gt;
+&lt;/nav&gt;
+&lt;main&gt;
+&lt;h1&gt;Home&lt;/h1&gt;
+…
+&lt;/main&gt;
+&lt;main hidden&gt;
+&lt;h1&gt;About&lt;/h1&gt;
+…
+&lt;/main&gt;
+&lt;main hidden&gt;
+&lt;h1&gt;Contact&lt;/h1&gt;
+…
+&lt;/main&gt;
+&lt;footer&gt;Made with ❤️ by &lt;a href=https://example.com/&gt;Example 👻&lt;/a&gt;.&lt;/footer&gt;</code></pre>
+</div>
+<h4 id=the-search-element>The <dfn data-dfn-type=element><code>search</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#flow-content-2">flow content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-search>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-search>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="grouping-content.html#the-search-element">search</a></code> element <a href="dom.html#represents">represents</a> a part of a document or application
+that contains a set of form controls or other content related to performing a search or filtering
+operation. This could be a search of the web site or application; a way of searching or filtering
+search results on the current web page; or a global or Internet-wide search function.</p>
+<p>It's not appropriate to use the <code><a href="grouping-content.html#the-search-element">search</a></code> element just for presenting
+search results, though suggestions and links as part of "quick search" results can be
+included as part of a search feature. Rather, a returned web page of search results would instead
+be expected to be presented as part of the main content of that web page.</p>
+<div>
+<p>In the following example, the author is including a search form within the
+<code><a href="sections.html#the-header-element">header</a></code> of the web page:</p>
+<pre><code>&lt;header&gt;
+&lt;h1&gt;&lt;a href=&quot;/&quot;&gt;My fancy blog&lt;/a&gt;&lt;/h1&gt;
+...
+&lt;search&gt;
+&lt;form action=&quot;search.php&quot;&gt;
+&lt;label for=&quot;query&quot;&gt;Find an article&lt;/label&gt;
+&lt;input id=&quot;query&quot; name=&quot;q&quot; type=&quot;search&quot;&gt;
+&lt;button type=&quot;submit&quot;&gt;Go!&lt;/button&gt;
+&lt;/form&gt;
+&lt;/search&gt;
+&lt;/header&gt;</code></pre>
+</div>
+<div>
+<p>In this example, the author has implemented their web application's search functionality
+entirely with JavaScript. There is no use of the <code><a href="forms.html#the-form-element">form</a></code> element to perform
+server-side submission, but the containing <code><a href="grouping-content.html#the-search-element">search</a></code> element semantically identifies
+the purpose of the descendant content as representing search capabilities.</p>
+<pre><code>&lt;search&gt;
+&lt;label&gt;
+Find and filter your query
+&lt;input type=&quot;search&quot; id=&quot;query&quot;&gt;
+&lt;/label&gt;
+&lt;label&gt;
+&lt;input type=&quot;checkbox&quot; id=&quot;exact-only&quot;&gt;
+Exact matches only
+&lt;/label&gt;
+&lt;section&gt;
+&lt;h3&gt;Results found:&lt;/h3&gt;
+&lt;ul id=&quot;results&quot;&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;services/consulting&quot;&gt;Consulting services&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+Find out how can we help you improve your business with our integrated consultants, Bob and Bob.
+&lt;/p&gt;
+&lt;/li&gt;
+...
+&lt;/ul&gt;
+&lt;!--
+when a query returns or filters out all results
+render the no results message here
+--&gt;
+&lt;output id=&quot;no-results&quot;&gt;&lt;/output&gt;
+&lt;/section&gt;
+&lt;/search&gt;</code></pre>
+</div>
+<div>
+<p>In the following example, the page has two search features. The first is located in the web page's
+<code><a href="sections.html#the-header-element">header</a></code> and serves as a global mechanism to search the web site's content. Its purpose is
+indicated by its specified <code><a href="semantics.html#the-title-element">title</a></code> attribute. The second is included as part of the main content
+of the page, as it represents a mechanism to search and filter the content of the current page. It contains
+a heading to indicate its purpose.</p>
+<pre><code>&lt;body&gt;
+&lt;header&gt;
+...
+&lt;search title=&quot;Website&quot;&gt;
+...
+&lt;/search&gt;
+&lt;/header&gt;
+&lt;main&gt;
+&lt;h1&gt;Hotels near your location&lt;/h1&gt;
+&lt;search&gt;
+&lt;h2&gt;Filter results&lt;/h2&gt;
+...
+&lt;/search&gt;
+&lt;article&gt;
+&lt;!-- search result content --&gt;
+&lt;/article&gt;
+&lt;/main&gt;
+&lt;/body&gt;</code></pre>
+</div>
+<h4 id=the-div-element>The <dfn data-dfn-type=element><code>div</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dd><a href="dom.html#select-element-inner-content-elements-2"><code>select</code> element inner content elements</a>.<dd><a href="dom.html#optgroup-element-inner-content-elements-2"><code>optgroup</code> element inner content elements</a>.<dd><a href="dom.html#option-element-inner-content-elements-2"><code>option</code> element inner content elements</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#flow-content-2">flow content</a> is expected.<dd>As a child of a <code><a href="grouping-content.html#the-dl-element">dl</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>If the element is a child of a <code><a href="grouping-content.html#the-dl-element">dl</a></code> element: One or more <code><a href="grouping-content.html#the-dt-element">dt</a></code> elements followed by one or more <code><a href="grouping-content.html#the-dd-element">dd</a></code> elements, optionally intermixed with <a href="dom.html#script-supporting-elements-2">script-supporting elements</a>.<dd>Otherwise, if the element is a descendant of an <code><a href="form-elements.html#the-option-element">option</a></code> element: Zero or more
+<a href="dom.html#option-element-inner-content-elements-2"><code>option</code> element inner content elements</a>.<dd>Otherwise, if the element is a descendant of an <code><a href="form-elements.html#the-optgroup-element">optgroup</a></code> element: Zero or more
+<a href="dom.html#optgroup-element-inner-content-elements-2"><code>optgroup</code> element inner content elements</a>.<dd>Otherwise, if the element is a descendant of a <code><a href="form-elements.html#the-select-element">select</a></code> element: Zero or more
+<a href="dom.html#select-element-inner-content-elements-2"><code>select</code> element inner content elements</a>.<dd>Otherwise: <a href="dom.html#flow-content-2">flow content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-div>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-div>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmldivelement' data-dfn-type='interface'>HTMLDivElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+// <a href='obsolete.html#HTMLDivElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>The <code><a href="grouping-content.html#the-div-element">div</a></code> element has no special meaning at all. It <a href="dom.html#represents">represents</a> its
+children. It can be used with the <code><a href="dom.html#classes">class</a></code>, <code><a href="dom.html#attr-lang">lang</a></code>, and <code><a href="dom.html#attr-title">title</a></code> attributes to mark up
+semantics common to a group of consecutive elements. It can also be used in a <code><a href="grouping-content.html#the-dl-element">dl</a></code>
+element, wrapping groups of <code><a href="grouping-content.html#the-dt-element">dt</a></code> and <code><a href="grouping-content.html#the-dd-element">dd</a></code> elements.</p>
+<p>Authors are strongly encouraged to view the <code><a href="grouping-content.html#the-div-element">div</a></code> element as an element
+of last resort, for when no other element is suitable. Use of more appropriate elements instead of
+the <code><a href="grouping-content.html#the-div-element">div</a></code> element leads to better accessibility for readers and easier maintainability
+for authors.</p>
+<div>
+<p>For example, a blog post would be marked up using <code><a href="sections.html#the-article-element">article</a></code>, a chapter using
+<code><a href="sections.html#the-section-element">section</a></code>, a page's navigation aids using <code><a href="sections.html#the-nav-element">nav</a></code>, and a group of form
+controls using <code><a href="form-elements.html#the-fieldset-element">fieldset</a></code>.</p>
+<p>On the other hand, <code><a href="grouping-content.html#the-div-element">div</a></code> elements can be useful for stylistic purposes or to wrap
+multiple paragraphs within a section that are all to be annotated in a similar way. In the
+following example, we see <code><a href="grouping-content.html#the-div-element">div</a></code> elements used as a way to set the language of two
+paragraphs at once, instead of setting the language on the two paragraph elements separately:</p>
+<pre><code>&lt;article lang=&quot;en-US&quot;&gt;
+&lt;h1&gt;My use of language and my cats&lt;/h1&gt;
+&lt;p&gt;My cat&apos;s behavior hasn&apos;t changed much since her absence, except
+that she plays her new physique to the neighbors regularly, in an
+attempt to get pets.&lt;/p&gt;
+&lt;div lang=&quot;en-GB&quot;&gt;
+&lt;p&gt;My other cat, coloured black and white, is a sweetie. He followed
+us to the pool today, walking down the pavement with us. Yesterday
+he apparently visited our neighbours. I wonder if he recognises that
+their flat is a mirror image of ours.&lt;/p&gt;
+&lt;p&gt;Hm, I just noticed that in the last paragraph I used British
+English. But I&apos;m supposed to write in American English. So I
+shouldn&apos;t say &quot;pavement&quot; or &quot;flat&quot; or &quot;colour&quot;...&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;I should say &quot;sidewalk&quot; and &quot;apartment&quot; and &quot;color&quot;!&lt;/p&gt;
+&lt;/article&gt;</code></pre>
+</div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+</ol><h2 id=comms>Communication</h2>
+<p id=network><span id=network-intro></span><span id=the-websocket-interface></span><span id=feedback-from-the-protocol></span><span id=ping-and-pong-frames></span><span id=the-closeevent-interface></span><span id=garbage-collection-2></span><span id=websocket></span><span id=binarytype></span><span id=closeevent></span><span id=closeeventinit></span>The <code><a data-x-internal=websocket-2 href=https://websockets.spec.whatwg.org/#websocket>WebSocket</a></code> interface used
+to be defined here. It is now defined in <cite>WebSockets</cite>. <a href="references.html#refsWEBSOCKETS">[WEBSOCKETS]</a></p>
+<h3 id=the-messageevent-interface>The <code><a href="comms.html#messageevent">MessageEvent</a></code> interface</h3></div>
+<p>Messages in <a href="server-sent-events.html#server-sent-events">server-sent events</a>, <a href="web-messaging.html#web-messaging">cross-document messaging</a>,
+<a href="web-messaging.html#channel-messaging">channel messaging</a>, <a href="web-messaging.html#broadcasting-to-other-browsing-contexts">broadcast channels</a>, and <cite>WebSockets</cite> use
+the <code><a href="comms.html#messageevent">MessageEvent</a></code> interface for their <code><a href="indices.html#event-message">message</a></code>
+events: <a href="references.html#refsWEBSOCKETS">[WEBSOCKETS]</a></p>
+<pre><code>[Exposed=(Window,Worker,AudioWorklet)]
+interface <dfn id='messageevent' data-dfn-type='interface'>MessageEvent</dfn> : <a href='https://dom.spec.whatwg.org/#interface-event' data-x-internal='event'>Event</a> {
+<a href='https://dom.spec.whatwg.org/#concept-event-constructor' data-x-internal='dom-event-constructor'>constructor</a>(DOMString type, optional <a href='comms.html#messageeventinit'>MessageEventInit</a> eventInitDict = {});
+readonly attribute any <a href='comms.html#dom-messageevent-data'>data</a>;
+readonly attribute USVString <a href='comms.html#dom-messageevent-origin'>origin</a>;
+readonly attribute DOMString <a href='comms.html#dom-messageevent-lasteventid'>lastEventId</a>;
+readonly attribute <a href='comms.html#messageeventsource'>MessageEventSource</a>? <a href='comms.html#dom-messageevent-source'>source</a>;
+readonly attribute FrozenArray&lt;<a href='web-messaging.html#messageport'>MessagePort</a>&gt; <a href='comms.html#dom-messageevent-ports'>ports</a>;
+undefined <a href='comms.html#dom-messageevent-initmessageevent'>initMessageEvent</a>(DOMString type, optional boolean bubbles = false, optional boolean cancelable = false, optional any data = null, optional USVString origin = &quot;&quot;, optional DOMString lastEventId = &quot;&quot;, optional <a href='comms.html#messageeventsource'>MessageEventSource</a>? source = null, optional sequence&lt;<a href='web-messaging.html#messageport'>MessagePort</a>&gt; ports = []);
+};
+dictionary <dfn id='messageeventinit' data-dfn-type='dictionary'>MessageEventInit</dfn> : <a href='https://dom.spec.whatwg.org/#dictdef-eventinit' data-x-internal='eventinit'>EventInit</a> {
+any <dfn id='dom-messageeventinit-data' data-dfn-type='dict-member'>data</dfn> = null;
+USVString <dfn id='dom-messageeventinit-origin' data-dfn-type='dict-member'>origin</dfn> = &quot;&quot;;
+DOMString <dfn id='dom-messageeventinit-lasteventid' data-dfn-type='dict-member'>lastEventId</dfn> = &quot;&quot;;
+<a href='comms.html#messageeventsource'>MessageEventSource</a>? <dfn id='dom-messageeventinit-source' data-dfn-type='dict-member'>source</dfn> = null;
+sequence&lt;<a href='web-messaging.html#messageport'>MessagePort</a>&gt; <dfn id='dom-messageeventinit-ports' data-dfn-type='dict-member'>ports</dfn> = [];
+};
+typedef (<a href='nav-history-apis.html#windowproxy'>WindowProxy</a> or <a href='web-messaging.html#messageport'>MessagePort</a> or <a href='https://w3c.github.io/ServiceWorker/#serviceworker' data-x-internal='serviceworker'>ServiceWorker</a>) <dfn id='messageeventsource' data-dfn-type='typedef'>MessageEventSource</dfn>;</code></pre>
+<dl><dt><code><var>event</var>.<a href="comms.html#dom-messageevent-data" id=dom-messageevent-data-dev>data</a></code></div><dd><p>Returns the data of the message.<dt><code><var>event</var>.<a href="comms.html#dom-messageevent-origin" id=dom-messageevent-origin-dev>origin</a></code></div><dd>
+<p>Returns the origin of the message, for <a href="server-sent-events.html#server-sent-events">server-sent events</a> and
+<a href="web-messaging.html#web-messaging">cross-document messaging</a>.</p>
+<dt><code><var>event</var>.<a href="comms.html#dom-messageevent-lasteventid" id=dom-messageevent-lasteventid-dev>lastEventId</a></code></div><dd>
+<p>Returns the <a href="server-sent-events.html#concept-event-stream-last-event-id">last event ID string</a>,
+for <a href="server-sent-events.html#server-sent-events">server-sent events</a>.</p>
+<dt><code><var>event</var>.<a href="comms.html#dom-messageevent-source" id=dom-messageevent-source-dev>source</a></code></div><dd>
+<p>Returns the <code><a href="nav-history-apis.html#windowproxy">WindowProxy</a></code> of the source window, for <a href="web-messaging.html#web-messaging">cross-document
+messaging</a>, and the <code><a href="web-messaging.html#messageport">MessagePort</a></code> being attached, in the <code><a href="indices.html#event-workerglobalscope-connect">connect</a></code> event fired at
+<code><a href="workers.html#sharedworkerglobalscope">SharedWorkerGlobalScope</a></code> objects.</p>
+<dt><code><var>event</var>.<a href="comms.html#dom-messageevent-ports" id=dom-messageevent-ports-dev>ports</a></code></div><dd>
+<p>Returns the <code><a href="web-messaging.html#messageport">MessagePort</a></code> array sent with the message, for <a href="web-messaging.html#web-messaging">cross-document
+messaging</a> and <a href="web-messaging.html#channel-messaging">channel messaging</a>.</p>
+</dl>
+<div>
+<p>The <dfn id=dom-messageevent-data data-dfn-type=attribute><code>data</code></dfn>
+attribute must return the value it was initialized to. It represents the message being sent.</p>
+</div>
+<div>
+<p>The <dfn id=dom-messageevent-origin data-dfn-type=attribute><code>origin</code></dfn> attribute must return the value it was
+initialized to. It represents, in <a href="server-sent-events.html#server-sent-events">server-sent events</a> and <a href="web-messaging.html#web-messaging">cross-document
+messaging</a>, the <a href=https://dom.spec.whatwg.org/#concept-document-origin data-x-internal=concept-document-origin>origin</a> of the document that
+sent the message (typically the scheme, hostname, and port of the document, but not its path or
+<a href=https://url.spec.whatwg.org/#concept-url-fragment data-x-internal=concept-url-fragment>fragment</a>).</p>
+</div>
+<div>
+<p>Objects implementing the <code><a href="comms.html#messageevent">MessageEvent</a></code> interface's <a href="browsers.html#extract-an-origin">extract an origin</a>
+steps are to return <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="webappapis.html#relevant-settings-object">relevant settings object</a>'s
+<a href="webappapis.html#concept-settings-object-origin">origin</a>.</p>
+</div>
+<div>
+<p>The <dfn id=dom-messageevent-lasteventid data-dfn-type=attribute><code>lastEventId</code></dfn> attribute must return the value it
+was initialized to. It represents, in <a href="server-sent-events.html#server-sent-events">server-sent events</a>, the <a href="server-sent-events.html#concept-event-stream-last-event-id">last event ID string</a> of the event source.</p>
+</div>
+<div>
+<p>The <dfn id=dom-messageevent-source data-dfn-type=attribute><code>source</code></dfn> attribute must return the value it was
+initialized to. It represents, in <a href="web-messaging.html#web-messaging">cross-document messaging</a>, the
+<code><a href="nav-history-apis.html#windowproxy">WindowProxy</a></code> of the <a href="document-sequences.html#browsing-context">browsing context</a> of the <code><a href="nav-history-apis.html#window">Window</a></code> object
+from which the message came; and in the <code><a href="indices.html#event-workerglobalscope-connect">connect</a></code> events used by <a href="workers.html#sharedworkerglobalscope">shared workers</a>, the newly connecting
+<code><a href="web-messaging.html#messageport">MessagePort</a></code>.</p>
+</div>
+<div>
+<p>The <dfn id=dom-messageevent-ports data-dfn-type=attribute><code>ports</code></dfn>
+attribute must return the value it was initialized to. It represents, in <a href="web-messaging.html#web-messaging">cross-document
+messaging</a> and <a href="web-messaging.html#channel-messaging">channel messaging</a>, the <code><a href="web-messaging.html#messageport">MessagePort</a></code> array being
+sent.</p>
+</div>
+<div>
+<p>The <dfn id=dom-messageevent-initmessageevent data-dfn-type=method><code>initMessageEvent(<var>type</var>, <var>bubbles</var>,
+<var>cancelable</var>, <var>data</var>, <var>origin</var>, <var>lastEventId</var>,
+<var>source</var>, <var>ports</var>)</code></dfn> method must initialize the event in a manner
+analogous to the similarly-named <code><a data-x-internal=dom-event-initevent href=https://dom.spec.whatwg.org/#dom-event-initevent>initEvent()</a></code> method.
+<a href="references.html#refsDOM">[DOM]</a></p>
+</div>
+<p>Various APIs (e.g., <code><a data-x-internal=websocket-2 href=https://websockets.spec.whatwg.org/#websocket>WebSocket</a></code>, <code><a href="server-sent-events.html#eventsource">EventSource</a></code>) use the
+<code><a href="comms.html#messageevent">MessageEvent</a></code> interface for their <code><a href="indices.html#event-message">message</a></code> event
+without using the <code><a href="web-messaging.html#messageport">MessagePort</a></code> API.</p>
+</body>
+</html>

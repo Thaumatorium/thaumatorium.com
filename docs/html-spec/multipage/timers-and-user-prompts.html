@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+</ol></ol><h3 id=timers>Timers</h3>
+<p>The <code><a href="timers-and-user-prompts.html#dom-settimeout">setTimeout()</a></code> and <code><a href="timers-and-user-prompts.html#dom-setinterval">setInterval()</a></code> methods allow authors to schedule timer-based
+callbacks.</p>
+<dl><dt><code><var>id</var> = self.<a href="timers-and-user-prompts.html#dom-settimeout" id=dom-settimeout-dev>setTimeout</a>(<var>handler</var> [, <var>timeout</var> [, ...<var>arguments</var> ] ])</code></div><dd>
+<p>Schedules a timeout to run <var>handler</var> after <var>timeout</var> milliseconds. Any
+<var>arguments</var> are passed straight through to the <var>handler</var>.</p>
+<dt><code><var>id</var> = self.<a href="timers-and-user-prompts.html#dom-settimeout">setTimeout</a>(<var>code</var> [, <var>timeout</var> ])</code><dd>
+<p>Schedules a timeout to compile and run <var>code</var> after <var>timeout</var>
+milliseconds.</p>
+<dt><code>self.<a href="timers-and-user-prompts.html#dom-cleartimeout" id=dom-cleartimeout-dev>clearTimeout</a>(<var>id</var>)</code></div><dd><p>Cancels the timeout set with <code><a href="timers-and-user-prompts.html#dom-settimeout">setTimeout()</a></code> or <code><a href="timers-and-user-prompts.html#dom-setinterval">setInterval()</a></code> identified by <var>id</var>.<dt><code><var>id</var> = self.<a href="timers-and-user-prompts.html#dom-setinterval" id=dom-setinterval-dev>setInterval</a>(<var>handler</var> [, <var>timeout</var> [, ...<var>arguments</var> ] ])</code></div><dd>
+<p>Schedules a timeout to run <var>handler</var> every <var>timeout</var> milliseconds. Any
+<var>arguments</var> are passed straight through to the <var>handler</var>.</p>
+<dt><code><var>id</var> = self.<a href="timers-and-user-prompts.html#dom-setinterval">setInterval</a>(<var>code</var> [, <var>timeout</var> ])</code><dd>
+<p>Schedules a timeout to compile and run <var>code</var> every <var>timeout</var>
+milliseconds.</p>
+<dt><code>self.<a href="timers-and-user-prompts.html#dom-clearinterval" id=dom-clearinterval-dev>clearInterval</a>(<var>id</var>)</code></div><dd><p>Cancels the timeout set with <code><a href="timers-and-user-prompts.html#dom-setinterval">setInterval()</a></code> or <code><a href="timers-and-user-prompts.html#dom-settimeout">setTimeout()</a></code> identified by <var>id</var>.</dl>
+<p>Timers can be nested; after five such nested timers, however, the interval is
+forced to be at least four milliseconds.</p>
+<p>This API does not guarantee that timers will run exactly on schedule. Delays due
+to CPU load, other tasks, etc, are to be expected.</p>
+<p>Objects that implement the <code><a href="webappapis.html#windoworworkerglobalscope">WindowOrWorkerGlobalScope</a></code> mixin have a
+<dfn id=map-of-settimeout-and-setinterval-ids>map of setTimeout and setInterval IDs</dfn>, which is
+an <a href=https://infra.spec.whatwg.org/#ordered-map data-x-internal=ordered-map>ordered map</a>, initially empty. Each <a href=https://infra.spec.whatwg.org/#map-key data-x-internal=map-key>key</a> in this map
+is a positive integer, corresponding to the return value of a <code><a href="timers-and-user-prompts.html#dom-settimeout">setTimeout()</a></code> or <code><a href="timers-and-user-prompts.html#dom-setinterval">setInterval()</a></code> call.
+Each <a href=https://infra.spec.whatwg.org/#map-value data-x-internal=map-value>value</a> is a <a href="common-microsyntaxes.html#unique-internal-value">unique internal value</a>, corresponding
+to a key in the object's <a href="timers-and-user-prompts.html#map-of-active-timers">map of active timers</a>.</p>
+<hr>
+<div>
+<p>The <dfn id=dom-settimeout data-dfn-type=method><code id=dom-windowtimers-setTimeout>setTimeout(<var>handler</var>, <var>timeout</var>,
+...<var>arguments</var>)</code></dfn> method steps are to return the result of running the
+<a href="timers-and-user-prompts.html#timer-initialisation-steps">timer initialization steps</a> given <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>, <var>handler</var>,
+<var>timeout</var>, <var>arguments</var>, and false.</p>
+</div>
+<div>
+<p>The <dfn id=dom-setinterval data-dfn-type=method><code id=dom-windowtimers-setInterval>setInterval(<var>handler</var>, <var>timeout</var>,
+...<var>arguments</var>)</code></dfn> method steps are to return the result of running the
+<a href="timers-and-user-prompts.html#timer-initialisation-steps">timer initialization steps</a> given <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>, <var>handler</var>,
+<var>timeout</var>, <var>arguments</var>, and true.</p>
+</div>
+<div>
+<p>The <dfn id=dom-cleartimeout data-dfn-type=method><code id=dom-windowtimers-clearTimeout>clearTimeout(<var>id</var>)</code></dfn> and <dfn id=dom-clearinterval data-dfn-type=method><code id=dom-windowtimers-clearInterval>clearInterval(<var>id</var>)</code></dfn> method steps
+are to <a href=https://infra.spec.whatwg.org/#map-remove data-x-internal=map-remove>remove</a> <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="timers-and-user-prompts.html#map-of-settimeout-and-setinterval-ids">map of setTimeout and
+setInterval IDs</a>[<var>id</var>].</p>
+</div>
+<p>Because <code><a href="timers-and-user-prompts.html#dom-cleartimeout">clearTimeout()</a></code> and <code><a href="timers-and-user-prompts.html#dom-clearinterval">clearInterval()</a></code> clear entries from the same map, either method
+can be used to clear timers created by <code><a href="timers-and-user-prompts.html#dom-settimeout">setTimeout()</a></code> or <code><a href="timers-and-user-prompts.html#dom-setinterval">setInterval()</a></code>.</p>
+<hr>
+<div>
+<p>To perform the <dfn id=timer-initialisation-steps>timer initialization
+steps</dfn>, given a <code><a href="webappapis.html#windoworworkerglobalscope">WindowOrWorkerGlobalScope</a></code> <var>global</var>, a string or <code><a data-x-internal=idl-function href=https://webidl.spec.whatwg.org/#common-Function>Function</a></code> or <code><a data-x-internal=tt-trustedscript href=https://w3c.github.io/trusted-types/dist/spec/#trusted-script>TrustedScript</a></code>
+<var>handler</var>, a number <var>timeout</var>, a list <var>arguments</var>, a boolean
+<var>repeat</var>, and optionally (and only if <var>repeat</var> is true) a number
+<var>previousId</var>, perform the following steps. They return a number.</p>
+<ol><li><p>Let <var>thisArg</var> be <var>global</var> if that is a <code><a href="workers.html#workerglobalscope">WorkerGlobalScope</a></code>
+object; otherwise let <var>thisArg</var> be the <code><a href="nav-history-apis.html#windowproxy">WindowProxy</a></code> that corresponds to
+<var>global</var>.<li><p>If <var>previousId</var> was given, let <var>id</var> be <var>previousId</var>;
+otherwise, let <var>id</var> be an <a href=https://infra.spec.whatwg.org/#implementation-defined data-x-internal=implementation-defined>implementation-defined</a> integer that is greater
+than zero and does not already <a href=https://infra.spec.whatwg.org/#map-exists data-x-internal=map-exists>exist</a> in <var>global</var>'s
+<a href="timers-and-user-prompts.html#map-of-settimeout-and-setinterval-ids">map of setTimeout and setInterval IDs</a>.<li>
+<p>If the <a href=https://tc39.es/ecma262/#surrounding-agent data-x-internal=surrounding-agent>surrounding agent</a>'s <a href="webappapis.html#concept-agent-event-loop">event
+loop</a>'s <a href="webappapis.html#currently-running-task">currently running task</a> is a task that was created by this algorithm,
+then let <var>nesting level</var> be the <a href="webappapis.html#concept-task">task</a>'s <a href="timers-and-user-prompts.html#timer-nesting-level">timer
+nesting level</a>. Otherwise, let <var>nesting level</var> be 0.</p>
+<p>The task's <a href="timers-and-user-prompts.html#timer-nesting-level">timer nesting level</a> is used both for nested calls to
+<code><a href="timers-and-user-prompts.html#dom-settimeout">setTimeout()</a></code>, and for the repeating timers created by
+<code><a href="timers-and-user-prompts.html#dom-setinterval">setInterval()</a></code>. (Or, indeed, for any combination of the
+two.) In other words, it represents nested invocations of this algorithm, not of a particular
+method.</p>
+<li><p>If <var>timeout</var> is less than 0, then set <var>timeout</var> to 0.<li><p>If <var>nesting level</var> is greater than 5, and <var>timeout</var> is less than 4,
+then set <var>timeout</var> to 4.<li><p>Let <var>realm</var> be <var>global</var>'s <a href="webappapis.html#concept-relevant-realm">relevant
+realm</a>.<li><p>Let <var>initiating script</var> be the <a href="webappapis.html#active-script">active script</a>.<li><p>Let <var>uniqueHandle</var> be null.<li>
+<p>Let <var>task</var> be a <a href="webappapis.html#concept-task">task</a> that runs the following
+substeps:</p>
+<ol><li><p><a href=https://infra.spec.whatwg.org/#assert data-x-internal=assert>Assert</a>: <var>uniqueHandle</var> is a <a href="common-microsyntaxes.html#unique-internal-value">unique internal value</a>,
+not null.<li><p>If <var>id</var> does not <a href=https://infra.spec.whatwg.org/#map-exists data-x-internal=map-exists>exist</a> in <var>global</var>'s
+<a href="timers-and-user-prompts.html#map-of-settimeout-and-setinterval-ids">map of setTimeout and setInterval IDs</a>, then abort these steps.<li>
+<p>If <var>global</var>'s <a href="timers-and-user-prompts.html#map-of-settimeout-and-setinterval-ids">map of setTimeout and setInterval IDs</a>[<var>id</var>]
+does not equal <var>uniqueHandle</var>, then abort these steps.</p>
+<p>This accommodates for the ID having been cleared by a <code><a href="timers-and-user-prompts.html#dom-cleartimeout">clearTimeout()</a></code> or <code><a href="timers-and-user-prompts.html#dom-clearinterval">clearInterval()</a></code> call, and being reused by a subsequent
+<code><a href="timers-and-user-prompts.html#dom-settimeout">setTimeout()</a></code> or <code><a href="timers-and-user-prompts.html#dom-setinterval">setInterval()</a></code> call.</p>
+<li><p>Let <var>settings object</var> be <var>global</var>'s <a href="webappapis.html#relevant-settings-object">relevant settings
+object</a>.<li><p>If <a href="webappapis.html#concept-environment-noscript">scripting is disabled</a> for
+<var>settings object</var>, then abort these steps.<li><p><a href=https://w3c.github.io/long-animation-frames/#record-timing-info-for-timer-handler data-x-internal=record-timing-info-for-timer-handler>Record timing info for timer handler</a> given <var>handler</var>,
+<var>settings object</var>, and <var>repeat</var>.<li><p>If <var>handler</var> is a <code><a data-x-internal=idl-function href=https://webidl.spec.whatwg.org/#common-Function>Function</a></code>, then <a href=https://webidl.spec.whatwg.org/#invoke-a-callback-function data-x-internal=es-invoking-callback-functions>invoke</a> <var>handler</var> given
+<var>arguments</var> and "<code>report</code>", and with <i><a data-x-internal=dfn-callback-this-value href=https://webidl.spec.whatwg.org/#dfn-callback-this-value>callback this value</a></i> set to <var>thisArg</var>.<li>
+<p>Otherwise:</p>
+<ol><li>
+<p>If <var>previousId</var> was not given:</p>
+<ol><li><p>Let <var>globalName</var> be "<code>Window</code>" if <var>global</var> is
+a <code><a href="nav-history-apis.html#window">Window</a></code> object; "<code>WorkerGlobalScope</code>"
+otherwise.<li><p>Let <var>methodName</var> be "<code>setInterval</code>" if
+<var>repeat</var> is true; "<code>setTimeout</code>" otherwise.<li><p>Let <var>sink</var> be a concatenation of <var>globalName</var>, U+0020 SPACE, and
+<var>methodName</var>.<li><p>Set <var>handler</var> to the result of invoking the <a href=https://w3c.github.io/trusted-types/dist/spec/#get-trusted-type-compliant-string data-x-internal=tt-getcompliantstring>get trusted type compliant string</a> algorithm with
+<code><a data-x-internal=tt-trustedscript href=https://w3c.github.io/trusted-types/dist/spec/#trusted-script>TrustedScript</a></code>, <var>global</var>,
+<var>handler</var>, <var>sink</var>, and "<code>script</code>".</ol>
+<li><p><a href=https://infra.spec.whatwg.org/#assert data-x-internal=assert>Assert</a>: <var>handler</var> is a string.<li><p>Perform <a href=https://w3c.github.io/webappsec-csp/#can-compile-strings data-x-internal=csp-ensurecspdoesnotblockstringcompilation>EnsureCSPDoesNotBlockStringCompilation</a>(<var>realm</var>,
+« », <var>handler</var>, <var>handler</var>, timer, « », <var>handler</var>). If this throws
+an exception, catch it, <a href="webappapis.html#report-an-exception">report</a> it for
+<var>global</var>, and abort these steps.<li><p>Let <var>fetch options</var> be the <a href="webappapis.html#default-script-fetch-options">default script fetch
+options</a>.<li><p>Let <var>base URL</var> be <var>settings object</var>'s <a href="webappapis.html#api-base-url">API base
+URL</a>.<li>
+<p>If <var>initiating script</var> is not null, then:</p>
+<ol><li><p>Set <var>fetch options</var> to a <a href="webappapis.html#script-fetch-options">script fetch options</a> whose <a href="webappapis.html#concept-script-fetch-options-nonce">cryptographic nonce</a> is <var>initiating
+script</var>'s <a href="webappapis.html#concept-script-script-fetch-options">fetch options</a>'s
+<a href="webappapis.html#concept-script-fetch-options-nonce">cryptographic nonce</a>, <a href="webappapis.html#concept-script-fetch-options-integrity">integrity metadata</a> is the empty
+string, <a href="webappapis.html#concept-script-fetch-options-parser">parser metadata</a> is
+"<code>not-parser-inserted</code>", <a href="webappapis.html#concept-script-fetch-options-credentials">credentials mode</a> is
+<var>initiating script</var>'s <a href="webappapis.html#concept-script-script-fetch-options">fetch
+options</a>'s <a href="webappapis.html#concept-script-fetch-options-credentials">credentials
+mode</a>, <a href="webappapis.html#concept-script-fetch-options-referrer-policy">referrer
+policy</a> is <var>initiating script</var>'s <a href="webappapis.html#concept-script-script-fetch-options">fetch options</a>'s <a href="webappapis.html#concept-script-fetch-options-referrer-policy">referrer policy</a>, and <a href="webappapis.html#concept-script-fetch-options-fetch-priority">fetch priority</a> is "<code>auto</code>".<li><p>Set <var>base URL</var> to <var>initiating script</var>'s <a href="webappapis.html#concept-script-base-url">base URL</a>.</ol>
+<p>The effect of these steps ensures that the string compilation done by <code><a href="timers-and-user-prompts.html#dom-settimeout">setTimeout()</a></code> and <code><a href="timers-and-user-prompts.html#dom-setinterval">setInterval()</a></code> behaves equivalently to that done by
+<code><a data-x-internal=eval() href=https://tc39.es/ecma262/#sec-eval-x>eval()</a></code>. That is, <a href="webappapis.html#module-script">module script</a> fetches via <code><a data-x-internal=import() href=https://tc39.es/ecma262/#sec-import-calls>import()</a></code>
+will behave the same in both contexts.</p>
+<li><p>Let <var>script</var> be the result of <a href="webappapis.html#creating-a-classic-script">creating a classic script</a> given
+<var>handler</var>, <var>settings object</var>, <var>base URL</var>, and <var>fetch
+options</var>.<li><p><a href="webappapis.html#run-a-classic-script">Run the classic script</a>
+<var>script</var>.</ol>
+<li><p>If <var>id</var> does not <a href=https://infra.spec.whatwg.org/#map-exists data-x-internal=map-exists>exist</a> in <var>global</var>'s
+<a href="timers-and-user-prompts.html#map-of-settimeout-and-setinterval-ids">map of setTimeout and setInterval IDs</a>, then abort these steps.<li>
+<p>If <var>global</var>'s <a href="timers-and-user-prompts.html#map-of-settimeout-and-setinterval-ids">map of setTimeout and setInterval IDs</a>[<var>id</var>]
+does not equal <var>uniqueHandle</var>, then abort these steps.</p>
+<p>The ID might have been removed via the author code in <var>handler</var>
+calling <code><a href="timers-and-user-prompts.html#dom-cleartimeout">clearTimeout()</a></code> or <code><a href="timers-and-user-prompts.html#dom-clearinterval">clearInterval()</a></code>. Checking that uniqueHandle isn't different
+accounts for the possibility of the ID, after having been cleared, being reused by a
+subsequent <code><a href="timers-and-user-prompts.html#dom-settimeout">setTimeout()</a></code> or <code><a href="timers-and-user-prompts.html#dom-setinterval">setInterval()</a></code> call.</p>
+<li><p>If <var>repeat</var> is true, then perform the <a href="timers-and-user-prompts.html#timer-initialisation-steps">timer initialization
+steps</a> again, given <var>global</var>, <var>handler</var>, <var>timeout</var>,
+<var>arguments</var>, true, and <var>id</var>.<li><p>Otherwise, <a href=https://infra.spec.whatwg.org/#map-remove data-x-internal=map-remove>remove</a> <var>global</var>'s <a href="timers-and-user-prompts.html#map-of-settimeout-and-setinterval-ids">map of
+setTimeout and setInterval IDs</a>[<var>id</var>].</ol>
+<li><p>Increment <var>nesting level</var> by one.<li><p>Set <var>task</var>'s <dfn id=timer-nesting-level>timer nesting level</dfn> to <var>nesting level</var>.<li><p>Let <var>completionStep</var> be an algorithm step which <a href="webappapis.html#queue-a-global-task">queues a global task</a> on the <dfn id=timer-task-source>timer task source</dfn> given
+<var>global</var> to run <var>task</var>.<li><p>Set <var>uniqueHandle</var> to the result of <a href="timers-and-user-prompts.html#run-steps-after-a-timeout">running steps after a timeout</a> given <var>global</var>, "<code>setTimeout/setInterval</code>", <var>timeout</var>, and
+<var>completionStep</var>.<li><p><a href=https://infra.spec.whatwg.org/#map-set data-x-internal=map-set>Set</a> <var>global</var>'s <a href="timers-and-user-prompts.html#map-of-settimeout-and-setinterval-ids">map of setTimeout and
+setInterval IDs</a>[<var>id</var>] to <var>uniqueHandle</var>.<li><p>Return <var>id</var>.</ol>
+</div>
+<p>Argument conversion as defined by Web IDL (for example, invoking <code>toString()</code> methods on objects passed as the first argument) happens in the
+algorithms defined in Web IDL, before this algorithm is invoked.</p>
+<div>
+<p>So for example, the following rather silly code will result in the log containing "<code>ONE TWO </code>":</p>
+<pre><code>var log = &apos;&apos;;
+function logger(s) { log += s + &apos; &apos;; }
+setTimeout({ toString: function () {
+setTimeout(&quot;logger(&apos;ONE&apos;)&quot;, 100);
+return &quot;logger(&apos;TWO&apos;)&quot;;
+} }, 100);</code></pre>
+</div>
+<div>
+<p>To run tasks of several milliseconds back to back without any delay, while still yielding back
+to the browser to avoid starving the user interface (and to avoid the browser killing the script
+for hogging the CPU), simply queue the next timer before performing work:</p>
+<pre><code>function doExpensiveWork() {
+var done = false;
+// ...
+// this part of the function takes up to five milliseconds
+// set done to true if we&apos;re done
+// ...
+return done;
+}
+function rescheduleWork() {
+var id = setTimeout(rescheduleWork, 0); // preschedule next iteration
+if (doExpensiveWork())
+clearTimeout(id); // clear the timeout if we don&apos;t need it
+}
+function scheduleWork() {
+setTimeout(rescheduleWork, 0);
+}
+scheduleWork(); // queues a task to do lots of work</code></pre>
+</div>
+<p>Objects that implement the <code><a href="webappapis.html#windoworworkerglobalscope">WindowOrWorkerGlobalScope</a></code> mixin have a <dfn id=map-of-active-timers>map of active timers</dfn>, which is an <a href=https://infra.spec.whatwg.org/#ordered-map data-x-internal=ordered-map>ordered map</a>,
+initially empty. Each <a href=https://infra.spec.whatwg.org/#map-key data-x-internal=map-key>key</a> in this map is a <a href="common-microsyntaxes.html#unique-internal-value">unique internal
+value</a> that represents a timer, and each <a href=https://infra.spec.whatwg.org/#map-value data-x-internal=map-value>value</a> is a
+<code><a data-x-internal=domhighrestimestamp href=https://w3c.github.io/hr-time/#dom-domhighrestimestamp>DOMHighResTimeStamp</a></code>, representing the expiry time for that timer.</p>
+<div>
+<p>To <dfn id=run-steps-after-a-timeout>run steps after a timeout</dfn>, given a <code><a href="webappapis.html#windoworworkerglobalscope">WindowOrWorkerGlobalScope</a></code>
+<var>global</var>, a string <var>orderingIdentifier</var>, a number <var>milliseconds</var>, and a
+set of steps <var>completionSteps</var>, perform the following steps. They return a <a href="common-microsyntaxes.html#unique-internal-value">unique
+internal value</a>.</p>
+<ol><li><p>Let <var>timerKey</var> be a new <a href="common-microsyntaxes.html#unique-internal-value">unique internal value</a>.<li><p>Let <var>startTime</var> be the <a href=https://w3c.github.io/hr-time/#dfn-current-high-resolution-time data-x-internal=current-high-resolution-time>current high resolution time</a> given
+<var>global</var>.<li><p><a href=https://infra.spec.whatwg.org/#map-set data-x-internal=map-set>Set</a> <var>global</var>'s <a href="timers-and-user-prompts.html#map-of-active-timers">map of active
+timers</a>[<var>timerKey</var>] to <var>startTime</var> plus
+<var>milliseconds</var>.<li>
+<p>Run the following steps <a href="infrastructure.html#in-parallel">in parallel</a>:</p>
+<ol><li>
+<p>If <var>global</var> is a <code><a href="nav-history-apis.html#window">Window</a></code> object, wait until <var>global</var>'s <a href="nav-history-apis.html#concept-document-window">associated <code>Document</code></a> has been <a href="document-sequences.html#fully-active">fully
+active</a> for a further <var>milliseconds</var> milliseconds (not necessarily
+consecutively).</p>
+<p>Otherwise, <var>global</var> is a <code><a href="workers.html#workerglobalscope">WorkerGlobalScope</a></code> object; wait until
+<var>milliseconds</var> milliseconds have passed with the worker not suspended (not
+necessarily consecutively).</p>
+<li><p>Wait until any invocations of this algorithm that had the same <var>global</var> and
+<var>orderingIdentifier</var>, that started before this one, and whose <var>milliseconds</var>
+is less than or equal to this one's, have completed.<li>
+<p>Optionally, wait a further <a href=https://infra.spec.whatwg.org/#implementation-defined data-x-internal=implementation-defined>implementation-defined</a> length of time.</p>
+<p>This is intended to allow user agents to pad timeouts as needed to optimize
+the power usage of the device. For example, some processors have a low-power mode where the
+granularity of timers is reduced; on such platforms, user agents can slow timers down to fit
+this schedule instead of requiring the processor to use the more accurate mode with its
+associated higher power usage.</p>
+<li><p>Perform <var>completionSteps</var>.<li><p><a href=https://infra.spec.whatwg.org/#map-remove data-x-internal=map-remove>Remove</a> <var>global</var>'s
+<a href="timers-and-user-prompts.html#map-of-active-timers">map of active timers</a>[<var>timerKey</var>].</ol>
+<li><p>Return <var>timerKey</var>.</ol>
+<p><a href="timers-and-user-prompts.html#run-steps-after-a-timeout">Run steps after a timeout</a> is meant to be used by other
+specifications that want to execute developer-supplied code after a developer-supplied timeout,
+in a similar manner to <code><a href="timers-and-user-prompts.html#dom-settimeout">setTimeout()</a></code>. (Note, however, it does
+not have the nesting and clamping behavior of <code><a href="timers-and-user-prompts.html#dom-settimeout">setTimeout()</a></code>.)
+Such specifications can choose an <var>orderingIdentifier</var> to ensure ordering within their
+specification's timeouts, while not constraining ordering with respect to other specification's
+timeouts.</p>
+</div>
+<h3 id=microtask-queuing>Microtask queuing</h3></div>
+<dl><dt><code><var>self</var>.<a href="timers-and-user-prompts.html#dom-queuemicrotask" id=dom-queuemicrotask-dev>queueMicrotask</a>(<var>callback</var>)</code><dd><p><a href="webappapis.html#queue-a-microtask">Queues</a> a <a href="webappapis.html#microtask">microtask</a> to run the given
+<var>callback</var>.</dl>
+<div>
+<p>The <dfn id=dom-queuemicrotask data-dfn-type=method><code>queueMicrotask(<var>callback</var>)</code></dfn> method must
+<a href="webappapis.html#queue-a-microtask">queue a microtask</a> to <a href=https://webidl.spec.whatwg.org/#invoke-a-callback-function data-x-internal=es-invoking-callback-functions>invoke</a>
+<var>callback</var> with « » and "<code>report</code>".</p>
+</div>
+<p>The <code><a href="timers-and-user-prompts.html#dom-queuemicrotask">queueMicrotask()</a></code> method allows authors to schedule
+a callback on the <a href="webappapis.html#microtask-queue">microtask queue</a>. This allows their code to run once the
+<a href=https://tc39.es/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution context stack</a> is next empty, which happens once all currently
+executing synchronous JavaScript has run to completion. This doesn't yield control back to the
+<a href="webappapis.html#event-loop">event loop</a>, as would be the case when using, for example, <code><a href="timers-and-user-prompts.html#dom-settimeout">setTimeout(<var>f</var>, 0)</a></code>.</p>
+<p>Authors ought to be aware that scheduling a lot of microtasks has the same performance
+downsides as running a lot of synchronous code. Both will prevent the browser from doing its own
+work, such as rendering. In many cases, <code><a href="imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe">requestAnimationFrame()</a></code> or
+<code><a data-x-internal=requestidlecallback() href=https://w3c.github.io/requestidlecallback/#the-requestidlecallback-method>requestIdleCallback()</a></code> is a better choice. In particular, if the goal is to run code
+before the next rendering cycle, that is the purpose of <code><a href="imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe">requestAnimationFrame()</a></code>.</p>
+<p>As can be seen from the following examples, the best way of thinking about <code><a href="timers-and-user-prompts.html#dom-queuemicrotask">queueMicrotask()</a></code> is as a mechanism for rearranging synchronous
+code, effectively placing the queued code immediately after the currently executing synchronous
+JavaScript has run to completion.</p>
+<div>
+<p>The most common reason for using <code><a href="timers-and-user-prompts.html#dom-queuemicrotask">queueMicrotask()</a></code> is
+to create consistent ordering, even in the cases where information is available synchronously,
+without introducing undue delay.</p>
+<p>For example, consider a custom element firing a <code>load</code> event, that also
+maintains an internal cache of previously-loaded data. A naïve implementation might look
+like:</p>
+<pre><code>MyElement.prototype.loadData = function (url) {
+if (this._cache[url]) {
+this._setData(this._cache[url]);
+this.dispatchEvent(new Event(&quot;load&quot;));
+} else {
+fetch(url).then(res =&gt; res.arrayBuffer()).then(data =&gt; {
+this._cache[url] = data;
+this._setData(data);
+this.dispatchEvent(new Event(&quot;load&quot;));
+});
+}
+};</code></pre>
+<p>This naïve implementation is problematic, however, in that it causes its users to
+experience inconsistent behavior. For example, code such as</p>
+<pre><code>element.addEventListener(&quot;load&quot;, () =&gt; console.log(&quot;loaded&quot;));
+console.log(&quot;1&quot;);
+element.loadData();
+console.log(&quot;2&quot;);</code></pre>
+<p>will sometimes log "1, 2, loaded" (if the data needs to be fetched), and sometimes log "1,
+loaded, 2" (if the data is already cached). Similarly, after the call to <code>loadData()</code>, it will be inconsistent whether or not the data is set on the
+element.</p>
+<p>To get a consistent ordering, <code><a href="timers-and-user-prompts.html#dom-queuemicrotask">queueMicrotask()</a></code> can be
+used:</p>
+<pre><code>MyElement.prototype.loadData = function (url) {
+if (this._cache[url]) {<strong>
+queueMicrotask(() =&gt; {
+this._setData(this._cache[url]);
+this.dispatchEvent(new Event(&quot;load&quot;));
+});</strong>
+} else {
+fetch(url).then(res =&gt; res.arrayBuffer()).then(data =&gt; {
+this._cache[url] = data;
+this._setData(data);
+this.dispatchEvent(new Event(&quot;load&quot;));
+});
+}
+};</code></pre>
+<p>By essentially rearranging the queued code to be after the <a href=https://tc39.es/ecma262/#execution-context-stack data-x-internal=javascript-execution-context-stack>JavaScript execution context
+stack</a> empties, this ensures a consistent ordering and update of the element's state.</p>
+</div>
+<div>
+<p>Another interesting use of <code><a href="timers-and-user-prompts.html#dom-queuemicrotask">queueMicrotask()</a></code> is to
+allow uncoordinated "batching" of work by multiple callers. For example, consider a library
+function that wants to send data somewhere as soon as possible, but doesn't want to make multiple
+network requests if doing so is easily avoidable. One way to balance this would be like so:</p>
+<pre><code>const queuedToSend = [];
+function sendData(data) {
+queuedToSend.push(data);
+if (queuedToSend.length === 1) {
+queueMicrotask(() =&gt; {
+const stringToSend = JSON.stringify(queuedToSend);
+queuedToSend.length = 0;
+fetch(&quot;/endpoint&quot;, stringToSend);
+});
+}
+}</code></pre>
+<p>With this architecture, multiple subsequent calls to <code>sendData()</code> within
+the currently executing synchronous JavaScript will be batched together into one
+<code><a data-x-internal=fetch() href=https://fetch.spec.whatwg.org/#dom-global-fetch>fetch()</a></code> call, but with no intervening event loop tasks preempting the fetch (as
+would have happened with similar code that instead used <code><a href="timers-and-user-prompts.html#dom-settimeout">setTimeout()</a></code>).</p>
+</div>
+<h3 id=user-prompts>User prompts</h3>
+<h4 id=simple-dialogs>Simple dialogs</h4>
+<dl><dt><code><var>window</var>.<a href="timers-and-user-prompts.html#dom-alert" id=dom-alert-dev>alert</a>(<var>message</var>)</code></div><dd><p>Displays a modal alert with the given message, and waits for the user to dismiss
+it.<dt><code><var>result</var> = <var>window</var>.<a href="timers-and-user-prompts.html#dom-confirm" id=dom-confirm-dev>confirm</a>(<var>message</var>)</code></div><dd>
+<p>Displays a modal OK/Cancel prompt with the given message, waits for the user to dismiss it,
+and returns true if the user clicks OK and false if the user clicks Cancel.</p>
+<dt><code><var>result</var> = <var>window</var>.<a href="timers-and-user-prompts.html#dom-prompt" id=dom-prompt-dev>prompt</a>(<var>message</var> [, <var>default</var>])</code></div><dd>
+<p>Displays a modal text control prompt with the given message, waits for the user to dismiss
+it, and returns the value that the user entered. If the user cancels the prompt, then returns
+null instead. If the second argument is present, then the given value is used as a default.</p>
+</dl>
+<p>Logic that depends on <a href="webappapis.html#concept-task">tasks</a> or <a href="webappapis.html#microtask">microtasks</a>, such as <a href="media.html#media-element">media elements</a>
+loading their <a href="media.html#media-data">media data</a>, are stalled when these methods are invoked.</p>
+<div>
+<p>The <dfn id=dom-alert-noargs data-dfn-type=method><code>alert()</code></dfn> and <dfn id=dom-alert data-dfn-type=method><code>alert(<var>message</var>)</code></dfn> method steps
+are:</p>
+<ol><li><p>If we <a href="timers-and-user-prompts.html#cannot-show-simple-dialogs">cannot show simple dialogs</a> for <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>, then return.<li><p>If the method was invoked with no arguments, then let <var>message</var> be the
+empty string; otherwise, let <var>message</var> be the method's first
+argument.<li><p>Set <var>message</var> to the result of <a href=https://infra.spec.whatwg.org/#normalize-newlines data-x-internal=normalize-newlines>normalizing
+newlines</a> given <var>message</var>.<li><p>Set <var>message</var> to the result of <a href="timers-and-user-prompts.html#optionally-truncate-a-simple-dialog-string">optionally truncating</a> <var>message</var>.<li><p>Let <var>userPromptHandler</var> be <a href=https://w3c.github.io/webdriver-bidi/#webdriver-bidi-user-prompt-opened data-x-internal=webdriver-bidi-user-prompt-opened>WebDriver BiDi user prompt opened</a> with
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>, "<code>alert</code>", and <var>message</var>.<li>
+<p>If <var>userPromptHandler</var> is "<code>none</code>", then:</p>
+<ol><li><p>Show <var>message</var> to the user, treating U+000A LF as a line break.<li><p>Optionally, <a href="webappapis.html#pause">pause</a> while waiting for the user to acknowledge the
+message.</ol>
+<li><p>Invoke <a href=https://w3c.github.io/webdriver-bidi/#webdriver-bidi-user-prompt-closed data-x-internal=webdriver-bidi-user-prompt-closed>WebDriver BiDi user prompt closed</a> with <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>,
+"<code>alert</code>", and true.</ol>
+</div>
+<p>This method is defined using two overloads, instead of using an
+optional argument, for historical reasons. The practical impact of this is
+that <code>alert(undefined)</code> is treated as <code>alert("undefined")</code>, but <code>alert()</code> is treated as
+<code>alert("")</code>.</p>
+<div>
+<p>The <dfn id=dom-confirm data-dfn-type=method><code>confirm(<var>message</var>)</code></dfn> method steps are:</p>
+<ol><li><p>If we <a href="timers-and-user-prompts.html#cannot-show-simple-dialogs">cannot show simple dialogs</a> for <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>, then return
+false.<li><p>Set <var>message</var> to the result of <a href=https://infra.spec.whatwg.org/#normalize-newlines data-x-internal=normalize-newlines>normalizing
+newlines</a> given <var>message</var>.<li><p>Set <var>message</var> to the result of <a href="timers-and-user-prompts.html#optionally-truncate-a-simple-dialog-string">optionally truncating</a> <var>message</var>.<li><p>Show <var>message</var> to the user, treating U+000A LF as a line break, and ask the user
+to respond with a positive or negative response.<li><p>Let <var>userPromptHandler</var> be <a href=https://w3c.github.io/webdriver-bidi/#webdriver-bidi-user-prompt-opened data-x-internal=webdriver-bidi-user-prompt-opened>WebDriver BiDi user prompt opened</a> with
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>, "<code>confirm</code>", and <var>message</var>.<li><p>Let <var>accepted</var> be false.<li>
+<p>If <var>userPromptHandler</var> is "<code>none</code>", then:</p>
+<ol><li><p><a href="webappapis.html#pause">Pause</a> until the user responds either positively or negatively.<li><p>If the user responded positively, then set <var>accepted</var> to true.</ol>
+<li><p>If <var>userPromptHandler</var> is "<code>accept</code>", then set
+<var>accepted</var> to true.<li><p>Invoke <a href=https://w3c.github.io/webdriver-bidi/#webdriver-bidi-user-prompt-closed data-x-internal=webdriver-bidi-user-prompt-closed>WebDriver BiDi user prompt closed</a> with <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>,
+"<code>confirm</code>", and <var>accepted</var>.<li><p>Return <var>accepted</var>.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-prompt data-dfn-type=method><code>prompt(<var>message</var>,
+<var>default</var>)</code></dfn> method steps are:</p>
+<ol><li><p>If we <a href="timers-and-user-prompts.html#cannot-show-simple-dialogs">cannot show simple dialogs</a> for <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>, then return
+null.<li><p>Set <var>message</var> to the result of <a href=https://infra.spec.whatwg.org/#normalize-newlines data-x-internal=normalize-newlines>normalizing
+newlines</a> given <var>message</var>.<li><p>Set <var>message</var> to the result of <a href="timers-and-user-prompts.html#optionally-truncate-a-simple-dialog-string">optionally truncating</a> <var>message</var>.<li><p>Set <var>default</var> to the result of <a href="timers-and-user-prompts.html#optionally-truncate-a-simple-dialog-string">optionally truncating</a> <var>default</var>.<li><p>Show <var>message</var> to the user, treating U+000A LF as a line break, and ask the user
+to either respond with a string value or abort. The response must be defaulted to the value given
+by <var>default</var>.<li><p>Let <var>userPromptHandler</var> be <a href=https://w3c.github.io/webdriver-bidi/#webdriver-bidi-user-prompt-opened data-x-internal=webdriver-bidi-user-prompt-opened>WebDriver BiDi user prompt opened</a> with
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>, "<code>prompt</code>", and <var>message</var>.<li><p>Let <var>result</var> be null.<li>
+<p>If <var>userPromptHandler</var> is "<code>none</code>", then:</p>
+<ol><li><p><a href="webappapis.html#pause">Pause</a> while waiting for the user's response.<li><p>If the user did not abort, then set <var>result</var> to the string that the user
+responded with.</ol>
+<li><p>Otherwise, if <var>userPromptHandler</var> is "<code>accept</code>", then set
+<var>result</var> to the empty string.<li><p>Invoke <a href=https://w3c.github.io/webdriver-bidi/#webdriver-bidi-user-prompt-closed data-x-internal=webdriver-bidi-user-prompt-closed>WebDriver BiDi user prompt closed</a> with <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>,
+"<code>prompt</code>", false if <var>result</var> is null or true otherwise,
+and <var>result</var>.<li><p>Return <var>result</var>.</ol>
+</div>
+<div>
+<p>To <dfn id=optionally-truncate-a-simple-dialog-string>optionally truncate a simple dialog string</dfn> <var>s</var>, return either
+<var>s</var> itself or some string derived from <var>s</var> that is shorter. User agents should
+not provide UI for displaying the elided portion of <var>s</var>, as this makes it too easy for
+abusers to create dialogs of the form "Important security alert! Click 'Show More' for full
+details!".</p>
+</div>
+<p>For example, a user agent might want to only display the first 100 characters of a
+message. Or, a user agent might replace the middle of the string with "…". These types of
+modifications can be useful in limiting the abuse potential of unnaturally large,
+trustworthy-looking system dialogs.</p>
+<div>
+<p>We <dfn id=cannot-show-simple-dialogs>cannot show simple dialogs</dfn> for a <code><a href="nav-history-apis.html#window">Window</a></code> <var>window</var> when the
+following algorithm returns true:</p>
+<ol><li><p>If the <a href="browsers.html#active-sandboxing-flag-set">active sandboxing flag set</a> of <var>window</var>'s <a href="nav-history-apis.html#concept-document-window">associated <code>Document</code></a> has the <a href="browsers.html#sandboxed-modals-flag">sandboxed
+modals flag</a> set, then return true.<li><p>If <var>window</var>'s <a href="webappapis.html#relevant-settings-object">relevant settings object</a>'s <a href="webappapis.html#concept-settings-object-origin">origin</a> and <var>window</var>'s <a href="webappapis.html#relevant-settings-object">relevant
+settings object</a>'s <a href="webappapis.html#concept-environment-top-level-origin">top-level origin</a> are not <a href="browsers.html#same-origin-domain">same origin-domain</a>,
+then return true.<li>If <var>window</var>'s <a href="webappapis.html#relevant-agent">relevant agent</a>'s <a href="webappapis.html#concept-agent-event-loop">event loop</a>'s <a href="document-lifecycle.html#termination-nesting-level">termination nesting level</a> is
+nonzero, then optionally return true.<li><p>Optionally, return true. (For example, the user agent might give the
+user the option to ignore all modal dialogs, and would thus abort at this step whenever the method was
+invoked.)<li><p>Return false.</ol>
+</div>
+<h4 id=printing>Printing</h4></div>
+<dl><dt><code><var>window</var>.<a href="timers-and-user-prompts.html#dom-print" id=dom-print-dev>print</a>()</code><dd><p>Prompts the user to print the page.</dl>
+<div>
+<p>The <dfn id=dom-print data-dfn-type=method><code>print()</code></dfn> method steps
+are:</p>
+<ol><li><p>Let <var>document</var> be <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="nav-history-apis.html#concept-document-window">associated <code>Document</code></a>.<li><p>If <var>document</var> is not <a href="document-sequences.html#fully-active">fully active</a>, then return.<li><p>If <var>document</var>'s <a href="document-lifecycle.html#unload-counter">unload counter</a> is greater than 0, then
+return.<li><p>If <var>document</var> is <a href="parsing.html#ready-for-post-load-tasks">ready for post-load tasks</a>, then run the
+<a href="timers-and-user-prompts.html#printing-steps">printing steps</a> for <var>document</var>.<li><p>Otherwise, set <var>document</var>'s <dfn id=print-when-loaded>print when loaded</dfn> flag.</ol>
+</div>
+<p>User agents should also run the <a href="timers-and-user-prompts.html#printing-steps">printing steps</a> whenever the user asks for the
+opportunity to <a href="rendering.html#obtain-a-physical-form">obtain a physical form</a> (e.g. printed copy), or the representation of a
+physical form (e.g. PDF copy), of a document.</p>
+<div>
+<p>The <dfn id=printing-steps>printing steps</dfn> for a <code><a href="dom.html#document">Document</a></code> <var>document</var> are:</p>
+<ol><li>
+<p>The user agent may display a message to the user or return (or both).</p>
+<p>For instance, a kiosk browser could silently ignore any invocations of the
+<code><a href="timers-and-user-prompts.html#dom-print">print()</a></code> method.</p>
+<p>For instance, a browser on a mobile device could detect that there are no
+printers in the vicinity and display a message saying so before continuing to offer a "save to
+PDF" option.</p>
+<li>
+<p>If the <a href="browsers.html#active-sandboxing-flag-set">active sandboxing flag set</a> of <var>document</var> has the <a href="browsers.html#sandboxed-modals-flag">sandboxed
+modals flag</a> set, then return.</p>
+<p>If the printing dialog is blocked by a <code><a href="dom.html#document">Document</a></code>'s sandbox,
+then neither the <code><a href="indices.html#event-beforeprint">beforeprint</a></code> nor <code><a href="indices.html#event-afterprint">afterprint</a></code> events will be fired.</p>
+<li>
+<p>The user agent must <a href=https://dom.spec.whatwg.org/#concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code><a href="indices.html#event-beforeprint">beforeprint</a></code> at the <a href="webappapis.html#concept-relevant-global">relevant global object</a> of
+<var>document</var>, as well as any <a href="document-sequences.html#child-navigable">child navigable</a> in
+it.</p>
+<p>Firing in children only doesn't seem right here, and some tasks likely need to
+be queued. See <a href=https://github.com/whatwg/html/issues/5096>issue #5096</a>.</p>
+<p>The <code><a href="indices.html#event-beforeprint">beforeprint</a></code> event can be used to
+annotate the printed copy, for instance adding the time at which the document was printed.</p>
+<li><p>The user agent should offer the user the opportunity to <a href="rendering.html#obtain-a-physical-form">obtain a physical
+form</a> (or the representation of a physical form) of <var>document</var>. The user agent may
+wait for the user to either accept or decline before returning; if so, the user agent must
+<a href="webappapis.html#pause">pause</a> while the method is waiting. Even if the user agent doesn't wait at this
+point, the user agent must use the state of the relevant documents as they are at this point in
+the algorithm if and when it eventually creates the alternate form.<li>
+<p>The user agent must <a href=https://dom.spec.whatwg.org/#concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code><a href="indices.html#event-afterprint">afterprint</a></code> at the <a href="webappapis.html#concept-relevant-global">relevant global object</a> of
+<var>document</var>, as well as any <a href="document-sequences.html#child-navigable">child navigables</a> in
+it.</p>
+<p>Firing in children only doesn't seem right here, and some tasks likely need to
+be queued. See <a href=https://github.com/whatwg/html/issues/5096>issue #5096</a>.</p>
+<p>The <code><a href="indices.html#event-afterprint">afterprint</a></code> event can be used to
+revert annotations added in the earlier event, as well as showing post-printing UI. For
+instance, if a page is walking the user through the steps of applying for a home loan, the
+script could automatically advance to the next step after having printed a form or other.</p>
+</ol>
+</div>
+</body>
+</html>

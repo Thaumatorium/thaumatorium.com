@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+</ol></ol><h3 id=edits>Edits</h3>
+<p>The <code><a href="edits.html#the-ins-element">ins</a></code> and <code><a href="edits.html#the-del-element">del</a></code> elements represent edits to the document.</p>
+<h4 id=the-ins-element>The <dfn data-dfn-type=element><code>ins</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#transparent">Transparent</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="edits.html#attr-mod-cite">cite</a></code> —  Link to the source of the quotation or more information about the edit
+<dd><code><a href="edits.html#attr-mod-datetime">datetime</a></code> —  Date and (optionally) time of the change
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-ins>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-ins>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="edits.html#htmlmodelement">HTMLModElement</a></code>.</dl>
+<p>The <code><a href="edits.html#the-ins-element">ins</a></code> element <a href="dom.html#represents">represents</a> an addition to the document.</p>
+<div>
+<p>The following represents the addition of a single paragraph:</p>
+<pre><code>&lt;aside&gt;
+&lt;ins&gt;
+&lt;p&gt; I like fruit. &lt;/p&gt;
+&lt;/ins&gt;
+&lt;/aside&gt;</code></pre>
+<p>As does the following, because everything in the <code><a href="sections.html#the-aside-element">aside</a></code> element here counts as
+<a href="dom.html#phrasing-content-2">phrasing content</a> and therefore there is just one <a href="dom.html#paragraph">paragraph</a>:</p>
+<pre><code>&lt;aside&gt;
+&lt;ins&gt;
+Apples are &lt;em&gt;tasty&lt;/em&gt;.
+&lt;/ins&gt;
+&lt;ins&gt;
+So are pears.
+&lt;/ins&gt;
+&lt;/aside&gt;</code></pre>
+</div>
+<p><code><a href="edits.html#the-ins-element">ins</a></code> elements should not cross <a href="dom.html#paragraph">implied paragraph</a>
+boundaries.</p>
+<div>
+<p>The following example represents the addition of two paragraphs, the second of which was
+inserted in two parts. The first <code><a href="edits.html#the-ins-element">ins</a></code> element in this example thus crosses a
+paragraph boundary, which is considered poor form.</p>
+<pre><code>&lt;aside&gt;
+&lt;!-- don&apos;t do this --&gt;
+&lt;ins datetime=&quot;2005-03-16 00:00Z&quot;&gt;
+&lt;p&gt; I like fruit. &lt;/p&gt;
+Apples are &lt;em&gt;tasty&lt;/em&gt;.
+&lt;/ins&gt;
+&lt;ins datetime=&quot;2007-12-19 00:00Z&quot;&gt;
+So are pears.
+&lt;/ins&gt;
+&lt;/aside&gt;</code></pre>
+<p>Here is a better way of marking this up. It uses more elements, but none of the elements cross
+implied paragraph boundaries.</p>
+<pre><code>&lt;aside&gt;
+&lt;ins datetime=&quot;2005-03-16 00:00Z&quot;&gt;
+&lt;p&gt; I like fruit. &lt;/p&gt;
+&lt;/ins&gt;
+&lt;ins datetime=&quot;2005-03-16 00:00Z&quot;&gt;
+Apples are &lt;em&gt;tasty&lt;/em&gt;.
+&lt;/ins&gt;
+&lt;ins datetime=&quot;2007-12-19 00:00Z&quot;&gt;
+So are pears.
+&lt;/ins&gt;
+&lt;/aside&gt;</code></pre>
+</div>
+<h4 id=the-del-element>The <dfn data-dfn-type=element><code>del</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#transparent">Transparent</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="edits.html#attr-mod-cite">cite</a></code> —  Link to the source of the quotation or more information about the edit
+<dd><code><a href="edits.html#attr-mod-datetime">datetime</a></code> —  Date and (optionally) time of the change
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-del>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-del>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="edits.html#htmlmodelement">HTMLModElement</a></code>.</dl>
+<p>The <code><a href="edits.html#the-del-element">del</a></code> element <a href="dom.html#represents">represents</a> a removal from the document.</p>
+<p><code><a href="edits.html#the-del-element">del</a></code> elements should not cross <a href="dom.html#paragraph">implied paragraph</a>
+boundaries.</p>
+<div>
+<p>The following shows a "to do" list where items that have been done are crossed-off with the
+date and time of their completion.</p>
+<pre><code>&lt;h1&gt;To Do&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Empty the dishwasher&lt;/li&gt;
+&lt;li&gt;&lt;del datetime=&quot;2009-10-11T01:25-07:00&quot;&gt;Watch Walter Lewin&apos;s lectures&lt;/del&gt;&lt;/li&gt;
+&lt;li&gt;&lt;del datetime=&quot;2009-10-10T23:38-07:00&quot;&gt;Download more tracks&lt;/del&gt;&lt;/li&gt;
+&lt;li&gt;Buy a printer&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+</div>
+<h4 id=attributes-common-to-ins-and-del-elements>Attributes common to <code><a href="edits.html#the-ins-element">ins</a></code> and <code><a href="edits.html#the-del-element">del</a></code> elements</h4>
+<p>The <dfn id=attr-mod-cite data-dfn-type=element-attr><code>cite</code></dfn> attribute
+may be used to specify the <a href=https://dom.spec.whatwg.org/#concept-document-urls-address" data-x-internal="the-document's-address">URL</a> of a document that
+explains the change. When that document is long, for instance the minutes of a meeting, authors
+are encouraged to include a <a href=https://url.spec.whatwg.org/#concept-url-fragment data-x-internal=concept-url-fragment>fragment</a> pointing to the
+specific part of that document that discusses the change.</p>
+<p>If the <code><a href="edits.html#attr-mod-cite">cite</a></code> attribute is present, it must be a <a href="urls-and-fetching.html#valid-url-potentially-surrounded-by-spaces">valid
+URL potentially surrounded by spaces</a> that explains the change. To obtain
+the corresponding citation link, the value of the attribute must be <a href="urls-and-fetching.html#encoding-parsing-a-url">parsed</a> relative to the element's <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>. User agents may
+allow users to follow such citation links, but they are primarily intended for private use (e.g.,
+by server-side scripts collecting statistics about a site's edits), not for readers.</p>
+<p>The <dfn id=attr-mod-datetime data-dfn-type=element-attr><code>datetime</code></dfn>
+attribute may be used to specify the time and date of the change.</p>
+<p>If present, the <code><a href="edits.html#attr-mod-datetime">datetime</a></code> attribute's value must be a
+<a href="common-microsyntaxes.html#valid-date-string-with-optional-time">valid date string with optional time</a>.</p>
+<div>
+<p>User agents must parse the <code><a href="edits.html#attr-mod-datetime">datetime</a></code> attribute according
+to the <a href="common-microsyntaxes.html#parse-a-date-or-time-string">parse a date or time string</a> algorithm. If that doesn't return a <a href="common-microsyntaxes.html#concept-date">date</a> or a <a href="common-microsyntaxes.html#concept-datetime">global date and time</a>,
+then the modification has no associated timestamp (the value is non-conforming; it is not a
+<a href="common-microsyntaxes.html#valid-date-string-with-optional-time">valid date string with optional time</a>). Otherwise, the modification is marked as
+having been made at the given <a href="common-microsyntaxes.html#concept-date">date</a> or <a href="common-microsyntaxes.html#concept-datetime">global date and time</a>. If the given value is a <a href="common-microsyntaxes.html#concept-datetime">global date and time</a>, then user agents should use the associated
+time-zone offset information to determine which time zone to present the given datetime in.</p>
+</div>
+<p>This value may be shown to the user, but it is primarily intended for
+private use.</p>
+<p>The <code><a href="edits.html#the-ins-element">ins</a></code> and <code><a href="edits.html#the-del-element">del</a></code> elements must implement the
+<code><a href="edits.html#htmlmodelement">HTMLModElement</a></code> interface:</p>
+</div><pre><code>[Exposed=Window]
+interface <dfn id='htmlmodelement' data-dfn-type='interface'>HTMLModElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflecturl'>ReflectURL</a>] attribute USVString <dfn id='dom-mod-cite' data-dfn-type='attribute'>cite</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-mod-datetime' data-dfn-type='attribute'>dateTime</dfn>;
+};</code></pre>
+<h4 id=edits-and-paragraphs>Edits and paragraphs</h4>
+<p><i>This section is non-normative.</i></p>
+<p>Since the <code><a href="edits.html#the-ins-element">ins</a></code> and <code><a href="edits.html#the-del-element">del</a></code> elements do not affect <a href="dom.html#paragraph">paragraphing</a>, it is possible, in some cases where paragraphs are <a href="dom.html#paragraph">implied</a> (without explicit <code><a href="grouping-content.html#the-p-element">p</a></code> elements), for an
+<code><a href="edits.html#the-ins-element">ins</a></code> or <code><a href="edits.html#the-del-element">del</a></code> element to span both an entire paragraph or other
+non-<a href="dom.html#phrasing-content-2">phrasing content</a> elements and part of another paragraph. For example:</p>
+<pre><code>&lt;section&gt;
+&lt;ins&gt;
+&lt;p&gt;
+This is a paragraph that was inserted.
+&lt;/p&gt;
+This is another paragraph whose first sentence was inserted
+at the same time as the paragraph above.
+&lt;/ins&gt;
+This is a second sentence, which was there all along.
+&lt;/section&gt;</code></pre>
+<p>By only wrapping some paragraphs in <code><a href="grouping-content.html#the-p-element">p</a></code> elements, one can even get the end of one
+paragraph, a whole second paragraph, and the start of a third paragraph to be covered by the same
+<code><a href="edits.html#the-ins-element">ins</a></code> or <code><a href="edits.html#the-del-element">del</a></code> element (though this is very confusing, and not considered
+good practice):</p>
+<pre><code>&lt;section&gt;
+This is the first paragraph. &lt;ins&gt;This sentence was
+inserted.
+&lt;p&gt;This second paragraph was inserted.&lt;/p&gt;
+This sentence was inserted too.&lt;/ins&gt; This is the
+third paragraph in this example.
+&lt;!-- (don&apos;t do this) --&gt;
+&lt;/section&gt;</code></pre>
+<p>However, due to the way <a href="dom.html#paragraph">implied paragraphs</a> are defined, it is
+not possible to mark up the end of one paragraph and the start of the very next one using the same
+<code><a href="edits.html#the-ins-element">ins</a></code> or <code><a href="edits.html#the-del-element">del</a></code> element. You instead have to use one (or two) <code><a href="grouping-content.html#the-p-element">p</a></code>
+element(s) and two <code><a href="edits.html#the-ins-element">ins</a></code> or <code><a href="edits.html#the-del-element">del</a></code> elements, as for example:</p>
+<pre><code>&lt;section&gt;
+&lt;p&gt;This is the first paragraph. &lt;del&gt;This sentence was
+deleted.&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;This sentence was deleted too.&lt;/del&gt; That
+sentence needed a separate &amp;lt;del&amp;gt; element.&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+<p>Partly because of the confusion described above, authors are strongly encouraged to always mark
+up all paragraphs with the <code><a href="grouping-content.html#the-p-element">p</a></code> element, instead of having <code><a href="edits.html#the-ins-element">ins</a></code> or
+<code><a href="edits.html#the-del-element">del</a></code> elements that cross <a href="dom.html#paragraph">implied paragraphs</a>
+boundaries.</p>
+<h4 id=edits-and-lists>Edits and lists</h4>
+<p><i>This section is non-normative.</i></p>
+<p>The content models of the <code><a href="grouping-content.html#the-ol-element">ol</a></code> and <code><a href="grouping-content.html#the-ul-element">ul</a></code> elements do not allow
+<code><a href="edits.html#the-ins-element">ins</a></code> and <code><a href="edits.html#the-del-element">del</a></code> elements as children. Lists always represent all their
+items, including items that would otherwise have been marked as deleted.</p>
+<p>To indicate that an item is inserted or deleted, an <code><a href="edits.html#the-ins-element">ins</a></code> or <code><a href="edits.html#the-del-element">del</a></code>
+element can be wrapped around the contents of the <code><a href="grouping-content.html#the-li-element">li</a></code> element. To indicate that an
+item has been replaced by another, a single <code><a href="grouping-content.html#the-li-element">li</a></code> element can have one or more
+<code><a href="edits.html#the-del-element">del</a></code> elements followed by one or more <code><a href="edits.html#the-ins-element">ins</a></code> elements.</p>
+<div>
+<p>In the following example, a list that started empty had items added and removed from it over
+time. The bits in the example that have been emphasized show the parts that are the "current"
+state of the list. The list item numbers don't take into account the edits, though.</p>
+<pre><code>&lt;h1&gt;Stop-ship bugs&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;ins datetime=&quot;2008-02-12T15:20Z&quot;&gt;<em>Bug 225:
+Rain detector doesn&apos;t work in snow</em>&lt;/ins&gt;&lt;/li&gt;
+&lt;li&gt;&lt;del datetime=&quot;2008-03-01T20:22Z&quot;&gt;&lt;ins datetime=&quot;2008-02-14T12:02Z&quot;&gt;Bug 228:
+Water buffer overflows in April&lt;/ins&gt;&lt;/del&gt;&lt;/li&gt;
+&lt;li&gt;&lt;ins datetime=&quot;2008-02-16T13:50Z&quot;&gt;<em>Bug 230:
+Water heater doesn&apos;t use renewable fuels</em>&lt;/ins&gt;&lt;/li&gt;
+&lt;li&gt;&lt;del datetime=&quot;2008-02-20T21:15Z&quot;&gt;&lt;ins datetime=&quot;2008-02-16T14:25Z&quot;&gt;Bug 232:
+Carbon dioxide emissions detected after startup&lt;/ins&gt;&lt;/del&gt;&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+</div>
+<div>
+<p>In the following example, a list that started with just fruit was replaced by a list with just
+colors.</p>
+<pre><code>&lt;h1&gt;List of &lt;del&gt;fruits&lt;/del&gt;&lt;ins&gt;colors&lt;/ins&gt;&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;del&gt;Lime&lt;/del&gt;&lt;ins&gt;Green&lt;/ins&gt;&lt;/li&gt;
+&lt;li&gt;&lt;del&gt;Apple&lt;/del&gt;&lt;/li&gt;
+&lt;li&gt;Orange&lt;/li&gt;
+&lt;li&gt;&lt;del&gt;Pear&lt;/del&gt;&lt;/li&gt;
+&lt;li&gt;&lt;ins&gt;Teal&lt;/ins&gt;&lt;/li&gt;
+&lt;li&gt;&lt;del&gt;Lemon&lt;/del&gt;&lt;ins&gt;Yellow&lt;/ins&gt;&lt;/li&gt;
+&lt;li&gt;Olive&lt;/li&gt;
+&lt;li&gt;&lt;ins&gt;Purple&lt;/ins&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+</div>
+<h4 id=edits-and-tables>Edits and tables</h4>
+<p><i>This section is non-normative.</i></p>
+<p>The elements that form part of the table model have complicated content model requirements that
+do not allow for the <code><a href="edits.html#the-ins-element">ins</a></code> and <code><a href="edits.html#the-del-element">del</a></code> elements, so indicating edits to a
+table can be difficult.</p>
+<p>To indicate that an entire row or an entire column has been added or removed, the entire
+contents of each cell in that row or column can be wrapped in <code><a href="edits.html#the-ins-element">ins</a></code> or <code><a href="edits.html#the-del-element">del</a></code>
+elements (respectively).</p>
+<div>
+<p>Here, a table's row has been added:</p>
+<pre><code>&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt; &lt;th&gt; Game name           &lt;th&gt; Game publisher   &lt;th&gt; Verdict
+&lt;tbody&gt;
+&lt;tr&gt; &lt;td&gt; Diablo 2            &lt;td&gt; Blizzard         &lt;td&gt; 8/10
+&lt;tr&gt; &lt;td&gt; Portal              &lt;td&gt; Valve            &lt;td&gt; 10/10
+<strong>  &lt;tr&gt; &lt;td&gt; &lt;ins&gt;Portal 2&lt;/ins&gt; &lt;td&gt; &lt;ins&gt;Valve&lt;/ins&gt; &lt;td&gt; &lt;ins&gt;10/10&lt;/ins&gt;</strong>
+&lt;/table&gt;</code></pre>
+<p>Here, a column has been removed (the time at which it was removed is given also, as is a link
+to the page explaining why):</p>
+<pre><code>&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt; &lt;th&gt; Game name           &lt;th&gt; Game publisher   &lt;th&gt; <strong>&lt;del cite=&quot;/edits/r192&quot; datetime=&quot;2011-05-02 14:23Z&quot;&gt;Verdict&lt;/del&gt;</strong>
+&lt;tbody&gt;
+&lt;tr&gt; &lt;td&gt; Diablo 2            &lt;td&gt; Blizzard         &lt;td&gt; <strong>&lt;del cite=&quot;/edits/r192&quot; datetime=&quot;2011-05-02 14:23Z&quot;&gt;8/10&lt;/del&gt;</strong>
+&lt;tr&gt; &lt;td&gt; Portal              &lt;td&gt; Valve            &lt;td&gt; <strong>&lt;del cite=&quot;/edits/r192&quot; datetime=&quot;2011-05-02 14:23Z&quot;&gt;10/10&lt;/del&gt;</strong>
+&lt;tr&gt; &lt;td&gt; Portal 2            &lt;td&gt; Valve            &lt;td&gt; <strong>&lt;del cite=&quot;/edits/r192&quot; datetime=&quot;2011-05-02 14:23Z&quot;&gt;10/10&lt;/del&gt;</strong>
+&lt;/table&gt;</code></pre>
+</div>
+<p>Generally speaking, there is no good way to indicate more complicated edits (e.g. that a cell
+was removed, moving all subsequent cells up or to the left).</p>
+</body>
+</html>

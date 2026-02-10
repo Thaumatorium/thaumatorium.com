@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+<li><a href="semantics-other.html#disabled-elements">Disabled elements</a><li><a href="semantics-other.html#selectors">Matching HTML elements using selectors and CSS</a><ol><li><a href="semantics-other.html#case-sensitivity-of-the-css-'attr()'-function">Case-sensitivity of the CSS 'attr()' function</a><li><a href="semantics-other.html#case-sensitivity-of-selectors">Case-sensitivity of selectors</a><li><a href="semantics-other.html#pseudo-classes">Pseudo-classes</a></ol></ol></ol><h3 id=common-idioms>Common idioms without dedicated elements</h3>
+<h4 id=rel-up>Breadcrumb navigation</h4>
+<p>This specification does not provide a machine-readable way of describing breadcrumb navigation
+menus. Authors are encouraged to just use a series of links in a paragraph. The <code><a href="sections.html#the-nav-element">nav</a></code>
+element can be used to mark the section containing these paragraphs as being navigation
+blocks.</p>
+<div>
+<p>In the following example, the current page can be reached via two paths.</p>
+<pre><code>&lt;nav&gt;
+&lt;p&gt;
+&lt;a href=&quot;/&quot;&gt;Main&lt;/a&gt; ▸
+&lt;a href=&quot;/products/&quot;&gt;Products&lt;/a&gt; ▸
+&lt;a href=&quot;/products/dishwashers/&quot;&gt;Dishwashers&lt;/a&gt; ▸
+&lt;a&gt;Second hand&lt;/a&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&quot;/&quot;&gt;Main&lt;/a&gt; ▸
+&lt;a href=&quot;/second-hand/&quot;&gt;Second hand&lt;/a&gt; ▸
+&lt;a&gt;Dishwashers&lt;/a&gt;
+&lt;/p&gt;
+&lt;/nav&gt;</code></pre>
+</div>
+<h4 id=tag-clouds>Tag clouds</h4>
+<p id=tag-cloud>This specification does not define any markup specifically for marking up lists
+of keywords that apply to a group of pages (also known as <i>tag clouds</i>). In general, authors
+are encouraged to either mark up such lists using <code><a href="grouping-content.html#the-ul-element">ul</a></code> elements with explicit inline
+counts that are then hidden and turned into a presentational effect using a style sheet, or to use
+SVG.</p>
+<div>
+<p>Here, three tags are included in a short tag cloud:</p>
+<pre><code>&lt;style&gt;
+.tag-cloud &gt; li &gt; span { display: none; }
+.tag-cloud &gt; li { display: inline; }
+.tag-cloud-1 { font-size: 0.7em; }
+.tag-cloud-2 { font-size: 0.9em; }
+.tag-cloud-3 { font-size: 1.1em; }
+.tag-cloud-4 { font-size: 1.3em; }
+.tag-cloud-5 { font-size: 1.5em; }
+@media speech {
+.tag-cloud &gt; li &gt; span { display:inline }
+}
+&lt;/style&gt;
+...
+&lt;ul
+&lt;li title=&quot;28 instances&quot; href=&quot;/t/apple&quot;&gt;apple&lt;/a&gt; &lt;span&gt;(popular)&lt;/span&gt;
+&lt;li title=&quot;6 instances&quot;  href=&quot;/t/kiwi&quot;&gt;kiwi&lt;/a&gt; &lt;span&gt;(rare)&lt;/span&gt;
+&lt;li title=&quot;41 instances&quot; href=&quot;/t/pear&quot;&gt;pear&lt;/a&gt; &lt;span&gt;(very popular)&lt;/span&gt;
+&lt;/ul&gt;</code></pre>
+<p>The actual frequency of each tag is given using the <code><a href="dom.html#attr-title">title</a></code>
+attribute. A CSS style sheet is provided to convert the markup into a cloud of differently-sized
+words, but for user agents that do not support CSS or are not visual, the markup contains
+annotations like "(popular)" or "(rare)" to categorize the various tags by frequency, thus
+enabling all users to benefit from the information.</p>
+<p>The <code><a href="grouping-content.html#the-ul-element">ul</a></code> element is used (rather than <code><a href="grouping-content.html#the-ol-element">ol</a></code>) because the order is not
+particularly important: while the list is in fact ordered alphabetically, it would convey the
+same information if ordered by, say, the length of the tag.</p>
+<p>The <code><a href="links.html#link-type-tag">tag</a></code> <code><a href="links.html#attr-hyperlink-rel">rel</a></code>-keyword is
+<em>not</em> used on these <code><a href="text-level-semantics.html#the-a-element">a</a></code> elements because they do not represent tags that apply
+to the page itself; they are just part of an index listing the tags themselves.</p>
+</div>
+<h4 id=conversations>Conversations</h4>
+<p>This specification does not define a specific element for marking up conversations, meeting
+minutes, chat transcripts, dialogues in screenplays, instant message logs, and other situations
+where different players take turns in discourse.</p>
+<p>Instead, authors are encouraged to mark up conversations using <code><a href="grouping-content.html#the-p-element">p</a></code> elements and
+punctuation. Authors who need to mark the speaker for styling purposes are encouraged to use
+<code><a href="text-level-semantics.html#the-span-element">span</a></code> or <code><a href="text-level-semantics.html#the-b-element">b</a></code>. Paragraphs with their text wrapped in the <code><a href="text-level-semantics.html#the-i-element">i</a></code>
+element can be used for marking up stage directions.</p>
+<div>
+<p>This example demonstrates this using an extract from Abbot and Costello's famous sketch,
+<cite>Who's on first</cite>:</p>
+<pre><code>&lt;p&gt; Costello: Look, you gotta first baseman?
+&lt;p&gt; Abbott: Certainly.
+&lt;p&gt; Costello: Who&apos;s playing first?
+&lt;p&gt; Abbott: That&apos;s right.
+&lt;p&gt; Costello becomes exasperated.
+&lt;p&gt; Costello: When you pay off the first baseman every month, who gets the money?
+&lt;p&gt; Abbott: Every dollar of it.</code></pre>
+</div>
+<div>
+<p>The following extract shows how an IM conversation log could be marked up, using the
+<code><a href="text-level-semantics.html#the-data-element">data</a></code> element to provide Unix timestamps for each line. Note that the timestamps are
+provided in a format that the <code><a href="text-level-semantics.html#the-time-element">time</a></code> element does not support, so the
+<code><a href="text-level-semantics.html#the-data-element">data</a></code> element is used instead (namely, Unix <code>time_t</code> timestamps).
+Had the author wished to mark up the data using one of the date and time formats supported by the
+<code><a href="text-level-semantics.html#the-time-element">time</a></code> element, that element could have been used instead of <code><a href="text-level-semantics.html#the-data-element">data</a></code>. This
+could be advantageous as it would allow data analysis tools to detect the timestamps
+unambiguously, without coordination with the page author.</p>
+<pre><code>&lt;p&gt; &lt;data value=&quot;1319898155&quot;&gt;14:22&lt;/data&gt; &lt;b&gt;egof&lt;/b&gt; I&apos;m not that nerdy, I&apos;ve only seen 30% of the star trek episodes
+&lt;p&gt; &lt;data value=&quot;1319898192&quot;&gt;14:23&lt;/data&gt; &lt;b&gt;kaj&lt;/b&gt; if you know what percentage of the star trek episodes you have seen, you are inarguably nerdy
+&lt;p&gt; &lt;data value=&quot;1319898200&quot;&gt;14:23&lt;/data&gt; &lt;b&gt;egof&lt;/b&gt; it&apos;s unarguably
+&lt;p&gt; &lt;data value=&quot;1319898228&quot;&gt;14:23&lt;/data&gt; &lt;i&gt;* kaj blinks&lt;/i&gt;
+&lt;p&gt; &lt;data value=&quot;1319898260&quot;&gt;14:24&lt;/data&gt; &lt;b&gt;kaj&lt;/b&gt; you are not helping your case</code></pre>
+</div>
+<div>
+<p>HTML does not have a good way to mark up graphs, so descriptions of interactive conversations
+from games are more difficult to mark up. This example shows one possible convention using
+<code><a href="grouping-content.html#the-dl-element">dl</a></code> elements to list the possible responses at each point in the conversation.
+Another option to consider is describing the conversation in the form of a DOT file, and
+outputting the result as an SVG image to place in the document. <a href="references.html#refsDOT">[DOT]</a></p>
+<pre><code>&lt;p&gt; Next, you meet a fisher. You can say one of several greetings:
+&lt;dl&gt;
+&lt;dt&gt; &quot;Hello there!&quot;
+&lt;dd&gt;
+&lt;p&gt; She responds with &quot;Hello, how may I help you?&quot;; you can respond with:
+&lt;dl&gt;
+&lt;dt&gt; &quot;I would like to buy a fish.&quot;
+&lt;dd&gt; &lt;p&gt; She sells you a fish and the conversation finishes.
+&lt;dt&gt; &quot;Can I borrow your boat?&quot;
+&lt;dd&gt;
+&lt;p&gt; She is surprised and asks &quot;What are you offering in return?&quot;.
+&lt;dl&gt;
+&lt;dt&gt; &quot;Five gold.&quot; (if you have enough)
+&lt;dt&gt; &quot;Ten gold.&quot; (if you have enough)
+&lt;dt&gt; &quot;Fifteen gold.&quot; (if you have enough)
+&lt;dd&gt; &lt;p&gt; She lends you her boat. The conversation ends.
+&lt;dt&gt; &quot;A fish.&quot; (if you have one)
+&lt;dt&gt; &quot;A newspaper.&quot; (if you have one)
+&lt;dt&gt; &quot;A pebble.&quot; (if you have one)
+&lt;dd&gt; &lt;p&gt; &quot;No thanks&quot;, she replies. Your conversation options
+at this point are the same as they were after asking to borrow
+her boat, minus any options you&apos;ve suggested before.
+&lt;/dl&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/dd&gt;
+&lt;dt&gt; &quot;Vote for me in the next election!&quot;
+&lt;dd&gt; &lt;p&gt; She turns away. The conversation finishes.
+&lt;dt&gt; &quot;Madam, are you aware that your fish are running away?&quot;
+&lt;dd&gt;
+&lt;p&gt; She looks at you skeptically and says &quot;Fish cannot run, miss&quot;.
+&lt;dl&gt;
+&lt;dt&gt; &quot;You got me!&quot;
+&lt;dd&gt; &lt;p&gt; The fisher sighs and the conversation ends.
+&lt;dt&gt; &quot;Only kidding.&quot;
+&lt;dd&gt; &lt;p&gt; &quot;Good one!&quot; she retorts. Your conversation options at this
+point are the same as those following &quot;Hello there!&quot; above.
+&lt;dt&gt; &quot;Oh, then what are they doing?&quot;
+&lt;dd&gt; &lt;p&gt; She looks at her fish, giving you an opportunity to steal
+her boat, which you do. The conversation ends.
+&lt;/dl&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;</code></pre>
+</div>
+<div>
+<p>In some games, conversations are simpler: each character merely has a fixed set of lines that
+they say. In this example, a game FAQ/walkthrough lists some of the known possible responses for
+each character:</p>
+<pre><code>&lt;section&gt;
+&lt;h1&gt;Dialogue&lt;/h1&gt;
+&lt;p&gt;&lt;small&gt;Some characters repeat their lines in order each time you interact
+with them, others randomly pick from amongst their lines. Those who respond in
+order have numbered entries in the lists below.&lt;/small&gt;
+&lt;h2&gt;The Shopkeeper&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;How may I help you?
+&lt;li&gt;Fresh apples!
+&lt;li&gt;A loaf of bread for madam?
+&lt;/ul&gt;
+&lt;h2&gt;The pilot&lt;/h2&gt;
+&lt;p&gt;Before the accident:
+&lt;ul&gt;
+&lt;li&gt;I&apos;m about to fly out, sorry!
+&lt;li&gt;Sorry, I&apos;m just waiting for flight clearance and then I&apos;ll be off!
+&lt;/ul&gt;
+&lt;p&gt;After the accident:
+&lt;ol&gt;
+&lt;li&gt;I&apos;m about to fly out, sorry!
+&lt;li&gt;Ok, I&apos;m not leaving right now, my plane is being cleaned.
+&lt;li&gt;Ok, it&apos;s not being cleaned, it needs a minor repair first.
+&lt;li&gt;Ok, ok, stop bothering me! Truth is, I had a crash.
+&lt;/ol&gt;
+&lt;h2&gt;Clan Leader&lt;/h2&gt;
+&lt;p&gt;During the first clan meeting:
+&lt;ul&gt;
+&lt;li&gt;Hey, have you seen my daughter? I bet she&apos;s up to something nefarious again...
+&lt;li&gt;Nice weather we&apos;re having today, eh?
+&lt;li&gt;The name is Bailey, Jeff Bailey. How can I help you today?
+&lt;li&gt;A glass of water? Fresh from the well!
+&lt;/ul&gt;
+&lt;p&gt;After the earthquake:
+&lt;ol&gt;
+&lt;li&gt;Everyone is safe in the shelter, we just have to put out the fire!
+&lt;li&gt;I&apos;ll go and tell the fire brigade, you keep hosing it down!
+&lt;/ol&gt;
+&lt;/section&gt;</code></pre>
+</div>
+<h4 id=footnotes>Footnotes</h4>
+<p>HTML does not have a dedicated mechanism for marking up footnotes. Here are the suggested
+alternatives.</p>
+<hr>
+<p>For short inline annotations, the <code><a href="dom.html#attr-title">title</a></code> attribute could  be used.</p>
+<div>
+<p>In this example, two parts of a dialogue are annotated with footnote-like content using the
+<code><a href="dom.html#attr-title">title</a></code> attribute.</p>
+<pre><code>&lt;p&gt; &lt;b&gt;Customer&lt;/b&gt;: Hello! I wish to register a complaint. Hello. Miss?
+&lt;p&gt; &lt;b&gt;Shopkeeper&lt;/b&gt;: <strong>&lt;span title=&quot;Colloquial pronunciation of &apos;What do you&apos;&quot;</strong>
+&gt;Watcha&lt;/span&gt; mean, miss?
+&lt;p&gt; &lt;b&gt;Customer&lt;/b&gt;: Uh, I&apos;m sorry, I have a cold. I wish to make a complaint.
+&lt;p&gt; &lt;b&gt;Shopkeeper&lt;/b&gt;: Sorry, &lt;span <strong>title=&quot;This is, of course, a lie.&quot;</strong>&gt;we&apos;re
+closing for lunch&lt;/span&gt;.</code></pre>
+</div>
+<p>Unfortunately, relying on the <code><a href="dom.html#attr-title">title</a></code> attribute is
+currently discouraged as many user agents do not expose the attribute in an accessible manner as
+required by this specification (e.g. requiring a pointing device such as a mouse to cause a
+tooltip to appear, which excludes keyboard-only users and touch-only users, such as anyone with a
+modern phone or tablet).</p>
+<p>If the <code><a href="dom.html#attr-title">title</a></code> attribute is used, CSS can be used to
+draw the reader's attention to the elements with the attribute.</p>
+<div>
+<p>For example, the following CSS places a dashed line below elements that have a <code><a href="dom.html#attr-title">title</a></code> attribute.</p>
+<pre><code>[title] { border-bottom: thin dashed; }</code></pre>
+</div>
+<hr>
+<p>For longer annotations, the <code><a href="text-level-semantics.html#the-a-element">a</a></code> element should be used, pointing to an element later
+in the document. The convention is that the contents of the link be a number in square
+brackets.</p>
+<div>
+<p>In this example, a footnote in the dialogue links to a paragraph below the dialogue. The
+paragraph then reciprocally links back to the dialogue, allowing the user to return to the
+location of the footnote.</p>
+<pre><code>&lt;p&gt; Announcer: Number 16: The &lt;i&gt;hand&lt;/i&gt;.
+&lt;p&gt; Interviewer: Good evening. I have with me in the studio tonight
+Mr Norman St John Polevaulter, who for the past few years has been
+contradicting people. Mr Polevaulter, why &lt;em&gt;do&lt;/em&gt; you
+contradict people?
+&lt;p&gt; Norman: I don&apos;t. &lt;sup&gt;&lt;a href=&quot;#fn1&quot; id=&quot;r1&quot;&gt;[1]&lt;/a&gt;&lt;/sup&gt;
+&lt;p&gt; Interviewer: You told me you did!
+<em>...</em>
+&lt;section&gt;
+&lt;p id=&quot;fn1&quot;&gt;&lt;a href=&quot;#r1&quot;&gt;[1]&lt;/a&gt; This is, naturally, a lie,
+but paradoxically if it were true he could not say so without
+contradicting the interviewer and thus making it false.&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+</div>
+<hr>
+<p>For side notes, longer annotations that apply to entire sections of the text rather than just
+specific words or sentences, the <code><a href="sections.html#the-aside-element">aside</a></code> element should be used.</p>
+<div>
+<p>In this example, a sidebar is given after a dialogue, giving it some context.</p>
+<pre><code>&lt;p&gt; &lt;span I will not buy this record, it is scratched.
+&lt;p&gt; &lt;span I&apos;m sorry?
+&lt;p&gt; &lt;span I will not buy this record, it is scratched.
+&lt;p&gt; &lt;span No no no, this&apos;s&apos;a tobacconist&apos;s.
+&lt;aside&gt;
+&lt;p&gt;In 1970, the British Empire lay in ruins, and foreign
+nationalists frequented the streets — many of them Hungarians
+(not the streets — the foreign nationals). Sadly, Alexander
+Yalt has been publishing incompetently-written phrase books.
+&lt;/aside&gt;</code></pre>
+</div>
+<hr>
+<p>For figures or tables, footnotes can be included in the relevant <code><a href="grouping-content.html#the-figcaption-element">figcaption</a></code> or
+<code><a href="tables.html#the-caption-element">caption</a></code> element, or in surrounding prose.</p>
+<div>
+<p>In this example, a  table has cells with footnotes that are given in prose. A
+<code><a href="grouping-content.html#the-figure-element">figure</a></code> element is used to give a single legend to the combination of the table and
+its footnotes.</p>
+<pre><code>&lt;figure&gt;
+&lt;figcaption&gt;Table 1. Alternative activities for knights.&lt;/figcaption&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;th&gt; Activity
+&lt;th&gt; Location
+&lt;th&gt; Cost
+&lt;tr&gt;
+&lt;td&gt; Dance
+&lt;td&gt; Wherever possible
+&lt;td&gt; £0&lt;sup&gt;&lt;a href=&quot;#fn1&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;
+&lt;tr&gt;
+&lt;td&gt; Routines, chorus scenes&lt;sup&gt;&lt;a href=&quot;#fn2&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;
+&lt;td&gt; Undisclosed
+&lt;td&gt; Undisclosed
+&lt;tr&gt;
+&lt;td&gt; Dining&lt;sup&gt;&lt;a href=&quot;#fn3&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;
+&lt;td&gt; Camelot
+&lt;td&gt; Cost of ham, jam, and spam&lt;sup&gt;&lt;a href=&quot;#fn4&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;
+&lt;/table&gt;
+&lt;p id=&quot;fn1&quot;&gt;1. Assumed.&lt;/p&gt;
+&lt;p id=&quot;fn2&quot;&gt;2. Footwork impeccable.&lt;/p&gt;
+&lt;p id=&quot;fn3&quot;&gt;3. Quality described as &quot;well&quot;.&lt;/p&gt;
+&lt;p id=&quot;fn4&quot;&gt;4. A lot.&lt;/p&gt;
+&lt;/figure&gt;</code></pre>
+</div>
+<h3 id=disabled-elements>Disabled elements</h3>
+<div>
+<p>An element is said to be <dfn id=concept-element-disabled>actually disabled</dfn> if it
+is one of the following:</p>
+<ul><li>a <code><a href="form-elements.html#the-button-element">button</a></code> element that is <a href="form-control-infrastructure.html#concept-fe-disabled">disabled</a><li>an <code><a href="input.html#the-input-element">input</a></code> element that is <a href="form-control-infrastructure.html#concept-fe-disabled">disabled</a><li>a <code><a href="form-elements.html#the-select-element">select</a></code> element that is <a href="form-control-infrastructure.html#concept-fe-disabled">disabled</a><li>a <code><a href="form-elements.html#the-textarea-element">textarea</a></code> element that is <a href="form-control-infrastructure.html#concept-fe-disabled">disabled</a><li>an <code><a href="form-elements.html#the-optgroup-element">optgroup</a></code> element that has a <code><a href="form-elements.html#attr-optgroup-disabled">disabled</a></code> attribute<li>an <code><a href="form-elements.html#the-option-element">option</a></code> element that is <a href="form-elements.html#concept-option-disabled">disabled</a><li>a <code><a href="form-elements.html#the-fieldset-element">fieldset</a></code> element that is a <a href="form-elements.html#concept-fieldset-disabled">disabled fieldset</a><li>a <a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a> that is
+<a href="form-control-infrastructure.html#concept-fe-disabled">disabled</a></ul>
+</div>
+<p>This definition is used to determine what elements are <a href="interaction.html#focusable">focusable</a> and
+which elements match the <code><a href="semantics-other.html#selector-enabled">:enabled</a></code> and
+<code><a href="semantics-other.html#selector-disabled">:disabled</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo
+classes</a>.</p>
+<h3 id=selectors>Matching HTML elements using selectors and CSS</h3>
+<h4 id="case-sensitivity-of-the-css-'attr()'-function">Case-sensitivity of the CSS <a href=https://drafts.csswg.org/css-values/#funcdef-attr data-x-internal="'attr()'">'attr()'</a> function</h4>
+<p><cite>CSS Values and Units</cite> leaves the case-sensitivity of attribute names for the
+purpose of the <a href=https://drafts.csswg.org/css-values/#funcdef-attr data-x-internal="'attr()'">'attr()'</a> function to be defined by the host language.
+<a href="references.html#refsCSSVALUES">[CSSVALUES]</a></p>
+<p>When comparing the attribute name part of a CSS <a href=https://drafts.csswg.org/css-values/#funcdef-attr data-x-internal="'attr()'">'attr()'</a> function to the names of
+namespace-less attributes on <a href="infrastructure.html#html-elements">HTML elements</a> in <a href=https://dom.spec.whatwg.org/#html-document data-x-internal=html-documents>HTML documents</a>, the name
+part of the CSS <a href=https://drafts.csswg.org/css-values/#funcdef-attr data-x-internal="'attr()'">'attr()'</a> function must first be <a href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII
+lowercase</a>. The same function when compared to other attributes must be compared according
+to its original case. In both cases, to match, the values must be <a href=https://infra.spec.whatwg.org/#string-is data-x-internal=identical-to>identical to</a> each
+other (and therefore the comparison is case sensitive).</p>
+<p>This is the same as comparing the name part of a CSS <a href=https://drafts.csswg.org/selectors/#attribute-selector data-x-internal=attribute-selector>attribute
+selector</a>, specified in the next section.</p>
+<h4 id=case-sensitivity-of-selectors>Case-sensitivity of selectors</h4>
+<p><cite>Selectors</cite> leaves the case-sensitivity of element names, attribute names, and
+attribute values to be defined by the host language. <a href="references.html#refsSELECTORS">[SELECTORS]</a></p>
+<p>When comparing a CSS element <a href=https://drafts.csswg.org/selectors/#type-selector data-x-internal=type-selector>type selector</a> to the names of <a href="infrastructure.html#html-elements">HTML
+elements</a> in <a href=https://dom.spec.whatwg.org/#html-document data-x-internal=html-documents>HTML documents</a>, the CSS element <a href=https://drafts.csswg.org/selectors/#type-selector data-x-internal=type-selector>type selector</a> must
+first be <a href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII lowercase</a>. The same selector when compared to other
+elements must be compared according to its original case. In both cases, to match, the values must
+be <a href=https://infra.spec.whatwg.org/#string-is data-x-internal=identical-to>identical to</a> each other (and therefore the comparison is case sensitive).</p>
+<p>When comparing the name part of a CSS <a href=https://drafts.csswg.org/selectors/#attribute-selector data-x-internal=attribute-selector>attribute selector</a> to the names of
+attributes on <a href="infrastructure.html#html-elements">HTML elements</a> in <a href=https://dom.spec.whatwg.org/#html-document data-x-internal=html-documents>HTML documents</a>, the name
+part of the CSS <a href=https://drafts.csswg.org/selectors/#attribute-selector data-x-internal=attribute-selector>attribute selector</a> must first be <a href=https://infra.spec.whatwg.org/#ascii-lowercase data-x-internal=converted-to-ascii-lowercase>converted to ASCII
+lowercase</a>. The same selector when compared to other attributes must be compared according
+to its original case. In both cases, the comparison is case-sensitive.</p>
+<p><a href=https://drafts.csswg.org/selectors/#attribute-selector data-x-internal=attribute-selector>Attribute selectors</a> on an <a href="infrastructure.html#html-elements">HTML element</a> in an <a href=https://dom.spec.whatwg.org/#html-document data-x-internal=html-documents>HTML
+document</a> must treat the <em>values</em> of attributes with the following names as
+<a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a>:</p>
+<ul><li><code>accept</code>
+<li><code>accept-charset</code>
+<li><code>align</code>
+<li><code>alink</code>
+<li><code>axis</code>
+<li><code>bgcolor</code>
+<li><code>charset</code>
+<li><code>checked</code>
+<li><code>clear</code>
+<li><code>codetype</code>
+<li><code>color</code>
+<li><code>compact</code>
+<li><code>declare</code>
+<li><code>defer</code>
+<li><code>dir</code>
+<li><code>direction</code>
+<li><code>disabled</code>
+<li><code>enctype</code>
+<li><code>face</code>
+<li><code>frame</code>
+<li><code>hreflang</code>
+<li><code>http-equiv</code>
+<li><code>lang</code>
+<li><code>language</code>
+<li><code>link</code>
+<li><code>media</code>
+<li><code>method</code>
+<li><code>multiple</code>
+<li><code>nohref</code>
+<li><code>noresize</code>
+<li><code>noshade</code>
+<li><code>nowrap</code>
+<li><code>readonly</code>
+<li><code>rel</code>
+<li><code>rev</code>
+<li><code>rules</code>
+<li><code>scope</code>
+<li><code>scrolling</code>
+<li><code>selected</code>
+<li><code>shape</code>
+<li><code>target</code>
+<li><code>text</code>
+<li><code>type</code>
+<li><code>valign</code>
+<li><code>valuetype</code>
+<li><code>vlink</code>
+</ul>
+<div>
+<p>For example, the selector <code>[bgcolor="#ffffff"]</code> will match any HTML
+element with a <code>bgcolor</code> attribute with values including <code>#ffffff</code>, <code>#FFFFFF</code> and <code>#fffFFF</code>. This
+happens even if <code>bgcolor</code> has no effect for a given element (e.g.,
+<code><a href="grouping-content.html#the-div-element">div</a></code>).</p>
+<p>The selector <code>[type=a s]</code> will match any
+HTML element with a <code>type</code> attribute whose value is <code>a</code>, but not whose value is <code>A</code>, due to the <code>s</code> flag.</p>
+</div>
+<p>All other attribute values and everything else must be treated as entirely <a href=https://infra.spec.whatwg.org/#string-is data-x-internal=identical-to>identical
+to</a> each other for the purposes of selector matching. This includes:</p>
+<ul><li><p><a href=https://dom.spec.whatwg.org/#concept-id data-x-internal=concept-id>IDs</a> and <a href=https://dom.spec.whatwg.org/#concept-class data-x-internal=concept-class>classes</a>
+in <a href=https://dom.spec.whatwg.org/#concept-document-no-quirks data-x-internal=no-quirks-mode>no-quirks mode</a> and <a href=https://dom.spec.whatwg.org/#concept-document-limited-quirks data-x-internal=limited-quirks-mode>limited-quirks mode</a><li><p>the names of elements not in the <a href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a><li><p>the names of <a href="infrastructure.html#html-elements">HTML elements</a> in <a href=https://dom.spec.whatwg.org/#xml-document data-x-internal=xml-documents>XML documents</a><li><p>the names of attributes of elements not in the <a href=https://infra.spec.whatwg.org/#html-namespace data-x-internal=html-namespace-2>HTML namespace</a><li><p>the names of attributes of <a href="infrastructure.html#html-elements">HTML elements</a> in <a href=https://dom.spec.whatwg.org/#xml-document data-x-internal=xml-documents>XML documents</a><li><p>the names of attributes that themselves have namespaces</ul>
+<p><cite>Selectors</cite> defines that ID and class selectors (such as <code>#foo</code> and <code>.bar</code>), when matched against elements in documents
+that are in <a href=https://dom.spec.whatwg.org/#concept-document-quirks data-x-internal=quirks-mode>quirks mode</a>, will be matched in an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a>
+manner. However, this does not apply for attribute selectors with "<code>id</code>" or
+"<code>class</code>" as the name part. The selector <code>[class="foobar"]</code> will treat its value as case-sensitive even in
+<a href=https://dom.spec.whatwg.org/#concept-document-quirks data-x-internal=quirks-mode>quirks mode</a>.</p>
+<h4 id=pseudo-classes>Pseudo-classes</h4>
+<p>There are a number of dynamic selectors that can be used with HTML. This section defines when
+these selectors match HTML elements. <a href="references.html#refsSELECTORS">[SELECTORS]</a> <a href="references.html#refsCSSUI">[CSSUI]</a></p>
+<dl><dt><dfn id=selector-defined data-dfn-type=selector><code>:defined</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-defined">:defined</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match
+any element that is <a href=https://dom.spec.whatwg.org/#concept-element-defined data-x-internal=concept-element-defined>defined</a>.</p>
+<dt><dfn id=selector-link data-dfn-type=selector><code>:link</code></dfn></div><dt><dfn id=selector-visited data-dfn-type=selector><code>:visited</code></dfn></div><dd>
+<p>All <code><a href="text-level-semantics.html#the-a-element">a</a></code> elements that have an <code><a href="links.html#attr-hyperlink-href">href</a></code>
+attribute, and all <code><a href="image-maps.html#the-area-element">area</a></code> elements that have an <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute, must match one of <code><a href="semantics-other.html#selector-link">:link</a></code> and <code><a href="semantics-other.html#selector-visited">:visited</a></code>.</p>
+<p>Other specifications might apply more specific rules regarding how these elements are to
+match these <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-classes</a>, to mitigate some privacy concerns
+that apply with straightforward implementations of this requirement.</p>
+<dt><dfn id=selector-active data-dfn-type=selector><code>:active</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-active">:active</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> is defined to
+match an element <q cite=https://drafts.csswg.org/selectors/#the-active-pseudo>while an
+element is <dfn id=concept-selector-active><i>being activated</i></dfn> by the
+user</q>.</p>
+<div>
+<p>To determine whether a particular element is <i><a href="semantics-other.html#concept-selector-active">being
+activated</a></i> for the purposes of defining the <code><a href="semantics-other.html#selector-active">:active</a></code>
+<a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> only, an HTML user agent must use the first relevant entry in the
+following list.</p>
+<dl><dt>If the element is a <code><a href="form-elements.html#the-button-element">button</a></code> element<dt>If the element is an <code><a href="input.html#the-input-element">input</a></code> element whose <code><a href="input.html#attr-input-type">type</a></code> attribute is in the <a href="input.html#submit-button-state-(type=submit)">Submit Button</a>, <a href="input.html#image-button-state-(type=image)">Image Button</a>, <a href="input.html#reset-button-state-(type=reset)">Reset
+Button</a>, or <a href="input.html#button-state-(type=button)">Button</a> state<dt>If the element is an <code><a href="text-level-semantics.html#the-a-element">a</a></code> element that has an <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute<dt>If the element is an <code><a href="image-maps.html#the-area-element">area</a></code> element that has an <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute<dt>If the element is <a href="interaction.html#focusable">focusable</a><dd>
+<p>The element is <i><a href="semantics-other.html#concept-selector-active">being activated</a></i> if it is <a href="semantics-other.html#in-a-formal-activation-state">in a
+formal activation state</a>.</p>
+<p>For example, if the user is using a keyboard to push a <code><a href="form-elements.html#the-button-element">button</a></code>
+element by pressing the space bar, the element would match this <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> in
+between the time that the element received the <code><a data-x-internal=event-keydown href=https://w3c.github.io/uievents/#event-type-keydown>keydown</a></code>
+event and the time the element received the <code><a data-x-internal=event-keyup href=https://w3c.github.io/uievents/#event-type-keyup>keyup</a></code> event.</p>
+<dt>If the element is <a href="semantics-other.html#being-actively-pointed-at">being actively pointed at</a><dd><p>The element is <i><a href="semantics-other.html#concept-selector-active">being activated</a></i>.</dl>
+</div>
+<div>
+<p>An element is said to be <dfn id=in-a-formal-activation-state>in a formal activation state</dfn> between the time the user
+begins to indicate an intent to trigger the element's <a href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>activation behavior</a> and
+either the time the user stops indicating an intent to trigger the element's <a href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>activation
+behavior</a>, or the time the element's <a href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>activation behavior</a> has finished
+running, which ever comes first.</p>
+</div>
+<div>
+<p>An element is said to be <dfn id=being-actively-pointed-at>being actively pointed at</dfn> while the user indicates the
+element using a pointing device while that pointing device is in the "down" state (e.g. for a
+mouse, between the time the mouse button is pressed and the time it is released; for a finger
+in a multitouch environment, while the finger is touching the display surface).</p>
+</div>
+<p>Per the definition in <cite>Selectors</cite>, <code><a href="semantics-other.html#selector-active">:active</a></code> also matches <a href=https://drafts.csswg.org/css-scoping/#flat-tree data-x-internal=flat-tree>flat tree</a> ancestors of
+elements that are <i><a href="semantics-other.html#concept-selector-active">being activated</a></i>.
+<a href="references.html#refsSELECTORS">[SELECTORS]</a></p>
+<p>Additionally, any element that is the <a href="forms.html#labeled-control">labeled control</a> of a <code><a href="forms.html#the-label-element">label</a></code>
+element that is currently matching <code><a href="semantics-other.html#selector-active">:active</a></code>, also matches
+<code><a href="semantics-other.html#selector-active">:active</a></code>. (But, it does not count as being <i><a href="semantics-other.html#concept-selector-active">being activated</a></i>.)</p>
+<dt><dfn id=selector-hover data-dfn-type=selector><code>:hover</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-hover">:hover</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> is defined to
+match an element <q cite=https://drafts.csswg.org/selectors/#the-hover-pseudo>while the user
+<dfn id=concept-selector-hover><i>designates</i></dfn> an element with a pointing
+device</q>. For the purposes of defining the <code><a href="semantics-other.html#selector-hover">:hover</a></code>
+<a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> only, an HTML user agent must consider an element as being one that
+the user <i><a href="semantics-other.html#concept-selector-hover">designates</a></i> if it is an element that the user
+indicates using a pointing device.</p>
+<p>Per the definition in <cite>Selectors</cite>, <code><a href="semantics-other.html#selector-hover">:hover</a></code> also matches <a href=https://drafts.csswg.org/css-scoping/#flat-tree data-x-internal=flat-tree>flat tree</a> ancestors of elements
+that are <i><a href="semantics-other.html#concept-selector-hover">designated</a></i>. <a href="references.html#refsSELECTORS">[SELECTORS]</a></p>
+<p>Additionally, any element that is the <a href="forms.html#labeled-control">labeled control</a> of a <code><a href="forms.html#the-label-element">label</a></code>
+element that is currently matching <code><a href="semantics-other.html#selector-hover">:hover</a></code>, also matches
+<code><a href="semantics-other.html#selector-hover">:hover</a></code>. (But, it does not count as being <i><a href="semantics-other.html#concept-selector-hover">designated</a></i>.)</p>
+<div>
+<p>Consider in particular a fragment such as:</p>
+<pre><code>&lt;p&gt; &lt;label for=c&gt; &lt;input id=a&gt; &lt;/label&gt; &lt;span id=b&gt; &lt;input id=c&gt; &lt;/span&gt; &lt;/p&gt;</code></pre>
+<p>If the user designates the element with ID "<code>a</code>" with their pointing
+device, then the <code><a href="grouping-content.html#the-p-element">p</a></code> element (and all its ancestors not shown in the snippet
+above), the <code><a href="forms.html#the-label-element">label</a></code> element, the element with ID "<code>a</code>", and
+the element with ID "<code>c</code>" will match the <code><a href="semantics-other.html#selector-hover">:hover</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a>. The element with ID "<code>a</code>" matches it by being <i><a href="semantics-other.html#concept-selector-hover">designated</a></i>; the
+<code><a href="forms.html#the-label-element">label</a></code> and <code><a href="grouping-content.html#the-p-element">p</a></code> elements match it because of the condition in
+<cite>Selectors</cite> about flat tree ancestors; and the element with ID "<code>c</code>" matches it through the additional condition above on <a href="forms.html#labeled-control">labeled controls</a> (i.e., its <code><a href="forms.html#the-label-element">label</a></code> element matches <code><a href="semantics-other.html#selector-hover">:hover</a></code>). However, the element with ID "<code>b</code>" does <em>not</em> match <code><a href="semantics-other.html#selector-hover">:hover</a></code>: its
+flat tree descendant is not designated, even though that flat tree descendant matches <code><a href="semantics-other.html#selector-hover">:hover</a></code>.</p>
+</div>
+<dt><dfn id=selector-focus data-dfn-type=selector><code>:focus</code></dfn></div><dd>
+<div>
+<p>For the purposes of the CSS <code><a href="semantics-other.html#selector-focus">:focus</a></code>
+<a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a>, an <dfn id=element-has-the-focus>element has the focus</dfn> when:</p>
+<ul><li><p>it is not itself a <a href="document-sequences.html#navigable-container">navigable container</a>; and<li>
+<p>any of the following are true:</p>
+<ul><li><p>it is one of the elements listed in the <a href="interaction.html#current-focus-chain-of-a-top-level-traversable">current focus chain of the top-level traversable</a>; or<li><p>its <a href=https://dom.spec.whatwg.org/#concept-element-shadow-root data-x-internal=concept-element-shadow-root>shadow root</a>
+<var>shadowRoot</var> is not null and <var>shadowRoot</var> is the <a href=https://dom.spec.whatwg.org/#concept-tree-root data-x-internal=root>root</a> of at
+least one element that <a href="semantics-other.html#element-has-the-focus">has the focus</a>.</ul>
+</ul>
+</div>
+<dt><dfn id=selector-target data-dfn-type=selector><code>:target</code></dfn></div><dd>
+<div>
+<p>For the purposes of the CSS <code><a href="semantics-other.html#selector-target">:target</a></code>
+<a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a>, the <code><a href="dom.html#document">Document</a></code>'s <i>target elements</i> are a list
+containing the <code><a href="dom.html#document">Document</a></code>'s <a href="browsing-the-web.html#target-element">target element</a>, if it is not null, or
+containing no elements, if it is. <a href="references.html#refsSELECTORS">[SELECTORS]</a></p>
+</div>
+<dt><dfn id=selector-popover-open data-dfn-type=selector><code>:popover-open</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-popover-open">:popover-open</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> is
+defined to match any <a href="infrastructure.html#html-elements">HTML element</a> whose <code><a href="popover.html#attr-popover">popover</a></code> attribute is not in the <a href="popover.html#attr-popover-none-state">No Popover</a> state and whose <a href="popover.html#popover-visibility-state">popover visibility
+state</a> is <a href="popover.html#popover-showing-state">showing</a>.</p>
+<dt><dfn id=selector-enabled data-dfn-type=selector><code>:enabled</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-enabled">:enabled</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match any
+<code><a href="form-elements.html#the-button-element">button</a></code>, <code><a href="input.html#the-input-element">input</a></code>, <code><a href="form-elements.html#the-select-element">select</a></code>, <code><a href="form-elements.html#the-textarea-element">textarea</a></code>,
+<code><a href="form-elements.html#the-optgroup-element">optgroup</a></code>, <code><a href="form-elements.html#the-option-element">option</a></code>, <code><a href="form-elements.html#the-fieldset-element">fieldset</a></code> element, or
+<a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a> that is not <a href="semantics-other.html#concept-element-disabled">actually disabled</a>.</p>
+<dt><dfn id=selector-disabled data-dfn-type=selector><code>:disabled</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-disabled">:disabled</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match
+any element that is <a href="semantics-other.html#concept-element-disabled">actually disabled</a>.</p>
+<dt><dfn id=selector-checked data-dfn-type=selector><code>:checked</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-checked">:checked</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match any
+element falling into one of the following categories:</p>
+<ul><li><code><a href="input.html#the-input-element">input</a></code> elements whose <code><a href="input.html#attr-input-type">type</a></code> attribute is in
+the <a href="input.html#checkbox-state-(type=checkbox)">Checkbox</a> state and whose <a href="form-control-infrastructure.html#concept-fe-checked">checkedness</a> state is true<li><code><a href="input.html#the-input-element">input</a></code> elements whose <code><a href="input.html#attr-input-type">type</a></code> attribute is in
+the <a href="input.html#radio-button-state-(type=radio)">Radio Button</a> state and whose <a href="form-control-infrastructure.html#concept-fe-checked">checkedness</a> state is true<li><code><a href="form-elements.html#the-option-element">option</a></code> elements whose <a href="form-elements.html#concept-option-selectedness">selectedness</a> is true</ul>
+<dt><dfn id=selector-indeterminate data-dfn-type=selector><code>:indeterminate</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-indeterminate">:indeterminate</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a>
+must match any element falling into one of the following categories:</p>
+<ul><li><code><a href="input.html#the-input-element">input</a></code> elements whose <code><a href="input.html#attr-input-type">type</a></code> attribute is in
+the <a href="input.html#checkbox-state-(type=checkbox)">Checkbox</a> state and whose <code><a href="input.html#dom-input-indeterminate">indeterminate</a></code> IDL attribute is set to true<li><code><a href="input.html#the-input-element">input</a></code> elements whose <code><a href="input.html#attr-input-type">type</a></code> attribute is in
+the <a href="input.html#radio-button-state-(type=radio)">Radio Button</a> state and whose <a href="input.html#radio-button-group">radio button
+group</a> contains no <code><a href="input.html#the-input-element">input</a></code> elements whose <a href="form-control-infrastructure.html#concept-fe-checked">checkedness</a> state is true.<li><code><a href="form-elements.html#the-progress-element">progress</a></code> elements with no <code><a href="form-elements.html#attr-progress-value">value</a></code>
+content attribute</ul>
+<dt><dfn id=selector-default data-dfn-type=selector><code>:default</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-default">:default</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match any
+element falling into one of the following categories:</p>
+<ul><li><a href="forms.html#concept-submit-button">Submit buttons</a> that are <a href="form-control-infrastructure.html#default-button">default buttons</a> of their <a href="form-control-infrastructure.html#form-owner">form owner</a>.<li><code><a href="input.html#the-input-element">input</a></code> elements to which the <code><a href="input.html#attr-input-checked">checked</a></code>
+attribute applies and that have a <code><a href="input.html#attr-input-checked">checked</a></code>
+attribute<li><code><a href="form-elements.html#the-option-element">option</a></code> elements that have a <code><a href="form-elements.html#attr-option-selected">selected</a></code>
+attribute</ul>
+<dt><dfn id=selector-placeholder-shown data-dfn-type=selector><code>:placeholder-shown</code></dfn><dd>
+<p>The <code><a href="semantics-other.html#selector-placeholder-shown">:placeholder-shown</a></code>
+<a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match any element falling into one of the following
+categories:</p>
+<ul><li><code><a href="input.html#the-input-element">input</a></code> elements that have a <code><a href="input.html#attr-input-placeholder">placeholder</a></code> attribute whose value is currently being
+presented to the user<li><code><a href="form-elements.html#the-textarea-element">textarea</a></code> elements that have a <code><a href="form-elements.html#attr-textarea-placeholder">placeholder</a></code> attribute whose value is currently being
+presented to the user</ul>
+<dt><dfn id=selector-valid data-dfn-type=selector><code>:valid</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-valid">:valid</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match any
+element falling into one of the following categories:</p>
+<ul><li>elements that are <a href="form-control-infrastructure.html#candidate-for-constraint-validation">candidates for
+constraint validation</a> and that <a href="form-control-infrastructure.html#concept-fv-valid">satisfy their
+constraints</a><li><code><a href="forms.html#the-form-element">form</a></code> elements that are not the <a href="form-control-infrastructure.html#form-owner">form owner</a> of any elements that
+themselves are <a href="form-control-infrastructure.html#candidate-for-constraint-validation">candidates for constraint
+validation</a> but do not <a href="form-control-infrastructure.html#concept-fv-valid">satisfy their
+constraints</a><li><code><a href="form-elements.html#the-fieldset-element">fieldset</a></code> elements that have no descendant elements that themselves are <a href="form-control-infrastructure.html#candidate-for-constraint-validation">candidates for constraint validation</a> but do
+not <a href="form-control-infrastructure.html#concept-fv-valid">satisfy their constraints</a></ul>
+<dt><dfn id=selector-invalid data-dfn-type=selector><code>:invalid</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-invalid">:invalid</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match any
+element falling into one of the following categories:</p>
+<ul><li>elements that are <a href="form-control-infrastructure.html#candidate-for-constraint-validation">candidates for
+constraint validation</a> but that do not <a href="form-control-infrastructure.html#concept-fv-valid">satisfy their
+constraints</a><li><code><a href="forms.html#the-form-element">form</a></code> elements that are the <a href="form-control-infrastructure.html#form-owner">form owner</a> of one or more elements
+that themselves are <a href="form-control-infrastructure.html#candidate-for-constraint-validation">candidates for constraint
+validation</a> but do not <a href="form-control-infrastructure.html#concept-fv-valid">satisfy their
+constraints</a><li><code><a href="form-elements.html#the-fieldset-element">fieldset</a></code> elements that have of one or more descendant elements that themselves
+are <a href="form-control-infrastructure.html#candidate-for-constraint-validation">candidates for constraint
+validation</a> but do not <a href="form-control-infrastructure.html#concept-fv-valid">satisfy their
+constraints</a></ul>
+<dt><dfn id=selector-user-valid data-dfn-type=selector><code>:user-valid</code></dfn><dd>
+<p>The <code><a href="semantics-other.html#selector-user-valid">:user-valid</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must
+match <code><a href="input.html#the-input-element">input</a></code>, <code><a href="form-elements.html#the-textarea-element">textarea</a></code>, and <code><a href="form-elements.html#the-select-element">select</a></code> elements whose
+<a href="form-control-infrastructure.html#user-validity">user validity</a> is true, are
+<a href="form-control-infrastructure.html#candidate-for-constraint-validation">candidates for constraint validation</a>,
+and that <a href="form-control-infrastructure.html#concept-fv-valid">satisfy their constraints</a>.</p>
+<dt><dfn id=selector-user-invalid data-dfn-type=selector><code>:user-invalid</code></dfn><dd>
+<p>The <code><a href="semantics-other.html#selector-user-invalid">:user-invalid</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must
+match <code><a href="input.html#the-input-element">input</a></code>, <code><a href="form-elements.html#the-textarea-element">textarea</a></code>, and <code><a href="form-elements.html#the-select-element">select</a></code> elements whose
+<a href="form-control-infrastructure.html#user-validity">user validity</a> is true, are
+<a href="form-control-infrastructure.html#candidate-for-constraint-validation">candidates for constraint validation</a>
+but do not <a href="form-control-infrastructure.html#concept-fv-valid">satisfy their constraints</a>.</p>
+<dt><dfn id=selector-in-range data-dfn-type=selector><code>:in-range</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-in-range">:in-range</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match
+all elements that are <a href="form-control-infrastructure.html#candidate-for-constraint-validation">candidates for
+constraint validation</a>, <a href="input.html#have-range-limitations">have range limitations</a>, and that are neither
+<a href="form-control-infrastructure.html#suffering-from-an-underflow">suffering from an underflow</a> nor <a href="form-control-infrastructure.html#suffering-from-an-overflow">suffering from an overflow</a>.</p>
+<dt><dfn id=selector-out-of-range data-dfn-type=selector><code>:out-of-range</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-out-of-range">:out-of-range</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must
+match all elements that are <a href="form-control-infrastructure.html#candidate-for-constraint-validation">candidates for
+constraint validation</a>, <a href="input.html#have-range-limitations">have range limitations</a>, and that are either
+<a href="form-control-infrastructure.html#suffering-from-an-underflow">suffering from an underflow</a> or <a href="form-control-infrastructure.html#suffering-from-an-overflow">suffering from an overflow</a>.</p>
+<dt><dfn id=selector-required data-dfn-type=selector><code>:required</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-required">:required</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match
+any element falling into one of the following categories:</p>
+<ul><li><code><a href="input.html#the-input-element">input</a></code> elements that are <i><a href="input.html#concept-input-required">required</a></i><li><code><a href="form-elements.html#the-select-element">select</a></code> elements that have a <code><a href="form-elements.html#attr-select-required">required</a></code>
+attribute<li><code><a href="form-elements.html#the-textarea-element">textarea</a></code> elements that have a <code><a href="form-elements.html#attr-textarea-required">required</a></code> attribute</ul>
+<dt><dfn id=selector-optional data-dfn-type=selector><code>:optional</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-optional">:optional</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match
+any element falling into one of the following categories:</p>
+<ul><li><code><a href="input.html#the-input-element">input</a></code> elements to which the <code><a href="input.html#attr-input-required">required</a></code>
+attribute applies that are not <i><a href="input.html#concept-input-required">required</a></i><li><code><a href="form-elements.html#the-select-element">select</a></code> elements that do not have a <code><a href="form-elements.html#attr-select-required">required</a></code> attribute<li><code><a href="form-elements.html#the-textarea-element">textarea</a></code> elements that do not have a <code><a href="form-elements.html#attr-textarea-required">required</a></code> attribute</ul>
+<dt><dfn id=selector-autofill data-dfn-type=selector><code>:autofill</code></dfn></div><dt><dfn id=selector-webkit-autofill data-dfn-type=selector><code>:-webkit-autofill</code></dfn><dd>
+<p>The <code><a href="semantics-other.html#selector-autofill">:autofill</a></code> and <code><a href="semantics-other.html#selector-webkit-autofill">:-webkit-autofill</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-classes</a> must match <code><a href="input.html#the-input-element">input</a></code> elements which have
+been autofilled by user agent. These pseudo-classes must stop matching if the user edits the
+autofilled field.</p>
+<p>One way such autofilling might happen is via the <code><a href="form-control-infrastructure.html#attr-fe-autocomplete">autocomplete</a></code> attribute, but user agents could autofill even
+without that attribute being involved.</p>
+<dt><dfn id=selector-read-only data-dfn-type=selector><code>:read-only</code></dfn></div><dt><dfn id=selector-read-write data-dfn-type=selector><code>:read-write</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-read-write">:read-write</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must
+match any element falling into one of the following categories, which for the purposes of
+Selectors are thus considered <i>user-alterable</i>: <a href="references.html#refsSELECTORS">[SELECTORS]</a></p>
+<ul><li><code><a href="input.html#the-input-element">input</a></code> elements to which the <code><a href="input.html#attr-input-readonly">readonly</a></code>
+attribute applies, and that are <i><a href="form-control-infrastructure.html#concept-fe-mutable">mutable</a></i> (i.e. that do not
+have the <code><a href="input.html#attr-input-readonly">readonly</a></code> attribute specified and that are not
+<a href="form-control-infrastructure.html#concept-fe-disabled">disabled</a>)<li><code><a href="form-elements.html#the-textarea-element">textarea</a></code> elements that do not have a <code><a href="form-elements.html#attr-textarea-readonly">readonly</a></code> attribute, and that are not <a href="form-control-infrastructure.html#concept-fe-disabled">disabled</a><li>elements that are <a href="interaction.html#editing-host">editing hosts</a> or <a href=https://w3c.github.io/editing/docs/execCommand/#editable data-x-internal=editable>editable</a>
+and are neither <code><a href="input.html#the-input-element">input</a></code> elements nor <code><a href="form-elements.html#the-textarea-element">textarea</a></code> elements</ul>
+<p>The <code><a href="semantics-other.html#selector-read-only">:read-only</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match
+all other <a href="infrastructure.html#html-elements">HTML elements</a>.</p>
+<dt><dfn id=selector-modal data-dfn-type=selector><code>:modal</code></dfn><dd>
+<p>The <code><a href="semantics-other.html#selector-modal">:modal</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match any
+element falling into one of the following categories:</p>
+<ul><li><code><a href="interactive-elements.html#the-dialog-element">dialog</a></code> elements whose <a href="interactive-elements.html#is-modal">is modal</a> is true<li>elements whose <a href=https://fullscreen.spec.whatwg.org/#fullscreen-flag data-x-internal=fullscreen-flag>fullscreen flag</a> is true</ul>
+<dt><dfn id=selector-ltr data-dfn-type=selector><code>:dir(ltr)</code></dfn></div><dd>
+<p>The <code><a href="semantics-other.html#selector-ltr">:dir(ltr)</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match all
+elements whose <a href="dom.html#the-directionality">directionality</a> is '<a href="dom.html#concept-ltr">ltr</a>'.</p>
+<dt><dfn id=selector-rtl data-dfn-type=selector><code>:dir(rtl)</code></dfn><dd>
+<p>The <code><a href="semantics-other.html#selector-rtl">:dir(rtl)</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match all
+elements whose <a href="dom.html#the-directionality">directionality</a> is '<a href="dom.html#concept-rtl">rtl</a>'.</p>
+<dt><dfn id=selector-custom data-dfn-type=selector>Custom state pseudo-class</dfn><dd>
+<p>The <code><a href="semantics-other.html#selector-custom">:state(<var>identifier</var>)</a></code> pseudo-class must
+match all <a href="custom-elements.html#custom-element">custom element</a>s whose <a href="custom-elements.html#states-set">states set</a>'s <a href=https://webidl.spec.whatwg.org/#dfn-set-entries data-x-internal=set-entries>set entries</a>
+contains <var>identifier</var>.</p>
+<dt><dfn id=selector-heading data-dfn-type=selector>:heading</dfn><dd><p>The <code><a href="semantics-other.html#selector-heading">:heading</a></code> pseudo-class must match all
+<code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h1</a></code>, <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h2</a></code>, <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h3</a></code>, <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h4</a></code>, <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h5</a></code>, and
+<code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h6</a></code> elements.<dt><dfn id=selector-heading-functional data-dfn-type=selector>:heading(<var>integer</var>#)</dfn><dd><p>The <code><a href="semantics-other.html#selector-heading-functional">:heading(<var>integer</var>#)</a></code>
+pseudo-class must match all <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h1</a></code>, <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h2</a></code>, <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h3</a></code>, <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h4</a></code>,
+<code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h5</a></code>, and <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h6</a></code> elements that have a <a href="sections.html#heading-level">heading level</a> of
+<var>integer</var>. <a href="references.html#refsCSSSYNTAX">[CSSSYNTAX]</a> <a href="references.html#refsCSSVALUES">[CSSVALUES]</a><dt><dfn id=selector-playing data-dfn-type=selector><code>:playing</code></dfn><dd>
+<p>The <code><a href="semantics-other.html#selector-playing">:playing</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match all
+<a href="media.html#media-element">media elements</a> whose <code><a href="media.html#dom-media-paused">paused</a></code> attribute is false.</p>
+<dt><dfn id=selector-paused data-dfn-type=selector><code>:paused</code></dfn><dd>
+<p>The <code><a href="semantics-other.html#selector-paused">:paused</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match all
+<a href="media.html#media-element">media elements</a> whose <code><a href="media.html#dom-media-paused">paused</a></code> attribute is true.</p>
+<dt><dfn id=selector-seeking data-dfn-type=selector><code>:seeking</code></dfn><dd>
+<p>The <code><a href="semantics-other.html#selector-seeking">:seeking</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match all
+<a href="media.html#media-element">media elements</a> whose <code><a href="media.html#dom-media-seeking">seeking</a></code> attribute is true.</p>
+<dt><dfn id=selector-buffering data-dfn-type=selector><code>:buffering</code></dfn><dd>
+<p>The <code><a href="semantics-other.html#selector-buffering">:buffering</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match
+all <a href="media.html#media-element">media elements</a> whose <code><a href="media.html#dom-media-paused">paused</a></code> attribute is false, <code><a href="media.html#dom-media-networkstate">networkState</a></code> attribute is <code><a href="media.html#dom-media-network_loading">NETWORK_LOADING</a></code>, and ready state is <code><a href="media.html#dom-media-have_current_data">HAVE_CURRENT_DATA</a></code> or less.</p>
+<dt><dfn id=selector-stalled data-dfn-type=selector><code>:stalled</code></dfn><dd><p>The <code><a href="semantics-other.html#selector-stalled">:stalled</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match
+all <a href="media.html#media-element">media elements</a> that match the <code><a href="semantics-other.html#selector-buffering">:buffering</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> and whose <a href="media.html#is-currently-stalled">is
+currently stalled</a> is true.<dt><dfn id=selector-muted data-dfn-type=selector><code>:muted</code></dfn><dd><p>The <code><a href="semantics-other.html#selector-muted">:muted</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match all
+<a href="media.html#media-element">media elements</a> that are <a href="media.html#concept-media-muted">muted</a>.<dt><dfn id=selector-volume-locked data-dfn-type=selector><code>:volume-locked</code></dfn><dd><p>The <code><a href="semantics-other.html#selector-volume-locked">:volume-locked</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a>
+must match all <a href="media.html#media-element">media elements</a> when the user agent's
+<a href="media.html#volume-locked">volume locked</a> is true.<dt><dfn id=selector-open data-dfn-type=selector><code>:open</code></dfn><dd>
+<p>The <code><a href="semantics-other.html#selector-open">:open</a></code> <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a> must match any
+element falling into one of the following categories:</p>
+<ul><li><p><code><a href="interactive-elements.html#the-details-element">details</a></code> elements that have an <code><a href="interactive-elements.html#attr-details-open">open</a></code>
+attribute<li><p><code><a href="interactive-elements.html#the-dialog-element">dialog</a></code> elements that have an <code><a href="interactive-elements.html#attr-dialog-open">open</a></code>
+attribute<li><p><code><a href="form-elements.html#the-select-element">select</a></code> elements that are a <a href="rendering.html#drop-down-box">drop-down box</a> and whose drop-down
+boxes are open<li><p><code><a href="input.html#the-input-element">input</a></code> elements that <a href="input.html#input-support-picker">support a
+picker</a> and whose pickers are open</ul>
+</dl>
+<p>This specification does not define when an element matches the <code>:lang()</code> dynamic <a href=https://drafts.csswg.org/selectors/#pseudo-class data-x-internal=pseudo-class>pseudo-class</a>, as it is defined in
+sufficient detail in a language-agnostic fashion in <cite>Selectors</cite>.
+<a href="references.html#refsSELECTORS">[SELECTORS]</a></p>
+</body>
+</html>

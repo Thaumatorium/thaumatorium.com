@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+<li><a href="scripting.html#the-noscript-element">The <code>noscript</code> element</a><li><a href="scripting.html#the-template-element">The <code>template</code> element</a><ol><li><a href="scripting.html#template-XSLT-XPath">Interaction of <code>template</code> elements with XSLT and XPath</a></ol><li><a href="scripting.html#the-slot-element">The <code>slot</code> element</a></ol></ol></ol><h3 id=scripting-3>Scripting</h3>
+<p>Scripts allow authors to add interactivity to their documents.</p>
+<p>Authors are encouraged to use declarative alternatives to scripting where possible, as
+declarative mechanisms are often more maintainable, and many users disable scripting.</p>
+<div>
+<p>For example, instead of using a script to show or hide a section to show more details, the
+<code><a href="interactive-elements.html#the-details-element">details</a></code> element could be used.</p>
+</div>
+<p>Authors are also encouraged to make their applications degrade gracefully in the absence of
+scripting support.</p>
+<div>
+<p>For example, if an author provides a link in a table header to dynamically resort the table,
+the link could also be made to function without scripts by requesting the sorted table from the
+server.</p>
+</div>
+<h4 id=the-script-element>The <dfn id=script data-dfn-type=element><code>script</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#metadata-content-2">Metadata content</a>.<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#script-supporting-elements-2">Script-supporting element</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#metadata-content-2">metadata content</a> is expected.<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dd>Where <a href="dom.html#script-supporting-elements-2">script-supporting elements</a> are expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>If there is no <code><a href="scripting.html#attr-script-src">src</a></code>
+attribute, depends on the value of the <code><a href="scripting.html#attr-script-type">type</a></code> attribute, but must match
+<a href="scripting.html#restrictions-for-contents-of-script-elements">script content restrictions</a>.<dd>If there <em>is</em> a <code><a href="scripting.html#attr-script-src">src</a></code>
+attribute, the element must be either empty or contain only
+<a href="scripting.html#inline-documentation-for-external-scripts">script documentation</a> that also matches <a href="scripting.html#restrictions-for-contents-of-script-elements">script
+content restrictions</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="scripting.html#attr-script-type">type</a></code> —  Type of script
+<dd><code><a href="scripting.html#attr-script-src">src</a></code> —  Address of the resource
+<dd><code><a href="scripting.html#attr-script-nomodule">nomodule</a></code> —  Prevents execution in user agents that support <a href="webappapis.html#module-script">module scripts</a>
+<dd><code><a href="scripting.html#attr-script-async">async</a></code> —  Execute script when available, without blocking while fetching
+<dd><code><a href="scripting.html#attr-script-defer">defer</a></code> —  Defer script execution
+<dd><code><a href="scripting.html#attr-script-blocking">blocking</a></code> —  Whether the element is <a href="urls-and-fetching.html#potentially-render-blocking">potentially render-blocking</a>
+<dd><code><a href="scripting.html#attr-script-crossorigin">crossorigin</a></code> —  How the element handles requests
+<dd><code><a href="scripting.html#attr-script-referrerpolicy">referrerpolicy</a></code> —  <a href=https://w3c.github.io/webappsec-referrer-policy/#referrer-policy data-x-internal=referrer-policy>Referrer policy</a> for <a href=https://fetch.spec.whatwg.org/#concept-fetch data-x-internal=concept-fetch>fetches</a> initiated by the element
+<dd><code><a href="scripting.html#attr-script-integrity">integrity</a></code> —  Integrity metadata used in <cite>Subresource Integrity</cite> checks <a href="references.html#refsSRI">[SRI]</a>
+<dd><code><a href="scripting.html#attr-script-fetchpriority">fetchpriority</a></code> —  Sets the <a href=https://fetch.spec.whatwg.org/#request-priority data-x-internal=concept-request-priority>priority</a> for <a href=https://fetch.spec.whatwg.org/#concept-fetch data-x-internal=concept-fetch>fetches</a> initiated by the element
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-script>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-script>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlscriptelement' data-dfn-type='interface'>HTMLScriptElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-script-type' data-dfn-type='attribute'>type</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflecturl'>ReflectURL</a>] attribute USVString <dfn id='dom-script-src' data-dfn-type='attribute'>src</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-script-nomodule' data-dfn-type='attribute'>noModule</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute boolean <a href='scripting.html#dom-script-async'>async</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-script-defer' data-dfn-type='attribute'>defer</dfn>;
+[SameObject, PutForwards=<a href='https://dom.spec.whatwg.org/#dom-domtokenlist-value' data-x-internal='dom-domtokenlist-value'>value</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] readonly attribute <a href='https://dom.spec.whatwg.org/#interface-domtokenlist' data-x-internal='domtokenlist'>DOMTokenList</a> <dfn id='dom-script-blocking' data-dfn-type='attribute'>blocking</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString? <a href='scripting.html#dom-script-crossorigin'>crossOrigin</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString <a href='scripting.html#dom-script-referrerpolicy'>referrerPolicy</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-script-integrity' data-dfn-type='attribute'>integrity</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString <a href='scripting.html#dom-script-fetchpriority'>fetchPriority</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString <a href='scripting.html#dom-script-text'>text</a>;
+static boolean <a href='scripting.html#dom-script-supports'>supports</a>(DOMString type);
+// <a href='obsolete.html#HTMLScriptElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>The <code><a href="scripting.html#the-script-element">script</a></code> element allows authors to include dynamic script, instructions to the
+user agent, and data blocks in their documents. The element does not <a href="dom.html#represents">represent</a> content for the user.</p>
+</div><p>The script element has two core attributes. The <dfn id=attr-script-type data-dfn-type=element-attr><code>type</code></dfn> attribute allows customization of the type of script
+represented:</p>
+<ul><li><p>Omitting the attribute, setting it to the empty string, or setting it to a
+<a href=https://mimesniff.spec.whatwg.org/#javascript-mime-type-essence-match data-x-internal=javascript-mime-type-essence-match>JavaScript MIME type essence match</a> means that the script is a <a href="webappapis.html#classic-script">classic
+script</a>, to be interpreted according to the JavaScript <i><a data-x-internal=js-prod-script href=https://tc39.es/ecma262/#prod-Script>Script</a></i> top-level production. Authors should omit the <code><a href="scripting.html#attr-script-type">type</a></code> attribute instead of redundantly setting it.<li><p>Setting the attribute to an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for "<code>module</code>" means that the script is a <a href="webappapis.html#javascript-module-script">JavaScript module script</a>, to
+be interpreted according to the JavaScript <i><a data-x-internal=js-prod-module href=https://tc39.es/ecma262/#prod-Module>Module</a></i> top-level
+production.<li><p>Setting the attribute to an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for "<code>importmap</code>" means that the script is an <a href="webappapis.html#import-map">import map</a>, containing
+JSON that will be used to control the behavior of <a href="webappapis.html#resolve-a-module-specifier">module specifier resolution</a>.<li><p>Setting the attribute to an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for "<code>speculationrules</code>" means that the script defines a <a href="speculative-loading.html#speculation-rule-set">speculation rule
+set</a>, containing JSON that will be used to describe <a href="speculative-loading.html#speculative-loading">speculative loads</a>.<li>
+<p>Setting the attribute to any other value means that the script is a <dfn id=data-block>data block</dfn>,
+which is not processed by the user agent, but instead by author script or other tools. Authors
+must use a <a href=https://mimesniff.spec.whatwg.org/#valid-mime-type data-x-internal=valid-mime-type-string>valid MIME type string</a> that is not a <a href=https://mimesniff.spec.whatwg.org/#javascript-mime-type-essence-match data-x-internal=javascript-mime-type-essence-match>JavaScript MIME type essence
+match</a> to denote data blocks.</p>
+<p>The requirement that <a href="scripting.html#data-block">data blocks</a>
+must be denoted using a <a href=https://mimesniff.spec.whatwg.org/#valid-mime-type data-x-internal=valid-mime-type-string>valid MIME type string</a> is in place to
+avoid potential future collisions. Values for the <code><a href="scripting.html#attr-script-type">type</a></code>
+attribute that are not MIME types, like "<code>module</code>" or "<code>importmap</code>", are used by the standard to denote types of scripts which have
+special behavior in user agents. By using a valid MIME type string now, you ensure that your
+data block will not ever be reinterpreted as a different script type, even in future user
+agents.</p>
+</ul>
+<p>The second core attribute is the <dfn id=attr-script-src data-dfn-type=element-attr><code>src</code></dfn> attribute. It must only be specified for <a href="webappapis.html#classic-script">classic scripts</a> and <a href="webappapis.html#javascript-module-script">JavaScript module scripts</a>, and denotes that instead of using the element's
+<a href=https://dom.spec.whatwg.org/#concept-child-text-content data-x-internal=child-text-content>child text content</a> as the script content, the script will be fetched from the
+specified <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a>. If <code><a href="scripting.html#attr-script-src">src</a></code> is specified, it must be
+a <a href="urls-and-fetching.html#valid-non-empty-url-potentially-surrounded-by-spaces">valid non-empty URL potentially surrounded by spaces</a>.</p>
+<p>Which other attributes may be specified on a given <code><a href="scripting.html#the-script-element">script</a></code> element is determined by
+the following table:</p>
+<table><thead><tr><th><th><code><a href="scripting.html#attr-script-nomodule">nomodule</a></code>
+<th><code><a href="scripting.html#attr-script-async">async</a></code>
+<th><code><a href="scripting.html#attr-script-defer">defer</a></code>
+<th><code><a href="scripting.html#attr-script-blocking">blocking</a></code>
+<th><code><a href="scripting.html#attr-script-crossorigin">crossorigin</a></code>
+<th><code><a href="scripting.html#attr-script-referrerpolicy">referrerpolicy</a></code>
+<th><code><a href="scripting.html#attr-script-integrity">integrity</a></code>
+<th><code><a href="scripting.html#attr-script-fetchpriority">fetchpriority</a></code>
+<tbody><tr><th>External classic scripts<td>Yes<td>Yes<td>Yes<td>Yes<td>Yes<td>Yes<td>Yes<td>Yes<tr><th>Inline classic scripts<td>Yes<td>·<td>·<td>·<td>Yes*<td>Yes*<td>·<td>·†<tr><th>External module scripts<td>·<td>Yes<td>·<td>Yes<td>Yes<td>Yes<td>Yes<td>Yes<tr><th>Inline module scripts<td>·<td>Yes<td>·<td>·<td>Yes*<td>Yes*<td>·<td>·†<tr><th>Import maps<td>·<td>·<td>·<td>·<td>·<td>·<td>·<td>·<tr><th>Speculation rules<td>·<td>·<td>·<td>·<td>·<td>·<td>·<td>·<tr><th>Data blocks<td>·<td>·<td>·<td>·<td>·<td>·<td>·<td>·</table>
+<p><small>* Although inline scripts have no initial fetches, the <code><a href="scripting.html#attr-script-crossorigin">crossorigin</a></code> and <code><a href="scripting.html#attr-script-referrerpolicy">referrerpolicy</a></code> attribute on inline scripts affects the
+<a href=https://fetch.spec.whatwg.org/#concept-request-credentials-mode data-x-internal=concept-request-credentials-mode>credentials mode</a> and <a href=https://w3c.github.io/webappsec-referrer-policy/#referrer-policy data-x-internal=referrer-policy>referrer
+policy</a> used by module imports, including dynamic <code><a data-x-internal=import() href=https://tc39.es/ecma262/#sec-import-calls>import()</a></code>.</small></p>
+<p><small>† Unlike <code><a href="scripting.html#attr-script-crossorigin">crossorigin</a></code> and <code><a href="scripting.html#attr-script-referrerpolicy">referrerpolicy</a></code>, <code><a href="scripting.html#attr-script-fetchpriority">fetchpriority</a></code> does not affect module imports. See some discussion in <a href=https://github.com/whatwg/html/issues/10276>issue #10276</a>.</small></p>
+<hr>
+<p>The contents of inline <code><a href="scripting.html#the-script-element">script</a></code> elements, or the external script resource, must
+conform with the requirements of the JavaScript specification's <i><a data-x-internal=js-prod-script href=https://tc39.es/ecma262/#prod-Script>Script</a></i> or <i><a data-x-internal=js-prod-module href=https://tc39.es/ecma262/#prod-Module>Module</a></i> productions, for <a href="webappapis.html#classic-script">classic scripts</a> and <a href="webappapis.html#javascript-module-script">JavaScript module scripts</a> respectively. <a href="references.html#refsJAVASCRIPT">[JAVASCRIPT]</a></p>
+<p>The contents of inline <code><a href="scripting.html#the-script-element">script</a></code> elements for <a href="webappapis.html#import-map">import
+maps</a> must conform with the <a href="webappapis.html#import-map-authoring-requirements">import map authoring requirements</a>.</p>
+<p>The contents of inline <code><a href="scripting.html#the-script-element">script</a></code> elements for <a href="speculative-loading.html#speculation-rule-set">speculation rule sets</a> must conform with the <a href="speculative-loading.html#speculation-rule-set-authoring-requirements">speculation rule set authoring
+requirements</a>.</p>
+<p>When used to include <a href="scripting.html#data-block">data blocks</a>, the data must be embedded
+inline, the format of the data must be given using the <code><a href="scripting.html#attr-script-type">type</a></code>
+attribute, and the contents of the <code><a href="scripting.html#the-script-element">script</a></code> element must conform to the requirements
+defined for the format used.</p>
+<hr>
+<p>The <dfn id=attr-script-nomodule data-dfn-type=element-attr><code>nomodule</code></dfn>
+attribute is a <a href="common-microsyntaxes.html#boolean-attribute">boolean attribute</a> that prevents a script from being executed in user
+agents that support <a href="webappapis.html#module-script">module scripts</a>. This allows selective
+execution of <a href="webappapis.html#module-script">module scripts</a> in modern user agents and <a href="webappapis.html#classic-script">classic scripts</a> in older user agents, <a href="scripting.html#script-nomodule-example">as shown below</a>.</p>
+</div><p>The <dfn id=attr-script-async data-dfn-type=element-attr><code>async</code></dfn> and
+<dfn id=attr-script-defer data-dfn-type=element-attr><code>defer</code></dfn> attributes are
+<a href="common-microsyntaxes.html#boolean-attribute">boolean attributes</a> that indicate how the script should be
+evaluated. There are several possible modes that can be selected using these attributes, depending
+on the script's type.</p>
+<p>For external <a href="webappapis.html#classic-script">classic scripts</a>, if the <code><a href="scripting.html#attr-script-async">async</a></code> attribute is present, then the classic script will be
+fetched <a href="infrastructure.html#in-parallel">in parallel</a> to parsing and evaluated as soon as it is available (potentially
+before parsing completes). If the <code><a href="scripting.html#attr-script-async">async</a></code> attribute is not
+present but the <code><a href="scripting.html#attr-script-defer">defer</a></code> attribute is present, then the
+classic script will be fetched <a href="infrastructure.html#in-parallel">in parallel</a> and evaluated when the page has finished
+parsing. If neither attribute is present, then the script is fetched and evaluated immediately,
+blocking parsing until these are both complete.</p>
+<p>For <a href="webappapis.html#module-script">module scripts</a>, if the <code><a href="scripting.html#attr-script-async">async</a></code> attribute is present, then the module script and all its
+dependencies will be fetched <a href="infrastructure.html#in-parallel">in parallel</a> to parsing, and the module script will
+be evaluated as soon as it is available (potentially before parsing completes). Otherwise, the
+module script and its dependencies will be fetched <a href="infrastructure.html#in-parallel">in parallel</a> to parsing and
+evaluated when the page has finished parsing. (The <code><a href="scripting.html#attr-script-defer">defer</a></code>
+attribute has no effect on module scripts.)</p>
+<p>This is all summarized in the following schematic diagram:</p>
+<p><img src="../images/asyncdefer.svg" alt="With , parsing is interrupted by fetching and execution. With , fetching is parallel to parsing and execution takes place after all parsing has finished. And with , fetching is parallel to parsing but once it finishes parsing is interrupted to execute the script. The story for  is similar to , but the dependencies will be fetched as well, and the story for  is similar to  with the extra dependency fetching." style="width: 80%; min-width: 820px;"></p>
+<p>The exact processing details for these attributes are, for mostly
+historical reasons, somewhat non-trivial, involving a number of aspects of HTML. The
+implementation requirements are therefore by necessity scattered throughout the specification. The
+algorithms <a href="scripting.html#script-processing-model">below</a> describe the core of this processing, but
+these algorithms reference and are referenced by the parsing rules for <code><a href="scripting.html#the-script-element">script</a></code> <a href="parsing.html#scriptTag">start</a> and <a href="parsing.html#scriptEndTag">end</a> tags in HTML, <a href="parsing.html#scriptForeignEndTag">in foreign content</a>, and <a href="xhtml.html#scriptTagXML">in XML</a>, the
+rules for the <code><a href="dynamic-markup-insertion.html#dom-document-write">document.write()</a></code> method, the handling of <a href="webappapis.html#scripting">scripting</a>, etc.</p>
+<p>When inserted using the <code><a href="dynamic-markup-insertion.html#dom-document-write">document.write()</a></code>
+method, <code><a href="scripting.html#the-script-element">script</a></code> elements <a href="parsing.html#document-written-scripts-intervention">usually</a>
+execute (typically blocking further script execution or HTML parsing). When inserted using the
+<code><a href="dynamic-markup-insertion.html#dom-element-innerhtml">innerHTML</a></code> and <code><a href="dynamic-markup-insertion.html#dom-element-outerhtml">outerHTML</a></code> attributes, they do not execute at all.</p>
+<p>The <code><a href="scripting.html#attr-script-defer">defer</a></code> attribute may be specified even if the <code><a href="scripting.html#attr-script-async">async</a></code> attribute is specified, to cause legacy web browsers that
+only support <code><a href="scripting.html#attr-script-defer">defer</a></code> (and not <code><a href="scripting.html#attr-script-async">async</a></code>) to fall back to the <code><a href="scripting.html#attr-script-defer">defer</a></code> behavior instead of the blocking behavior that
+is the default.</p>
+<p>The <dfn id=attr-script-blocking data-dfn-type=element-attr><code>blocking</code></dfn>
+attribute is a <a href="urls-and-fetching.html#blocking-attribute">blocking attribute</a>.</p>
+<p>The <dfn id=attr-script-crossorigin data-dfn-type=element-attr><code>crossorigin</code></dfn> attribute is a <a href="urls-and-fetching.html#cors-settings-attribute">CORS settings
+attribute</a>. For external <a href="webappapis.html#classic-script">classic scripts</a>, it controls
+whether error information will be exposed, when the script is obtained from other <a href="browsers.html#concept-origin">origins</a>. For external <a href="webappapis.html#module-script">module scripts</a>,
+it controls the <a href=https://fetch.spec.whatwg.org/#concept-request-credentials-mode data-x-internal=concept-request-credentials-mode>credentials mode</a> used for
+the initial fetch of the module source, if cross-origin. For both <a href="webappapis.html#classic-script">classic</a> and <a href="webappapis.html#module-script">module scripts</a>, it controls the
+<a href=https://fetch.spec.whatwg.org/#concept-request-credentials-mode data-x-internal=concept-request-credentials-mode>credentials mode</a> used for cross-origin
+module imports.</p>
+<p>Unlike <a href="webappapis.html#classic-script">classic scripts</a>, <a href="webappapis.html#module-script">module scripts</a> require the use of the <a href=https://fetch.spec.whatwg.org/#http-cors-protocol data-x-internal=cors-protocol>CORS protocol</a> for cross-origin fetching.</p>
+<p>The <dfn id=attr-script-referrerpolicy data-dfn-type=element-attr><code>referrerpolicy</code></dfn> attribute is a <a href="urls-and-fetching.html#referrer-policy-attribute">referrer
+policy attribute</a>. Its sets the <a href=https://w3c.github.io/webappsec-referrer-policy/#referrer-policy data-x-internal=referrer-policy>referrer policy</a> used for the initial fetch of
+an external script, as well as the fetching of any imported module scripts.
+<a href="references.html#refsREFERRERPOLICY">[REFERRERPOLICY]</a></p>
+<div>
+<p>An example of a <code><a href="scripting.html#the-script-element">script</a></code> element's referrer policy being used when fetching
+imported scripts but not other subresources:</p>
+<pre><code>&lt;script referrerpolicy=&quot;origin&quot;&gt;
+fetch(&apos;/api/data&apos;);    // not fetched with &lt;script&gt;&apos;s referrer policy
+import(&apos;./utils.mjs&apos;); // is fetched with &lt;script&gt;&apos;s referrer policy (&quot;origin&quot; in this case)
+&lt;/script&gt;</code></pre>
+</div>
+<p>The <dfn id=attr-script-integrity data-dfn-type=element-attr><code>integrity</code></dfn>
+attribute sets the <a href=https://fetch.spec.whatwg.org/#concept-request-integrity-metadata data-x-internal=concept-request-integrity-metadata>integrity metadata</a>
+used for the initial fetch of an external script. The value must match <a href=https://w3c.github.io/webappsec-subresource-integrity/#the-integrity-attribute data-x-internal=the-requirements-of-the-integrity-attribute>the requirements of
+the integrity attribute</a>. <a href="references.html#refsSRI">[SRI]</a></p>
+<p>The <dfn id=attr-script-fetchpriority data-dfn-type=element-attr><code>fetchpriority</code></dfn> attribute is a <a href="urls-and-fetching.html#fetch-priority-attribute">fetch priority
+attribute</a>. Its sets the <a href=https://fetch.spec.whatwg.org/#request-priority data-x-internal=concept-request-priority>priority</a> used for
+the initial fetch of an external script.</p>
+<p>Changing any of these attributes dynamically has no direct effect; these attributes are only
+used at specific times described in the <a href="scripting.html#script-processing-model">processing model</a>.</p>
+<hr>
+<div>
+<p>The <dfn id=dom-script-crossorigin data-dfn-type=attribute><code>crossOrigin</code></dfn> IDL attribute must <a href="common-dom-interfaces.html#reflect">reflect</a>
+the <code><a href="scripting.html#attr-script-crossorigin">crossorigin</a></code> content attribute, <a href="common-dom-interfaces.html#limited-to-only-known-values">limited to
+only known values</a>.</p>
+</div>
+</div><div>
+<p>The <dfn id=dom-script-referrerpolicy data-dfn-type=attribute><code>referrerPolicy</code></dfn> IDL attribute must
+<a href="common-dom-interfaces.html#reflect">reflect</a> the <code><a href="scripting.html#attr-script-referrerpolicy">referrerpolicy</a></code> content
+attribute, <a href="common-dom-interfaces.html#limited-to-only-known-values">limited to only known values</a>.</p>
+</div>
+<div>
+<p>The <dfn id=dom-script-fetchpriority data-dfn-type=attribute><code>fetchPriority</code></dfn> IDL attribute must
+<a href="common-dom-interfaces.html#reflect">reflect</a> the <code><a href="scripting.html#attr-script-fetchpriority">fetchpriority</a></code>
+content attribute, <a href="common-dom-interfaces.html#limited-to-only-known-values">limited to only known values</a>.</p>
+</div>
+<div>
+<p>The <dfn id=dom-script-async data-dfn-type=attribute><code>async</code></dfn>
+getter steps are:</p>
+<ol><li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="scripting.html#script-force-async">force async</a> is true, then
+return true.<li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <code><a href="scripting.html#attr-script-async">async</a></code> content attribute is
+present, then return true.<li><p>Return false.</ol>
+</div>
+<div>
+<p>The <code><a href="scripting.html#dom-script-async">async</a></code> setter steps are:</p>
+<ol><li><p>Set <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="scripting.html#script-force-async">force async</a> to
+false.<li><p>If the given value is true, then set <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <code><a href="scripting.html#attr-script-async">async</a></code> content attribute to the empty string.<li><p>Otherwise, remove <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <code><a href="scripting.html#attr-script-async">async</a></code>
+content attribute.</ol>
+</div>
+<dl><dt><code><var>script</var>.<a href="scripting.html#dom-script-text" id=dom-script-text-dev>text</a> [ = <var>value</var> ]</code><dd>
+<p>Returns the <a href=https://dom.spec.whatwg.org/#concept-child-text-content data-x-internal=child-text-content>child text content</a> of the element.</p>
+<dt><code><var>script</var>.<a href="scripting.html#dom-script-text">text</a> = <var>value</var></code><dd>
+<p>Replaces the element's children with the text given by <var>value</var>.</p>
+<dt><code><code><a href="scripting.html#htmlscriptelement">HTMLScriptElement</a></code>.<a href="scripting.html#dom-script-supports" id=dom-script-supports-dev>supports</a>(<var>type</var>)</code><dd>
+<p>Returns true if the given <var>type</var> is a script type supported by the user agent. The
+possible script types in this specification are "<code>classic</code>", "<code>module</code>", and "<code>importmap</code>", but others might be added in
+the future.</p>
+</dl>
+<div>
+<p>The <dfn id=dom-script-text data-dfn-type=attribute><code>text</code></dfn>
+getter steps are to return <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href=https://dom.spec.whatwg.org/#concept-child-text-content data-x-internal=child-text-content>child text content</a>.</p>
+</div>
+<div>
+<p>The <code><a href="scripting.html#dom-script-text">text</a></code> setter steps are to <a href=https://dom.spec.whatwg.org/#string-replace-all data-x-internal=string-replace-all>string replace
+all</a> with the given value within <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>.</p>
+</div>
+</div><div>
+<p>The static <dfn id=dom-script-supports data-dfn-type=method><code>supports(<var>type</var>)</code></dfn> method steps are:</p>
+<ol><li><p>If <var>type</var> <a href=https://infra.spec.whatwg.org/#string-is data-x-internal=is>is</a> "<code>classic</code>", then return
+true.<li><p>If <var>type</var> <a href=https://infra.spec.whatwg.org/#string-is data-x-internal=is>is</a> "<code>module</code>", then return
+true.<li><p>If <var>type</var> <a href=https://infra.spec.whatwg.org/#string-is data-x-internal=is>is</a> "<code>importmap</code>", then return
+true.<li><p>If <var>type</var> <a href=https://infra.spec.whatwg.org/#string-is data-x-internal=is>is</a> "<code>speculationrules</code>", then return
+true.<li><p>Return false.</ol>
+</div>
+<p>The <var>type</var> argument has to exactly match these values; we do not
+perform an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match. This is different from how <code><a href="scripting.html#attr-script-type">type</a></code> content attribute values are treated, and how
+<code><a data-x-internal=domtokenlist href=https://dom.spec.whatwg.org/#interface-domtokenlist>DOMTokenList</a></code>'s <code><a data-x-internal=dom-domtokenlist-supports href=https://dom.spec.whatwg.org/#dom-domtokenlist-supports>supports()</a></code> method
+works, but it aligns with the <code><a href="workers.html#workertype">WorkerType</a></code> enumeration used in the <code><a href="workers.html#dom-worker">Worker()</a></code> constructor.</p>
+<hr>
+<div>
+<p>In this example, two <code><a href="scripting.html#the-script-element">script</a></code> elements are used. One embeds an external
+<a href="webappapis.html#classic-script">classic script</a>, and the other includes some data as a <a href="scripting.html#data-block">data block</a>.</p>
+<pre><code>&lt;script src=&quot;game-engine.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/x-game-map&quot;&gt;
+........U.........e
+o............A....e
+.....A.....AAA....e
+.A..AAA...AAAAA...e
+&lt;/script&gt;</code></pre>
+<p>The data in this case might be used by the script to generate the map of a video game. The
+data doesn't have to be used that way, though; maybe the map data is actually embedded in other
+parts of the page's markup, and the data block here is just used by the site's search engine to
+help users who are looking for particular features in their game maps.</p>
+</div>
+<div>
+<p>The following sample shows how a <code><a href="scripting.html#the-script-element">script</a></code> element can be used to define a function
+that is then used by other parts of the document, as part of a <a href="webappapis.html#classic-script">classic script</a>. It
+also shows how a <code><a href="scripting.html#the-script-element">script</a></code> element can be used to invoke script while the document is
+being parsed, in this case to initialize the form's output.</p>
+<pre><code>&lt;script&gt;
+function calculate(form) {
+var price = 52000;
+if (form.elements.brakes.checked)
+price += 1000;
+if (form.elements.radio.checked)
+price += 2500;
+if (form.elements.turbo.checked)
+price += 5000;
+if (form.elements.sticker.checked)
+price += 250;
+form.elements.result.value = price;
+}
+&lt;/script&gt;
+&lt;form name=&quot;pricecalc&quot; onsubmit=&quot;return false&quot; onchange=&quot;calculate(this)&quot;&gt;
+&lt;fieldset&gt;
+&lt;legend&gt;Work out the price of your car&lt;/legend&gt;
+&lt;p&gt;Base cost: £52000.&lt;/p&gt;
+&lt;p&gt;Select additional options:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;label&gt;&lt;input type=checkbox name=brakes&gt; Ceramic brakes (£1000)&lt;/label&gt;&lt;/li&gt;
+&lt;li&gt;&lt;label&gt;&lt;input type=checkbox name=radio&gt; Satellite radio (£2500)&lt;/label&gt;&lt;/li&gt;
+&lt;li&gt;&lt;label&gt;&lt;input type=checkbox name=turbo&gt; Turbo charger (£5000)&lt;/label&gt;&lt;/li&gt;
+&lt;li&gt;&lt;label&gt;&lt;input type=checkbox name=sticker&gt; &quot;XZ&quot; sticker (£250)&lt;/label&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Total: £&lt;output name=result&gt;&lt;/output&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;script&gt;
+calculate(document.forms.pricecalc);
+&lt;/script&gt;
+&lt;/form&gt;</code></pre>
+</div>
+<div id=script-type-module-example-1>
+<p>The following sample shows how a <code><a href="scripting.html#the-script-element">script</a></code> element can be used to include an
+external <a href="webappapis.html#javascript-module-script">JavaScript module script</a>.
+<pre><code>&lt;script type=&quot;module&quot; src=&quot;app.mjs&quot;&gt;&lt;/script&gt;</code></pre>
+<p>This module, and all its dependencies (expressed through JavaScript <code>import</code> statements in the source file), will be fetched. Once the entire
+resulting module graph has been imported, and the document has finished parsing, the contents of
+<code>app.mjs</code> will be evaluated.</p>
+<p>Additionally, if code from another <code><a href="scripting.html#the-script-element">script</a></code> element in the same <code><a href="nav-history-apis.html#window">Window</a></code>
+imports the module from <code>app.mjs</code> (e.g. via <code>import
+"./app.mjs";</code>), then the same <a href="webappapis.html#javascript-module-script">JavaScript module script</a> created by the
+former <code><a href="scripting.html#the-script-element">script</a></code> element will be imported.</p>
+</div>
+<div id=script-nomodule-example>
+<p>This example shows how to include a <a href="webappapis.html#javascript-module-script">JavaScript module script</a> for modern user
+agents, and a <a href="webappapis.html#classic-script">classic script</a> for older user agents:</p>
+<pre><code>&lt;script type=&quot;module&quot; src=&quot;app.mjs&quot;&gt;&lt;/script&gt;
+&lt;script nomodule defer src=&quot;classic-app-bundle.js&quot;&gt;&lt;/script&gt;</code></pre>
+<p>In modern user agents that support <a href="webappapis.html#javascript-module-script">JavaScript module
+scripts</a>, the <code><a href="scripting.html#the-script-element">script</a></code> element with the <code><a href="scripting.html#attr-script-nomodule">nomodule</a></code> attribute will be ignored, and the
+<code><a href="scripting.html#the-script-element">script</a></code> element with a <code><a href="scripting.html#attr-script-type">type</a></code> of "<code>module</code>" will be fetched and evaluated (as a <a href="webappapis.html#javascript-module-script">JavaScript module
+script</a>). Conversely, older user agents will ignore the <code><a href="scripting.html#the-script-element">script</a></code> element with a
+<code><a href="scripting.html#attr-script-type">type</a></code> of "<code>module</code>", as that is an
+unknown script type for them — but they will have no problem fetching and evaluating the other
+<code><a href="scripting.html#the-script-element">script</a></code> element (as a <a href="webappapis.html#classic-script">classic script</a>), since they do not implement the
+<code><a href="scripting.html#attr-script-nomodule">nomodule</a></code> attribute.</p>
+</div>
+<div id=script-type-module-example-2>
+<p>The following sample shows how a <code><a href="scripting.html#the-script-element">script</a></code> element can be used to write an inline
+<a href="webappapis.html#javascript-module-script">JavaScript module script</a> that performs a number of substitutions on the document's
+text, in order to make for a more interesting reading experience (e.g. on a news site):
+<a href="references.html#refsXKCD1288">[XKCD1288]</a></p>
+<pre><code>&lt;script type=&quot;module&quot;&gt;
+import { walkAllTextNodeDescendants } from &quot;./dom-utils.mjs&quot;;
+const substitutions = new Map([
+[&quot;witnesses&quot;, &quot;these dudes I know&quot;]
+[&quot;allegedly&quot;, &quot;kinda probably&quot;]
+[&quot;new study&quot;, &quot;Tumblr post&quot;]
+[&quot;rebuild&quot;, &quot;avenge&quot;]
+[&quot;space&quot;, &quot;spaaace&quot;]
+[&quot;Google glass&quot;, &quot;Virtual Boy&quot;]
+[&quot;smartphone&quot;, &quot;Pokédex&quot;]
+[&quot;electric&quot;, &quot;atomic&quot;]
+[&quot;Senator&quot;, &quot;Elf-Lord&quot;]
+[&quot;car&quot;, &quot;cat&quot;]
+[&quot;election&quot;, &quot;eating contest&quot;]
+[&quot;Congressional leaders&quot;, &quot;river spirits&quot;]
+[&quot;homeland security&quot;, &quot;Homestar Runner&quot;]
+[&quot;could not be reached for comment&quot;, &quot;is guilty and everyone knows it&quot;]
+]);
+function substitute(textNode) {
+for (const [before, after] of substitutions.entries()) {
+textNode.data = textNode.data.replace(new RegExp(`\\b${before}\\b`, &quot;ig&quot;), after);
+}
+}
+walkAllTextNodeDescendants(document.body, substitute);
+&lt;/script&gt;</code></pre>
+<p>Some notable features gained by using a JavaScript module script include the ability to import
+functions from other JavaScript modules, strict mode by default, and how top-level declarations
+do not introduce new properties onto the <a href="webappapis.html#global-object">global object</a>. Also note that no matter
+where this <code><a href="scripting.html#the-script-element">script</a></code> element appears in the document, it will not be evaluated until
+both document parsing has complete and its dependency (<code>dom-utils.mjs</code>) has
+been fetched and evaluated.</p>
+</div>
+<div id=json-module-script-example>
+<p>The following sample shows how a <a href="webappapis.html#json-module-script">JSON module script</a> can be imported from inside
+a <a href="webappapis.html#javascript-module-script">JavaScript module script</a>:</p>
+<pre><code>&lt;script type=&quot;module&quot;&gt;
+import peopleInSpace from &quot;http://api.open-notify.org/astros.json&quot; with { type: &quot;json&quot; };
+const list = document.querySelector(&quot;#people-in-space&quot;);
+for (const { craft, name } of peopleInSpace.people) {
+const li = document.createElement(&quot;li&quot;);
+li.textContent = `${name} / ${craft}`;
+list.append(li);
+}
+&lt;/script&gt;</code></pre>
+<p>MIME type checking for module scripts is strict. In order for the fetch of the <a href="webappapis.html#json-module-script">JSON
+module script</a> to succeed, the HTTP response must have a <a href=https://mimesniff.spec.whatwg.org/#json-mime-type data-x-internal=json-mime-type>JSON MIME type</a>, for
+example <code>Content-Type: text/json</code>. On the other hand, if the <code>with { type: "json" }</code> part of the statement is omitted, it is assumed that the
+intent is to import a <a href="webappapis.html#javascript-module-script">JavaScript module script</a>, and the fetch will fail if the HTTP
+response has a MIME type that is not a <a href=https://mimesniff.spec.whatwg.org/#javascript-mime-type data-x-internal=javascript-mime-type>JavaScript MIME type</a>.</p>
+</div>
+<h5 id=script-processing-model>Processing model</h5>
+<p>A <code><a href="scripting.html#the-script-element">script</a></code> element has several associated pieces of state.</p>
+<p>A <code><a href="scripting.html#the-script-element">script</a></code> element has a <dfn id=parser-document>parser document</dfn>, which is either null or a
+<code><a href="dom.html#document">Document</a></code>, initially null. It is set by the <a href="parsing.html#html-parser">HTML parser</a> and the
+<a href="xhtml.html#xml-parser">XML parser</a> on <code><a href="scripting.html#the-script-element">script</a></code> elements they insert, and affects the processing
+of those elements. <code><a href="scripting.html#the-script-element">script</a></code> elements with non-null <a href="scripting.html#parser-document">parser documents</a> are known as <dfn id=parser-inserted>parser-inserted</dfn>.</p>
+<p>A <code><a href="scripting.html#the-script-element">script</a></code> element has a <dfn id=preparation-time-document>preparation-time document</dfn>, which is either null
+or a <code><a href="dom.html#document">Document</a></code>, initially null. It is used to prevent scripts that move between
+documents during <a href="scripting.html#prepare-the-script-element">preparation</a> from <a href="scripting.html#execute-the-script-element">executing</a>.</p>
+<p id=non-blocking>A <code><a href="scripting.html#the-script-element">script</a></code> element has a <dfn id=script-force-async>force
+async</dfn> boolean, initially true. It is set to false by the <a href="parsing.html#html-parser">HTML parser</a> and the
+<a href="xhtml.html#xml-parser">XML parser</a> on <code><a href="scripting.html#the-script-element">script</a></code> elements they insert, and when the element gets an
+<code><a href="scripting.html#attr-script-async">async</a></code> content attribute added.</p>
+<p>A <code><a href="scripting.html#the-script-element">script</a></code> element has a <dfn id=concept-script-external>from an external
+file</dfn> boolean, initially false. It is determined when the script is <a href="scripting.html#prepare-the-script-element">prepared</a>, based on the <code><a href="scripting.html#attr-script-src">src</a></code>
+attribute of the element at that time.</p>
+<p>A <code><a href="scripting.html#the-script-element">script</a></code> element has a <dfn id=ready-to-be-parser-executed>ready to be parser-executed</dfn> boolean, initially
+false. This is used only used for elements that are also <a href="scripting.html#parser-inserted">parser-inserted</a>, to let the
+parser know when to execute the script.</p>
+<p>A <code><a href="scripting.html#the-script-element">script</a></code> element has an <dfn id=already-started>already started</dfn> boolean, initially false.</p>
+<p>A <code><a href="scripting.html#the-script-element">script</a></code> element has a <dfn id=concept-script-delay-load>delaying the
+load event</dfn> boolean, initially false.</p>
+<p>A <code><a href="scripting.html#the-script-element">script</a></code> element has a <dfn id=concept-script-type>type</dfn>, which is
+either null, "<code>classic</code>", "<code>module</code>", "<code>importmap</code>", or "<code>speculationrules</code>", initially null. It is
+determined when the element is <a href="scripting.html#prepare-the-script-element">prepared</a>, based on
+the <code><a href="scripting.html#attr-script-type">type</a></code> attribute of the element at that time.</p>
+<p id=concept-script-script>A <code><a href="scripting.html#the-script-element">script</a></code> element has a <dfn id=concept-script-result>result</dfn>, which is either "<code>uninitialized</code>", null (representing an error), a <a href="webappapis.html#concept-script">script</a>, an <a href="webappapis.html#import-map-parse-result">import map parse result</a>, or a
+<a href="webappapis.html#speculation-rules-parse-result">speculation rules parse result</a>. It is initially "<code>uninitialized</code>".</p>
+<div>
+<p id=the-script-is-ready>A <code><a href="scripting.html#the-script-element">script</a></code> element has <dfn id=steps-to-run-when-the-result-is-ready>steps to run when the result
+is ready</dfn>, which are a series of steps or null, initially null. To <dfn id=mark-as-ready>mark as ready</dfn> a
+<code><a href="scripting.html#the-script-element">script</a></code> element <var>el</var> given a <var>result</var>:</p>
+<ol><li><p>Set <var>el</var>'s <a href="scripting.html#concept-script-result">result</a> to
+<var>result</var>.<li><p>If <var>el</var>'s <a href="scripting.html#steps-to-run-when-the-result-is-ready">steps to run when the result is ready</a> are not null, then
+run them.<li><p>Set <var>el</var>'s <a href="scripting.html#steps-to-run-when-the-result-is-ready">steps to run when the result is ready</a> to null.<li><p>Set <var>el</var>'s <a href="scripting.html#concept-script-delay-load">delaying the load
+event</a> to false.</ol>
+</div>
+<hr>
+<div>
+<p>A <code><a href="scripting.html#the-script-element">script</a></code> element <var>el</var> is <a href="urls-and-fetching.html#implicitly-potentially-render-blocking">implicitly potentially
+render-blocking</a> if <var>el</var>'s <a href="scripting.html#concept-script-type">type</a> is
+"<code>classic</code>", <var>el</var> is <a href="scripting.html#parser-inserted">parser-inserted</a>, and
+<var>el</var> does not have an <code><a href="scripting.html#attr-script-async">async</a></code> or <code><a href="scripting.html#attr-script-defer">defer</a></code> attribute.</p>
+</div>
+<div>
+<p>The <a href=https://dom.spec.whatwg.org/#concept-node-clone-ext data-x-internal=concept-node-clone-ext>cloning steps</a> for <code><a href="scripting.html#the-script-element">script</a></code>
+elements given <var>node</var>, <var>copy</var>, and <var>subtree</var> are to set
+<var>copy</var>'s <a href="scripting.html#already-started">already started</a> to <var>node</var>'s <a href="scripting.html#already-started">already
+started</a>.</p>
+</div>
+<div>
+<p>When an <code><a href="scripting.html#attr-script-async">async</a></code> attribute is added to a
+<code><a href="scripting.html#the-script-element">script</a></code> element <var>el</var>, the user agent must set <var>el</var>'s
+<a href="scripting.html#script-force-async">force async</a> to false.</p>
+</div>
+<div>
+<p>Whenever a <code><a href="scripting.html#the-script-element">script</a></code> element <var>el</var>'s <a href="scripting.html#concept-script-delay-load">delaying the load event</a> is true, the user agent must
+<a href="parsing.html#delay-the-load-event">delay the load event</a> of <var>el</var>'s <a href="scripting.html#preparation-time-document">preparation-time document</a>.</p>
+</div>
+<hr>
+<div>
+<p>The <code><a href="scripting.html#the-script-element">script</a></code> <a href="infrastructure.html#html-element-post-connection-steps">HTML element post-connection steps</a>, given
+<var>insertedNode</var>, are:</p>
+<ol><li><p>If <var>insertedNode</var> is <a href="scripting.html#parser-inserted">parser-inserted</a>, then return.<li><p><a href="scripting.html#prepare-the-script-element">Prepare the script element</a> given <var>insertedNode</var>.</ol>
+</div>
+<div>
+<p>The <a href="infrastructure.html#html-element-post-connection-steps">HTML element post-connection steps</a> only run when the inserted element is
+still <a href=https://dom.spec.whatwg.org/#connected data-x-internal=connected>connected</a>, which protects against cases where an earlier-inserted
+<code><a href="scripting.html#the-script-element">script</a></code> removes a later-inserted <code><a href="scripting.html#the-script-element">script</a></code>. For instance:</p>
+<pre><code>&lt;script&gt;
+const script1 = document.createElement(&apos;script&apos;);
+script1.innerText = `
+document.querySelector(&apos;#script2&apos;).remove();
+`;
+const script2 = document.createElement(&apos;script&apos;);
+script2.id = &apos;script2&apos;;
+script2.textContent = `console.log(&apos;script#2 running&apos;)`;
+document.body.append(script1, script2);
+&lt;/script&gt;</code></pre>
+<p>Nothing is printed to the console in this example. By the time the <a href="infrastructure.html#html-element-post-connection-steps">HTML element
+post-connection steps</a> run for the first <code><a href="scripting.html#the-script-element">script</a></code> that was atomically inserted
+by <code><a data-x-internal=dom-node-append href=https://dom.spec.whatwg.org/#dom-node-append>append()</a></code>, it can observe that the second
+<code><a href="scripting.html#the-script-element">script</a></code> is already <a href=https://dom.spec.whatwg.org/#connected data-x-internal=connected>connected</a> to the DOM, and it removes it from the DOM.
+Because the second <code><a href="scripting.html#the-script-element">script</a></code> is no longer <a href=https://dom.spec.whatwg.org/#connected data-x-internal=connected>connected</a>, its <a href="infrastructure.html#html-element-post-connection-steps">HTML
+element post-connection steps</a> do not run, and it does not get <a href="scripting.html#prepare-the-script-element">prepared</a>.</p>
+</div>
+<div>
+<p>The <code><a href="scripting.html#the-script-element">script</a></code> <a href="infrastructure.html#html-element-removing-steps">HTML element removing steps</a> given <var>removedNode</var>
+are:</p>
+<ol><li>
+<p>If <var>removedNode</var>'s <a href="scripting.html#concept-script-result">result</a> is a
+<a href="webappapis.html#speculation-rules-parse-result">speculation rules parse result</a>, then:</p>
+<ol><li><p><a href="webappapis.html#unregister-speculation-rules">Unregister speculation rules</a> given <var>removedNode</var>'s <a href="webappapis.html#concept-relevant-global">relevant
+global object</a> and <var>removedNode</var>'s <a href="scripting.html#concept-script-result">result</a>.<li><p>Set <var>removedNode</var>'s <a href="scripting.html#already-started">already started</a> to false.<li><p>Set <var>removedNode</var>'s <a href="scripting.html#concept-script-result">result</a> to
+null.</ol>
+</ol>
+</div>
+<div>
+<p>The <code><a href="scripting.html#the-script-element">script</a></code> <a href=https://dom.spec.whatwg.org/#concept-node-children-changed-ext data-x-internal=children-changed-steps>children changed steps</a> given <var>changedNode</var>
+are:</p>
+<ol><li><p>If the <code><a href="scripting.html#the-script-element">script</a></code> element is not <a href=https://dom.spec.whatwg.org/#connected data-x-internal=connected>connected</a>, then return.<li><p>Run the <code><a href="scripting.html#the-script-element">script</a></code> <a href="infrastructure.html#html-element-post-connection-steps">HTML element post-connection steps</a>, given
+<var>changedNode</var>.</ol>
+</div>
+<div>
+<p>This has an interesting implication on the execution order of a <code><a href="scripting.html#the-script-element">script</a></code> element
+and any newly-inserted child <code><a href="scripting.html#the-script-element">script</a></code> elements. Consider the following snippet:</p>
+<pre><code>&lt;script id=outer-script&gt;&lt;/script&gt;
+&lt;script&gt;
+const outerScript = document.querySelector(&apos;#outer-script&apos;);
+const start = new Text(&apos;console.log(1);&apos;);
+const innerScript = document.createElement(&apos;script&apos;);
+innerScript.textContent = `console.log(&apos;inner script executing&apos;)`;
+const end = new Text(&apos;console.log(2);&apos;);
+outerScript.append(start, innerScript, end);
+// Logs:
+// 1
+// 2
+// inner script executing
+&lt;/script&gt;</code></pre>
+<p>By the time the second script block executes, the <code>outer-script</code> has
+already been <a href="scripting.html#prepare-the-script-element">prepared</a>, but because it is empty,
+it did not execute and therefore is not marked as <a href="scripting.html#already-started">already started</a>. The atomic
+insertion of the <code><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> nodes and nested <code><a href="scripting.html#the-script-element">script</a></code> element have the
+following effects:</p>
+<ol><li><p>All three child nodes get atomically inserted as children of <code>outer-script</code>; all of their <a href=https://dom.spec.whatwg.org/#concept-node-insert-ext data-x-internal=concept-node-insert-ext>insertion
+steps</a> run, which have no observable consequences in this case.<li><p>The <code>outer-script</code>'s <a href=https://dom.spec.whatwg.org/#concept-node-children-changed-ext data-x-internal=children-changed-steps>children changed steps</a> run, which
+<a href="scripting.html#prepare-the-script-element">prepares</a> that script; because its body is now
+non-empty, this executes the contents of the two <code><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> nodes, in order.<li><p>The <code><a href="scripting.html#the-script-element">script</a></code> <a href="infrastructure.html#html-element-post-connection-steps">HTML element post-connection steps</a> finally run for
+<code>innerScript</code>, causing its body to execute.</ol>
+</div>
+<div>
+<p>The following <a href=https://dom.spec.whatwg.org/#concept-element-attributes-change-ext data-x-internal=concept-element-attributes-change-ext>attribute change
+steps</a>, given <var>element</var>, <var>localName</var>, <var>oldValue</var>,
+<var>value</var>, and <var>namespace</var>, are used for all <code><a href="scripting.html#the-script-element">script</a></code> elements:</p>
+<ol><li><p>If <var>namespace</var> is not null, then return.<li><p>If <var>localName</var> is <code><a href="scripting.html#attr-script-src">src</a></code> and
+<var>element</var> is <a href=https://dom.spec.whatwg.org/#connected data-x-internal=connected>connected</a>, then run the <code><a href="scripting.html#the-script-element">script</a></code> <a href="infrastructure.html#html-element-post-connection-steps">HTML element
+post-connection steps</a>, given <var>element</var>.</ol>
+</div>
+<div>
+<p id=prepare-a-script>To <dfn id=prepare-the-script-element>prepare the script element</dfn> given a <code><a href="scripting.html#the-script-element">script</a></code>
+element <var>el</var>:</p>
+<ol><li><p>If <var>el</var>'s <a href="scripting.html#already-started">already started</a> is true, then return.<li><p>Let <var>parser document</var> be <var>el</var>'s <a href="scripting.html#parser-document">parser document</a>.<li>
+<p>Set <var>el</var>'s <a href="scripting.html#parser-document">parser document</a> to null.</p>
+<p>This is done so that if parser-inserted <code><a href="scripting.html#the-script-element">script</a></code> elements fail to run
+when the parser tries to run them, e.g. because they are empty or specify an unsupported
+scripting language, another script can later mutate them and cause them to run again.</p>
+<li>
+<p>If <var>parser document</var> is non-null and <var>el</var> does not have an <code><a href="scripting.html#attr-script-async">async</a></code> attribute, then set <var>el</var>'s <a href="scripting.html#script-force-async">force async</a> to true.</p>
+<p>This is done so that if a parser-inserted <code><a href="scripting.html#the-script-element">script</a></code> element fails to
+run when the parser tries to run it, but it is later executed after a script dynamically
+updates it, it will execute in an async fashion even if the <code><a href="scripting.html#attr-script-async">async</a></code> attribute isn't set.</p>
+<li><p>Let <var>source text</var> be <var>el</var>'s <a href=https://dom.spec.whatwg.org/#concept-child-text-content data-x-internal=child-text-content>child text content</a>.<li id=script-processing-empty><p>If <var>el</var> has no <code><a href="scripting.html#attr-script-src">src</a></code> attribute, and <var>source text</var> is the empty string,
+then return.<li><p>If <var>el</var> is not <a href=https://dom.spec.whatwg.org/#connected data-x-internal=connected>connected</a>, then return.<li id=script-processing-prepare>
+<p>If any of the following are true:</p>
+<ul><li><p><var>el</var> has a <code><a href="scripting.html#attr-script-type">type</a></code> attribute whose value is
+the empty string;<li><p><var>el</var> has no <code><a href="scripting.html#attr-script-type">type</a></code> attribute but it has a
+<code><a href="obsolete.html#attr-script-language">language</a></code> attribute and <em>that</em> attribute's
+value is the empty string; or<li><p><var>el</var> has neither a <code><a href="scripting.html#attr-script-type">type</a></code> attribute nor a
+<code><a href="obsolete.html#attr-script-language">language</a></code> attribute,</ul>
+<p>then let <var>the script block's type string</var> for this <code><a href="scripting.html#the-script-element">script</a></code> element be
+"<code>text/javascript</code>".</p>
+<p>Otherwise, if <var>el</var> has a <code><a href="scripting.html#attr-script-type">type</a></code> attribute, then
+let <var>the script block's type string</var> be the value of that attribute with <a href=https://infra.spec.whatwg.org/#strip-leading-and-trailing-ascii-whitespace data-x-internal=strip-leading-and-trailing-ascii-whitespace>leading and trailing ASCII whitespace
+stripped</a>.</p>
+<p>Otherwise, <var>el</var> has a non-empty <code><a href="obsolete.html#attr-script-language">language</a></code>
+attribute; let <var>the script block's type string</var> be the concatenation of "<code>text/</code>" and the value of <var>el</var>'s <code><a href="obsolete.html#attr-script-language">language</a></code> attribute.</p>
+<p>The <code><a href="obsolete.html#attr-script-language">language</a></code> attribute is never
+conforming, and is always ignored if there is a <code><a href="scripting.html#attr-script-type">type</a></code>
+attribute present.</p>
+<li><p>If <var>the script block's type string</var> is a <a href=https://mimesniff.spec.whatwg.org/#javascript-mime-type-essence-match data-x-internal=javascript-mime-type-essence-match>JavaScript MIME type essence
+match</a>, then set <var>el</var>'s <a href="scripting.html#concept-script-type">type</a> to "<code>classic</code>".<li><p>Otherwise, if <var>the script block's type string</var> is an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII
+case-insensitive</a> match for the string "<code>module</code>", then set
+<var>el</var>'s <a href="scripting.html#concept-script-type">type</a> to "<code>module</code>".<li><p>Otherwise, if <var>the script block's type string</var> is an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII
+case-insensitive</a> match for the string "<code>importmap</code>", then set
+<var>el</var>'s <a href="scripting.html#concept-script-type">type</a> to "<code>importmap</code>".<li><p>Otherwise, if <var>the script block's type string</var> is an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII
+case-insensitive</a> match for the string "<code>speculationrules</code>", then set
+<var>el</var>'s <a href="scripting.html#concept-script-type">type</a> to "<code>speculationrules</code>".<li><p>Otherwise, return. (No script is executed, and <var>el</var>'s <a href="scripting.html#concept-script-type">type</a> is left as null.)<li><p>If <var>parser document</var> is non-null, then set <var>el</var>'s <a href="scripting.html#parser-document">parser
+document</a> back to <var>parser document</var> and set <var>el</var>'s <a href="scripting.html#script-force-async">force async</a> to false.<li id=script-processing-start><p>Set <var>el</var>'s <a href="scripting.html#already-started">already started</a> to
+true.<li><p>Set <var>el</var>'s <a href="scripting.html#preparation-time-document">preparation-time document</a> to its <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node
+document</a>.</p>
+<li><p>If <var>parser document</var> is non-null, and <var>parser document</var> is not equal to
+<var>el</var>'s <a href="scripting.html#preparation-time-document">preparation-time document</a>, then return.<li id=script-processing-noscript> <p>If <a href="webappapis.html#concept-n-noscript">scripting is
+disabled</a> for <var>el</var>, then return.</p>
+<p>The definition of <a href="webappapis.html#concept-n-noscript">scripting is
+disabled</a> means that, amongst others, the following scripts will not execute: scripts in
+<code><a data-x-internal=xmlhttprequest href=https://xhr.spec.whatwg.org/#xmlhttprequest>XMLHttpRequest</a></code>'s <code><a data-x-internal=dom-xmlhttprequest-responsexml href=https://xhr.spec.whatwg.org/#dom-xmlhttprequest-responsexml>responseXML</a></code>
+documents, scripts in <code><a href="dynamic-markup-insertion.html#domparser">DOMParser</a></code>-created documents, scripts in documents created by
+<code><a href="infrastructure.html#xsltprocessor">XSLTProcessor</a></code>'s <code><a href="infrastructure.html#dom-xsltprocessor-transformtodocument">transformToDocument</a></code> feature, and scripts
+that are first inserted by a script into a <code><a href="dom.html#document">Document</a></code> that was created using the
+<code><a data-x-internal=dom-domimplementation-createdocument href=https://dom.spec.whatwg.org/#dom-domimplementation-createdocument>createDocument()</a></code> API. <a href="references.html#refsXHR">[XHR]</a>
+<a href="references.html#refsDOMPARSING">[DOMPARSING]</a> <a href="references.html#refsXSLTP">[XSLTP]</a> <a href="references.html#refsDOM">[DOM]</a></p>
+<li>
+<p>If <var>el</var> has a <code><a href="scripting.html#attr-script-nomodule">nomodule</a></code> content attribute
+and its <a href="scripting.html#concept-script-type">type</a> is "<code>classic</code>",
+then return.</p>
+<p>This means specifying <code><a href="scripting.html#attr-script-nomodule">nomodule</a></code> on a
+<a href="webappapis.html#module-script">module script</a> has no effect; the algorithm continues onward.</p>
+<li><p>Let <var>cspType</var> be "<code>script speculationrules</code>" if
+<var>el</var>'s <a href="scripting.html#concept-script-type">type</a> is "<code>speculationrules</code>"; otherwise, "<code>script</code>".<li id=script-processing-csp><p>If <var>el</var> does not have a <code><a href="scripting.html#attr-script-src">src</a></code> content attribute, and the <as-inline-behavior-be-blocked-by-content-security-policy" href=https://w3c.github.io/webappsec-csp/#should-block-inline data-x-internal="should-element's-inline-behavior-be-blocked-by-content-security-policy">Should element's inline
+behavior be blocked by Content Security Policy?</a> algorithm returns "<code>Blocked</code>" when given <var>el</var>, <var>cspType</var>, and <var>source
+text</var>, then return. <a href="references.html#refsCSP">[CSP]</a><li id=script-processing-for>
+<p>If <var>el</var> has an <code><a href="obsolete.html#attr-script-event">event</a></code> attribute and a <code><a href="obsolete.html#attr-script-for">for</a></code> attribute, and <var>el</var>'s <a href="scripting.html#concept-script-type">type</a> is "<code>classic</code>", then:</p>
+<ol><li><p>Let <var>for</var> be the value of <var>el</var>'s <code><a href="obsolete.html#attr-script-for">for</a></code> attribute.<li><p>Let <var>event</var> be the value of <var>el</var>'s <code><a href="obsolete.html#attr-script-event">event</a></code> attribute.<li><p><a href=https://infra.spec.whatwg.org/#strip-leading-and-trailing-ascii-whitespace data-x-internal=strip-leading-and-trailing-ascii-whitespace>Strip leading and trailing ASCII whitespace</a> from <var>event</var> and
+<var>for</var>.<li><p>If <var>for</var> is not an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for the string
+"<code>window</code>", then return.<li><p>If <var>event</var> is not an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII case-insensitive</a> match for either the
+string "<code>onload</code>" or the string "<code>onload()</code>", then
+return.</ol>
+<li id=script-processing-encoding>
+<p>If <var>el</var> has a <code><a href="obsolete.html#attr-script-charset">charset</a></code> attribute, then let
+<var>encoding</var> be the result of <a href=https://encoding.spec.whatwg.org/#concept-encoding-get data-x-internal=getting-an-encoding>getting an encoding</a> from the value of the
+<code><a href="obsolete.html#attr-script-charset">charset</a></code> attribute.</p>
+<p>If <var>el</var> does not have a <code><a href="obsolete.html#attr-script-charset">charset</a></code>
+attribute, or if <a href=https://encoding.spec.whatwg.org/#concept-encoding-get data-x-internal=getting-an-encoding>getting an encoding</a> failed, then let <var>encoding</var> be
+<var>el</var>'s <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>'s <a href=https://dom.spec.whatwg.org/#concept-document-encodings-character-encoding" data-x-internal="document's-character-encoding">the
+encoding</a>.</p>
+<p>If <var>el</var>'s <a href="scripting.html#concept-script-type">type</a> is "<code>module</code>", this encoding will be ignored.</p>
+<li><p>Let <var>classic script CORS setting</var> be the current state of <var>el</var>'s <code><a href="scripting.html#attr-script-crossorigin">crossorigin</a></code> content attribute.<li><p>Let <var>module script credentials mode</var> be the <a href="urls-and-fetching.html#cors-settings-attribute-credentials-mode">CORS settings attribute
+credentials mode</a> for <var>el</var>'s <code><a href="scripting.html#attr-script-crossorigin">crossorigin</a></code> content attribute.</p>
+<li><p>Let <var>cryptographic nonce</var> be <var>el</var>'s <a href="urls-and-fetching.html#cryptographicnonce">[[CryptographicNonce]]</a>
+internal slot's value.<li>
+<p>If <var>el</var> has an <code><a href="scripting.html#attr-script-integrity">integrity</a></code> attribute,
+then let <var>integrity metadata</var> be that attribute's value.</p>
+<p>Otherwise, let <var>integrity metadata</var> be the empty string.</p>
+<li><p>Let <var>referrer policy</var> be the current state of <var>el</var>'s <code><a href="scripting.html#attr-script-referrerpolicy">referrerpolicy</a></code> content attribute.<li><p>Let <var>fetch priority</var> be the current state of <var>el</var>'s <code><a href="scripting.html#attr-script-fetchpriority">fetchpriority</a></code> content attribute.<li><p>Let <var>parser metadata</var> be "<code>parser-inserted</code>" if
+<var>el</var> is <a href="scripting.html#parser-inserted">parser-inserted</a>, and "<code>not-parser-inserted</code>"
+otherwise.<li><p>Let <var>options</var> be a <a href="webappapis.html#script-fetch-options">script fetch options</a> whose <a href="webappapis.html#concept-script-fetch-options-nonce">cryptographic nonce</a> is <var>cryptographic
+nonce</var>, <a href="webappapis.html#concept-script-fetch-options-integrity">integrity metadata</a> is
+<var>integrity metadata</var>, <a href="webappapis.html#concept-script-fetch-options-parser">parser
+metadata</a> is <var>parser metadata</var>, <a href="webappapis.html#concept-script-fetch-options-credentials">credentials mode</a> is <var>module script
+credentials mode</var>, <a href="webappapis.html#concept-script-fetch-options-referrer-policy">referrer
+policy</a> is <var>referrer policy</var>, and <a href="webappapis.html#concept-script-fetch-options-fetch-priority">fetch priority</a> is <var>fetch
+priority</var>.<li><p>Let <var>settings object</var> be <var>el</var>'s <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>'s
+<a href="webappapis.html#relevant-settings-object">relevant settings object</a>.<li id=script-processing-src-prepare>
+<p>If <var>el</var> has a <code><a href="scripting.html#attr-script-src">src</a></code> content attribute, then:</p>
+<ol><li>
+<p>If <var>el</var>'s <a href="scripting.html#concept-script-type">type</a> is "<code>importmap</code>" or "<code>speculationrules</code>", then <a href="webappapis.html#queue-an-element-task">queue an
+element task</a> on the <a href="webappapis.html#dom-manipulation-task-source">DOM manipulation task source</a> given <var>el</var> to
+<a href=https://dom.spec.whatwg.org/#concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code><a href="indices.html#event-error">error</a></code> at <var>el</var>, and return.</p>
+<p>External import maps and speculation rules are not currently supported. See <a href=https://github.com/WICG/import-maps/issues/235>WICG/import-maps issue #235</a> and <a href=https://github.com/WICG/nav-speculation/issues/348>WICG/nav-speculation issue #348</a>
+for discussions on adding support.</p>
+<li><p>Let <var>src</var> be the value of <var>el</var>'s <code><a href="scripting.html#attr-script-src">src</a></code> attribute.<li><p>If <var>src</var> is the empty string, then <a href="webappapis.html#queue-an-element-task">queue an element task</a> on the
+<a href="webappapis.html#dom-manipulation-task-source">DOM manipulation task source</a> given <var>el</var> to <a href=https://dom.spec.whatwg.org/#concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code><a href="indices.html#event-error">error</a></code>
+at <var>el</var>, and return.<li><p>Set <var>el</var>'s <a href="scripting.html#concept-script-external">from an external file</a>
+to true.<li><p>Let <var>url</var> be the result of <a href="urls-and-fetching.html#encoding-parsing-a-url">encoding-parsing a URL</a> given
+<var>src</var>, relative to <var>el</var>'s <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>.<li><p>If <var>url</var> is failure, then <a href="webappapis.html#queue-an-element-task">queue an element task</a> on the <a href="webappapis.html#dom-manipulation-task-source">DOM
+manipulation task source</a> given <var>el</var> to <a href=https://dom.spec.whatwg.org/#concept-event-fire data-x-internal=concept-event-fire>fire
+an event</a> named <code><a href="indices.html#event-error">error</a></code> at <var>el</var>, and
+return.<li><p>If <var>el</var> is <a href="urls-and-fetching.html#potentially-render-blocking">potentially render-blocking</a>, then <a href="dom.html#block-rendering">block
+rendering</a> on <var>el</var>.<li><p>Set <var>el</var>'s <a href="scripting.html#concept-script-delay-load">delaying the load
+event</a> to true.<li><p>If <var>el</var> is currently <a href="dom.html#render-blocking">render-blocking</a>, then set
+<var>options</var>'s <a href="webappapis.html#concept-script-fetch-options-render-blocking">
+render-blocking</a> to true.<li>
+<p>Let <var>onComplete</var> given <var>result</var> be the following steps:</p>
+<ol><li><p><a href="scripting.html#mark-as-ready">Mark as ready</a> <var>el</var> given <var>result</var>.</ol>
+<li>
+<p>Switch on <var>el</var>'s <a href="scripting.html#concept-script-type">type</a>:</p>
+<dl><dt>"<code>classic</code>"<dd>
+<p><a href="webappapis.html#fetch-a-classic-script">Fetch a classic script</a> given <var>url</var>, <var>settings object</var>,
+<var>options</var>, <var>classic script CORS setting</var>, <var>encoding</var>, and
+<var>onComplete</var>.</p>
+<dt>"<code>module</code>"<dd>
+<p>If <var>el</var> does not have an <code><a href="scripting.html#attr-script-integrity">integrity</a></code>
+attribute, then set <var>options</var>'s <a href="webappapis.html#concept-script-fetch-options-integrity">integrity metadata</a> to the result of
+<a href="webappapis.html#resolving-a-module-integrity-metadata">resolving a module integrity metadata</a> with <var>url</var> and <var>settings
+object</var>.</p>
+<p><a href="webappapis.html#fetch-a-module-script-tree">Fetch an external module script graph</a> given <var>url</var>, <var>settings
+object</var>, <var>options</var>, and <var>onComplete</var>.</p>
+</dl>
+<p>For performance reasons, user agents may start fetching the classic script or module graph
+(as defined above) as soon as the <code><a href="scripting.html#attr-script-src">src</a></code> attribute is set,
+instead, in the hope that <var>el</var> will become connected (and that the <code><a href="scripting.html#attr-script-crossorigin">crossorigin</a></code> attribute won't change value in the
+meantime). Either way, once <var>el</var> <a href="infrastructure.html#becomes-connected">becomes connected</a>, the load must have
+started as described in this step. If the UA performs such prefetching, but <var>el</var>
+never becomes connected, or the <code><a href="scripting.html#attr-script-src">src</a></code> attribute is
+dynamically changed,  or the <code><a href="scripting.html#attr-script-crossorigin">crossorigin</a></code> attribute is dynamically changed, then the
+user agent will not execute the script so obtained, and the fetching process will have been
+effectively wasted.</p>
+</ol>
+<li id=establish-script-block-source>
+<p>If <var>el</var> does not have a <code><a href="scripting.html#attr-script-src">src</a></code> content
+attribute:</p>
+<ol><li><p>Let <var>base URL</var> be <var>el</var>'s <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>'s <a href="urls-and-fetching.html#document-base-url">document
+base URL</a>.<li>
+<p>Switch on <var>el</var>'s <a href="scripting.html#concept-script-type">type</a>:</p>
+<dl><dt>"<code>classic</code>"<dd>
+<ol><li><p>Let <var>script</var> be the result of <a href="webappapis.html#creating-a-classic-script">creating a classic script</a> using
+<var>source text</var>, <var>settings object</var>, <var>base URL</var>, and
+<var>options</var>.<li><p><a href="scripting.html#mark-as-ready">Mark as ready</a> <var>el</var> given <var>script</var>.</ol>
+<dt>"<code>module</code>"<dd>
+<ol><li><p>Set <var>el</var>'s <a href="scripting.html#concept-script-delay-load">delaying the load
+event</a> to true.<li>
+<p>If <var>el</var> is <a href="urls-and-fetching.html#potentially-render-blocking">potentially render-blocking</a>, then:</p>
+<ol><li><p><a href="dom.html#block-rendering">Block rendering</a> on <var>el</var>.<li><p>Set <var>options</var>'s <a href="webappapis.html#concept-script-fetch-options-render-blocking">render-blocking</a> to
+true.</ol>
+<li>
+<p><a href="webappapis.html#fetch-an-inline-module-script-graph">Fetch an inline module script graph</a>, given <var>source text</var>,
+<var>base URL</var>, <var>settings object</var>, <var>options</var>, and with the
+following steps given <var>result</var>:</p>
+<ol><li>
+<p><a href="webappapis.html#queue-an-element-task">Queue an element task</a> on the <a href="webappapis.html#networking-task-source">networking task source</a>
+given <var>el</var> to perform the following steps:</p>
+<ol><li><p><a href="scripting.html#mark-as-ready">Mark as ready</a> <var>el</var> given <var>result</var>.</ol>
+<p>Queueing a task here means that, even if the inline module script has
+no dependencies or synchronously results in a parse error, we won't proceed to
+<a href="scripting.html#execute-the-script-element">execute the script element</a> synchronously.</p>
+</ol>
+</ol>
+<dt>"<code>importmap</code>"<dd>
+<ol><li><p>Let <var>result</var> be the result of <a href="webappapis.html#create-an-import-map-parse-result">creating an import map parse result</a> given <var>source text</var> and
+<var>base URL</var>.<li><p><a href="scripting.html#mark-as-ready">Mark as ready</a> <var>el</var> given <var>result</var>.</ol>
+<dt>"<code>speculationrules</code>"<dd>
+<ol><li><p>Let <var>result</var> be the result of <a href="webappapis.html#create-a-speculation-rules-parse-result">creating a speculation rules parse result</a> given <var>source text</var>
+and <var>el</var>'s <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>.<li><p><a href="scripting.html#mark-as-ready">Mark as ready</a> <var>el</var> given <var>result</var>.</ol>
+</dl>
+</ol>
+<li>
+<p>If <var>el</var>'s <a href="scripting.html#concept-script-type">type</a> is "<code>classic</code>" and <var>el</var> has a <code><a href="scripting.html#attr-script-src">src</a></code>
+attribute, or <var>el</var>'s <a href="scripting.html#concept-script-type">type</a> is "<code>module</code>":</p>
+<ol><li><p><a href=https://infra.spec.whatwg.org/#assert data-x-internal=assert>Assert</a>: <var>el</var>'s <a href="scripting.html#concept-script-result">result</a>
+is "<code>uninitialized</code>".<li id=script-processing-src>
+<p id=script-processing-module-async>If <var>el</var> has an <code><a href="scripting.html#attr-script-async">async</a></code> attribute or <var>el</var>'s <a href="scripting.html#script-force-async">force async</a> is true:</p>
+<ol><li><p>Let <var>scripts</var> be <var>el</var>'s <a href="scripting.html#preparation-time-document">preparation-time document</a>'s
+<a href="scripting.html#set-of-scripts-that-will-execute-as-soon-as-possible">set of scripts that will execute as soon as possible</a>.<li><p><a href=https://infra.spec.whatwg.org/#set-append data-x-internal=set-append>Append</a> <var>el</var> to <var>scripts</var>.<li>
+<p>Set <var>el</var>'s <a href="scripting.html#steps-to-run-when-the-result-is-ready">steps to run when the result is ready</a> to the
+following:</p>
+<ol><li><p><a href="scripting.html#execute-the-script-element">Execute the script element</a> <var>el</var>.<li><p><a href=https://infra.spec.whatwg.org/#list-remove data-x-internal=list-remove>Remove</a> <var>el</var> from
+<var>scripts</var>.</ol>
+</ol>
+<li id=script-processing-src-sync>
+<p id=script-processing-module-noasync>Otherwise, if <var>el</var> is not
+<a href="scripting.html#parser-inserted">parser-inserted</a>:</p>
+<ol><li><p>Let <var>scripts</var> be <var>el</var>'s <a href="scripting.html#preparation-time-document">preparation-time document</a>'s
+<a href="scripting.html#list-of-scripts-that-will-execute-in-order-as-soon-as-possible">list of scripts that will execute in order as soon as possible</a>.<li><p><a href=https://infra.spec.whatwg.org/#list-append data-x-internal=list-append>Append</a> <var>el</var> to <var>scripts</var>.<li>
+<p>Set <var>el</var>'s <a href="scripting.html#steps-to-run-when-the-result-is-ready">steps to run when the result is ready</a> to the
+following:</p>
+<ol><li><p>If <var>scripts</var>[0] is not <var>el</var>, then abort these steps.<li>
+<p>While <var>scripts</var> is not empty, and <var>scripts</var>[0]'s <a href="scripting.html#concept-script-result">result</a> is not "<code>uninitialized</code>":</p>
+<ol><li><p><a href="scripting.html#execute-the-script-element">Execute the script element</a> <var>scripts</var>[0].<li><p><a href=https://infra.spec.whatwg.org/#list-remove data-x-internal=list-remove>Remove</a> <var>scripts</var>[0].</ol>
+</ol>
+</ol>
+<li id=script-processing-defer>
+<p id=script-processing-module-noasync-parser-inserted>Otherwise, if <var>el</var> has a
+<code><a href="scripting.html#attr-script-defer">defer</a></code> attribute or <var>el</var>'s <a href="scripting.html#concept-script-type">type</a> is "<code>module</code>":</p>
+<ol><li><p><a href=https://infra.spec.whatwg.org/#list-append data-x-internal=list-append>Append</a> <var>el</var> to its <a href="scripting.html#parser-document">parser
+document</a>'s <a href="scripting.html#list-of-scripts-that-will-execute-when-the-document-has-finished-parsing">list of scripts that will execute when the document has finished
+parsing</a>.<li><p>Set <var>el</var>'s <a href="scripting.html#steps-to-run-when-the-result-is-ready">steps to run when the result is ready</a> to the
+following: set <var>el</var>'s <a href="scripting.html#ready-to-be-parser-executed">ready to be parser-executed</a> to true. (The parser
+will handle executing the script.)</ol>
+<li id=script-processing-parser-inserted>
+<p>Otherwise:</p>
+<ol><li><p>Set <var>el</var>'s <a href="scripting.html#parser-document">parser document</a>'s <a href="scripting.html#pending-parsing-blocking-script">pending parsing-blocking
+script</a> to <var>el</var>.<li><p><a href="dom.html#block-rendering">Block rendering</a> on <var>el</var>.<li><p>Set <var>el</var>'s <a href="scripting.html#steps-to-run-when-the-result-is-ready">steps to run when the result is ready</a> to the
+following: set <var>el</var>'s <a href="scripting.html#ready-to-be-parser-executed">ready to be parser-executed</a> to true. (The parser
+will handle executing the script.)</ol>
+</ol>
+<li>
+<p>Otherwise:</p>
+<ol><li><p><a href=https://infra.spec.whatwg.org/#assert data-x-internal=assert>Assert</a>: <var>el</var>'s <a href="scripting.html#concept-script-result">result</a>
+is <em>not</em> "<code>uninitialized</code>".<li id=script-processing-style-delayed>
+<p>If all of the following are true:</p>
+<ul><li><var>el</var>'s <a href="scripting.html#concept-script-type">type</a> is "<code>classic</code>";<li><var>el</var> is <a href="scripting.html#parser-inserted">parser-inserted</a>;<li><var>el</var>'s <a href="scripting.html#parser-document">parser document</a> <a href="semantics.html#has-a-style-sheet-that-is-blocking-scripts">has a style sheet that is blocking
+scripts</a>; and<li>either the parser that created <var>el</var> is an <a href="xhtml.html#xml-parser">XML parser</a>, or it's an
+<a href="parsing.html#html-parser">HTML parser</a> whose <a href="parsing.html#script-nesting-level">script nesting level</a> is not greater than
+one,</ul>
+<p>then:</p>
+<ol><li><p>Set <var>el</var>'s <a href="scripting.html#parser-document">parser document</a>'s <a href="scripting.html#pending-parsing-blocking-script">pending parsing-blocking
+script</a> to <var>el</var>.<li><p>Set <var>el</var>'s <a href="scripting.html#ready-to-be-parser-executed">ready to be parser-executed</a> to true. (The parser
+will handle executing the script.)</ol>
+<li id=script-processing-inline><p>Otherwise, <a href="infrastructure.html#immediately">immediately</a> <a href="scripting.html#execute-the-script-element">execute the
+script element</a> <var>el</var>, even if other scripts are already executing.</ol>
+</ol>
+</div>
+<p>Each <code><a href="dom.html#document">Document</a></code> has a <dfn id=pending-parsing-blocking-script>pending parsing-blocking script</dfn>, which is a
+<code><a href="scripting.html#the-script-element">script</a></code> element or null, initially null.</p>
+<p>Each <code><a href="dom.html#document">Document</a></code> has a <dfn id=set-of-scripts-that-will-execute-as-soon-as-possible>set of scripts that will execute as soon as
+possible</dfn>, which is a <a href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>set</a> of <code><a href="scripting.html#the-script-element">script</a></code> elements, initially empty.</p>
+<p>Each <code><a href="dom.html#document">Document</a></code> has a <dfn id=list-of-scripts-that-will-execute-in-order-as-soon-as-possible>list of scripts that will execute in order as soon as
+possible</dfn>, which is a <a href=https://infra.spec.whatwg.org/#list data-x-internal=list>list</a> of <code><a href="scripting.html#the-script-element">script</a></code> elements, initially
+empty.</p>
+<p>Each <code><a href="dom.html#document">Document</a></code> has a <dfn id=list-of-scripts-that-will-execute-when-the-document-has-finished-parsing>list of scripts that will execute when the document has
+finished parsing</dfn>, which is a <a href=https://infra.spec.whatwg.org/#list data-x-internal=list>list</a> of <code><a href="scripting.html#the-script-element">script</a></code> elements, initially
+empty.</p>
+<p>If a <code><a href="scripting.html#the-script-element">script</a></code> element that blocks a parser gets moved to another
+<code><a href="dom.html#document">Document</a></code> before it would normally have stopped blocking that parser, it nonetheless
+continues blocking that parser until the condition that causes it to be blocking the parser no
+longer applies (e.g., if the script is a <a href="scripting.html#pending-parsing-blocking-script">pending parsing-blocking script</a> because the
+original <code><a href="dom.html#document">Document</a></code> <a href="semantics.html#has-a-style-sheet-that-is-blocking-scripts">has a style sheet that is blocking scripts</a> when it was
+parsed, but then the script is moved to another <code><a href="dom.html#document">Document</a></code> before the blocking style
+sheet(s) loaded, the script still blocks the parser until the style sheets are all loaded, at
+which time the script executes and the parser is unblocked).</p>
+<div>
+<p id=execute-the-script-block>To <dfn id=execute-the-script-element>execute the script element</dfn> given a
+<code><a href="scripting.html#the-script-element">script</a></code> element <var>el</var>:</p>
+<ol><li><p>Let <var>document</var> be <var>el</var>'s <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>.<li><p>If <var>el</var>'s <a href="scripting.html#preparation-time-document">preparation-time document</a> is not equal to
+<var>document</var>, then return.<li><p><a href="dom.html#unblock-rendering">Unblock rendering</a> on <var>el</var>.<li><p>If <var>el</var>'s <a href="scripting.html#concept-script-result">result</a> is null, then <a href=https://dom.spec.whatwg.org/#concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code><a href="indices.html#event-error">error</a></code>
+at <var>el</var>, and return.<li><p>If <var>el</var>'s <a href="scripting.html#concept-script-external">from an external file</a> is
+true, or <var>el</var>'s <a href="scripting.html#concept-script-type">type</a> is "<code>module</code>", then increment <var>document</var>'s <a href="dynamic-markup-insertion.html#ignore-destructive-writes-counter">ignore-destructive-writes
+counter</a>.<li>
+<p>Switch on <var>el</var>'s <a href="scripting.html#concept-script-type">type</a>:</p>
+<dl><dt>"<code>classic</code>"<dd>
+<ol><li><p>Let <var>oldCurrentScript</var> be the value to which <var>document</var>'s <code><a href="dom.html#dom-document-currentscript">currentScript</a></code> object was most recently
+set.<li>
+<p>If <var>el</var>'s <a href=https://dom.spec.whatwg.org/#concept-tree-root data-x-internal=root>root</a> is <em>not</em> a <a href=https://dom.spec.whatwg.org/#concept-shadow-root data-x-internal=shadow-root>shadow root</a>, then
+set <var>document</var>'s <code><a href="dom.html#dom-document-currentscript">currentScript</a></code>
+attribute to <var>el</var>. Otherwise, set it to null.</p>
+<p>This does not use the <a href=https://dom.spec.whatwg.org/#in-a-document-tree data-x-internal=in-a-document-tree>in a document tree</a> check, as
+<var>el</var> could have been removed from the document prior to execution, and in that
+scenario <code><a href="dom.html#dom-document-currentscript">currentScript</a></code> still needs to
+point to it.</p>
+<li><p><a href="webappapis.html#run-a-classic-script">Run the classic script</a> given by
+<var>el</var>'s <a href="scripting.html#concept-script-result">result</a>.<li><p>Set <var>document</var>'s <code><a href="dom.html#dom-document-currentscript">currentScript</a></code> attribute to
+<var>oldCurrentScript</var>.</ol>
+<dt>"<code>module</code>"<dd>
+<ol><li><p><a href=https://infra.spec.whatwg.org/#assert data-x-internal=assert>Assert</a>: <var>document</var>'s <code><a href="dom.html#dom-document-currentscript">currentScript</a></code> attribute is null.<li><p><a href="webappapis.html#run-a-module-script">Run the module script</a> given by
+<var>el</var>'s <a href="scripting.html#concept-script-result">result</a>.</ol>
+<dt>"<code>importmap</code>"<dd>
+<ol><li><p><a href="webappapis.html#register-an-import-map">Register an import map</a> given <var>el</var>'s <a href="webappapis.html#concept-relevant-global">relevant global
+object</a> and <var>el</var>'s <a href="scripting.html#concept-script-result">result</a>.</ol>
+<dt>"<code>speculationrules</code>"<dd>
+<ol><li><p><a href="webappapis.html#register-speculation-rules">Register speculation rules</a> given <var>el</var>'s <a href="webappapis.html#concept-relevant-global">relevant global
+object</a> and <var>el</var>'s <a href="scripting.html#concept-script-result">result</a>.</ol>
+</dl>
+<li><p>Decrement the <a href="dynamic-markup-insertion.html#ignore-destructive-writes-counter">ignore-destructive-writes counter</a> of <var>document</var>, if
+it was incremented in the earlier step.<li><p>If <var>el</var>'s <a href="scripting.html#concept-script-external">from an external file</a> is
+true, then <a href=https://dom.spec.whatwg.org/#concept-event-fire data-x-internal=concept-event-fire>fire an event</a> named <code><a href="indices.html#event-load">load</a></code> at <var>el</var>.</ol>
+</div>
+<h5 id=scriptingLanguages>Scripting languages</h5>
+<p>User agents are not required to support JavaScript. This standard needs to be updated
+if a language other than JavaScript comes along and gets similar wide adoption by web browsers.
+Until such a time, implementing other languages is in conflict with this standard, given the
+processing model defined for the <code><a href="scripting.html#the-script-element">script</a></code> element.</p>
+<p>Servers should use <code><a href="indices.html#text/javascript">text/javascript</a></code> for JavaScript resources, in accordance with
+<cite>Updates to ECMAScript Media Types</cite>. Servers should not use other
+<a href=https://mimesniff.spec.whatwg.org/#javascript-mime-type data-x-internal=javascript-mime-type>JavaScript MIME types</a> for JavaScript resources, and
+must not use non-<a href=https://mimesniff.spec.whatwg.org/#javascript-mime-type data-x-internal=javascript-mime-type>JavaScript MIME types</a>.
+<a href="references.html#refsRFC9239">[RFC9239]</a></p>
+<p>For external JavaScript resources, MIME type parameters in `<code><a href="urls-and-fetching.html#content-type">Content-Type</a></code>` headers
+are generally ignored. (In some cases the `<code>charset</code>` parameter has an
+effect.) However, for the <code><a href="scripting.html#the-script-element">script</a></code> element's <code><a href="scripting.html#attr-script-type">type</a></code> attribute they are significant; it uses the <a href=https://mimesniff.spec.whatwg.org/#javascript-mime-type-essence-match data-x-internal=javascript-mime-type-essence-match>JavaScript
+MIME type essence match</a> concept.</p>
+<p>For example, scripts with their <code><a href="scripting.html#attr-script-type">type</a></code>
+attribute set to "<code>text/javascript; charset=utf-8</code>" will not be
+evaluated, even though that is a valid <a href=https://mimesniff.spec.whatwg.org/#javascript-mime-type data-x-internal=javascript-mime-type>JavaScript MIME type</a> when parsed.</p>
+<p>Furthermore, again for external JavaScript resources, special considerations apply around
+`<code><a href="urls-and-fetching.html#content-type">Content-Type</a></code>` header processing as detailed in the <a href="scripting.html#prepare-the-script-element">prepare the script
+element</a> algorithm and <cite>Fetch</cite>. <a href="references.html#refsFETCH">[FETCH]</a>
+</p>
+<h5 id=restrictions-for-contents-of-script-elements><dfn>Restrictions for contents of <code>script</code> elements</dfn></h5>
+<p>The easiest and safest way to avoid the rather strange restrictions described in
+this section is to always escape an ASCII case-insensitive match for "<code>&lt;!--</code>" as "<code>\x3C!--</code>", "<code>&lt;script</code>" as "<code>\x3Cscript</code>", and "<code>&lt;/script</code>" as "<code>\x3C/script</code>" when these sequences appear
+in literals in scripts (e.g. in strings, regular expressions, or comments), and to avoid writing
+code that uses such constructs in expressions. Doing so avoids the pitfalls that the restrictions
+in this section are prone to triggering: namely, that, for historical reasons, parsing of
+<code><a href="scripting.html#the-script-element">script</a></code> blocks in HTML is a strange and exotic practice that acts unintuitively in the
+face of these sequences.</p>
+<p>The <code><a href="scripting.html#the-script-element">script</a></code> element's <a href=https://dom.spec.whatwg.org/#concept-descendant-text-content data-x-internal=descendant-text-content>descendant text content</a> must match the <code>script</code> production in the following ABNF, the character set for which is Unicode.
+<a href="references.html#refsABNF">[ABNF]</a></p>
+<pre><code>script        = outer *( comment-open inner comment-close outer )
+outer         = &lt; any string that doesn&apos;t contain a substring that matches not-in-outer &gt;
+not-in-outer  = comment-open
+inner         = &lt; any string that doesn&apos;t contain a substring that matches not-in-inner &gt;
+not-in-inner  = comment-close / script-open
+comment-open  = &quot;&lt;!--&quot;
+comment-close = &quot;--&gt;&quot;
+script-open   = &quot;&lt;&quot; s c r i p t tag-end
+s             =  %x0053 ; U+0053 LATIN CAPITAL LETTER S
+s             =/ %x0073 ; U+0073 LATIN SMALL LETTER S
+c             =  %x0043 ; U+0043 LATIN CAPITAL LETTER C
+c             =/ %x0063 ; U+0063 LATIN SMALL LETTER C
+r             =  %x0052 ; U+0052 LATIN CAPITAL LETTER R
+r             =/ %x0072 ; U+0072 LATIN SMALL LETTER R
+i             =  %x0049 ; U+0049 LATIN CAPITAL LETTER I
+i             =/ %x0069 ; U+0069 LATIN SMALL LETTER I
+p             =  %x0050 ; U+0050 LATIN CAPITAL LETTER P
+p             =/ %x0070 ; U+0070 LATIN SMALL LETTER P
+t             =  %x0054 ; U+0054 LATIN CAPITAL LETTER T
+t             =/ %x0074 ; U+0074 LATIN SMALL LETTER T
+tag-end       =  %x0009 ; U+0009 CHARACTER TABULATION (tab)
+tag-end       =/ %x000A ; U+000A LINE FEED (LF)
+tag-end       =/ %x000C ; U+000C FORM FEED (FF)
+tag-end       =/ %x0020 ; U+0020 SPACE
+tag-end       =/ %x002F ; U+002F SOLIDUS (/)
+tag-end       =/ %x003E ; U+003E GREATER-THAN SIGN (&gt;)</code></pre>
+<p>When a <code><a href="scripting.html#the-script-element">script</a></code> element contains <a href="scripting.html#inline-documentation-for-external-scripts">script documentation</a>, there are
+further restrictions on the contents of the element, as described in the section below.</p>
+<div>
+<p>The following script illustrates this issue. Suppose you have a script that contains a string,
+as in:</p>
+<pre><code>const example = &apos;Consider this string: &lt;!-- &lt;script&gt;&apos;;
+console.log(example);</code></pre>
+<p>If one were to put this string directly in a <code><a href="scripting.html#the-script-element">script</a></code> block, it would violate the
+restrictions above:</p>
+<pre><code>&lt;script&gt;
+const example = &apos;Consider this string: &lt;!-- &lt;script&gt;&apos;;
+console.log(example);
+&lt;/script&gt;</code></pre>
+<p>The bigger problem, though, and the reason why it would violate those restrictions, is that
+actually the script would get parsed weirdly: <em>the script block above is not terminated</em>.
+That is, what looks like a "<code>&lt;/script></code>" end tag in this snippet is
+actually still part of the <code><a href="scripting.html#the-script-element">script</a></code> block. The script doesn't execute (since it's not
+terminated); if it somehow were to execute, as it might if the markup looked as follows, it would
+fail because the script (highlighted here) is not valid JavaScript:</p>
+<pre><code>&lt;script&gt;<mark>
+const example = &apos;Consider this string: &lt;!-- &lt;script&gt;&apos;;
+console.log(example);
+&lt;/script&gt;
+&lt;!-- despite appearances, this is actually part of the script still! --&gt;
+&lt;script&gt;
+... // this is the same script block still...
+</mark>&lt;/script&gt;</code></pre>
+<p>What is going on here is that for legacy reasons, "<code>&lt;!--</code>" and "<code>&lt;script</code>" strings in <code><a href="scripting.html#the-script-element">script</a></code> elements in HTML need to be balanced
+in order for the parser to consider closing the block.</p>
+<p>By escaping the problematic strings as mentioned at the top of this section, the problem is
+avoided entirely:</p>
+<pre><code>&lt;script&gt;<mark>
+// Note: `\x3C` is an escape sequence for `&lt;`.
+const example = &apos;Consider this string: \x3C!-- \x3Cscript&gt;&apos;;
+console.log(example);
+</mark>&lt;/script&gt;
+&lt;!-- this is just a comment between script blocks --&gt;
+&lt;script&gt;<mark>
+... // this is a new script block
+</mark>&lt;/script&gt;</code></pre>
+<p>It is possible for these sequences to naturally occur in script expressions, as in the
+following examples:</p>
+<pre><code>if (x&lt;!--y) { ... }
+if ( player&lt;script ) { ... }</code></pre>
+<p>In such cases the characters cannot be escaped, but the expressions can be rewritten so that
+the sequences don't occur, as in:</p>
+<pre><code>if (x &lt; !--y) { ... }
+if (!--y &gt; x) { ... }
+if (!(--y) &gt; x) { ... }
+if (player &lt; script) { ... }
+if (script &gt; player) { ... }</code></pre>
+<p>Doing this also avoids a different pitfall as well: for related historical reasons, the string
+"&lt;!--" in <a href="webappapis.html#classic-script">classic scripts</a> is actually treated as a line
+comment start, just like "//".</p>
+</div>
+<h5 id=inline-documentation-for-external-scripts><dfn>Inline documentation for external scripts</dfn></h5>
+<p>If a <code><a href="scripting.html#the-script-element">script</a></code> element's <code><a href="scripting.html#attr-script-src">src</a></code> attribute is
+specified, then the contents of the <code><a href="scripting.html#the-script-element">script</a></code> element, if any, must be such that the
+value of the <code><a href="scripting.html#dom-script-text">text</a></code> IDL attribute, which is derived from the
+element's contents, matches the <code>documentation</code> production in the following
+ABNF, the character set for which is Unicode. <a href="references.html#refsABNF">[ABNF]</a></p>
+<pre><code>documentation = *( *( space / tab / comment ) [ line-comment ] newline )
+comment       = slash star *( not-star / star not-slash ) 1*star slash
+line-comment  = slash slash *not-newline
+; characters
+tab           = %x0009 ; U+0009 CHARACTER TABULATION (tab)
+newline       = %x000A ; U+000A LINE FEED (LF)
+space         = %x0020 ; U+0020 SPACE
+star          = %x002A ; U+002A ASTERISK (*)
+slash         = %x002F ; U+002F SOLIDUS (/)
+not-newline   = %x0000-0009 / %x000B-10FFFF
+; a <a href='https://infra.spec.whatwg.org/#scalar-value' data-x-internal='scalar-value'>scalar value</a> other than U+000A LINE FEED (LF)
+not-star      = %x0000-0029 / %x002B-10FFFF
+; a <a href='https://infra.spec.whatwg.org/#scalar-value' data-x-internal='scalar-value'>scalar value</a> other than U+002A ASTERISK (*)
+not-slash     = %x0000-002E / %x0030-10FFFF
+; a <a href='https://infra.spec.whatwg.org/#scalar-value' data-x-internal='scalar-value'>scalar value</a> other than U+002F SOLIDUS (/)</code></pre>
+<p>This corresponds to putting the contents of the element in JavaScript
+comments.</p>
+<p>This requirement is in addition to the earlier restrictions on the syntax of
+contents of <code><a href="scripting.html#the-script-element">script</a></code> elements.</p>
+<div>
+<p>This allows authors to include documentation, such as license information or API information,
+inside their documents while still referring to external script files. The syntax is constrained
+so that authors don't accidentally include what looks like valid script while also providing a
+<code><a href="scripting.html#attr-script-src">src</a></code> attribute.</p>
+<pre><code>&lt;script src=&quot;cool-effects.js&quot;&gt;
+// create new instances using:
+//    var e = new Effect();
+// start the effect using .play, stop using .stop:
+//    e.play();
+//    e.stop();
+&lt;/script&gt;</code></pre>
+</div>
+<h5 id=scriptTagXSLT>Interaction of <code><a href="scripting.html#the-script-element">script</a></code> elements and XSLT</h5>
+<p><i>This section is non-normative.</i></p>
+<p>This specification does not define how XSLT interacts with the <code><a href="scripting.html#the-script-element">script</a></code> element.
+However, in the absence of another specification actually defining this, here are some guidelines
+for implementers, based on existing implementations:</p>
+<ul><li><p>When an XSLT transformation program is triggered by an <code>&lt;?xml-stylesheet?></code> processing instruction and the browser implements a
+direct-to-DOM transformation, <code><a href="scripting.html#the-script-element">script</a></code> elements created by the XSLT processor need to
+have its <a href="scripting.html#parser-document">parser document</a> set correctly, and run in document order (modulo scripts
+marked <code><a href="scripting.html#attr-script-defer">defer</a></code> or <code><a href="scripting.html#attr-script-async">async</a></code>), <a href="infrastructure.html#immediately">immediately</a>, as the transformation is
+occurring.<li><p>The <code><a href="infrastructure.html#xsltprocessor">XSLTProcessor</a></code> <code><a href="infrastructure.html#dom-xsltprocessor-transformtodocument">transformToDocument()</a></code> method adds elements
+to a <code><a href="dom.html#document">Document</a></code> object with a null <a href="document-sequences.html#concept-document-bc">browsing
+context</a>, and, accordingly, any <code><a href="scripting.html#the-script-element">script</a></code> elements they create need to have
+their <a href="scripting.html#already-started">already started</a> set to true in the <a href="scripting.html#prepare-the-script-element">prepare the script element</a>
+algorithm and never get executed (<a href="webappapis.html#concept-environment-noscript">scripting is
+disabled</a>). Such <code><a href="scripting.html#the-script-element">script</a></code> elements still need to have their <a href="scripting.html#parser-document">parser
+document</a> set, though, such that their <code><a href="scripting.html#dom-script-async">async</a></code> IDL
+attribute will return false in the absence of an <code><a href="scripting.html#attr-script-async">async</a></code>
+content attribute.<li><p>The <code><a href="infrastructure.html#xsltprocessor">XSLTProcessor</a></code> <code><a href="infrastructure.html#dom-xsltprocessor-transformtofragment">transformToFragment()</a></code> method needs to
+create a fragment that is equivalent to one built manually by creating the elements using <code><a data-x-internal=dom-document-createelementns href=https://dom.spec.whatwg.org/#dom-document-createelementns>document.createElementNS()</a></code>. For instance, it needs
+to create <code><a href="scripting.html#the-script-element">script</a></code> elements with null <a href="scripting.html#parser-document">parser document</a> and with their
+<a href="scripting.html#already-started">already started</a> set to false, so that they will execute when the fragment is
+inserted into a document.</ul>
+<p>The main distinction between the first two cases and the last case is that the first two
+operate on <code><a href="dom.html#document">Document</a></code>s and the last operates on a fragment.</p>
+<h4 id=the-noscript-element>The <dfn data-dfn-type=element><code>noscript</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#metadata-content-2">Metadata content</a>.<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#select-element-inner-content-elements-2"><code>select</code> element inner content elements</a>.<dd><a href="dom.html#optgroup-element-inner-content-elements-2"><code>optgroup</code> element inner content elements</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>In a <code><a href="semantics.html#the-head-element">head</a></code> element of an <a href=https://dom.spec.whatwg.org/#html-document data-x-internal=html-documents>HTML document</a>, if there are no ancestor <code><a href="scripting.html#the-noscript-element">noscript</a></code> elements.<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected in <a href=https://dom.spec.whatwg.org/#html-document data-x-internal=html-documents>HTML documents</a>, if there are no ancestor <code><a href="scripting.html#the-noscript-element">noscript</a></code> elements.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>When <a href="webappapis.html#concept-n-noscript">scripting is disabled</a>, in a <code><a href="semantics.html#the-head-element">head</a></code> element: in any order, zero or more <code><a href="semantics.html#the-link-element">link</a></code> elements, zero or more <code><a href="semantics.html#the-style-element">style</a></code> elements, and zero or more <code><a href="semantics.html#the-meta-element">meta</a></code> elements.<dd>When <a href="webappapis.html#concept-n-noscript">scripting is disabled</a>, not in a <code><a href="semantics.html#the-head-element">head</a></code> element: <a href="dom.html#transparent">transparent</a>, but there must be no <code><a href="scripting.html#the-noscript-element">noscript</a></code> element descendants.<dd>Otherwise: text that conforms to the requirements given in the prose.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-noscript>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-noscript>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="scripting.html#the-noscript-element">noscript</a></code> element <a href="dom.html#represents">represents</a> nothing if <a href="webappapis.html#concept-n-script">scripting is enabled</a>, and <a href="dom.html#represents">represents</a> its children if
+<a href="webappapis.html#concept-n-noscript">scripting is disabled</a>. It is used to present different
+markup to user agents that support scripting and those that don't support scripting, by affecting
+how the document is parsed.</p>
+<p>When used in <a href=https://dom.spec.whatwg.org/#html-document data-x-internal=html-documents>HTML documents</a>, the allowed content model is as follows:</p>
+<dl><dt>In a <code><a href="semantics.html#the-head-element">head</a></code> element, if <a href="webappapis.html#concept-n-noscript">scripting is
+disabled</a> for the <code><a href="scripting.html#the-noscript-element">noscript</a></code> element<dd><p>The <code><a href="scripting.html#the-noscript-element">noscript</a></code> element must contain only <code><a href="semantics.html#the-link-element">link</a></code>, <code><a href="semantics.html#the-style-element">style</a></code>,
+and <code><a href="semantics.html#the-meta-element">meta</a></code> elements.<dt>In a <code><a href="semantics.html#the-head-element">head</a></code> element, if <a href="webappapis.html#concept-n-script">scripting is enabled</a>
+for the <code><a href="scripting.html#the-noscript-element">noscript</a></code> element<dd><p>The <code><a href="scripting.html#the-noscript-element">noscript</a></code> element must contain only text, except that invoking the
+<a href="parsing.html#html-fragment-parsing-algorithm">HTML fragment parsing algorithm</a>  with
+the <code><a href="scripting.html#the-noscript-element">noscript</a></code> element as the <var><a href="parsing.html#concept-frag-parse-context">context</a></var>
+element and the text contents as the <var>input</var> must result in a list of nodes
+that consists only of <code><a href="semantics.html#the-link-element">link</a></code>, <code><a href="semantics.html#the-style-element">style</a></code>, and <code><a href="semantics.html#the-meta-element">meta</a></code> elements that
+would be conforming if they were children of the <code><a href="scripting.html#the-noscript-element">noscript</a></code> element, and no <a href="parsing.html#parse-errors">parse errors</a>.<dt>Outside of <code><a href="semantics.html#the-head-element">head</a></code> elements, if <a href="webappapis.html#concept-n-noscript">scripting is
+disabled</a> for the <code><a href="scripting.html#the-noscript-element">noscript</a></code> element<dd><p>The <code><a href="scripting.html#the-noscript-element">noscript</a></code> element's content model is <a href="dom.html#transparent">transparent</a>, with the
+additional restriction that a <code><a href="scripting.html#the-noscript-element">noscript</a></code> element must not have a <code><a href="scripting.html#the-noscript-element">noscript</a></code>
+element as an ancestor (that is, <code><a href="scripting.html#the-noscript-element">noscript</a></code> can't be nested).<dt>Outside of <code><a href="semantics.html#the-head-element">head</a></code> elements, if <a href="webappapis.html#concept-n-script">scripting is
+enabled</a> for the <code><a href="scripting.html#the-noscript-element">noscript</a></code> element<dd>
+<p>The <code><a href="scripting.html#the-noscript-element">noscript</a></code> element must contain only text, except that the text must be such
+that running the following algorithm results in a conforming document with no
+<code><a href="scripting.html#the-noscript-element">noscript</a></code> elements and no <code><a href="scripting.html#the-script-element">script</a></code> elements, and such that no step in the
+algorithm throws an exception or causes an <a href="parsing.html#html-parser">HTML parser</a> to flag a <a href="parsing.html#parse-errors">parse
+error</a>:</p>
+<div>
+<ol><li>Remove every <code><a href="scripting.html#the-script-element">script</a></code> element from the document.<li>Make a list of every <code><a href="scripting.html#the-noscript-element">noscript</a></code> element in the document. For every
+<code><a href="scripting.html#the-noscript-element">noscript</a></code> element in that list, perform the following steps:
+<ol><li>Let <var>s</var> be the <a href=https://dom.spec.whatwg.org/#concept-child-text-content data-x-internal=child-text-content>child text content</a> of the <code><a href="scripting.html#the-noscript-element">noscript</a></code>
+element.<li>Set the <code><a href="dynamic-markup-insertion.html#dom-element-outerhtml">outerHTML</a></code> attribute of the
+<code><a href="scripting.html#the-noscript-element">noscript</a></code> element to the value of <var>s</var>. (This, as a side-effect, causes
+the <code><a href="scripting.html#the-noscript-element">noscript</a></code> element to be removed from the document.)</ol>
+</ol>
+</div>
+</dl>
+<p>All these contortions are required because, for historical reasons, the
+<code><a href="scripting.html#the-noscript-element">noscript</a></code> element is handled differently by the <a href="parsing.html#html-parser">HTML parser</a> based on
+whether <a href="parsing.html#scripting-flag">scripting was enabled or not</a> when the parser was
+invoked.</p>
+<p>The <code><a href="scripting.html#the-noscript-element">noscript</a></code> element must not be used in <a href=https://dom.spec.whatwg.org/#xml-document data-x-internal=xml-documents>XML documents</a>.</p>
+<p>The <code><a href="scripting.html#the-noscript-element">noscript</a></code> element is only effective in <a href="syntax.html#syntax">the HTML
+syntax</a>, it has no effect in <a href="xhtml.html#the-xhtml-syntax">the XML syntax</a>. This is because the way it works
+is by essentially "turning off" the parser when scripts are enabled, so that the contents of the
+element are treated as pure text and not as real elements. XML does not define a mechanism by
+which to do this.</p>
+<p>The <code><a href="scripting.html#the-noscript-element">noscript</a></code> element has no other requirements. In particular, children of the
+<code><a href="scripting.html#the-noscript-element">noscript</a></code> element are not exempt from <a href="form-control-infrastructure.html#form-submission-2">form submission</a>, scripting, and so
+forth, even when <a href="webappapis.html#concept-n-script">scripting is enabled</a> for the element.</p>
+<div>
+<p>In the following example, a <code><a href="scripting.html#the-noscript-element">noscript</a></code> element is
+used to provide fallback for a script.</p>
+<pre><code>&lt;form action=&quot;calcSquare.php&quot;&gt;
+&lt;p&gt;
+&lt;label for=x&gt;Number&lt;/label&gt;:
+&lt;input id=&quot;x&quot; name=&quot;x&quot; type=&quot;number&quot;&gt;
+&lt;/p&gt;
+&lt;script&gt;
+var x = document.getElementById(&apos;x&apos;);
+var output = document.createElement(&apos;p&apos;);
+output.textContent = &apos;Type a number; it will be squared right then!&apos;;
+x.form.appendChild(output);
+x.form.onsubmit = function () { return false; }
+x.oninput = function () {
+var v = x.valueAsNumber;
+output.textContent = v + &apos; squared is &apos; + v * v;
+};
+&lt;/script&gt;
+&lt;noscript&gt;
+&lt;input type=submit value=&quot;Calculate Square&quot;&gt;
+&lt;/noscript&gt;
+&lt;/form&gt;</code></pre>
+<p>When script is disabled, a button appears to do the calculation on the server side. When
+script is enabled, the value is computed on-the-fly instead.</p>
+<p>The <code><a href="scripting.html#the-noscript-element">noscript</a></code> element is a blunt instrument. Sometimes, scripts might be enabled,
+but for some reason the page's script might fail. For this reason, it's generally better to avoid
+using <code><a href="scripting.html#the-noscript-element">noscript</a></code>, and to instead design the script to change the page from being a
+scriptless page to a scripted page on the fly, as in the next example:</p>
+<pre><code>&lt;form action=&quot;calcSquare.php&quot;&gt;
+&lt;p&gt;
+&lt;label for=x&gt;Number&lt;/label&gt;:
+&lt;input id=&quot;x&quot; name=&quot;x&quot; type=&quot;number&quot;&gt;
+&lt;/p&gt;
+<strong>&lt;input id=&quot;submit&quot; type=submit value=&quot;Calculate Square&quot;&gt;</strong>
+&lt;script&gt;
+var x = document.getElementById(&apos;x&apos;);
+var output = document.createElement(&apos;p&apos;);
+output.textContent = &apos;Type a number; it will be squared right then!&apos;;
+x.form.appendChild(output);
+x.form.onsubmit = function () { return false; }
+x.oninput = function () {
+var v = x.valueAsNumber;
+output.textContent = v + &apos; squared is &apos; + v * v;
+};
+<strong>  var submit = document.getElementById(&apos;submit&apos;);
+submit.parentNode.removeChild(submit);</strong>
+&lt;/script&gt;
+&lt;/form&gt;</code></pre>
+<p>The above technique is also useful in <a href=https://dom.spec.whatwg.org/#xml-document data-x-internal=xml-documents>XML documents</a>, since <code><a href="scripting.html#the-noscript-element">noscript</a></code>
+is not allowed there.</p>
+</div>
+<h4 id=the-template-element>The <dfn data-dfn-type=element><code>template</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#metadata-content-2">Metadata content</a>.<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#script-supporting-elements-2">Script-supporting element</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#metadata-content-2">metadata content</a> is expected.<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dd>Where <a href="dom.html#script-supporting-elements-2">script-supporting elements</a> are expected.<dd>As a child of a <code><a href="tables.html#the-colgroup-element">colgroup</a></code> element that doesn't have a <code><a href="tables.html#attr-colgroup-span">span</a></code> attribute.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#concept-content-nothing">Nothing</a> (for clarification, <a href="scripting.html#template-example">see example</a>).<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="scripting.html#attr-template-shadowrootmode">shadowrootmode</a></code> —  Enables streaming declarative shadow roots
+<dd><code><a href="scripting.html#attr-template-shadowrootdelegatesfocus">shadowrootdelegatesfocus</a></code> —  Sets <a href=https://dom.spec.whatwg.org/#shadowroot-delegates-focus data-x-internal=delegates-focus>delegates focus</a> on a declarative shadow root
+<dd><code><a href="scripting.html#attr-template-shadowrootclonable">shadowrootclonable</a></code> —  Sets <a href=https://dom.spec.whatwg.org/#shadowroot-clonable data-x-internal=clonable>clonable</a> on a declarative shadow root
+<dd><code><a href="scripting.html#attr-template-shadowrootserializable">shadowrootserializable</a></code> —  Sets <a href=https://dom.spec.whatwg.org/#shadowroot-serializable data-x-internal=shadow-serializable>serializable</a> on a declarative shadow root
+<dd><code><a href="scripting.html#attr-template-shadowrootcustomelementregistry">shadowrootcustomelementregistry</a></code> —  Enables declarative shadow roots to indicate they will use a custom element registry
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-template>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-template>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmltemplateelement' data-dfn-type='interface'>HTMLTemplateElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+readonly attribute <a href='https://dom.spec.whatwg.org/#interface-documentfragment' data-x-internal='documentfragment'>DocumentFragment</a> <a href='scripting.html#dom-template-content'>content</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString <a href='scripting.html#dom-template-shadowrootmode'>shadowRootMode</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-template-shadowrootdelegatesfocus' data-dfn-type='attribute'>shadowRootDelegatesFocus</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-template-shadowrootclonable' data-dfn-type='attribute'>shadowRootClonable</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-template-shadowrootserializable' data-dfn-type='attribute'>shadowRootSerializable</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-template-shadowrootcustomelementregistry' data-dfn-type='attribute'>shadowRootCustomElementRegistry</dfn>;
+};</code></pre>
+</dl>
+<p>The <code><a href="scripting.html#the-template-element">template</a></code> element is used to declare fragments of HTML that can be cloned and
+inserted in the document by script.</p>
+<p>In a rendering, the <code><a href="scripting.html#the-template-element">template</a></code> element <a href="dom.html#represents">represents</a> nothing.</p>
+<p>The <dfn id=attr-template-shadowrootmode data-dfn-type=element-attr><code>shadowrootmode</code></dfn> content attribute is an
+<a href="common-microsyntaxes.html#enumerated-attribute">enumerated attribute</a> with the following keywords and states:</p>
+<table><thead><tr><th>Keyword
+<th>State
+<th>Brief description
+<tbody><tr><td><dfn id=attr-shadowrootmode-open data-dfn-type=attr-value><code>open</code></dfn>
+<td><dfn id=attr-shadowrootmode-open-state>Open</dfn>
+<td>The template element represents an open declarative shadow root.
+<tr><td><dfn id=attr-shadowrootmode-closed data-dfn-type=attr-value><code>closed</code></dfn>
+<td><dfn id=attr-shadowrootmode-closed-state>Closed</dfn>
+<td>The template element represents a closed declarative shadow root.
+</table>
+<p>The <code><a href="scripting.html#attr-template-shadowrootmode">shadowrootmode</a></code> attribute's <i><a href="common-microsyntaxes.html#invalid-value-default">invalid value default</a></i> and <i><a href="common-microsyntaxes.html#missing-value-default">missing value default</a></i> are both the <dfn id=attr-shadowrootmode-none-state>None</dfn> state.</p>
+<p>The <dfn id=attr-template-shadowrootdelegatesfocus data-dfn-type=element-attr><code>shadowrootdelegatesfocus</code></dfn> content
+attribute is a <a href="common-microsyntaxes.html#boolean-attribute">boolean attribute</a>.</p>
+<p>The <dfn id=attr-template-shadowrootclonable data-dfn-type=element-attr><code>shadowrootclonable</code></dfn> content attribute is a
+<a href="common-microsyntaxes.html#boolean-attribute">boolean attribute</a>.</p>
+<p>The <dfn id=attr-template-shadowrootserializable data-dfn-type=element-attr><code>shadowrootserializable</code></dfn> content
+attribute is a <a href="common-microsyntaxes.html#boolean-attribute">boolean attribute</a>.</p>
+<p>The <dfn id=attr-template-shadowrootcustomelementregistry data-dfn-type=element-attr><code>shadowrootcustomelementregistry</code></dfn>
+content attribute is a <a href="common-microsyntaxes.html#boolean-attribute">boolean attribute</a>.</p>
+<p>The <a href="scripting.html#template-contents">template contents</a> of a <code><a href="scripting.html#the-template-element">template</a></code> element <a href="syntax.html#template-syntax">are not children of the element itself</a>.</p>
+<p>It is also possible, as a result of DOM manipulation, for a <code><a href="scripting.html#the-template-element">template</a></code>
+element to contain <code><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> nodes and element nodes; however, having any is a violation
+of the <code><a href="scripting.html#the-template-element">template</a></code> element's content model, since its content model is defined as <a href="dom.html#concept-content-nothing">nothing</a>.</p>
+<div id=template-example>
+<p>For example, consider the following document:</p>
+<pre><code>&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;title&gt;Homework&lt;/title&gt;
+&lt;body&gt;
+&lt;template id=&quot;template&quot;&gt;&lt;p&gt;Smile!&lt;/p&gt;&lt;/template&gt;
+&lt;script&gt;
+let num = 3;
+const fragment = document.getElementById(&apos;template&apos;).content.cloneNode(true);
+while (num-- &gt; 1) {
+fragment.firstChild.before(fragment.firstChild.cloneNode(true));
+fragment.firstChild.textContent += fragment.lastChild.textContent;
+}
+document.body.appendChild(fragment);
+&lt;/script&gt;
+&lt;/html&gt;</code></pre>
+<p>The <code><a href="grouping-content.html#the-p-element">p</a></code> element in the <code><a href="scripting.html#the-template-element">template</a></code> is <em>not</em> a child of the
+<code><a href="scripting.html#the-template-element">template</a></code> in the DOM; it is a child of the <code><a data-x-internal=documentfragment href=https://dom.spec.whatwg.org/#interface-documentfragment>DocumentFragment</a></code> returned by
+the <code><a href="scripting.html#the-template-element">template</a></code> element's <code><a href="scripting.html#dom-template-content">content</a></code> IDL
+attribute.</p>
+<p>If the script were to call <code><a data-x-internal=dom-node-appendchild href=https://dom.spec.whatwg.org/#dom-node-appendchild>appendChild()</a></code> on the
+<code><a href="scripting.html#the-template-element">template</a></code> element, that would add a child to the <code><a href="scripting.html#the-template-element">template</a></code> element (as
+for any other element); however, doing so is a violation of the <code><a href="scripting.html#the-template-element">template</a></code> element's
+content model.</p>
+</div>
+<dl><dt><code><var>template</var>.<a href="scripting.html#dom-template-content" id=dom-template-content-dev>content</a></code></div><dd><p>Returns the <a href="scripting.html#template-contents">template contents</a> (a <code><a data-x-internal=documentfragment href=https://dom.spec.whatwg.org/#interface-documentfragment>DocumentFragment</a></code>).</dl>
+<div>
+<p>Each <code><a href="scripting.html#the-template-element">template</a></code> element has an associated <code><a data-x-internal=documentfragment href=https://dom.spec.whatwg.org/#interface-documentfragment>DocumentFragment</a></code> object that
+is its <dfn id=template-contents>template contents</dfn>. The <a href="scripting.html#template-contents">template contents</a> have <a href="dom.html#no-browsing-context">no conformance requirements</a>. When a <code><a href="scripting.html#the-template-element">template</a></code> element
+is created, the user agent must run the following steps to establish the <a href="scripting.html#template-contents">template
+contents</a>:</p>
+<ol><li><p>Let <var>document</var> be the <code><a href="scripting.html#the-template-element">template</a></code> element's <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node
+document</a>'s <a href="scripting.html#appropriate-template-contents-owner-document">appropriate template contents owner document</a>.<li><p>Create a <code><a data-x-internal=documentfragment href=https://dom.spec.whatwg.org/#interface-documentfragment>DocumentFragment</a></code> object whose <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a> is
+<var>document</var> and <a href=https://dom.spec.whatwg.org/#concept-documentfragment-host data-x-internal=concept-documentfragment-host>host</a> is the
+<code><a href="scripting.html#the-template-element">template</a></code> element.<li><p>Set the <code><a href="scripting.html#the-template-element">template</a></code> element's <a href="scripting.html#template-contents">template contents</a> to the newly
+created <code><a data-x-internal=documentfragment href=https://dom.spec.whatwg.org/#interface-documentfragment>DocumentFragment</a></code> object.</ol>
+</div>
+<div>
+<p>A <code><a href="dom.html#document">Document</a></code> <var>document</var>'s <dfn id=appropriate-template-contents-owner-document>appropriate template contents owner
+document</dfn> is the <code><a href="dom.html#document">Document</a></code> returned by the following algorithm:</p>
+<ol><li>
+<p>If <var>document</var> is not a <code><a href="dom.html#document">Document</a></code> created by this algorithm:</p>
+<ol><li>
+<p>If <var>document</var> does not yet have an <dfn id=associated-inert-template-document>associated inert template
+document</dfn>:</p>
+<ol><li><p>Let <var>newDocument</var> be a new <code><a href="dom.html#document">Document</a></code> (whose <a href="document-sequences.html#concept-document-bc">browsing context</a> is null). This is "a
+<code><a href="dom.html#document">Document</a></code> created by this algorithm" for the purposes of the step above.<li><p>If <var>document</var> is an <a href=https://dom.spec.whatwg.org/#html-document data-x-internal=html-documents>HTML document</a>, then
+mark <var>newDocument</var> as an <a href=https://dom.spec.whatwg.org/#html-document data-x-internal=html-documents>HTML document</a>
+also.<li><p>Set <var>document</var>'s <a href="scripting.html#associated-inert-template-document">associated inert template document</a> to
+<var>newDocument</var>.</ol>
+<li><p>Set <var>document</var> to <var>document</var>'s <a href="scripting.html#associated-inert-template-document">associated inert template
+document</a>.</ol>
+<p>Each <code><a href="dom.html#document">Document</a></code> not created by this algorithm thus gets a single
+<code><a href="dom.html#document">Document</a></code> to act as its proxy for owning the <a href="scripting.html#template-contents">template contents</a> of all
+its <code><a href="scripting.html#the-template-element">template</a></code> elements, so that they aren't in a <a href="document-sequences.html#browsing-context">browsing context</a> and
+thus remain inert (e.g. scripts do not run). Meanwhile, <code><a href="scripting.html#the-template-element">template</a></code> elements inside
+<code><a href="dom.html#document">Document</a></code> objects that <em>are</em> created by this algorithm just reuse the same
+<code><a href="dom.html#document">Document</a></code> owner for their contents.</p>
+<li><p>Return <var>document</var>.</ol>
+</div>
+<div>
+<p id=template-adopting-steps>The <a href=https://dom.spec.whatwg.org/#concept-node-adopt-ext data-x-internal=concept-node-adopt-ext>adopting steps</a>
+(with <var>node</var> and <var>oldDocument</var> as parameters) for <code><a href="scripting.html#the-template-element">template</a></code> elements
+are the following:</p>
+<ol><li>
+<p>Let <var>document</var> be <var>node</var>'s <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>'s
+<a href="scripting.html#appropriate-template-contents-owner-document">appropriate template contents owner document</a>.</p>
+<p><var>node</var>'s <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a> is the <code><a href="dom.html#document">Document</a></code> object
+that <var>node</var> was just adopted <em>into</em>.</p>
+<li><p><a href=https://dom.spec.whatwg.org/#concept-node-adopt data-x-internal=concept-node-adopt>Adopt</a> <var>node</var>'s
+<a href="scripting.html#template-contents">template contents</a> (a <code><a data-x-internal=documentfragment href=https://dom.spec.whatwg.org/#interface-documentfragment>DocumentFragment</a></code> object) into
+<var>document</var>.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-template-content data-dfn-type=attribute><code>content</code></dfn> getter steps are:
+<ol><li><p><a href=https://infra.spec.whatwg.org/#assert data-x-internal=assert>Assert</a>: <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="scripting.html#template-contents">template contents</a> is not a
+<code><a data-x-internal=shadowroot href=https://dom.spec.whatwg.org/#interface-shadowroot>ShadowRoot</a></code> node.<li><p>Return <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="scripting.html#template-contents">template contents</a>.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-template-shadowrootmode data-dfn-type=attribute><code>shadowRootMode</code></dfn> IDL attribute must
+<a href="common-dom-interfaces.html#reflect">reflect</a> the <code><a href="scripting.html#attr-template-shadowrootmode">shadowrootmode</a></code> content
+attribute, <a href="common-dom-interfaces.html#limited-to-only-known-values">limited to only known values</a>.</p>
+</div>
+<p>The <a href="scripting.html#dom-template-shadowrootcustomelementregistry">shadowRootCustomElementRegistry</a> IDL
+attribute intentionally does not have a boolean type so it can be extended.</p>
+<hr>
+<div>
+<p>The <a href=https://dom.spec.whatwg.org/#concept-node-clone-ext data-x-internal=concept-node-clone-ext>cloning steps</a> for <code><a href="scripting.html#the-template-element">template</a></code>
+elements given <var>node</var>, <var>copy</var>, and <var>subtree</var> are:</p>
+<ol><li><p>If <var>subtree</var> is false, then return.<li><p>For each <var>child</var> of <var>node</var>'s <a href="scripting.html#template-contents">template contents</a>'s <a href=https://dom.spec.whatwg.org/#concept-tree-child data-x-internal=concept-tree-child>children</a>, in <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a>: <a href=https://dom.spec.whatwg.org/#concept-node-clone data-x-internal=concept-node-clone>clone a node</a> given <var>child</var> with <a href=https://dom.spec.whatwg.org/#clone-a-node-document data-x-internal=concept-node-clone-document><i>document</i></a> set to <var>copy</var>'s
+<a href="scripting.html#template-contents">template contents</a>'s <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>, <a href=https://dom.spec.whatwg.org/#clone-a-node-subtree data-x-internal=concept-node-clone-subtree><i>subtree</i></a> set to true, and <a href=https://dom.spec.whatwg.org/#clone-a-node-parent data-x-internal=concept-node-clone-parent><i>parent</i></a> set to <var>copy</var>'s <a href="scripting.html#template-contents">template
+contents</a>.</ol>
+</div>
+<div>
+<p>In this example, a script populates a table four-column with data from a data structure, using
+a <code><a href="scripting.html#the-template-element">template</a></code> to provide the element structure instead of manually generating the
+structure from markup.</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&apos;en&apos;&gt;
+&lt;title&gt;Cat data&lt;/title&gt;
+&lt;script&gt;
+// Data is hard-coded here, but could come from the server
+var data = [
+{ name: &apos;Pillar&apos;, color: &apos;Ticked Tabby&apos;, sex: &apos;Female (neutered)&apos;, legs: 3 },
+{ name: &apos;Hedral&apos;, color: &apos;Tuxedo&apos;, sex: &apos;Male (neutered)&apos;, legs: 4 },
+];
+&lt;/script&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Name &lt;th&gt;Color &lt;th&gt;Sex &lt;th&gt;Legs
+&lt;tbody&gt;
+&lt;template id=&quot;row&quot;&gt;
+&lt;tr&gt;&lt;td&gt;&lt;td&gt;&lt;td&gt;&lt;td&gt;
+&lt;/template&gt;
+&lt;/table&gt;
+&lt;script&gt;
+var template = document.querySelector(&apos;#row&apos;);
+for (var i = 0; i &lt; data.length; i += 1) {
+var cat = data[i];
+var clone = template.content.cloneNode(true);
+var cells = clone.querySelectorAll(&apos;td&apos;);
+cells[0].textContent = cat.name;
+cells[1].textContent = cat.color;
+cells[2].textContent = cat.sex;
+cells[3].textContent = cat.legs;
+template.parentNode.appendChild(clone);
+}
+&lt;/script&gt;</code></pre>
+<p>This example uses <code><a data-x-internal=dom-node-clonenode href=https://dom.spec.whatwg.org/#dom-node-clonenode>cloneNode()</a></code> on the
+<code><a href="scripting.html#the-template-element">template</a></code>'s contents; it could equivalently have used <code><a data-x-internal=dom-document-importnode href=https://dom.spec.whatwg.org/#dom-document-importnode>document.importNode()</a></code>, which does the same thing. The
+only difference between these two APIs is when the <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a> is updated: with
+<code><a data-x-internal=dom-node-clonenode href=https://dom.spec.whatwg.org/#dom-node-clonenode>cloneNode()</a></code> it is updated when the nodes are appended
+with <code><a data-x-internal=dom-node-appendchild href=https://dom.spec.whatwg.org/#dom-node-appendchild>appendChild()</a></code>, with <code><a data-x-internal=dom-document-importnode href=https://dom.spec.whatwg.org/#dom-document-importnode>document.importNode()</a></code> it is updated when the nodes are
+cloned.</p>
+</div>
+<h5 id=template-XSLT-XPath>Interaction of <code><a href="scripting.html#the-template-element">template</a></code> elements with XSLT and XPath</h5>
+<p><i>This section is non-normative.</i></p>
+<p>This specification does not define how XSLT and XPath interact with the <code><a href="scripting.html#the-template-element">template</a></code>
+element. However, in the absence of another specification actually defining this, here are some
+guidelines for implementers, which are intended to be consistent with other processing described
+in this specification:</p>
+<ul><li><p>An XSLT processor based on an XML parser that acts <a href="xhtml.html#xml-parser">as described
+in this specification</a> needs to act as if <code><a href="scripting.html#the-template-element">template</a></code> elements contain as
+descendants their <a href="scripting.html#template-contents">template contents</a> for the purposes of the transform.<li><p>An XSLT processor that outputs a DOM needs to ensure that nodes that would go into a
+<code><a href="scripting.html#the-template-element">template</a></code> element are instead placed into the element's <a href="scripting.html#template-contents">template
+contents</a>.<li><p>XPath evaluation using the XPath DOM API when applied to a <code><a href="dom.html#document">Document</a></code> parsed
+using the <a href="parsing.html#html-parser">HTML parser</a> or the <a href="xhtml.html#xml-parser">XML parser</a> described in this specification
+needs to ignore <a href="scripting.html#template-contents">template contents</a>.</p>
+</ul>
+<h4 id=the-slot-element>The <dfn data-dfn-type=element><code>slot</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#transparent">Transparent</a><dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="scripting.html#attr-slot-name">name</a></code> —  Name of shadow tree slot
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-slot>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-slot>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlslotelement' data-dfn-type='interface'>HTMLSlotElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-slot-name' data-dfn-type='attribute'>name</dfn>;
+sequence&lt;Node&gt; <a href='scripting.html#dom-slot-assignednodes'>assignedNodes</a>(optional <a href='scripting.html#assignednodesoptions'>AssignedNodesOptions</a> options = {});
+sequence&lt;Element&gt; <a href='scripting.html#dom-slot-assignedelements'>assignedElements</a>(optional <a href='scripting.html#assignednodesoptions'>AssignedNodesOptions</a> options = {});
+undefined <a href='scripting.html#dom-slot-assign'>assign</a>((<a href='https://dom.spec.whatwg.org/#interface-element' data-x-internal='element'>Element</a> or <a href='https://dom.spec.whatwg.org/#interface-text' data-x-internal='text'>Text</a>)... nodes);
+};
+dictionary <dfn id='assignednodesoptions' data-dfn-type='dictionary'>AssignedNodesOptions</dfn> {
+boolean <dfn id='dom-assignednodesoptions-flatten' data-dfn-type='dict-member'>flatten</dfn> = false;
+};</code></pre>
+</dl>
+<p>The <code><a href="scripting.html#the-slot-element">slot</a></code> element defines a <a href=https://dom.spec.whatwg.org/#concept-slot data-x-internal=concept-slot>slot</a>. It is
+typically used in a <a href=https://dom.spec.whatwg.org/#concept-shadow-tree data-x-internal=shadow-tree>shadow tree</a>. A <code><a href="scripting.html#the-slot-element">slot</a></code> element <a href="dom.html#represents">represents</a>
+its <a href=https://dom.spec.whatwg.org/#slot-assigned-nodes data-x-internal=assigned-nodes>assigned nodes</a>, if any, and its contents otherwise.</p>
+<p>The <dfn id=attr-slot-name data-dfn-type=element-attr><code>name</code></dfn> content
+attribute may contain any string value. It represents a <a href=https://dom.spec.whatwg.org/#concept-slot data-x-internal=concept-slot>slot</a>'s
+<a href=https://dom.spec.whatwg.org/#slot-name data-x-internal=slot-name>name</a>.</p>
+<p>The <code><a href="scripting.html#attr-slot-name">name</a></code> attribute is used to <a href=https://dom.spec.whatwg.org/#assign-a-slot data-x-internal=assign-a-slot>assign slots</a> to other elements: a <code><a href="scripting.html#the-slot-element">slot</a></code> element with a
+<code><a href="scripting.html#attr-slot-name">name</a></code> attribute creates a named <a href=https://dom.spec.whatwg.org/#concept-slot data-x-internal=concept-slot>slot</a> to which any element is <a href=https://dom.spec.whatwg.org/#assign-a-slot data-x-internal=assign-a-slot>assigned</a> if that element has a <code><a href="dom.html#attr-slot">slot</a></code> attribute whose
+value matches that <code><a href="scripting.html#attr-slot-name">name</a></code> attribute's value, and the
+<code><a href="scripting.html#the-slot-element">slot</a></code> element is a child of the <a href=https://dom.spec.whatwg.org/#concept-shadow-tree data-x-internal=shadow-tree>shadow tree</a> whose <a href=https://dom.spec.whatwg.org/#concept-tree-root data-x-internal=root>root</a>'s
+<a href=https://dom.spec.whatwg.org/#concept-documentfragment-host data-x-internal=concept-documentfragment-host>host</a> has that corresponding <code><a href="dom.html#attr-slot">slot</a></code> attribute value.</p>
+<dl><dt><code><var>slot</var>.<a href="scripting.html#dom-slot-name" id=dom-slot-name-dev>name</a></code></div><dd>Can be used to get and set <var>slot</var>'s <a href=https://dom.spec.whatwg.org/#slot-name data-x-internal=slot-name>name</a>.<dt><code><var>slot</var>.<a href="scripting.html#dom-slot-assignednodes" id=dom-slot-assignednodes-dev>assignedNodes</a>()</code></div><dd>Returns <var>slot</var>'s <a href=https://dom.spec.whatwg.org/#slot-assigned-nodes data-x-internal=assigned-nodes>assigned nodes</a>.<dt><code><var>slot</var>.<a href="scripting.html#dom-slot-assignednodes">assignedNodes</a>({ flatten: true })</code><dd>Returns <var>slot</var>'s <a href=https://dom.spec.whatwg.org/#slot-assigned-nodes data-x-internal=assigned-nodes>assigned nodes</a>, if any, and <var>slot</var>'s children
+otherwise, and does the same for any <code><a href="scripting.html#the-slot-element">slot</a></code> elements encountered therein, recursively,
+until there are no <code><a href="scripting.html#the-slot-element">slot</a></code> elements left.<dt><code><var>slot</var>.<a href="scripting.html#dom-slot-assignedelements" id=dom-slot-assignedelements-dev>assignedElements</a>()</code></div><dd>Returns <var>slot</var>'s <a href=https://dom.spec.whatwg.org/#slot-assigned-nodes data-x-internal=assigned-nodes>assigned nodes</a>, limited to elements.<dt><code><var>slot</var>.<a href="scripting.html#dom-slot-assignedelements">assignedElements</a>({ flatten: true })</code><dd>Returns the same as <code><a href="scripting.html#dom-slot-assignednodes">assignedNodes({ flatten: true
+})</a></code>, limited to elements.<dt><code><var>slot</var>.<a href="scripting.html#dom-slot-assign">assign</a>(...<var>nodes</var>)</code><dd><p>Sets <var>slot</var>'s <a href="scripting.html#manually-assigned-nodes">manually assigned nodes</a> to the given
+<var>nodes</var>.</dl>
+<p>The <code><a href="scripting.html#the-slot-element">slot</a></code> element has <dfn id=manually-assigned-nodes>manually assigned
+nodes</dfn>, which is an <a href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>ordered set</a> of <a href=https://dom.spec.whatwg.org/#concept-slotable data-x-internal=slottable>slottables</a> set by <code><a href="scripting.html#dom-slot-assign">assign()</a></code>.
+This set is initially empty.</p>
+<p>The <a href="scripting.html#manually-assigned-nodes">manually assigned nodes</a> set can be implemented using weak
+references to the <a href=https://dom.spec.whatwg.org/#concept-slotable data-x-internal=slottable>slottables</a>, because this set is not
+directly accessible from script.</p>
+<div>
+<p>The <dfn id=dom-slot-assignednodes data-dfn-type=method><code>assignedNodes(<var>options</var>)</code></dfn> method steps
+are:</p>
+<ol><li><p>If <var>options</var>["<code><a href="scripting.html#dom-assignednodesoptions-flatten">flatten</a></code>"] is
+false, then return <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href=https://dom.spec.whatwg.org/#slot-assigned-nodes data-x-internal=assigned-nodes>assigned nodes</a>.<li><p>Return the result of <a href=https://dom.spec.whatwg.org/#find-flattened-slotables data-x-internal=finding-flattened-slottables>finding flattened slottables</a> with
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-slot-assignedelements data-dfn-type=method><code>assignedElements(<var>options</var>)</code></dfn> method
+steps are:</p>
+<ol><li><p>If <var>options</var>["<code><a href="scripting.html#dom-assignednodesoptions-flatten">flatten</a></code>"] is
+false, then return <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href=https://dom.spec.whatwg.org/#slot-assigned-nodes data-x-internal=assigned-nodes>assigned nodes</a>, filtered to contain only
+<code><a data-x-internal=element href=https://dom.spec.whatwg.org/#interface-element>Element</a></code> nodes.<li><p>Return the result of <a href=https://dom.spec.whatwg.org/#find-flattened-slotables data-x-internal=finding-flattened-slottables>finding flattened slottables</a> with <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>,
+filtered to contain only <code><a data-x-internal=element href=https://dom.spec.whatwg.org/#interface-element>Element</a></code> nodes.</ol>
+</div>
+</div><div>
+<p>The <dfn id=dom-slot-assign data-dfn-type=method><code>assign(...<var>nodes</var>)</code></dfn> method steps are:</p>
+<ol><li><p><a href=https://infra.spec.whatwg.org/#list-iterate data-x-internal=list-iterate>For each</a> <var>node</var> of <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s
+<a href="scripting.html#manually-assigned-nodes">manually assigned nodes</a>, set <var>node</var>'s <a href=https://dom.spec.whatwg.org/#slottable-manual-slot-assignment data-x-internal=manual-slot-assignment>manual slot assignment</a>
+to null.<li><p>Let <var>nodesSet</var> be a new <a href=https://infra.spec.whatwg.org/#ordered-set data-x-internal=set>ordered set</a>.<li>
+<p><a href=https://infra.spec.whatwg.org/#list-iterate data-x-internal=list-iterate>For each</a> <var>node</var> of <var>nodes</var>:</p>
+<ol><li><p>If <var>node</var>'s <a href=https://dom.spec.whatwg.org/#slottable-manual-slot-assignment data-x-internal=manual-slot-assignment>manual slot assignment</a> refers to a <a href="scripting.html#the-slot-element">slot</a>,
+then remove <var>node</var> from that <a href="scripting.html#the-slot-element">slot</a>'s
+<a href="scripting.html#manually-assigned-nodes">manually assigned nodes</a>.<li><p>Set <var>node</var>'s <a href=https://dom.spec.whatwg.org/#slottable-manual-slot-assignment data-x-internal=manual-slot-assignment>manual slot assignment</a> to <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>.<li><p><a href=https://infra.spec.whatwg.org/#set-append data-x-internal=set-append>Append</a> <var>node</var> to <var>nodesSet</var>.</ol>
+<li><p>Set <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="scripting.html#manually-assigned-nodes">manually assigned nodes</a> to
+<var>nodesSet</var>.<li><p>Run <a href=https://dom.spec.whatwg.org/#assign-slotables-for-a-tree data-x-internal=assign-slottables-for-a-tree>assign slottables for a tree</a> for <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s
+<a href=https://dom.spec.whatwg.org/#concept-tree-root data-x-internal=root>root</a>.</ol>
+</div>
+</body>
+</html>

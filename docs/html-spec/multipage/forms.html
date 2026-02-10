@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+<li><a href="forms.html#categories">Categories</a><li><a href="forms.html#the-form-element">The <code>form</code> element</a><li><a href="forms.html#the-label-element">The <code>label</code> element</a></ol></ol></ol><h3 id=forms>Forms</h3></div>
+<h4 id=introduction-4>Introduction</h4>
+<p><i>This section is non-normative.</i></p>
+<p>A form is a component of a web page that has form controls, such as text, buttons, checkboxes,
+range, or color picker controls. A user can interact with such a form, providing data that can
+then be sent to the server for further processing (e.g. returning the results of a search or
+calculation). No client-side scripting is needed in many cases, though an API is available so that
+scripts can augment the user experience or use forms for purposes other than submitting data to a
+server.</p>
+<p>Writing a form consists of several steps, which can be performed in any order: writing the user
+interface, implementing the server-side processing, and configuring the user interface to
+communicate with the server.</p>
+<h5 id="writing-a-form's-user-interface">Writing a form's user interface</h5>
+<p><i>This section is non-normative.</i></p>
+<p>For the purposes of this brief introduction, we will create a pizza ordering form.</p>
+<p>Any form starts with a <code><a href="forms.html#the-form-element">form</a></code> element, inside which are placed the controls. Most
+controls are represented by the <code><a href="input.html#the-input-element">input</a></code> element, which by default provides a text
+control. To label a control, the <code><a href="forms.html#the-label-element">label</a></code> element is used; the label text and the
+control itself go inside the <code><a href="forms.html#the-label-element">label</a></code> element. Each part of a form is considered a
+<a href="dom.html#paragraph">paragraph</a>, and is typically separated from other parts using <code><a href="grouping-content.html#the-p-element">p</a></code> elements.
+Putting this together, here is how one might ask for the customer's name:</p>
+<pre><code><strong>&lt;form&gt;
+&lt;p&gt;&lt;label&gt;Customer name: &lt;input&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;/form&gt;</strong></code></pre>
+<p>To let the user select the size of the pizza, we can use a set of radio buttons. Radio buttons
+also use the <code><a href="input.html#the-input-element">input</a></code> element, this time with a <code><a href="input.html#attr-input-type">type</a></code> attribute with the value <code><a href="input.html#radio-button-state-(type=radio)">radio</a></code>. To make the radio buttons work as a group, they are
+given a common name using the <code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code> attribute. To group a batch
+of controls together, such as, in this case, the radio buttons, one can use the
+<code><a href="form-elements.html#the-fieldset-element">fieldset</a></code> element. The title of such a group of controls is given by the first element
+in the <code><a href="form-elements.html#the-fieldset-element">fieldset</a></code>, which has to be a <code><a href="form-elements.html#the-legend-element">legend</a></code> element.</p>
+<pre><code>&lt;form&gt;
+&lt;p&gt;&lt;label&gt;Customer name: &lt;input&gt;&lt;/label&gt;&lt;/p&gt;
+<strong> &lt;fieldset&gt;
+&lt;legend&gt; Pizza Size &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Small &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Medium &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Large &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;</strong>
+&lt;/form&gt;</code></pre>
+<p>Changes from the previous step are highlighted.</p>
+<p>To pick toppings, we can use checkboxes. These use the <code><a href="input.html#the-input-element">input</a></code> element with a <code><a href="input.html#attr-input-type">type</a></code> attribute with the value <code><a href="input.html#checkbox-state-(type=checkbox)">checkbox</a></code>:</p>
+<pre><code>&lt;form&gt;
+&lt;p&gt;&lt;label&gt;Customer name: &lt;input&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Size &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Small &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Medium &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Large &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+<strong> &lt;fieldset&gt;
+&lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Onion &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;</strong>
+&lt;/form&gt;</code></pre>
+<p>The pizzeria for which this form is being written is always making mistakes, so it needs a way
+to contact the customer. For this purpose, we can use form controls specifically for telephone
+numbers (<code><a href="input.html#the-input-element">input</a></code> elements with their <code><a href="input.html#attr-input-type">type</a></code>
+attribute set to <code><a href="input.html#telephone-state-(type=tel)">tel</a></code>) and email addresses
+(<code><a href="input.html#the-input-element">input</a></code> elements with their <code><a href="input.html#attr-input-type">type</a></code> attribute set
+to <code><a href="input.html#email-state-(type=email)">email</a></code>):</p>
+<pre><code>&lt;form&gt;
+&lt;p&gt;&lt;label&gt;Customer name: &lt;input&gt;&lt;/label&gt;&lt;/p&gt;
+<strong> &lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Email address: &lt;input type=email&gt;&lt;/label&gt;&lt;/p&gt;</strong>
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Size &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Small &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Medium &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Large &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Onion &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;/form&gt;</code></pre>
+<p>We can use an <code><a href="input.html#the-input-element">input</a></code> element with its <code><a href="input.html#attr-input-type">type</a></code>
+attribute set to <code><a href="input.html#time-state-(type=time)">time</a></code> to ask for a delivery time. Many
+of these form controls have attributes to control exactly what values can be specified; in this
+case, three attributes of particular interest are <code><a href="input.html#attr-input-min">min</a></code>, <code><a href="input.html#attr-input-max">max</a></code>, and <code><a href="input.html#attr-input-step">step</a></code>. These set the
+minimum time, the maximum time, and the interval between allowed values (in seconds). This
+pizzeria only delivers between 11am and 9pm, and doesn't promise anything better than 15 minute
+increments, which we can mark up as follows:</p>
+<pre><code>&lt;form&gt;
+&lt;p&gt;&lt;label&gt;Customer name: &lt;input&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Email address: &lt;input type=email&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Size &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Small &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Medium &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Large &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Onion &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+<strong> &lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min=&quot;11:00&quot; max=&quot;21:00&quot; step=&quot;900&quot;&gt;&lt;/label&gt;&lt;/p&gt;</strong>
+&lt;/form&gt;</code></pre>
+<p>The <code><a href="form-elements.html#the-textarea-element">textarea</a></code> element can be used to provide a multiline text control. In this
+instance, we are going to use it to provide a space for the customer to give delivery
+instructions:</p>
+<pre><code>&lt;form&gt;
+&lt;p&gt;&lt;label&gt;Customer name: &lt;input&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Email address: &lt;input type=email&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Size &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Small &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Medium &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Large &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Onion &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min=&quot;11:00&quot; max=&quot;21:00&quot; step=&quot;900&quot;&gt;&lt;/label&gt;&lt;/p&gt;
+<strong> &lt;p&gt;&lt;label&gt;Delivery instructions: &lt;textarea&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;</strong>
+&lt;/form&gt;</code></pre>
+<p>Finally, to make the form submittable we use the <code><a href="form-elements.html#the-button-element">button</a></code> element:</p>
+<pre><code>&lt;form&gt;
+&lt;p&gt;&lt;label&gt;Customer name: &lt;input&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Email address: &lt;input type=email&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Size &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Small &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Medium &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size&gt; Large &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Onion &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min=&quot;11:00&quot; max=&quot;21:00&quot; step=&quot;900&quot;&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Delivery instructions: &lt;textarea&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
+<strong> &lt;p&gt;&lt;button&gt;Submit order&lt;/button&gt;&lt;/p&gt;</strong>
+&lt;/form&gt;</code></pre>
+<h5 id=implementing-the-server-side-processing-for-a-form>Implementing the server-side processing for a form</h5>
+<p><i>This section is non-normative.</i></p>
+<p>The exact details for writing a server-side processor are out of scope for this specification.
+For the purposes of this introduction, we will assume that the script at <code>https://pizza.example.com/order.cgi</code> is configured to accept submissions using the
+<code><a href="form-control-infrastructure.html#attr-fs-enctype-urlencoded">application/x-www-form-urlencoded</a></code> format,
+expecting the following parameters sent in an HTTP POST body:</p>
+<dl><dt><code>custname</code><dd>Customer's name<dt><code>custtel</code><dd>Customer's telephone number<dt><code>custemail</code><dd>Customer's email address<dt><code>size</code><dd>The pizza size, either <code>small</code>, <code>medium</code>, or <code>large</code><dt><code>topping</code><dd>A topping, specified once for each selected topping, with the allowed values being <code>bacon</code>, <code>cheese</code>, <code>onion</code>, and <code>mushroom</code><dt><code>delivery</code><dd>The requested delivery time<dt><code>comments</code><dd>The delivery instructions</dl>
+<h5 id=configuring-a-form-to-communicate-with-a-server>Configuring a form to communicate with a server</h5>
+<p><i>This section is non-normative.</i></p>
+<p>Form submissions are exposed to servers in a variety of ways, most commonly as HTTP GET or POST
+requests. To specify the exact method used, the <code><a href="form-control-infrastructure.html#attr-fs-method">method</a></code>
+attribute is specified on the <code><a href="forms.html#the-form-element">form</a></code> element. This doesn't specify how the form data is
+encoded, though; to specify that, you use the <code><a href="form-control-infrastructure.html#attr-fs-enctype">enctype</a></code>
+attribute. You also have to specify the <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> of the service that will handle the
+submitted data, using the <code><a href="form-control-infrastructure.html#attr-fs-action">action</a></code> attribute.</p>
+<p>For each form control you want submitted, you then have to give a name that will be used to
+refer to the data in the submission. We already specified the name for the group of radio buttons;
+the same attribute (<code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code>) also specifies the submission name.
+Radio buttons can be distinguished from each other in the submission by giving them different
+values, using the <code><a href="input.html#attr-input-value">value</a></code> attribute.</p>
+<p>Multiple controls can have the same name; for example, here we give all the checkboxes the same
+name, and the server distinguishes which checkbox was checked by seeing which values are submitted
+with that name — like the radio buttons, they are also given unique values with the <code><a href="input.html#attr-input-value">value</a></code> attribute.</p>
+<p>Given the settings in the previous section, this all becomes:</p>
+<pre><code>&lt;form<strong> method=&quot;post&quot;
+enctype=&quot;application/x-www-form-urlencoded&quot;
+action=&quot;https://pizza.example.com/order.cgi&quot;</strong>&gt;
+&lt;p&gt;&lt;label&gt;Customer name: &lt;input<strong> name=&quot;custname&quot;</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel<strong> name=&quot;custtel&quot;</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Email address: &lt;input type=email<strong> name=&quot;custemail&quot;</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Size &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size<strong> value=&quot;small&quot;</strong>&gt; Small &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size<strong> value=&quot;medium&quot;</strong>&gt; Medium &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size<strong> value=&quot;large&quot;</strong>&gt; Large &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox<strong> name=&quot;topping&quot; value=&quot;bacon&quot;</strong>&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox<strong> name=&quot;topping&quot; value=&quot;cheese&quot;</strong>&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox<strong> name=&quot;topping&quot; value=&quot;onion&quot;</strong>&gt; Onion &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox<strong> name=&quot;topping&quot; value=&quot;mushroom&quot;</strong>&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min=&quot;11:00&quot; max=&quot;21:00&quot; step=&quot;900&quot;<strong> name=&quot;delivery&quot;</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Delivery instructions: &lt;textarea<strong> name=&quot;comments&quot;</strong>&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;button&gt;Submit order&lt;/button&gt;&lt;/p&gt;
+&lt;/form&gt;</code></pre>
+<p>There is no particular significance to the way some of the attributes have their
+values quoted and others don't. The HTML syntax allows a variety of equally valid ways to specify
+attributes, as discussed <a href="syntax.html#syntax-attributes">in the syntax section</a>.</p>
+<p>For example, if the customer entered "Denise Lawrence" as their name, "555-321-8642" as their
+telephone number, did not specify an email address, asked for a medium-sized pizza, selected the
+Extra Cheese and Mushroom toppings, entered a delivery time of 7pm, and left the delivery
+instructions text control blank, the user agent would submit the following to the online web
+service:</p>
+<pre><code>custname=Denise+Lawrence&amp;custtel=555-321-8642&amp;custemail=&amp;size=medium&amp;topping=cheese&amp;topping=mushroom&amp;delivery=19%3A00&amp;comments=</code></pre>
+<h5 id=client-side-form-validation>Client-side form validation</h5></div>
+<p><i>This section is non-normative.</i></p>
+<p>Forms can be annotated in such a way that the user agent will check the user's input before the
+form is submitted. The server still has to verify the input is valid (since hostile users can
+easily bypass the form validation), but it allows the user to avoid the wait incurred by having
+the server be the sole checker of the user's input.</p>
+<p>The simplest annotation is the <code><a href="input.html#attr-input-required">required</a></code> attribute,
+which can be specified on <code><a href="input.html#the-input-element">input</a></code> elements to indicate that the form is not to be
+submitted until a value is given. By adding this attribute to the customer name, pizza size, and
+delivery time fields, we allow the user agent to notify the user when the user submits the form
+without filling in those fields:</p>
+<pre><code>&lt;form method=&quot;post&quot;
+enctype=&quot;application/x-www-form-urlencoded&quot;
+action=&quot;https://pizza.example.com/order.cgi&quot;&gt;
+&lt;p&gt;&lt;label&gt;Customer name: &lt;input name=&quot;custname&quot;<strong> required</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel name=&quot;custtel&quot;&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Email address: &lt;input type=email name=&quot;custemail&quot;&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Size &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size<strong> required</strong> value=&quot;small&quot;&gt; Small &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size<strong> required</strong> value=&quot;medium&quot;&gt; Medium &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size<strong> required</strong> value=&quot;large&quot;&gt; Large &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;bacon&quot;&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;cheese&quot;&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;onion&quot;&gt; Onion &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;mushroom&quot;&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min=&quot;11:00&quot; max=&quot;21:00&quot; step=&quot;900&quot; name=&quot;delivery&quot;<strong> required</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Delivery instructions: &lt;textarea name=&quot;comments&quot;&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;button&gt;Submit order&lt;/button&gt;&lt;/p&gt;
+&lt;/form&gt;</code></pre>
+<p>It is also possible to limit the length of the input, using the <code><a href="form-control-infrastructure.html#attr-fe-maxlength">maxlength</a></code> attribute. By adding this to the <code><a href="form-elements.html#the-textarea-element">textarea</a></code>
+element, we can limit users to 1000 characters, preventing them from writing huge essays to the
+busy delivery drivers instead of staying focused and to the point:</p>
+<pre><code>&lt;form method=&quot;post&quot;
+enctype=&quot;application/x-www-form-urlencoded&quot;
+action=&quot;https://pizza.example.com/order.cgi&quot;&gt;
+&lt;p&gt;&lt;label&gt;Customer name: &lt;input name=&quot;custname&quot; required&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel name=&quot;custtel&quot;&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Email address: &lt;input type=email name=&quot;custemail&quot;&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Size &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value=&quot;small&quot;&gt; Small &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value=&quot;medium&quot;&gt; Medium &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value=&quot;large&quot;&gt; Large &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;bacon&quot;&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;cheese&quot;&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;onion&quot;&gt; Onion &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;mushroom&quot;&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min=&quot;11:00&quot; max=&quot;21:00&quot; step=&quot;900&quot; name=&quot;delivery&quot; required&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Delivery instructions: &lt;textarea name=&quot;comments&quot;<strong> maxlength=1000</strong>&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;button&gt;Submit order&lt;/button&gt;&lt;/p&gt;
+&lt;/form&gt;</code></pre>
+<p>When a form is submitted, <code><a href="indices.html#event-invalid">invalid</a></code> events are
+fired at each form control that is invalid. This can be useful for displaying a summary of the
+problems with the form, since typically the browser itself will only report one problem at a
+time.</p>
+<h5 id=enabling-client-side-automatic-filling-of-form-controls>Enabling client-side automatic filling of form controls</h5>
+<p><i>This section is non-normative.</i></p>
+<p>Some browsers attempt to aid the user by automatically filling form controls rather than having
+the user reenter their information each time. For example, a field asking for the user's telephone
+number can be automatically filled with the user's phone number.</p>
+<p>To help the user agent with this, the <code><a href="form-control-infrastructure.html#attr-fe-autocomplete">autocomplete</a></code>
+attribute can be used to describe the field's purpose. In the case of this form, we have three
+fields that can be usefully annotated in this way: the information about who the pizza is to be
+delivered to. Adding this information looks like this:</p>
+<pre><code>&lt;form method=&quot;post&quot;
+enctype=&quot;application/x-www-form-urlencoded&quot;
+action=&quot;https://pizza.example.com/order.cgi&quot;&gt;
+&lt;p&gt;&lt;label&gt;Customer name: &lt;input name=&quot;custname&quot; required <strong>autocomplete=&quot;shipping name&quot;</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel name=&quot;custtel&quot; <strong>autocomplete=&quot;shipping tel&quot;</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Email address: &lt;input type=email name=&quot;custemail&quot; <strong>autocomplete=&quot;shipping email&quot;</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Size &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value=&quot;small&quot;&gt; Small &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value=&quot;medium&quot;&gt; Medium &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value=&quot;large&quot;&gt; Large &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;bacon&quot;&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;cheese&quot;&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;onion&quot;&gt; Onion &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;mushroom&quot;&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min=&quot;11:00&quot; max=&quot;21:00&quot; step=&quot;900&quot; name=&quot;delivery&quot; required&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Delivery instructions: &lt;textarea name=&quot;comments&quot; maxlength=1000&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;button&gt;Submit order&lt;/button&gt;&lt;/p&gt;
+&lt;/form&gt;</code></pre>
+<h5 id=improving-the-user-experience-on-mobile-devices>Improving the user experience on mobile devices</h5>
+<p><i>This section is non-normative.</i></p>
+<p>Some devices, in particular those with virtual keyboards can provide the user with multiple
+input modalities. For example, when typing in a credit card number the user may wish to only see
+keys for digits 0-9, while when typing in their name they may wish to see a form field that by
+default capitalizes each word.</p>
+<p>Using the <code><a href="interaction.html#attr-inputmode">inputmode</a></code> attribute we can select appropriate
+input modalities:</p>
+<pre><code>&lt;form method=&quot;post&quot;
+enctype=&quot;application/x-www-form-urlencoded&quot;
+action=&quot;https://pizza.example.com/order.cgi&quot;&gt;
+&lt;p&gt;&lt;label&gt;Customer name: &lt;input name=&quot;custname&quot; required autocomplete=&quot;shipping name&quot;&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Telephone: &lt;input type=tel name=&quot;custtel&quot; autocomplete=&quot;shipping tel&quot;&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Buzzer code: &lt;input name=&quot;custbuzz&quot; <strong>inputmode=&quot;numeric&quot;</strong>&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Email address: &lt;input type=email name=&quot;custemail&quot; autocomplete=&quot;shipping email&quot;&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Size &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value=&quot;small&quot;&gt; Small &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value=&quot;medium&quot;&gt; Medium &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=radio name=size required value=&quot;large&quot;&gt; Large &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;fieldset&gt;
+&lt;legend&gt; Pizza Toppings &lt;/legend&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;bacon&quot;&gt; Bacon &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;cheese&quot;&gt; Extra Cheese &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;onion&quot;&gt; Onion &lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt; &lt;input type=checkbox name=&quot;topping&quot; value=&quot;mushroom&quot;&gt; Mushroom &lt;/label&gt;&lt;/p&gt;
+&lt;/fieldset&gt;
+&lt;p&gt;&lt;label&gt;Preferred delivery time: &lt;input type=time min=&quot;11:00&quot; max=&quot;21:00&quot; step=&quot;900&quot; name=&quot;delivery&quot; required&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Delivery instructions: &lt;textarea name=&quot;comments&quot; maxlength=1000&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;button&gt;Submit order&lt;/button&gt;&lt;/p&gt;
+&lt;/form&gt;</code></pre>
+<h5 id=the-difference-between-the-field-type,-the-autofill-field-name,-and-the-input-modality>The difference between the field type, the autofill field name, and the input modality</h5>
+<p><i>This section is non-normative.</i></p>
+<p>The <code><a href="input.html#attr-input-type">type</a></code>, <code><a href="form-control-infrastructure.html#attr-fe-autocomplete">autocomplete</a></code>, and <code><a href="interaction.html#attr-inputmode">inputmode</a></code> attributes can seem confusingly similar. For instance,
+in all three cases, the string "<code>email</code>" is a valid value. This section
+attempts to illustrate the difference between the three attributes and provides advice suggesting
+how to use them.</p>
+<p>The <code><a href="input.html#attr-input-type">type</a></code> attribute on <code><a href="input.html#the-input-element">input</a></code> elements decides
+what kind of control the user agent will use to expose the field. Choosing between different
+values of this attribute is the same choice as choosing whether to use an <code><a href="input.html#the-input-element">input</a></code>
+element, a <code><a href="form-elements.html#the-textarea-element">textarea</a></code> element, a <code><a href="form-elements.html#the-select-element">select</a></code> element, etc.</p>
+<p>The <code><a href="form-control-infrastructure.html#attr-fe-autocomplete">autocomplete</a></code> attribute, in contrast, describes
+what the value that the user will enter actually represents. Choosing between different values of
+this attribute is the same choice as choosing what the label for the element will be.</p>
+<p>First, consider telephone numbers. If a page is asking for a telephone number from the user,
+the right form control to use is <code><a href="input.html#telephone-state-(type=tel)">&lt;input type=tel></a></code>.
+However, which <code><a href="form-control-infrastructure.html#attr-fe-autocomplete">autocomplete</a></code> value to use depends on
+which phone number the page is asking for, whether they expect a telephone number in the
+international format or just the local format, and so forth.</p>
+<p>For example, a page that forms part of a checkout process on an e-commerce site for a customer
+buying a gift to be shipped to a friend might need both the buyer's telephone number (in case of
+payment issues) and the friend's telephone number (in case of delivery issues). If the site
+expects international phone numbers (with the country code prefix), this could thus look like
+this:</p>
+<pre><code>&lt;p&gt;&lt;label&gt;Your phone number: &lt;input type=tel name=custtel autocomplete=&quot;billing tel&quot;&gt;&lt;/label&gt;
+&lt;p&gt;&lt;label&gt;Recipient&apos;s phone number: &lt;input type=tel name=shiptel autocomplete=&quot;shipping tel&quot;&gt;&lt;/label&gt;
+&lt;p&gt;Please enter complete phone numbers including the country code prefix, as in &quot;+1 555 123 4567&quot;.</code></pre>
+<p>But if the site only supports British customers and recipients, it might instead look like this
+(notice the use of <code><a href="form-control-infrastructure.html#attr-fe-autocomplete-tel-national">tel-national</a></code> rather than
+<code><a href="form-control-infrastructure.html#attr-fe-autocomplete-tel">tel</a></code>):</p>
+<pre><code>&lt;p&gt;&lt;label&gt;Your phone number: &lt;input type=tel name=custtel autocomplete=&quot;billing tel-national&quot;&gt;&lt;/label&gt;
+&lt;p&gt;&lt;label&gt;Recipient&apos;s phone number: &lt;input type=tel name=shiptel autocomplete=&quot;shipping tel-national&quot;&gt;&lt;/label&gt;
+&lt;p&gt;Please enter complete UK phone numbers, as in &quot;(01632) 960 123&quot;.</code></pre>
+<p>Now, consider a person's preferred languages. The right <code><a href="form-control-infrastructure.html#attr-fe-autocomplete">autocomplete</a></code> value is <code><a href="form-control-infrastructure.html#attr-fe-autocomplete-language">language</a></code>. However, there could be a number of
+different form controls used for the purpose: a text control (<code><a href="input.html#text-(type=text)-state-and-search-state-(type=search)">&lt;input type=text></a></code>), a drop-down list (<code><a href="form-elements.html#the-select-element">&lt;select></a></code>), radio buttons (<code><a href="input.html#radio-button-state-(type=radio)">&lt;input
+type=radio></a></code>), etc. It only depends on what kind of interface is desired.</p>
+<p>Finally, consider names. If a page just wants one name from the user, then the relevant control
+is <code><a href="input.html#text-(type=text)-state-and-search-state-(type=search)">&lt;input type=text></a></code>. If the page is asking for the
+user's full name, then the relevant <code><a href="form-control-infrastructure.html#attr-fe-autocomplete">autocomplete</a></code> value
+is <code><a href="form-control-infrastructure.html#attr-fe-autocomplete-name">name</a></code>.
+<pre><code>&lt;p&gt;&lt;label&gt;Japanese name: &lt;input name=&quot;j&quot; type=&quot;text&quot; autocomplete=&quot;section-jp name&quot;&gt;&lt;/label&gt;
+&lt;label&gt;Romanized name: &lt;input name=&quot;e&quot; type=&quot;text&quot; autocomplete=&quot;section-en name&quot;&gt;&lt;/label&gt;</code></pre>
+<p>In this example, the "<code><a href="form-control-infrastructure.html#attr-fe-autocomplete-section">section-*</a></code>" keywords in
+the <code><a href="form-control-infrastructure.html#attr-fe-autocomplete">autocomplete</a></code> attributes' values tell the user agent
+that the two fields expect <em>different</em> names. Without them, the user agent could
+automatically fill the second field with the value given in the first field when the user gave a
+value to the first field.</p>
+<p>The "<code>-jp</code>" and "<code>-en</code>" parts of the
+keywords are opaque to the user agent; the user agent cannot guess, from those, that the two names
+are expected to be in Japanese and English respectively.</p>
+<p>Separate from the choices regarding <code><a href="input.html#attr-input-type">type</a></code> and <code><a href="form-control-infrastructure.html#attr-fe-autocomplete">autocomplete</a></code>, the <code><a href="interaction.html#attr-inputmode">inputmode</a></code> attribute decides what kind of input modality (e.g.,
+virtual keyboard) to use, when the control is a text control.</p>
+<p>Consider credit card numbers. The appropriate input type is <em>not</em> <code><a href="input.html#number-state-(type=number)">&lt;input type=number></a></code>, <a href="input.html#when-number-is-not-appropriate">as explained below</a>; it is instead <code><a href="input.html#text-(type=text)-state-and-search-state-(type=search)">&lt;input type=text></a></code>. To encourage the user agent to use a
+numeric input modality anyway (e.g., a virtual keyboard displaying only digits), the page would
+use</p>
+<pre><code>&lt;p&gt;&lt;label&gt;Credit card number:
+&lt;input name=&quot;cc&quot; type=&quot;text&quot; inputmode=&quot;numeric&quot; pattern=&quot;[0-9]{8,19}&quot; autocomplete=&quot;cc-number&quot;&gt;
+&lt;/label&gt;&lt;/p&gt;</code></pre>
+<h5 id=input-author-notes>Date, time, and number formats</h5>
+<p><i>This section is non-normative.</i></p>
+<p>In this pizza delivery example, the times are specified in the format "HH:MM": two digits for
+the hour, in 24-hour format, and two digits for the time. (Seconds could also be specified, though
+they are not necessary in this example.)</p>
+<p>In some locales, however, times are often expressed differently when presented to users. For
+example, in the United States, it is still common to use the 12-hour clock with an am/pm
+indicator, as in "2pm". In France, it is common to separate the hours from the minutes using an
+"h" character, as in "14h00".</p>
+<p>Similar issues exist with dates, with the added complication that even the order of the
+components is not always consistent — for example, in Cyprus the first of February 2003
+would typically be written "1/2/03", while that same date in Japan would typically be written as
+"2003年02月01日" — and even with numbers, where locales differ, for
+example, in what punctuation is used as the decimal separator and the thousands separator.</p>
+<p>It is therefore important to distinguish the time, date, and number formats used in HTML and in
+form submissions, which are always the formats defined in this specification (and based on the
+well-established ISO 8601 standard for computer-readable date and time formats), from the time,
+date, and number formats presented to the user by the browser and accepted as input from the user
+by the browser.</p>
+<p>The format used "on the wire", i.e., in HTML markup and in form submissions, is intended to be
+computer-readable and consistent irrespective of the user's locale. Dates, for instance, are
+always written in the format "YYYY-MM-DD", as in "2003-02-01". While some users might see this
+format, others might see it as "01.02.2003" or "February 1, 2003".</p>
+<p>The time, date, or number given by the page in the wire format is then translated to the user's
+preferred presentation (based on user preferences or on the locale of the page itself), before
+being displayed to the user. Similarly, after the user inputs a time, date, or number using their
+preferred format, the user agent converts it back to the wire format before putting it in the DOM
+or submitting it.</p>
+<p>This allows scripts in pages and on servers to process times, dates, and numbers in a
+consistent manner without needing to support dozens of different formats, while still supporting
+the users' needs.</p>
+<p>See also the <a href="input.html#input-impl-notes">implementation notes</a> regarding
+localization of form controls.</p>
+<h4 id=categories>Categories</h4>
+<p>Mostly for historical reasons, elements in this section fall into several overlapping (but
+subtly different) categories in addition to the usual ones like <a href="dom.html#flow-content-2">flow content</a>,
+<a href="dom.html#phrasing-content-2">phrasing content</a>, and <a href="dom.html#interactive-content-2">interactive content</a>.</p>
+<p>A number of the elements are <dfn id=form-associated-element>form-associated
+elements</dfn>, which means they can have a <a href="form-control-infrastructure.html#form-owner">form owner</a>.
+<ul><li><code><a href="form-elements.html#the-button-element">button</a></code><li><code><a href="form-elements.html#the-fieldset-element">fieldset</a></code><li><code><a href="input.html#the-input-element">input</a></code><li><code><a href="iframe-embed-object.html#the-object-element">object</a></code><li><code><a href="form-elements.html#the-output-element">output</a></code><li><code><a href="form-elements.html#the-select-element">select</a></code><li><code><a href="form-elements.html#the-textarea-element">textarea</a></code><li><code><a href="embedded-content.html#the-img-element">img</a></code><li><a href="custom-elements.html#form-associated-custom-element">form-associated custom elements</a></ul>
+<p>The <a href="forms.html#form-associated-element">form-associated elements</a> fall into several
+subcategories:</p>
+<dl><dt><dfn id=category-listed>Listed elements</dfn><dd>
+<p>Denotes elements that are listed in the <code><a href="forms.html#dom-form-elements"><var>form</var>.elements</a></code> and <code><a href="form-elements.html#dom-fieldset-elements"><var>fieldset</var>.elements</a></code> APIs. These elements also
+have a <code><a href="form-control-infrastructure.html#attr-fae-form">form</a></code> content attribute, and a matching <code><a href="form-control-infrastructure.html#dom-fae-form">form</a></code> IDL attribute, that allow authors to specify an explicit
+<a href="form-control-infrastructure.html#form-owner">form owner</a>.</p>
+<ul><li><code><a href="form-elements.html#the-button-element">button</a></code><li><code><a href="form-elements.html#the-fieldset-element">fieldset</a></code><li><code><a href="input.html#the-input-element">input</a></code><li><code><a href="iframe-embed-object.html#the-object-element">object</a></code><li><code><a href="form-elements.html#the-output-element">output</a></code><li><code><a href="form-elements.html#the-select-element">select</a></code><li><code><a href="form-elements.html#the-textarea-element">textarea</a></code><li><a href="custom-elements.html#form-associated-custom-element">form-associated custom elements</a></ul>
+<dt><dfn id=category-submit>Submittable elements</dfn><dd>
+<p>Denotes elements that can be used for <a href="form-control-infrastructure.html#constructing-the-form-data-set">constructing the entry list</a> when a
+<code><a href="forms.html#the-form-element">form</a></code> element is <a href="form-control-infrastructure.html#concept-form-submit">submitted</a>.</p>
+<ul><li><code><a href="form-elements.html#the-button-element">button</a></code><li><code><a href="input.html#the-input-element">input</a></code><li><code><a href="form-elements.html#the-select-element">select</a></code><li><code><a href="form-elements.html#the-textarea-element">textarea</a></code><li><a href="custom-elements.html#form-associated-custom-element">form-associated custom elements</a></ul>
+<p>Some <a href="forms.html#category-submit">submittable elements</a> can be, depending on their
+attributes, <dfn id=concept-button>buttons</dfn>. The prose below defines when an element
+is a button. Some buttons are specifically <dfn id=concept-submit-button>submit buttons</dfn>.</p>
+<dt><dfn id=category-reset>Resettable elements</dfn><dd>
+<p>Denotes elements that can be affected when a <code><a href="forms.html#the-form-element">form</a></code> element is <a href="form-control-infrastructure.html#concept-form-reset">reset</a>.</p>
+<ul><li><code><a href="input.html#the-input-element">input</a></code><li><code><a href="form-elements.html#the-output-element">output</a></code><li><code><a href="form-elements.html#the-select-element">select</a></code><li><code><a href="form-elements.html#the-textarea-element">textarea</a></code><li><a href="custom-elements.html#form-associated-custom-element">form-associated custom elements</a></ul>
+<dt><dfn id=category-autocapitalize>Autocapitalize-and-autocorrect-inheriting
+elements</dfn><dd>
+<p>Denotes elements that inherit the <code><a href="interaction.html#attr-autocapitalize">autocapitalize</a></code>
+and <code><a href="interaction.html#attr-autocorrect">autocorrect</a></code> attributes from their <a href="form-control-infrastructure.html#form-owner">form
+owner</a>.</p>
+<ul><li><code><a href="form-elements.html#the-button-element">button</a></code><li><code><a href="form-elements.html#the-fieldset-element">fieldset</a></code><li><code><a href="input.html#the-input-element">input</a></code><li><code><a href="form-elements.html#the-output-element">output</a></code><li><code><a href="form-elements.html#the-select-element">select</a></code><li><code><a href="form-elements.html#the-textarea-element">textarea</a></code></ul>
+</dl>
+<p>Some elements, not all of them <a href="forms.html#form-associated-element">form-associated</a>,
+are categorized as <dfn id=category-label>labelable elements</dfn>. These are elements that
+can be associated with a <code><a href="forms.html#the-label-element">label</a></code> element.
+<ul><li><code><a href="form-elements.html#the-button-element">button</a></code><li><code><a href="input.html#the-input-element">input</a></code> (if the <code><a href="input.html#attr-input-type">type</a></code> attribute is <em>not</em> in the <a href="input.html#hidden-state-(type=hidden)">Hidden</a> state)<li><code><a href="form-elements.html#the-meter-element">meter</a></code><li><code><a href="form-elements.html#the-output-element">output</a></code><li><code><a href="form-elements.html#the-progress-element">progress</a></code><li><code><a href="form-elements.html#the-select-element">select</a></code><li><code><a href="form-elements.html#the-textarea-element">textarea</a></code><li><a href="custom-elements.html#form-associated-custom-element">form-associated custom elements</a></ul>
+<h4 id=the-form-element>The <dfn data-dfn-type=element><code>form</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#flow-content-2">flow content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>, but with no <code><a href="forms.html#the-form-element">form</a></code> element descendants.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="forms.html#attr-form-accept-charset">accept-charset</a></code> —  Character encodings to use for <a href="form-control-infrastructure.html#form-submission-2">form submission</a>
+<dd><code><a href="form-control-infrastructure.html#attr-fs-action">action</a></code> —  <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> to use for <a href="form-control-infrastructure.html#form-submission-2">form submission</a>
+<dd><code><a href="forms.html#attr-form-autocomplete">autocomplete</a></code> —  Default setting for autofill feature for controls in the form
+<dd><code><a href="form-control-infrastructure.html#attr-fs-enctype">enctype</a></code> —  <a href="form-control-infrastructure.html#entry-list">Entry list</a> encoding type to use for <a href="form-control-infrastructure.html#form-submission-2">form submission</a>
+<dd><code><a href="form-control-infrastructure.html#attr-fs-method">method</a></code> —  Variant to use for <a href="form-control-infrastructure.html#form-submission-2">form submission</a>
+<dd><code><a href="forms.html#attr-form-name">name</a></code> —  Name of form to use in the <code><a href="dom.html#dom-document-forms">document.forms</a></code> API
+<dd><code><a href="form-control-infrastructure.html#attr-fs-novalidate">novalidate</a></code> —  Bypass form control validation for <a href="form-control-infrastructure.html#form-submission-2">form submission</a>
+<dd><code><a href="form-control-infrastructure.html#attr-fs-target">target</a></code> —  <a href="document-sequences.html#navigable">Navigable</a> for <a href="form-control-infrastructure.html#form-submission-2">form submission</a>
+<dd><code><a href="forms.html#attr-form-rel">rel</a></code><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-form>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-form>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window,
+<a href='https://webidl.spec.whatwg.org/#LegacyOverrideBuiltIns' data-x-internal='legacyoverridebuiltins'>LegacyOverrideBuiltIns</a>,
+<a href='https://webidl.spec.whatwg.org/#LegacyUnenumerableNamedProperties' data-x-internal='legacyunenumerablenamedproperties'>LegacyUnenumerableNamedProperties</a>]
+interface <dfn id='htmlformelement' data-dfn-type='interface'>HTMLFormElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>=&quot;<a href='forms.html#attr-form-accept-charset'>accept-charset</a>&quot;] attribute DOMString <dfn id='dom-form-acceptcharset' data-dfn-type='attribute'>acceptCharset</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflectsetter'>ReflectSetter</a>] attribute USVString <a href='form-control-infrastructure.html#dom-fs-action'>action</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString <a href='forms.html#dom-form-autocomplete'>autocomplete</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString <a href='form-control-infrastructure.html#dom-fs-enctype'>enctype</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString <a href='form-control-infrastructure.html#dom-fs-encoding'>encoding</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString <a href='form-control-infrastructure.html#dom-fs-method'>method</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-form-name' data-dfn-type='attribute'>name</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute boolean <dfn id='dom-fs-novalidate' data-dfn-type='attribute'>noValidate</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-fs-target' data-dfn-type='attribute'>target</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-form-rel' data-dfn-type='attribute'>rel</dfn>;
+[SameObject, PutForwards=<a href='https://dom.spec.whatwg.org/#dom-domtokenlist-value' data-x-internal='dom-domtokenlist-value'>value</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>=&quot;<a href='forms.html#attr-form-rel'>rel</a>&quot;] readonly attribute <a href='https://dom.spec.whatwg.org/#interface-domtokenlist' data-x-internal='domtokenlist'>DOMTokenList</a> <dfn id='dom-form-rellist' data-dfn-type='attribute'>relList</dfn>;
+[SameObject] readonly attribute <a href='common-dom-interfaces.html#htmlformcontrolscollection'>HTMLFormControlsCollection</a> <a href='forms.html#dom-form-elements'>elements</a>;
+readonly attribute unsigned long <a href='forms.html#dom-form-length'>length</a>;
+<a href='forms.html#dom-form-item'>getter</a> <a href='https://dom.spec.whatwg.org/#interface-element' data-x-internal='element'>Element</a> (unsigned long index);
+<a href='forms.html#dom-form-nameditem'>getter</a> (<a href='common-dom-interfaces.html#radionodelist'>RadioNodeList</a> or <a href='https://dom.spec.whatwg.org/#interface-element' data-x-internal='element'>Element</a>) (DOMString name);
+undefined <a href='forms.html#dom-form-submit'>submit</a>();
+undefined <a href='forms.html#dom-form-requestsubmit'>requestSubmit</a>(optional <a href='dom.html#htmlelement'>HTMLElement</a>? submitter = null);
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] undefined <a href='forms.html#dom-form-reset'>reset</a>();
+boolean <a href='forms.html#dom-form-checkvalidity'>checkValidity</a>();
+boolean <a href='forms.html#dom-form-reportvalidity'>reportValidity</a>();
+};</code></pre>
+</dl>
+<p>The <code><a href="forms.html#the-form-element">form</a></code> element <a href="dom.html#represents">represents</a> a <a href="links.html#hyperlink">hyperlink</a> that can be
+manipulated through a collection of <a href="forms.html#form-associated-element">form-associated
+elements</a>, some of which can represent editable values that can be submitted to a server for
+processing.</p>
+<p>The <dfn id=attr-form-accept-charset data-dfn-type=element-attr><code>accept-charset</code></dfn> attribute gives the character
+encodings that are to be used for the submission. If specified, the value must be an <a href=https://infra.spec.whatwg.org/#ascii-case-insensitive data-x-internal=ascii-case-insensitive>ASCII
+case-insensitive</a> match for "<code>UTF-8</code>". <a href="references.html#refsENCODING">[ENCODING]</a></p>
+<p>The <dfn id=attr-form-name data-dfn-type=element-attr><code>name</code></dfn> attribute
+represents the <code><a href="forms.html#the-form-element">form</a></code>'s name within the <code><a href="dom.html#dom-document-forms">forms</a></code>
+collection. The value must not be the empty string, and the value must be unique amongst the
+<code><a href="forms.html#the-form-element">form</a></code> elements in the <code><a href="dom.html#dom-document-forms">forms</a></code> collection that
+it is in, if any.</p>
+<p>The <dfn id=attr-form-autocomplete data-dfn-type=element-attr><code>autocomplete</code></dfn> attribute is an <a href="common-microsyntaxes.html#enumerated-attribute">enumerated
+attribute</a> with the following keywords and states:</p>
+<table><thead><tr><th>Keyword
+<th>State
+<th>Brief description
+<tbody><tr><td><dfn id=attr-form-autocomplete-on data-dfn-type=attr-value><code>on</code></dfn>
+<td><dfn id=attr-form-autocomplete-on-state>On</dfn>
+<td>Form controls will have their <a href="form-control-infrastructure.html#autofill-field-name">autofill field name</a> set to "<code><a href="form-control-infrastructure.html#attr-fe-autocomplete-on">on</a></code>" by default.
+<tr><td><dfn id=attr-form-autocomplete-off data-dfn-type=attr-value><code>off</code></dfn>
+<td><dfn id=attr-form-autocomplete-off-state>Off</dfn>
+<td>Form controls will have their <a href="form-control-infrastructure.html#autofill-field-name">autofill field name</a> set to "<code><a href="form-control-infrastructure.html#attr-fe-autocomplete-off">off</a></code>" by default.
+</table>
+<div>
+<p>The attribute's <i><a href="common-microsyntaxes.html#missing-value-default">missing value default</a></i> and <i><a href="common-microsyntaxes.html#invalid-value-default">invalid value default</a></i> are both the <a href="forms.html#attr-form-autocomplete-on-state">On</a> state.</p>
+</div>
+<p>The <code><a href="form-control-infrastructure.html#attr-fs-action">action</a></code>, <code><a href="form-control-infrastructure.html#attr-fs-enctype">enctype</a></code>,
+<code><a href="form-control-infrastructure.html#attr-fs-method">method</a></code>, <code><a href="form-control-infrastructure.html#attr-fs-novalidate">novalidate</a></code>,
+and <code><a href="form-control-infrastructure.html#attr-fs-target">target</a></code> attributes are <a href="form-control-infrastructure.html#attributes-for-form-submission">attributes for form
+submission</a>.</p>
+<p>The <dfn id=attr-form-rel data-dfn-type=element-attr><code>rel</code></dfn> attribute on
+<code><a href="forms.html#the-form-element">form</a></code> elements controls what kinds of links the elements create. The attribute's value
+must be a <a href="common-microsyntaxes.html#unordered-set-of-unique-space-separated-tokens">unordered set of unique space-separated tokens</a>. The <a href="links.html#linkTypes">allowed keywords and their meanings</a> are defined in an earlier section.</p>
+<p><code><a href="forms.html#attr-form-rel">rel</a></code>'s <a href=https://dom.spec.whatwg.org/#concept-supported-tokens data-x-internal=concept-supported-tokens>supported
+tokens</a> are the keywords defined in <a href="links.html#linkTypes">HTML link types</a> which are
+allowed on <code><a href="forms.html#the-form-element">form</a></code> elements, impact the processing model, and are supported by the user
+agent. The possible <a href=https://dom.spec.whatwg.org/#concept-supported-tokens data-x-internal=concept-supported-tokens>supported tokens</a> are <code><a href="links.html#link-type-noreferrer">noreferrer</a></code>, <code><a href="links.html#link-type-noopener">noopener</a></code>, and <code><a href="links.html#link-type-opener">opener</a></code>. <code><a href="forms.html#attr-form-rel">rel</a></code>'s <a href=https://dom.spec.whatwg.org/#concept-supported-tokens data-x-internal=concept-supported-tokens>supported tokens</a> must only include the tokens from this
+list that the user agent implements the processing model for.</p>
+<dl><dt><code><var>form</var>.<a href="forms.html#dom-form-elements" id=dom-form-elements-dev>elements</a></code></div><dd>
+<p>Returns an <code><a href="common-dom-interfaces.html#htmlformcontrolscollection">HTMLFormControlsCollection</a></code> of the form controls in the form
+(excluding image buttons for historical reasons).</p>
+<dt><code><var>form</var>.<a href="forms.html#dom-form-length" id=dom-form-length-dev>length</a></code></div><dd>
+<p>Returns the number of form controls in the form (excluding image buttons for historical
+reasons).</p>
+<dt><code><var>form</var>[<var>index</var>]</code><dd>
+<p>Returns the <var>index</var>th element in the form (excluding image buttons for historical
+reasons).</p>
+<dt><code><var>form</var>[<var>name</var>]</code><dd>
+<p>Returns the form control (or, if there are several, a <code><a href="common-dom-interfaces.html#radionodelist">RadioNodeList</a></code> of the form
+controls) in the form with the given <a href=https://dom.spec.whatwg.org/#concept-id data-x-internal=concept-id>ID</a> or <code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code> (excluding image buttons for historical reasons); or, if there
+are none, returns the <code><a href="embedded-content.html#the-img-element">img</a></code> element with the given ID.</p>
+<p>Once an element has been referenced using a particular name, that name will continue being
+available as a way to reference that element in this method, even if the element's actual <a href=https://dom.spec.whatwg.org/#concept-id data-x-internal=concept-id>ID</a> or <code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code> changes, for as long as
+the element remains in the <a href=https://dom.spec.whatwg.org/#concept-tree data-x-internal=tree>tree</a>.</p>
+<p>If there are multiple matching items, then a <code><a href="common-dom-interfaces.html#radionodelist">RadioNodeList</a></code> object containing all
+those elements is returned.</p>
+<dt><code><var>form</var>.<a href="forms.html#dom-form-submit" id=dom-form-submit-dev>submit</a>()</code></div><dd>
+<p>Submits the form, bypassing <a href="form-control-infrastructure.html#interactively-validate-the-constraints">interactive
+constraint validation</a> and without firing a <code><a href="indices.html#event-submit">submit</a></code>
+event.</p>
+<dt><code><var>form</var>.<a href="forms.html#dom-form-requestsubmit" id=dom-form-requestsubmit-dev>requestSubmit</a>([ <var>submitter</var> ])</code></div><dd>
+<p>Requests to submit the form. Unlike <code><a href="forms.html#dom-form-submit">submit()</a></code>, this
+method includes <a href="form-control-infrastructure.html#interactively-validate-the-constraints">interactive constraint
+validation</a> and firing a <code><a href="indices.html#event-submit">submit</a></code> event, either of which
+can cancel submission.</p>
+<p>The <var>submitter</var> argument can be used to point to a specific <a href="forms.html#concept-submit-button">submit button</a>, whose <code><a href="form-control-infrastructure.html#attr-fs-formaction">formaction</a></code>, <code><a href="form-control-infrastructure.html#attr-fs-formenctype">formenctype</a></code>, <code><a href="form-control-infrastructure.html#attr-fs-formmethod">formmethod</a></code>, <code><a href="form-control-infrastructure.html#attr-fs-formnovalidate">formnovalidate</a></code>, and <code><a href="form-control-infrastructure.html#attr-fs-formtarget">formtarget</a></code> attributes can impact submission. Additionally,
+the submitter will be included when <a href="form-control-infrastructure.html#constructing-the-form-data-set">constructing the entry list</a> for submission;
+normally, buttons are excluded.</p>
+<dt><code><var>form</var>.<a href="forms.html#dom-form-reset" id=dom-form-reset-dev>reset</a>()</code></div><dd><p>Resets the form.<dt><code><var>form</var>.<a href="forms.html#dom-form-checkvalidity" id=dom-form-checkvalidity-dev>checkValidity</a>()</code><dd><p>Returns true if the form's controls are all valid; otherwise, returns false.<dt><code><var>form</var>.<a href="forms.html#dom-form-reportvalidity" id=dom-form-reportvalidity-dev>reportValidity</a>()</code><dd>
+<p>Returns true if the form's controls are all valid; otherwise, returns false and informs the
+user.</p>
+</dl>
+<div>
+<p>The <dfn id=dom-form-autocomplete data-dfn-type=attribute><code>autocomplete</code></dfn> IDL attribute must <a href="common-dom-interfaces.html#reflect">reflect</a>
+the content attribute of the same name, <a href="common-dom-interfaces.html#limited-to-only-known-values">limited to only known values</a>.</p>
+</div>
+<hr>
+<div>
+<p>The <dfn id=dom-form-elements data-dfn-type=attribute><code>elements</code></dfn>
+IDL attribute must return an <code><a href="common-dom-interfaces.html#htmlformcontrolscollection">HTMLFormControlsCollection</a></code> rooted at the
+<code><a href="forms.html#the-form-element">form</a></code> element's <a href=https://dom.spec.whatwg.org/#concept-tree-root data-x-internal=root>root</a>, whose filter matches <a href="forms.html#category-listed">listed elements</a> whose <a href="form-control-infrastructure.html#form-owner">form owner</a> is the
+<code><a href="forms.html#the-form-element">form</a></code> element, with the exception of <code><a href="input.html#the-input-element">input</a></code> elements whose <code><a href="input.html#attr-input-type">type</a></code> attribute is in the <a href="input.html#image-button-state-(type=image)">Image Button</a> state, which must, for historical reasons, be
+excluded from this particular collection.</p>
+</div>
+<div>
+<p>The <dfn id=dom-form-length data-dfn-type=attribute><code>length</code></dfn> IDL
+attribute must return the number of nodes <a href=https://dom.spec.whatwg.org/#represented-by-the-collection data-x-internal=represented-by-the-collection>represented</a> by the <code><a href="forms.html#dom-form-elements">elements</a></code>
+collection.</p>
+</div>
+<div>
+<p>The <a href=https://webidl.spec.whatwg.org/#dfn-supported-property-indices data-x-internal=supported-property-indices>supported property indices</a> at any instant are the indices supported by the
+object returned by the <code><a href="forms.html#dom-form-elements">elements</a></code> attribute at that
+instant.</p>
+</div>
+<div>
+<p id=dom-form-item>To <a href=https://webidl.spec.whatwg.org/#dfn-determine-the-value-of-an-indexed-property data-x-internal=determine-the-value-of-an-indexed-property>determine the value of an indexed property</a> for a
+<code><a href="forms.html#the-form-element">form</a></code> element, the user agent must return the value returned by the <code><a data-x-internal=dom-htmlcollection-item href=https://dom.spec.whatwg.org/#dom-htmlcollection-item>item</a></code> method on the <code><a href="forms.html#dom-form-elements">elements</a></code> collection, when invoked with the given index as its
+argument.</p>
+</div>
+<hr>
+<p>Each <code><a href="forms.html#the-form-element">form</a></code> element has a mapping of names to elements called the <dfn id=past-names-map>past names
+map</dfn>. It is used to persist names of controls even when they change names.</p>
+<div>
+<p>The <a href=https://webidl.spec.whatwg.org/#dfn-supported-property-names data-x-internal=supported-property-names>supported property names</a> consist of the names obtained from the following
+algorithm, in the order obtained from this algorithm:</p>
+<ol><li><p>Let <var>sourced names</var> be an initially empty ordered list of tuples
+consisting of a string, an element, a source, where the source is either <i>id</i>, <i>name</i>,
+or <i>past</i>, and, if the source is <i>past</i>, an age.<li>
+<p>For each <a href="forms.html#category-listed">listed element</a> <var>candidate</var>
+whose <a href="form-control-infrastructure.html#form-owner">form owner</a> is the <code><a href="forms.html#the-form-element">form</a></code> element, with the exception of any
+<code><a href="input.html#the-input-element">input</a></code> elements whose <code><a href="input.html#attr-input-type">type</a></code> attribute is in the
+<a href="input.html#image-button-state-(type=image)">Image Button</a> state:</p>
+<ol><li><p>If <var>candidate</var> has an <code><a href="dom.html#the-id-attribute">id</a></code> attribute, add
+an entry to <var>sourced names</var> with that <code><a href="dom.html#the-id-attribute">id</a></code>
+attribute's value as the string, <var>candidate</var> as the element, and <i>id</i> as
+the source.<li><p>If <var>candidate</var> has a <code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code> attribute,
+add an entry to <var>sourced names</var> with that <code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code> attribute's value as the string, <var>candidate</var>
+as the element, and <i>name</i> as the source.</ol>
+<li>
+<p>For each <code><a href="embedded-content.html#the-img-element">img</a></code> element <var>candidate</var> whose <a href="form-control-infrastructure.html#form-owner">form owner</a> is the
+<code><a href="forms.html#the-form-element">form</a></code> element:</p>
+<ol><li><p>If <var>candidate</var> has an <code><a href="dom.html#the-id-attribute">id</a></code> attribute, add
+an entry to <var>sourced names</var> with that <code><a href="dom.html#the-id-attribute">id</a></code>
+attribute's value as the string, <var>candidate</var> as the element, and <i>id</i> as
+the source.<li><p>If <var>candidate</var> has a <code><a href="obsolete.html#attr-img-name">name</a></code> attribute,
+add an entry to <var>sourced names</var> with that <code><a href="obsolete.html#attr-img-name">name</a></code> attribute's value as the string, <var>candidate</var>
+as the element, and <i>name</i> as the source.</ol>
+<li>
+<p>For each entry <var>past entry</var> in the <a href="forms.html#past-names-map">past names map</a>, add an entry
+to <var>sourced names</var> with the <var>past entry</var>'s name as the
+string, <var>past entry</var>'s element as the element, <i>past</i> as the source, and
+the length of time <var>past entry</var> has been in the <a href="forms.html#past-names-map">past names map</a> as
+the age.</p>
+<li><p>Sort <var>sourced names</var> by <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a> of the element entry of
+each tuple, sorting entries with the same element by putting entries whose source is <i>id</i>
+first, then entries whose source is <i>name</i>, and finally entries whose source is <i>past</i>,
+and sorting entries with the same element and source by their age, oldest first.<li><p>Remove any entries in <var>sourced names</var> that have the empty string as
+their name.<li><p>Remove any entries in <var>sourced names</var> that have the same name as an
+earlier entry in the map.<li><p>Return the list of names from <var>sourced names</var>, maintaining their
+relative order.</ol>
+</div>
+<div>
+<p id=dom-form-nameditem>To <a href=https://webidl.spec.whatwg.org/#dfn-determine-the-value-of-a-named-property data-x-internal=determine-the-value-of-a-named-property>determine the value of a named property</a> <var>name</var>
+for a <code><a href="forms.html#the-form-element">form</a></code> element, the user agent must run the following steps:</p>
+<ol><li><p>Let <var>candidates</var> be a <a href="infrastructure.html#live">live</a> <code><a href="common-dom-interfaces.html#radionodelist">RadioNodeList</a></code> object
+containing all the <a href="forms.html#category-listed">listed elements</a>, whose <a href="form-control-infrastructure.html#form-owner">form
+owner</a> is the <code><a href="forms.html#the-form-element">form</a></code> element, that have either an <code><a href="dom.html#the-id-attribute">id</a></code> attribute or a <code><a href="form-control-infrastructure.html#attr-fe-name">name</a></code> attribute equal
+to <var>name</var>, with the exception of <code><a href="input.html#the-input-element">input</a></code> elements whose <code><a href="input.html#attr-input-type">type</a></code> attribute is in the <a href="input.html#image-button-state-(type=image)">Image Button</a> state, in <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a>.<li><p>If <var>candidates</var> is empty, let <var>candidates</var> be a <a href="infrastructure.html#live">live</a>
+<code><a href="common-dom-interfaces.html#radionodelist">RadioNodeList</a></code> object containing all the <code><a href="embedded-content.html#the-img-element">img</a></code> elements, whose <a href="form-control-infrastructure.html#form-owner">form
+owner</a> is the <code><a href="forms.html#the-form-element">form</a></code> element, that have either an <code><a href="dom.html#the-id-attribute">id</a></code> attribute or a <code><a href="obsolete.html#attr-img-name">name</a></code> attribute
+equal to <var>name</var>, in <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a>.<li><p>If <var>candidates</var> is empty, <var>name</var> is the name of one of
+the entries in the <code><a href="forms.html#the-form-element">form</a></code> element's <a href="forms.html#past-names-map">past names map</a>: return the object
+associated with <var>name</var> in that map.<li><p>If <var>candidates</var> contains more than one node, return <var>candidates</var>.<li><p>Otherwise, <var>candidates</var> contains exactly one node. Add a mapping from
+<var>name</var> to the node in <var>candidates</var> in the <code><a href="forms.html#the-form-element">form</a></code>
+element's <a href="forms.html#past-names-map">past names map</a>, replacing the previous entry with the same name, if
+any.<li><p>Return the node in <var>candidates</var>.</ol>
+</div>
+<p>If an element listed in a <code><a href="forms.html#the-form-element">form</a></code> element's <a href="forms.html#past-names-map">past names map</a> changes
+<a href="form-control-infrastructure.html#form-owner">form owner</a>, then its entries must be removed from that map.</p>
+<hr>
+<div>
+<p>The <dfn id=dom-form-submit data-dfn-type=method><code>submit()</code></dfn>
+method steps are to <a href="form-control-infrastructure.html#concept-form-submit">submit</a> <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a> from
+<a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>, with <i><a href="form-control-infrastructure.html#submit-subbmitted-from-method">submitted from <code>submit()</code> method</a></i> set to true.</p>
+</div>
+<div>
+<p>The <dfn id=dom-form-requestsubmit data-dfn-type=method><code>requestSubmit(<var>submitter</var>)</code></dfn> method, when
+invoked, must run the following steps:</p>
+<ol><li>
+<p>If <var>submitter</var> is not null, then:</p>
+<ol><li><p>If <var>submitter</var> is not a <a href="forms.html#concept-submit-button">submit
+button</a>, then throw a <code><a data-x-internal=typeerror href=https://tc39.es/ecma262/#sec-native-error-types-used-in-this-standard-typeerror>TypeError</a></code>.<li><p>If <var>submitter</var>'s <a href="form-control-infrastructure.html#form-owner">form owner</a> is not this <code><a href="forms.html#the-form-element">form</a></code> element,
+then throw a <a href=https://webidl.spec.whatwg.org/#notfounderror data-x-internal=notfounderror>"<code>NotFoundError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</ol>
+<li><p>Otherwise, set <var>submitter</var> to this <code><a href="forms.html#the-form-element">form</a></code> element.<li><p><a href="form-control-infrastructure.html#concept-form-submit">Submit</a> this <code><a href="forms.html#the-form-element">form</a></code> element, from
+<var>submitter</var>.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-form-reset data-dfn-type=method><code>reset()</code></dfn>
+method, when invoked, must run the following steps:</p>
+<ol><li><p>If the <code><a href="forms.html#the-form-element">form</a></code> element is marked as <i><a href="forms.html#locked-for-reset">locked for reset</a></i>, then return.<li><p>Mark the <code><a href="forms.html#the-form-element">form</a></code> element as <dfn id=locked-for-reset>locked for reset</dfn>.<li><p><a href="form-control-infrastructure.html#concept-form-reset">Reset</a> the <code><a href="forms.html#the-form-element">form</a></code> element.<li><p>Unmark the <code><a href="forms.html#the-form-element">form</a></code> element as <i><a href="forms.html#locked-for-reset">locked for reset</a></i>.</ol>
+</div>
+<div>
+<p>If the <dfn id=dom-form-checkvalidity data-dfn-type=method><code>checkValidity()</code></dfn> method is invoked, the user agent
+must <a href="form-control-infrastructure.html#statically-validate-the-constraints">statically validate the constraints</a> of the <code><a href="forms.html#the-form-element">form</a></code> element, and return
+true if the constraint validation returned a <i>positive</i> result, and false if it returned a
+<i>negative</i> result.</p>
+</div>
+<div>
+<p>If the <dfn id=dom-form-reportvalidity data-dfn-type=method><code>reportValidity()</code></dfn> method is invoked, the user agent
+must <a href="form-control-infrastructure.html#interactively-validate-the-constraints">interactively validate the constraints</a> of the <code><a href="forms.html#the-form-element">form</a></code> element, and
+return true if the constraint validation returned a <i>positive</i> result, and false if it returned
+a <i>negative</i> result.</p>
+</div>
+<div>
+<p>This example shows two search forms:</p>
+<pre><code>&lt;form action=&quot;https://www.google.com/search&quot; method=&quot;get&quot;&gt;
+&lt;label&gt;Google: &lt;input type=&quot;search&quot; name=&quot;q&quot;&gt;&lt;/label&gt; &lt;input type=&quot;submit&quot; value=&quot;Search...&quot;&gt;
+&lt;/form&gt;
+&lt;form action=&quot;https://www.bing.com/search&quot; method=&quot;get&quot;&gt;
+&lt;label&gt;Bing: &lt;input type=&quot;search&quot; name=&quot;q&quot;&gt;&lt;/label&gt; &lt;input type=&quot;submit&quot; value=&quot;Search...&quot;&gt;
+&lt;/form&gt;</code></pre>
+</div>
+<h4 id=the-label-element>The <dfn data-dfn-type=element><code>label</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#interactive-content-2">Interactive content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>, but with no descendant <a href="forms.html#category-label">labelable elements</a> unless it is the element's <a href="forms.html#labeled-control">labeled control</a>, and no descendant <code><a href="forms.html#the-label-element">label</a></code> elements.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="forms.html#attr-label-for">for</a></code> —  Associate the label with form control
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-label>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-label>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmllabelelement' data-dfn-type='interface'>HTMLLabelElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+readonly attribute <a href='forms.html#htmlformelement'>HTMLFormElement</a>? <a href='forms.html#dom-label-form'>form</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>=&quot;<a href='forms.html#attr-label-for'>for</a>&quot;] attribute DOMString <dfn id='dom-label-htmlfor' data-dfn-type='attribute'>htmlFor</dfn>;
+readonly attribute <a href='dom.html#htmlelement'>HTMLElement</a>? <a href='forms.html#dom-label-control'>control</a>;
+};</code></pre>
+</dl>
+<p>The <code><a href="forms.html#the-label-element">label</a></code> element <a href="dom.html#represents">represents</a> a caption in a user interface. The
+caption can be associated with a specific form control, known as the
+<code><a href="forms.html#the-label-element">label</a></code> element's <dfn id=labeled-control>labeled control</dfn>, either using the <code><a href="forms.html#attr-label-for">for</a></code> attribute, or by putting the form control inside the
+<code><a href="forms.html#the-label-element">label</a></code> element itself.</p>
+<p>Except where otherwise specified by the following rules, a <code><a href="forms.html#the-label-element">label</a></code> element has no
+<a href="forms.html#labeled-control">labeled control</a>.</p>
+</div><p>The <dfn id=attr-label-for data-dfn-type=element-attr><code>for</code></dfn> attribute may
+be specified to indicate a form control with which the caption is to be associated. If the
+attribute is specified, the attribute's value must be the <a href=https://dom.spec.whatwg.org/#concept-id data-x-internal=concept-id>ID</a> of a
+<a href="forms.html#category-label">labelable element</a> in the same <a href=https://dom.spec.whatwg.org/#concept-tree data-x-internal=tree>tree</a> as the
+<code><a href="forms.html#the-label-element">label</a></code> element. If the attribute is specified and there is an element in
+the <a href=https://dom.spec.whatwg.org/#concept-tree data-x-internal=tree>tree</a> whose <a href=https://dom.spec.whatwg.org/#concept-id data-x-internal=concept-id>ID</a> is equal to the value of the <code><a href="forms.html#attr-label-for">for</a></code> attribute, and the first such element in <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree
+order</a> is a <a href="forms.html#category-label">labelable element</a>, then that element is the
+<code><a href="forms.html#the-label-element">label</a></code> element's <a href="forms.html#labeled-control">labeled control</a>.</p>
+<div>
+<p>If the <code><a href="forms.html#attr-label-for">for</a></code> attribute is not specified, but the
+<code><a href="forms.html#the-label-element">label</a></code> element has a <a href="forms.html#category-label">labelable element</a> descendant,
+then the first such descendant in <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a> is the <code><a href="forms.html#the-label-element">label</a></code> element's
+<a href="forms.html#labeled-control">labeled control</a>.</p>
+</div>
+<div>
+<p>The <code><a href="forms.html#the-label-element">label</a></code> element's exact default presentation and behavior, in particular what
+its <a href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>activation behavior</a> might be, if anything, should match the platform's label
+behavior. The <a href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>activation behavior</a> of a <code><a href="forms.html#the-label-element">label</a></code> element for events targeted
+at <a href="dom.html#interactive-content-2">interactive content</a> descendants of a <code><a href="forms.html#the-label-element">label</a></code> element, and any
+descendants of those <a href="dom.html#interactive-content-2">interactive content</a> descendants, must be to do nothing.</p>
+</div>
+<p><a href="custom-elements.html#form-associated-custom-element">Form-associated custom
+elements</a> are <a href="forms.html#category-label">labelable elements</a>, so for user agents
+where the <code><a href="forms.html#the-label-element">label</a></code> element's <a href=https://dom.spec.whatwg.org/#eventtarget-activation-behavior data-x-internal=activation-behaviour>activation behavior</a> impacts the <a href="forms.html#labeled-control">labeled
+control</a>, both built-in and custom elements will be impacted.</p>
+<div>
+<p>For example, on platforms where clicking a label activates the form control, clicking the
+<code><a href="forms.html#the-label-element">label</a></code> in the following snippet could trigger the user agent to <a href="webappapis.html#fire-a-click-event">fire a <code>click</code> event</a> at the <code><a href="input.html#the-input-element">input</a></code> element, as if the
+element itself had been triggered by the user:</p>
+<pre><code>&lt;label&gt;&lt;input type=checkbox name=lost&gt; Lost&lt;/label&gt;</code></pre>
+<p>Similarly, assuming <code>my-checkbox</code> was declared as a
+<a href="custom-elements.html#form-associated-custom-element">form-associated custom element</a> (like in <a href="custom-elements.html#custom-elements-face-example">this
+example</a>), then the code</p>
+<pre><code>&lt;label&gt;&lt;my-checkbox name=lost&gt;&lt;/my-checkbox&gt; Lost&lt;/label&gt;</code></pre>
+<p>would have the same behavior, <a href="webappapis.html#fire-a-click-event">firing a <code>click</code> event</a> at the <code>my-checkbox</code>
+element.</p>
+<p>On other platforms, the behavior in both cases might be just to focus the control, or to do
+nothing.</p>
+</div>
+<div>
+<p>The following example shows three form controls each with a label, two of which have small
+text showing the right format for users to use.</p>
+<pre><code>&lt;p&gt;&lt;label&gt;Full name: &lt;input name=fn&gt; &lt;small&gt;Format: First Last&lt;/small&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Age: &lt;input name=age type=number min=0&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Post code: &lt;input name=pc&gt; &lt;small&gt;Format: AB12 3CD&lt;/small&gt;&lt;/label&gt;&lt;/p&gt;</code></pre>
+</div>
+<dl><dt><code><var>label</var>.<a href="forms.html#dom-label-control" id=dom-label-control-dev>control</a></code></div><dd><p>Returns the form control that is associated with this element.<dt><code><var>label</var>.<a href="forms.html#dom-label-form" id=dom-label-form-dev>form</a></code></div><dd>
+<p>Returns the <a href="form-control-infrastructure.html#form-owner">form owner</a> of the form control that is associated with this
+element.</p>
+<p>Returns null if there isn't one.</p>
+</dl>
+<div>
+<p>The <dfn id=dom-label-control data-dfn-type=attribute><code>control</code></dfn>
+IDL attribute must return the <code><a href="forms.html#the-label-element">label</a></code> element's <a href="forms.html#labeled-control">labeled control</a>, if any,
+or null if there isn't one.</p>
+</div>
+<div>
+<p>The <dfn id=dom-label-form data-dfn-type=attribute><code>form</code></dfn> IDL
+attribute must run the following steps:</p>
+<ol><li><p>If the <code><a href="forms.html#the-label-element">label</a></code> element has no <a href="forms.html#labeled-control">labeled control</a>, then return
+null.<li><p>If the <code><a href="forms.html#the-label-element">label</a></code> element's <a href="forms.html#labeled-control">labeled control</a> is not a
+<a href="forms.html#form-associated-element">form-associated element</a>, then return null.<li><p>Return the <code><a href="forms.html#the-label-element">label</a></code> element's <a href="forms.html#labeled-control">labeled control</a>'s <a href="form-control-infrastructure.html#form-owner">form
+owner</a> (which can still be null).</ol>
+</div>
+<p>The <code><a href="forms.html#dom-label-form">form</a></code> IDL attribute on the
+<code><a href="forms.html#the-label-element">label</a></code> element is different from the <code><a href="form-control-infrastructure.html#attr-fae-form">form</a></code> IDL
+attribute on <a href="forms.html#category-listed">listed</a> <a href="forms.html#form-associated-element">form-associated elements</a>, and the <code><a href="forms.html#the-label-element">label</a></code> element does not have a <code><a href="form-control-infrastructure.html#attr-fae-form">form</a></code> content attribute.</p>
+<hr>
+<dl><dt><code><var>control</var>.<a href="forms.html#dom-lfe-labels" id=dom-lfe-labels-dev>labels</a></code></div><dd>
+<p>Returns a <code><a data-x-internal=nodelist href=https://dom.spec.whatwg.org/#interface-nodelist>NodeList</a></code> of all the <code><a href="forms.html#the-label-element">label</a></code> elements that the form control
+is associated with.</p>
+</dl>
+<div>
+<p><a href="forms.html#category-label">Labelable elements</a> and all <code><a href="input.html#the-input-element">input</a></code> elements
+have a <a href="infrastructure.html#live">live</a> <code><a data-x-internal=nodelist href=https://dom.spec.whatwg.org/#interface-nodelist>NodeList</a></code> object associated with them that represents the
+list of <code><a href="forms.html#the-label-element">label</a></code> elements, in <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a>, whose <a href="forms.html#labeled-control">labeled
+control</a> is the element in question. The <dfn id=dom-lfe-labels data-dfn-type=attribute><code>labels</code></dfn> IDL attribute of <a href="forms.html#category-label">labelable elements</a> that are not <a href="custom-elements.html#form-associated-custom-element">form-associated custom elements</a>, and the <code><a href="forms.html#dom-lfe-labels">labels</a></code> IDL attribute of <code><a href="input.html#the-input-element">input</a></code> elements, on getting,
+must return that <code><a data-x-internal=nodelist href=https://dom.spec.whatwg.org/#interface-nodelist>NodeList</a></code> object, and that same value must always be returned, unless
+this element is an <code><a href="input.html#the-input-element">input</a></code> element whose <code><a href="input.html#attr-input-type">type</a></code>
+attribute is in the <a href="input.html#hidden-state-(type=hidden)">Hidden</a> state, in which case it
+must instead return null.</p>
+</div>
+</div><div>
+<p><a href="custom-elements.html#form-associated-custom-element">Form-associated custom elements</a> don't have
+a <code><a href="forms.html#dom-lfe-labels">labels</a></code> IDL attribute. Instead, their
+<code><a href="custom-elements.html#elementinternals">ElementInternals</a></code> object has a <dfn id=dom-elementinternals-labels data-dfn-type=attribute><code>labels</code></dfn> IDL attribute. On getting, it must throw
+a <a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> if the <a href="custom-elements.html#internals-target">target element</a> is not a <a href="custom-elements.html#form-associated-custom-element">form-associated custom
+element</a>. Otherwise, it must return that <code><a data-x-internal=nodelist href=https://dom.spec.whatwg.org/#interface-nodelist>NodeList</a></code> object, and that same value
+must always be returned.</p>
+</div>
+<div>
+<p>This (non-conforming) example shows what happens to the <code><a data-x-internal=nodelist href=https://dom.spec.whatwg.org/#interface-nodelist>NodeList</a></code> and what <code><a href="forms.html#dom-lfe-labels">labels</a></code> returns when an <code><a href="input.html#the-input-element">input</a></code> element has its <code><a href="input.html#attr-input-type">type</a></code> attribute changed.</p>
+<pre><code>&lt;!doctype html&gt;
+&lt;p&gt;&lt;label&gt;&lt;input&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;script&gt;
+const input = document.querySelector(&apos;input&apos;);
+const labels = input.labels;
+console.assert(labels.length === 1);
+input.type = &apos;hidden&apos;;
+console.assert(labels.length === 0); // the input is no longer the label&apos;s <a href='forms.html#labeled-control'>labeled control</a>
+console.assert(input.labels === null);
+input.type = &apos;checkbox&apos;;
+console.assert(labels.length === 1); // the input is once again the label&apos;s <a href='forms.html#labeled-control'>labeled control</a>
+console.assert(input.labels === labels); // same value as returned originally
+&lt;/script&gt;</code></pre>
+</div>
+</body>
+</html>

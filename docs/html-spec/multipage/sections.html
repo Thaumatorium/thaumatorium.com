@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+<li><a href="sections.html#usage-summary-2">Usage summary</a><ol><li><a href="sections.html#article-or-section">Article or section?</a></ol></ol></ol></ol><h3 id=sections>Sections</h3></div>
+<h4 id=the-body-element>The <dfn data-dfn-type=element><code>body</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>As the second element in an <code><a href="semantics.html#the-html-element">html</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>A <code><a href="sections.html#the-body-element">body</a></code> element's <a href="syntax.html#syntax-start-tag">start tag</a> can be omitted
+if the element is empty, or if the first thing inside the <code><a href="sections.html#the-body-element">body</a></code> element is not
+<a href=https://infra.spec.whatwg.org/#ascii-whitespace data-x-internal=space-characters>ASCII whitespace</a> or a <a href="syntax.html#syntax-comments">comment</a>, except if the
+first thing inside the <code><a href="sections.html#the-body-element">body</a></code> element is a <code><a href="semantics.html#the-meta-element">meta</a></code>, <code><a href="scripting.html#the-noscript-element">noscript</a></code>,
+<code><a href="semantics.html#the-link-element">link</a></code>, <code><a href="scripting.html#the-script-element">script</a></code>, <code><a href="semantics.html#the-style-element">style</a></code>, or <code><a href="scripting.html#the-template-element">template</a></code> element.
+<dd>A <code><a href="sections.html#the-body-element">body</a></code> element's <a href="syntax.html#syntax-end-tag">end tag</a> can be omitted if the
+<code><a href="sections.html#the-body-element">body</a></code> element is not immediately followed by a <a href="syntax.html#syntax-comments">comment</a>.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="webappapis.html#handler-window-onafterprint">onafterprint</a></code><dd><code><a href="webappapis.html#handler-window-onbeforeprint">onbeforeprint</a></code><dd><code><a href="webappapis.html#handler-window-onbeforeunload">onbeforeunload</a></code><dd><code><a href="webappapis.html#handler-window-onhashchange">onhashchange</a></code><dd><code><a href="webappapis.html#handler-window-onlanguagechange">onlanguagechange</a></code><dd><code><a href="webappapis.html#handler-window-onmessage">onmessage</a></code><dd><code><a href="webappapis.html#handler-window-onmessageerror">onmessageerror</a></code><dd><code><a href="webappapis.html#handler-window-onoffline">onoffline</a></code><dd><code><a href="webappapis.html#handler-window-ononline">ononline</a></code><dd><code><a href="webappapis.html#handler-window-onpageswap">onpageswap</a></code><dd><code><a href="webappapis.html#handler-window-onpagehide">onpagehide</a></code><dd><code><a href="webappapis.html#handler-window-onpagereveal">onpagereveal</a></code><dd><code><a href="webappapis.html#handler-window-onpageshow">onpageshow</a></code><dd><code><a href="webappapis.html#handler-window-onpopstate">onpopstate</a></code><dd><code><a href="webappapis.html#handler-window-onrejectionhandled">onrejectionhandled</a></code><dd><code><a href="webappapis.html#handler-window-onstorage">onstorage</a></code><dd><code><a href="webappapis.html#handler-window-onunhandledrejection">onunhandledrejection</a></code><dd><code><a href="webappapis.html#handler-window-onunload">onunload</a></code><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-body>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-body>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlbodyelement' data-dfn-type='interface'>HTMLBodyElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+// <a href='obsolete.html#HTMLBodyElement-partial'>also has obsolete members</a>
+};
+<a href='sections.html#htmlbodyelement'>HTMLBodyElement</a> includes <a href='webappapis.html#windoweventhandlers'>WindowEventHandlers</a>;</code></pre>
+</dl>
+<p>The <code><a href="sections.html#the-body-element">body</a></code> element <a href="dom.html#represents">represents</a> the contents of the document.</p>
+<p>In conforming documents, there is only one <code><a href="sections.html#the-body-element">body</a></code> element. The <code><a href="dom.html#dom-document-body">document.body</a></code> IDL attribute provides scripts with easy access to
+a document's <code><a href="sections.html#the-body-element">body</a></code> element.</p>
+<p>Some DOM operations (for example, parts of the <a href="dnd.html#dnd">drag and drop</a> model)
+are defined in terms of "<a href="dom.html#the-body-element-2">the body element</a>". This refers to a particular element in
+the DOM, as per the definition of the term, and not any arbitrary <code><a href="sections.html#the-body-element">body</a></code> element.</p>
+<p>The <code><a href="sections.html#the-body-element">body</a></code> element exposes as <a href="webappapis.html#event-handler-content-attributes">event handler content attributes</a> a number
+of the <a href="webappapis.html#event-handlers">event handlers</a> of the <code><a href="nav-history-apis.html#window">Window</a></code> object. It also mirrors their
+<a href="webappapis.html#event-handler-idl-attributes">event handler IDL attributes</a>.</p>
+<p>The <a href="webappapis.html#event-handlers">event handlers</a> of the <code><a href="nav-history-apis.html#window">Window</a></code> object named by the
+<a href="webappapis.html#window-reflecting-body-element-event-handler-set"><code>Window</code>-reflecting body element event handler set</a>, exposed on the
+<code><a href="sections.html#the-body-element">body</a></code> element, replace the generic <a href="webappapis.html#event-handlers">event handlers</a> with the same names
+normally supported by <a href="infrastructure.html#html-elements">HTML elements</a>.</p>
+<p>Thus, for example, a bubbling <code><a href="indices.html#event-error">error</a></code> event
+dispatched on a child of <a href="dom.html#the-body-element-2">the body element</a> of a <code><a href="dom.html#document">Document</a></code> would first
+trigger the <code><a href="webappapis.html#handler-onerror">onerror</a></code> <a href="webappapis.html#event-handler-content-attributes">event handler content
+attributes</a> of that element, then that of the root <code><a href="semantics.html#the-html-element">html</a></code> element, and only
+<em>then</em> would it trigger the <code><a href="webappapis.html#handler-onerror">onerror</a></code> <a href="webappapis.html#event-handler-content-attributes">event handler content attribute</a> on the
+<code><a href="sections.html#the-body-element">body</a></code> element. This is because the event would bubble from the target, to the
+<code><a href="sections.html#the-body-element">body</a></code>, to the <code><a href="semantics.html#the-html-element">html</a></code>, to the <code><a href="dom.html#document">Document</a></code>, to the
+<code><a href="nav-history-apis.html#window">Window</a></code>, and the <a href="webappapis.html#event-handlers">event handler</a> on the
+<code><a href="sections.html#the-body-element">body</a></code> is watching the <code><a href="nav-history-apis.html#window">Window</a></code> not the <code><a href="sections.html#the-body-element">body</a></code>. A regular event
+listener attached to the <code><a href="sections.html#the-body-element">body</a></code> using <code>addEventListener()</code>,
+however, would be run when the event bubbled through the <code><a href="sections.html#the-body-element">body</a></code> and not when it reaches
+the <code><a href="nav-history-apis.html#window">Window</a></code> object.</p>
+<div>
+<p>This page updates an indicator to show whether or not the user is online:</p>
+<pre><code>&lt;!DOCTYPE HTML&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;title&gt;Online or offline?&lt;/title&gt;
+&lt;script&gt;
+function update(online) {
+document.getElementById(&apos;status&apos;).textContent =
+online ? &apos;Online&apos; : &apos;Offline&apos;;
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body ononline=&quot;update(true)&quot;
+onoffline=&quot;update(false)&quot;
+onload=&quot;update(navigator.onLine)&quot;&gt;
+&lt;p&gt;You are: &lt;span id=&quot;status&quot;&gt;(Unknown)&lt;/span&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<h4 id=the-article-element>The <dfn data-dfn-type=element><code>article</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#sectioning-content-2">Sectioning content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#sectioning-content-2">sectioning content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-article>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-article>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="sections.html#the-article-element">article</a></code> element <a href="dom.html#represents">represents</a> a complete, or self-contained,
+composition in a document, page, application, or site and that is, in principle, independently
+distributable or reusable, e.g. in syndication. This could be a forum post, a magazine or
+newspaper article, a blog entry, a user-submitted comment, an interactive widget or gadget, or any
+other independent item of content.</p>
+<p>When <code><a href="sections.html#the-article-element">article</a></code> elements are nested, the inner <code><a href="sections.html#the-article-element">article</a></code> elements
+represent articles that are in principle related to the contents of the outer article. For
+instance, a blog entry on a site that accepts user-submitted comments could represent the comments
+as <code><a href="sections.html#the-article-element">article</a></code> elements nested within the <code><a href="sections.html#the-article-element">article</a></code> element for the blog
+entry.</p>
+<p>Author information associated with an <code><a href="sections.html#the-article-element">article</a></code> element (q.v. the
+<code><a href="sections.html#the-address-element">address</a></code> element) does not apply to nested <code><a href="sections.html#the-article-element">article</a></code> elements.</p>
+<p>When used specifically with content to be redistributed in syndication, the
+<code><a href="sections.html#the-article-element">article</a></code> element is similar in purpose to the <code>entry</code> element in
+Atom. <a href="references.html#refsATOM">[ATOM]</a>
+<p>The schema.org microdata vocabulary can be used to provide the publication date
+for an <code><a href="sections.html#the-article-element">article</a></code> element, using one of the CreativeWork subtypes.</p>
+<p>When the main content of the page (i.e. excluding footers, headers, navigation blocks, and
+sidebars) is all one single self-contained composition, that content may be marked with an
+<code><a href="sections.html#the-article-element">article</a></code>, but it is technically redundant in that case (since it's self-evident that
+the page is a single composition, as it is a single document).</p>
+<div id=article-example>
+<p>This example shows a blog post using the <code><a href="sections.html#the-article-element">article</a></code> element, with some schema.org
+annotations:</p>
+<pre><code>&lt;article itemscope itemtype=&quot;http://schema.org/BlogPosting&quot;&gt;
+&lt;header&gt;
+&lt;h2 itemprop=&quot;headline&quot;&gt;The Very First Rule of Life&lt;/h2&gt;
+&lt;p&gt;&lt;time itemprop=&quot;datePublished&quot; datetime=&quot;2009-10-09&quot;&gt;3 days ago&lt;/time&gt;&lt;/p&gt;
+&lt;link itemprop=&quot;url&quot; href=&quot;?comments=0&quot;&gt;
+&lt;/header&gt;
+&lt;p&gt;If there&apos;s a microphone anywhere near you, assume it&apos;s hot and
+sending whatever you&apos;re saying to the world. Seriously.&lt;/p&gt;
+&lt;p&gt;<em>...</em>&lt;/p&gt;
+&lt;footer&gt;
+&lt;a itemprop=&quot;discussionUrl&quot; href=&quot;?comments=1&quot;&gt;Show comments...&lt;/a&gt;
+&lt;/footer&gt;
+&lt;/article&gt;</code></pre>
+<p>Here is that same blog post, but showing some of the comments:</p>
+<pre><code>&lt;article itemscope itemtype=&quot;http://schema.org/BlogPosting&quot;&gt;
+&lt;header&gt;
+&lt;h2 itemprop=&quot;headline&quot;&gt;The Very First Rule of Life&lt;/h2&gt;
+&lt;p&gt;&lt;time itemprop=&quot;datePublished&quot; datetime=&quot;2009-10-09&quot;&gt;3 days ago&lt;/time&gt;&lt;/p&gt;
+&lt;link itemprop=&quot;url&quot; href=&quot;?comments=0&quot;&gt;
+&lt;/header&gt;
+&lt;p&gt;If there&apos;s a microphone anywhere near you, assume it&apos;s hot and
+sending whatever you&apos;re saying to the world. Seriously.&lt;/p&gt;
+&lt;p&gt;<em>...</em>&lt;/p&gt;
+&lt;section&gt;
+&lt;h1&gt;Comments&lt;/h1&gt;
+&lt;article itemprop=&quot;comment&quot; itemscope itemtype=&quot;http://schema.org/Comment&quot; id=&quot;c1&quot;&gt;
+&lt;link itemprop=&quot;url&quot; href=&quot;#c1&quot;&gt;
+&lt;footer&gt;
+&lt;p&gt;Posted by: &lt;span itemprop=&quot;creator&quot; itemscope itemtype=&quot;http://schema.org/Person&quot;&gt;
+&lt;span itemprop=&quot;name&quot;&gt;George Washington&lt;/span&gt;
+&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;time itemprop=&quot;dateCreated&quot; datetime=&quot;2009-10-10&quot;&gt;15 minutes ago&lt;/time&gt;&lt;/p&gt;
+&lt;/footer&gt;
+&lt;p&gt;Yeah! Especially when talking about your lobbyist friends!&lt;/p&gt;
+&lt;/article&gt;
+&lt;article itemprop=&quot;comment&quot; itemscope itemtype=&quot;http://schema.org/Comment&quot; id=&quot;c2&quot;&gt;
+&lt;link itemprop=&quot;url&quot; href=&quot;#c2&quot;&gt;
+&lt;footer&gt;
+&lt;p&gt;Posted by: &lt;span itemprop=&quot;creator&quot; itemscope itemtype=&quot;http://schema.org/Person&quot;&gt;
+&lt;span itemprop=&quot;name&quot;&gt;George Hammond&lt;/span&gt;
+&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;time itemprop=&quot;dateCreated&quot; datetime=&quot;2009-10-10&quot;&gt;5 minutes ago&lt;/time&gt;&lt;/p&gt;
+&lt;/footer&gt;
+&lt;p&gt;Hey, you have the same first name as me.&lt;/p&gt;
+&lt;/article&gt;
+&lt;/section&gt;
+&lt;/article&gt;</code></pre>
+<p>Notice the use of <code><a href="sections.html#the-footer-element">footer</a></code> to give the information for each comment (such as who
+wrote it and when): the <code><a href="sections.html#the-footer-element">footer</a></code> element <em>can</em> appear at the start of its
+section when appropriate, such as in this case. (Using <code><a href="sections.html#the-header-element">header</a></code> in this case wouldn't
+be wrong either; it's mostly a matter of authoring preference.)</p>
+</div>
+<div>
+<p>In this example, <code><a href="sections.html#the-article-element">article</a></code> elements are used to host widgets on a portal page. The
+widgets are implemented as <a href="custom-elements.html#customized-built-in-element">customized built-in
+elements</a> in order to get specific styling and scripted behavior.</p>
+<pre><code>&lt;!DOCTYPE HTML&gt;
+&lt;html lang=en&gt;
+&lt;title&gt;eHome Portal&lt;/title&gt;
+&lt;script src=&quot;/scripts/widgets.js&quot;&gt;&lt;/script&gt;
+&lt;link rel=stylesheet href=&quot;/styles/main.css&quot;&gt;
+&lt;article is=&quot;stock-widget&quot;&gt;
+&lt;h2&gt;Stocks&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt; &lt;tr&gt; &lt;th&gt; Stock &lt;th&gt; Value &lt;th&gt; Delta
+&lt;tbody&gt; &lt;template&gt; &lt;tr&gt; &lt;td&gt; &lt;td&gt; &lt;td&gt; &lt;/template&gt;
+&lt;/table&gt;
+&lt;p&gt; &lt;input type=button value=&quot;Refresh&quot; onclick=&quot;this.parentElement.refresh()&quot;&gt;
+&lt;/article&gt;
+&lt;article is=&quot;news-widget&quot;&gt;
+&lt;h2&gt;News&lt;/h2&gt;
+&lt;ul&gt;
+&lt;template&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;img&gt; &lt;strong&gt;&lt;/strong&gt;
+&lt;p&gt;
+&lt;/template&gt;
+&lt;/ul&gt;
+&lt;p&gt; &lt;input type=button value=&quot;Refresh&quot; onclick=&quot;this.parentElement.refresh()&quot;&gt;
+&lt;/article&gt;</code></pre>
+</div>
+<h4 id=the-section-element>The <dfn data-dfn-type=element><code>section</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#sectioning-content-2">Sectioning content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#sectioning-content-2">sectioning content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-section>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-section>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="sections.html#the-section-element">section</a></code> element <a href="dom.html#represents">represents</a> a generic section of a document or
+application. A section, in this context, is a thematic grouping of content, typically with a
+heading.</p>
+<p>Examples of sections would be chapters, the various tabbed pages in a tabbed
+dialog box, or the numbered sections of a thesis. A web site's home page could be split into
+sections for an introduction, news items, and contact information.</p>
+<p>Authors are encouraged to use the <code><a href="sections.html#the-article-element">article</a></code> element instead of the
+<code><a href="sections.html#the-section-element">section</a></code> element when it would make sense to syndicate the contents of the
+element.</p>
+<p id=use-div-for-wrappers>The <code><a href="sections.html#the-section-element">section</a></code> element is not a generic
+container element. When an element is needed only for styling purposes or as a convenience for
+scripting, authors are encouraged to use the <code><a href="grouping-content.html#the-div-element">div</a></code> element instead. A general rule is
+that the <code><a href="sections.html#the-section-element">section</a></code> element is appropriate only if the element's contents would be
+listed explicitly in the document's <a href="sections.html#outline">outline</a>.</p>
+<div>
+<p>In the following example, we see an article (part of a larger web page) about apples,
+containing two short sections.</p>
+<pre><code>&lt;article&gt;
+&lt;hgroup&gt;
+&lt;h2&gt;Apples&lt;/h2&gt;
+&lt;p&gt;Tasty, delicious fruit!&lt;/p&gt;
+&lt;/hgroup&gt;
+&lt;p&gt;The apple is the pomaceous fruit of the apple tree.&lt;/p&gt;
+&lt;section&gt;
+&lt;h3&gt;Red Delicious&lt;/h3&gt;
+&lt;p&gt;These bright red apples are the most common found in many
+supermarkets.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section&gt;
+&lt;h3&gt;Granny Smith&lt;/h3&gt;
+&lt;p&gt;These juicy, green apples make a great filling for
+apple pies.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/article&gt;</code></pre>
+</div>
+<div>
+<p>Here is a graduation programme with two sections, one for the list of people graduating, and
+one for the description of the ceremony. (The markup in this example features an uncommon style
+sometimes used to minimize the amount of <a href="dom.html#inter-element-whitespace">inter-element whitespace</a>.)</p>
+<pre><code>&lt;!DOCTYPE Html&gt;
+&lt;Html Lang=En
+&gt;&lt;Head
+&gt;&lt;Title
+&gt;Graduation Ceremony Summer 2022&lt;/Title
+&gt;&lt;/Head
+&gt;&lt;Body
+&gt;&lt;H1
+&gt;Graduation&lt;/H1
+&gt;&lt;Section
+&gt;&lt;H2
+&gt;Ceremony&lt;/H2
+&gt;&lt;P
+&gt;Opening Procession&lt;/P
+&gt;&lt;P
+&gt;Speech by Valedictorian&lt;/P
+&gt;&lt;P
+&gt;Speech by Class President&lt;/P
+&gt;&lt;P
+&gt;Presentation of Diplomas&lt;/P
+&gt;&lt;P
+&gt;Closing Speech by Headmaster&lt;/P
+&gt;&lt;/Section
+&gt;&lt;Section
+&gt;&lt;H2
+&gt;Graduates&lt;/H2
+&gt;&lt;Ul
+&gt;&lt;Li
+&gt;Molly Carpenter&lt;/Li
+&gt;&lt;Li
+&gt;Anastasia Luccio&lt;/Li
+&gt;&lt;Li
+&gt;Ebenezar McCoy&lt;/Li
+&gt;&lt;Li
+&gt;Karrin Murphy&lt;/Li
+&gt;&lt;Li
+&gt;Thomas Raith&lt;/Li
+&gt;&lt;Li
+&gt;Susan Rodriguez&lt;/Li
+&gt;&lt;/Ul
+&gt;&lt;/Section
+&gt;&lt;/Body
+&gt;&lt;/Html&gt;</code></pre>
+</div>
+<div>
+<p>In this example, a book author has marked up some sections as chapters and some as appendices,
+and uses CSS to style the headers in these two classes of section differently.</p>
+<pre><code>&lt;style&gt;
+section { border: double medium; margin: 2em; }
+section.chapter h2 { font: 2em Roboto, Helvetica Neue, sans-serif; }
+section.appendix h2 { font: small-caps 2em Roboto, Helvetica Neue, sans-serif; }
+&lt;/style&gt;
+&lt;header&gt;
+&lt;hgroup&gt;
+&lt;h1&gt;My Book&lt;/h1&gt;
+&lt;p&gt;A sample with not much content&lt;/p&gt;
+&lt;/hgroup&gt;
+&lt;p&gt;&lt;small&gt;Published by Dummy Publicorp Ltd.&lt;/small&gt;&lt;/p&gt;
+&lt;/header&gt;
+&lt;section
+&lt;h2&gt;My First Chapter&lt;/h2&gt;
+&lt;p&gt;This is the first of my chapters. It doesn&apos;t say much.&lt;/p&gt;
+&lt;p&gt;But it has two paragraphs!&lt;/p&gt;
+&lt;/section&gt;
+&lt;section
+&lt;h2&gt;It Continues: The Second Chapter&lt;/h2&gt;
+&lt;p&gt;Bla dee bla, dee bla dee bla. Boom.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section
+&lt;h2&gt;Chapter Three: A Further Example&lt;/h2&gt;
+&lt;p&gt;It&apos;s not like a battle between brightness and earthtones would go
+unnoticed.&lt;/p&gt;
+&lt;p&gt;But it might ruin my story.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section
+&lt;h2&gt;Appendix A: Overview of Examples&lt;/h2&gt;
+&lt;p&gt;These are demonstrations.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section
+&lt;h2&gt;Appendix B: Some Closing Remarks&lt;/h2&gt;
+&lt;p&gt;Hopefully this long example shows that you &lt;em&gt;can&lt;/em&gt; style
+sections, so long as they are used to indicate actual sections.&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+</div>
+<h4 id=the-nav-element>The <dfn data-dfn-type=element><code>nav</code></dfn> element</h4><div><div><p><a href=https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav title="The
+</body>
+</html>

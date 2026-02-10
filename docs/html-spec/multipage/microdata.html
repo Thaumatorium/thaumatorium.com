@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+<li><a href="microdata.html#encoding-microdata">Encoding microdata</a><ol><li><a href="microdata.html#the-microdata-model">The microdata model</a><li><a href="microdata.html#items">Items</a><li><a href="microdata.html#names:-the-itemprop-attribute">Names: the <code>itemprop</code> attribute</a><li><a href="microdata.html#values">Values</a><li><a href="microdata.html#associating-names-with-items">Associating names with items</a><li><a href="microdata.html#microdata-and-other-namespaces">Microdata and other namespaces</a></ol><li><a href="microdata.html#mdvocabs">Sample microdata vocabularies</a><ol><li><a href="microdata.html#vcard">vCard</a><ol><li><a href="microdata.html#conversion-to-vcard">Conversion to vCard</a><li><a href="microdata.html#examples-2">Examples</a></ol><li><a href="microdata.html#vevent">vEvent</a><ol><li><a href="microdata.html#conversion-to-icalendar">Conversion to iCalendar</a><li><a href="microdata.html#examples-3">Examples</a></ol><li><a href="microdata.html#licensing-works">Licensing works</a><ol><li><a href="microdata.html#examples-4">Examples</a></ol></ol><li><a href="microdata.html#converting-html-to-other-formats">Converting HTML to other formats</a><ol><li><a href="microdata.html#json">JSON</a></ol></ol></ol><h2 id=microdata><dfn>Microdata</dfn></h2>
+<h3 id=introduction-7>Introduction</h3>
+<h4 id=overview>Overview</h4>
+<p><i>This section is non-normative.</i></p>
+<p>Sometimes, it is desirable to annotate content with specific machine-readable labels, e.g. to
+allow generic scripts to provide services that are customized to the page, or to enable content
+from a variety of cooperating authors to be processed by a single script in a consistent
+manner.</p>
+<p>For this purpose, authors can use the microdata features described in this section. Microdata
+allows nested groups of name-value pairs to be added to documents, in parallel with the existing
+content.</p>
+<h4 id=the-basic-syntax>The basic syntax</h4>
+<p><i>This section is non-normative.</i></p>
+<p>At a high level, microdata consists of a group of name-value pairs. The groups are called <a href="microdata.html#concept-item">items</a>, and each name-value pair is a property. Items and properties
+are represented by regular elements.</p>
+<p>To create an item, the <code><a href="microdata.html#attr-itemscope">itemscope</a></code> attribute is used.</p>
+<p>To add a property to an item, the <code><a href="microdata.html#names:-the-itemprop-attribute">itemprop</a></code> attribute is used
+on one of the <a href="microdata.html#concept-item">item's</a> descendants.</p>
+<div>
+<p>Here there are two items, each of which has the property "name":</p>
+<pre><code>&lt;div itemscope&gt;
+&lt;p&gt;My name is &lt;span itemprop=&quot;name&quot;&gt;Elizabeth&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div itemscope&gt;
+&lt;p&gt;My name is &lt;span itemprop=&quot;name&quot;&gt;Daniel&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+</div>
+<p>Markup without the microdata-related attributes does not have any effect on the microdata
+model.</p>
+<div>
+<p>These two examples are exactly equivalent, at a microdata level, as the previous two examples
+respectively:</p>
+<pre><code>&lt;div itemscope&gt;
+&lt;p&gt;My &lt;em&gt;name&lt;/em&gt; is &lt;span itemprop=&quot;name&quot;&gt;E&lt;strong&gt;liz&lt;/strong&gt;abeth&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;section&gt;
+&lt;div itemscope&gt;
+&lt;aside&gt;
+&lt;p&gt;My name is &lt;span itemprop=&quot;name&quot;&gt;&lt;a href=&quot;/?user=daniel&quot;&gt;Daniel&lt;/a&gt;&lt;/span&gt;.&lt;/p&gt;
+&lt;/aside&gt;
+&lt;/div&gt;
+&lt;/section&gt;</code></pre>
+</div>
+<p>Properties generally have values that are strings.</p>
+<div>
+<p>Here the item has three properties:</p>
+<pre><code>&lt;div itemscope&gt;
+&lt;p&gt;My name is &lt;span itemprop=&quot;name&quot;&gt;Neil&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;My band is called &lt;span itemprop=&quot;band&quot;&gt;Four Parts Water&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;I am &lt;span itemprop=&quot;nationality&quot;&gt;British&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+</div>
+<p>When a string value is a <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a>, it is expressed using the <code><a href="text-level-semantics.html#the-a-element">a</a></code> element and
+its <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute, the <code><a href="embedded-content.html#the-img-element">img</a></code> element and its
+<code><a href="embedded-content.html#attr-img-src">src</a></code> attribute, or other elements that link to or embed external
+resources.</p>
+<div>
+<p>In this example, the item has one property, "image", whose value is a URL:</p>
+<pre><code>&lt;div itemscope&gt;
+&lt;img itemprop=&quot;image&quot; src=&quot;google-logo.png&quot; alt=&quot;Google&quot;&gt;
+&lt;/div&gt;</code></pre>
+</div>
+<p>When a string value is in some machine-readable format unsuitable for human consumption, it is
+expressed using the <code><a href="text-level-semantics.html#attr-data-value">value</a></code> attribute of the <code><a href="text-level-semantics.html#the-data-element">data</a></code>
+element, with the human-readable version given in the element's contents.</p>
+<div>
+<p>Here, there is an item with a property whose value is a product ID. The ID is not
+human-friendly, so the product's name is used the human-visible text instead of the ID.</p>
+<pre><code>&lt;h1 itemscope&gt;
+&lt;data itemprop=&quot;product-id&quot; value=&quot;9678AOU879&quot;&gt;The Instigator 2000&lt;/data&gt;
+&lt;/h1&gt;</code></pre>
+</div>
+<p>For numeric data, the <code><a href="form-elements.html#the-meter-element">meter</a></code> element and its <code><a href="form-elements.html#attr-meter-value">value</a></code> attribute can be used instead.</p>
+<div>
+<p>Here a rating is given using a <code><a href="form-elements.html#the-meter-element">meter</a></code> element.</p>
+<pre><code>&lt;div itemscope itemtype=&quot;http://schema.org/Product&quot;&gt;
+&lt;span itemprop=&quot;name&quot;&gt;Panasonic White 60L Refrigerator&lt;/span&gt;
+&lt;img src=&quot;panasonic-fridge-60l-white.jpg&quot; alt=&quot;&quot;&gt;
+&lt;div itemprop=&quot;aggregateRating&quot;
+itemscope itemtype=&quot;http://schema.org/AggregateRating&quot;&gt;
+&lt;meter itemprop=&quot;ratingValue&quot; min=0 value=3.5 max=5&gt;Rated 3.5/5&lt;/meter&gt;
+(based on &lt;span itemprop=&quot;reviewCount&quot;&gt;11&lt;/span&gt; customer reviews)
+&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+<p>Similarly, for date- and time-related data, the <code><a href="text-level-semantics.html#the-time-element">time</a></code> element and its <code><a href="text-level-semantics.html#attr-time-datetime">datetime</a></code> attribute can be used instead.</p>
+<div>
+<p>In this example, the item has one property, "birthday", whose value is a date:</p>
+<pre><code>&lt;div itemscope&gt;
+I was born on &lt;time itemprop=&quot;birthday&quot; datetime=&quot;2009-05-10&quot;&gt;May 10th 2009&lt;/time&gt;.
+&lt;/div&gt;</code></pre>
+</div>
+<p>Properties can also themselves be groups of name-value pairs, by putting the <code><a href="microdata.html#attr-itemscope">itemscope</a></code> attribute on the element that declares the property.</p>
+<p>Items that are not part of others are called <a href="microdata.html#top-level-microdata-items">top-level microdata items</a>.</p>
+<div>
+<p>In this example, the outer item represents a person, and the inner one represents a band:</p>
+<pre><code>&lt;div itemscope&gt;
+&lt;p&gt;Name: &lt;span itemprop=&quot;name&quot;&gt;Amanda&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Band: &lt;span itemprop=&quot;band&quot; itemscope&gt; &lt;span itemprop=&quot;name&quot;&gt;Jazz Band&lt;/span&gt; (&lt;span itemprop=&quot;size&quot;&gt;12&lt;/span&gt; players)&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+<p>The outer item here has two properties, "name" and "band". The "name" is "Amanda", and the
+"band" is an item in its own right, with two properties, "name" and "size". The "name" of the
+band is "Jazz Band", and the "size" is "12".</p>
+<p>The outer item in this example is a top-level microdata item.</p>
+</div>
+<p>Properties that are not descendants of the element with the <code><a href="microdata.html#attr-itemscope">itemscope</a></code> attribute can be associated with the <a href="microdata.html#concept-item">item</a> using the <code><a href="microdata.html#attr-itemref">itemref</a></code> attribute.
+This attribute takes a list of IDs of elements to crawl in addition to crawling the children of
+the element with the <code><a href="microdata.html#attr-itemscope">itemscope</a></code> attribute.</p>
+<div>
+<p>This example is the same as the previous one, but all the properties are separated from their
+<a href="microdata.html#concept-item">items</a>:</p>
+<pre><code>&lt;div itemscope id=&quot;amanda&quot; itemref=&quot;a b&quot;&gt;&lt;/div&gt;
+&lt;p &lt;span itemprop=&quot;name&quot;&gt;Amanda&lt;/span&gt;&lt;/p&gt;
+&lt;div id=&quot;b&quot; itemprop=&quot;band&quot; itemscope itemref=&quot;c&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;c&quot;&gt;
+&lt;p&gt;Band: &lt;span itemprop=&quot;name&quot;&gt;Jazz Band&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Size: &lt;span itemprop=&quot;size&quot;&gt;12&lt;/span&gt; players&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+<p>This gives the same result as the previous example. The first item has two properties, "name",
+set to "Amanda", and "band", set to another item. That second item has two further properties,
+"name", set to "Jazz Band", and "size", set to "12".</p>
+</div>
+<p>An <a href="microdata.html#concept-item">item</a> can have multiple properties with the same name and
+different values.</p>
+<div>
+<p>This example describes an ice cream, with two flavors:</p>
+<pre><code>&lt;div itemscope&gt;
+&lt;p&gt;Flavors in my favorite ice cream:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li itemprop=&quot;flavor&quot;&gt;Lemon sorbet&lt;/li&gt;
+&lt;li itemprop=&quot;flavor&quot;&gt;Apricot sorbet&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+<p>This thus results in an item with two properties, both "flavor", having the values "Lemon
+sorbet" and "Apricot sorbet".</p>
+</div>
+<p>An element introducing a property can also introduce multiple properties at once, to avoid
+duplication when some of the properties have the same value.</p>
+<div>
+<p>Here we see an item with two properties, "favorite-color" and "favorite-fruit", both set to
+the value "orange":</p>
+<pre><code>&lt;div itemscope&gt;
+&lt;span itemprop=&quot;favorite-color favorite-fruit&quot;&gt;orange&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+</div>
+<p>It's important to note that there is no relationship between the microdata and the content of
+the document where the microdata is marked up.</p>
+<div>
+<p>There is no semantic difference, for instance, between the following two examples:</p>
+<pre><code>&lt;figure&gt;
+&lt;img src=&quot;castle.jpeg&quot;&gt;
+&lt;figcaption&gt;&lt;span itemscope&gt;&lt;span itemprop=&quot;name&quot;&gt;The Castle&lt;/span&gt;&lt;/span&gt; (1986)&lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre>
+<pre><code>&lt;span itemscope&gt;&lt;meta itemprop=&quot;name&quot; content=&quot;The Castle&quot;&gt;&lt;/span&gt;
+&lt;figure&gt;
+&lt;img src=&quot;castle.jpeg&quot;&gt;
+&lt;figcaption&gt;The Castle (1986)&lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre>
+<p>Both have a figure with a caption, and both, completely unrelated to the figure, have an item
+with a name-value pair with the name "name" and the value "The Castle". The only difference is
+that if the user drags the caption out of the document, in the former case, the item will be
+included in the drag-and-drop data. In neither case is the image in any way associated with the
+item.</p>
+</div>
+<h4 id=typed-items>Typed items</h4>
+<p><i>This section is non-normative.</i></p>
+<p>The examples in the previous section show how information could be marked up on a page that
+doesn't expect its microdata to be re-used. Microdata is most useful, though, when it is used in
+contexts where other authors and readers are able to cooperate to make new uses of the markup.</p>
+<p>For this purpose, it is necessary to give each <a href="microdata.html#concept-item">item</a> a type,
+such as "https://example.com/person", or "https://example.org/cat", or
+"https://band.example.net/". Types are identified as <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URLs</a>.</p>
+<p>The type for an <a href="microdata.html#concept-item">item</a> is given as the value of an <code><a href="microdata.html#attr-itemtype">itemtype</a></code> attribute on the same element as the <code><a href="microdata.html#attr-itemscope">itemscope</a></code> attribute.</p>
+<div>
+<p>Here, the item's type is "https://example.org/animals#cat":</p>
+<pre><code>&lt;section itemscope itemtype=&quot;https://example.org/animals#cat&quot;&gt;
+&lt;h1 itemprop=&quot;name&quot;&gt;Hedral&lt;/h1&gt;
+&lt;p itemprop=&quot;desc&quot;&gt;Hedral is a male american domestic
+shorthair, with a fluffy black fur with white paws and belly.&lt;/p&gt;
+&lt;img itemprop=&quot;img&quot; src=&quot;hedral.jpeg&quot; alt=&quot;&quot; title=&quot;Hedral, age 18 months&quot;&gt;
+&lt;/section&gt;</code></pre>
+<p>In this example the "https://example.org/animals#cat" item has three properties, a "name"
+("Hedral"), a "desc" ("Hedral is..."), and an "img" ("hedral.jpeg").</p>
+</div>
+<p>The type gives the context for the properties, thus selecting a vocabulary: a property named
+"class" given for an item with the type "https://census.example/person" might refer to the economic
+class of an individual, while a property named "class" given for an item with the type
+"https://example.com/school/teacher" might refer to the classroom a teacher has been assigned.
+Several types can share a vocabulary. For example, the types "<code>https://example.org/people/teacher</code>" and "<code>https://example.org/people/engineer</code>" could be defined to use the same vocabulary
+(though maybe some properties would not be especially useful in both cases, e.g. maybe the "<code>https://example.org/people/engineer</code>" type might not typically be used with the
+"<code>classroom</code>" property). Multiple types defined to use the same vocabulary can
+be given for a single item by listing the URLs as a space-separated list in the attribute' value.
+An item cannot be given two types if they do not use the same vocabulary, however.</p>
+<h4 id=global-identifiers-for-items>Global identifiers for items</h4>
+<p><i>This section is non-normative.</i></p>
+<p>Sometimes, an <a href="microdata.html#concept-item">item</a> gives information about a topic that has a
+global identifier. For example, books can be identified by their ISBN number.</p>
+<p>Vocabularies (as identified by the <code><a href="microdata.html#attr-itemtype">itemtype</a></code> attribute) can
+be designed such that <a href="microdata.html#concept-item">items</a> get associated with their global
+identifier in an unambiguous way by expressing the global identifiers as <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URLs</a> given in an <code><a href="microdata.html#attr-itemid">itemid</a></code> attribute.</p>
+<p>The exact meaning of the <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URLs</a> given in <code><a href="microdata.html#attr-itemid">itemid</a></code> attributes depends on the vocabulary used.</p>
+<div>
+<p>Here, an item is talking about a particular book:</p>
+<pre><code>&lt;dl itemscope
+itemtype=&quot;https://vocab.example.net/book&quot;
+<strong>itemid=&quot;urn:isbn:0-330-34032-8&quot;</strong>&gt;
+&lt;dt&gt;Title
+&lt;dd itemprop=&quot;title&quot;&gt;The Reality Dysfunction
+&lt;dt&gt;Author
+&lt;dd itemprop=&quot;author&quot;&gt;Peter F. Hamilton
+&lt;dt&gt;Publication date
+&lt;dd&gt;&lt;time itemprop=&quot;pubdate&quot; datetime=&quot;1996-01-26&quot;&gt;26 January 1996&lt;/time&gt;
+&lt;/dl&gt;</code></pre>
+<p>The "<code>https://vocab.example.net/book</code>" vocabulary in this example would
+define that the <code><a href="microdata.html#attr-itemid">itemid</a></code> attribute takes a <code><a data-x-internal=urn-protocol href=https://www.rfc-editor.org/rfc/rfc2141#section-2>urn:</a></code> <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> pointing to the ISBN of the book.</p>
+</div>
+<h4 id=selecting-names-when-defining-vocabularies>Selecting names when defining vocabularies</h4>
+<p><i>This section is non-normative.</i></p>
+<p>Using microdata means using a vocabulary. For some purposes, an ad-hoc vocabulary is adequate.
+For others, a vocabulary will need to be designed. Where possible, authors are encouraged to
+re-use existing vocabularies, as this makes content re-use easier.</p>
+<p>When designing new vocabularies, identifiers can be created either using <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URLs</a>, or, for properties, as plain words (with no dots or colons). For URLs,
+conflicts with other vocabularies can be avoided by only using identifiers that correspond to
+pages that the author has control over.</p>
+<div>
+<p>For instance, if Jon and Adam both write content at <code>example.com</code>, at <code>https://example.com/~jon/...</code> and <code>https://example.com/~adam/...</code> respectively, then
+they could select identifiers of the form
+"https://example.com/~jon/name" and "https://example.com/~adam/name"
+respectively.</p>
+</div>
+<p>Properties whose names are just plain words can only be used within the context of the types
+for which they are intended; properties named using URLs can be reused in items of any type. If an
+item has no type, and is not part of another item, then if its properties have names that are just
+plain words, they are not intended to be globally unique, and are instead only intended for
+limited use. Generally speaking, authors are encouraged to use either properties with globally
+unique names (URLs) or ensure that their items are typed.</p>
+<div>
+<p>Here, an item is an "https://example.org/animals#cat", and most of the properties have names
+that are words defined in the context of that type. There are also a few additional properties
+whose names come from other vocabularies.</p>
+<pre><code>&lt;section itemscope itemtype=&quot;https://example.org/animals#cat&quot;&gt;
+&lt;h1 itemprop=&quot;name https://example.com/fn&quot;&gt;Hedral&lt;/h1&gt;
+&lt;p itemprop=&quot;desc&quot;&gt;Hedral is a male American domestic
+shorthair, with a fluffy &lt;span
+itemprop=&quot;https://example.com/color&quot;&gt;black&lt;/span&gt; fur with &lt;span
+itemprop=&quot;https://example.com/color&quot;&gt;white&lt;/span&gt; paws and belly.&lt;/p&gt;
+&lt;img itemprop=&quot;img&quot; src=&quot;hedral.jpeg&quot; alt=&quot;&quot; title=&quot;Hedral, age 18 months&quot;&gt;
+&lt;/section&gt;</code></pre>
+<p>This example has one item with the type "https://example.org/animals#cat" and the following
+properties:</p>
+<table><thead><tr><td>Property
+<td>Value
+<tbody><tr><td>name
+<td>Hedral
+<tr><td>https://example.com/fn
+<td>Hedral
+<tr><td>desc
+<td>Hedral is a male American domestic shorthair, with a fluffy black fur with white paws and belly.
+<tr><td>https://example.com/color
+<td>black
+<tr><td>https://example.com/color
+<td>white
+<tr><td>img
+<td>.../hedral.jpeg
+</table>
+</div>
+<h3 id=encoding-microdata>Encoding microdata</h3>
+<h4 id=the-microdata-model>The microdata model</h4>
+<p>The microdata model consists of groups of name-value pairs known as <a href="microdata.html#concept-item">items</a>.</p>
+<p>Each group is known as an <a href="microdata.html#concept-item">item</a>. Each <a href="microdata.html#concept-item">item</a> can have <a href="microdata.html#item-types">item types</a>, a <a href="microdata.html#global-identifier">global
+identifier</a> (if the vocabulary specified by the <a href="microdata.html#item-types">item types</a> <a href="microdata.html#support-global-identifiers-for-items">support global
+identifiers for items</a>), and a list of name-value pairs. Each name in the name-value pair is
+known as a <a href="microdata.html#the-properties-of-an-item">property</a>, and each <a href="microdata.html#the-properties-of-an-item">property</a> has one or more <a href="microdata.html#concept-property-value">values</a>. Each <a href="microdata.html#concept-property-value">value</a> is either a string or itself a group of name-value
+pairs (an <a href="microdata.html#concept-item">item</a>). The names are unordered relative to each other,
+but if a particular name has multiple values, they do have a relative order.</p>
+<h4 id=items>Items</h4>
+</div><p>Every <a href="infrastructure.html#html-elements">HTML element</a> may have an <dfn id=attr-itemscope data-dfn-type=element-attr><code>itemscope</code></dfn> attribute specified. The
+<code><a href="microdata.html#attr-itemscope">itemscope</a></code> attribute is a <a href="common-microsyntaxes.html#boolean-attribute">boolean attribute</a>.</p>
+<p>An element with the <code><a href="microdata.html#attr-itemscope">itemscope</a></code> attribute specified creates a
+new <dfn id=concept-item>item</dfn>, a group of name-value pairs.</p>
+<hr>
+</div><p>Elements with an <code><a href="microdata.html#attr-itemscope">itemscope</a></code> attribute may have an <dfn id=attr-itemtype data-dfn-type=element-attr><code>itemtype</code></dfn> attribute
+specified, to give the <a href="microdata.html#item-types">item types</a> of the <a href="microdata.html#concept-item">item</a>.</p>
+<p>The <code><a href="microdata.html#attr-itemtype">itemtype</a></code> attribute, if specified, must have a value that
+is an <a href="common-microsyntaxes.html#unordered-set-of-unique-space-separated-tokens">unordered set of unique space-separated tokens</a>, none of which are
+<a href=https://infra.spec.whatwg.org/#string-is data-x-internal=identical-to>identical to</a> another token and each of which is a <a href=https://url.spec.whatwg.org/#valid-url-string data-x-internal=valid-url-string>valid URL string</a> that
+is an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>, and all of which are defined to use the same vocabulary. The
+attribute's value must have at least one token.</p>
+<div>
+<p>The <dfn id=item-types>item types</dfn> of an <a href="microdata.html#concept-item">item</a> are the tokens obtained
+by <a href=https://infra.spec.whatwg.org/#split-on-ascii-whitespace data-x-internal=split-a-string-on-spaces>splitting the element's <code>itemtype</code> attribute's value on ASCII whitespace</a>. If the <code><a href="microdata.html#attr-itemtype">itemtype</a></code> attribute is missing or parsing it in this way finds no
+tokens, the <a href="microdata.html#concept-item">item</a> is said to have no <a href="microdata.html#item-types">item types</a>.</p>
+</div>
+<p>The <a href="microdata.html#item-types">item types</a> must all be types defined in <a href="infrastructure.html#other-applicable-specifications">applicable specifications</a> and must all be defined to use the same
+vocabulary.</p>
+<p>Except if otherwise specified by that specification, the <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URLs</a> given
+as the <a href="microdata.html#item-types">item types</a> should not be automatically dereferenced.</p>
+<p>A specification could define that its <a href="microdata.html#item-types">item type</a>
+can be dereferenced to provide the user with help information, for example. In fact, vocabulary
+authors are encouraged to provide useful information at the given <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a>.</p>
+<p><a href="microdata.html#item-types">Item types</a> are opaque identifiers, and user agents must not dereference unknown
+<a href="microdata.html#item-types">item types</a>, or otherwise deconstruct them, in order to determine how to process
+<a href="microdata.html#concept-item">items</a> that use them.</p>
+<p>The <code><a href="microdata.html#attr-itemtype">itemtype</a></code> attribute must not be specified on elements
+that do not have an <code><a href="microdata.html#attr-itemscope">itemscope</a></code> attribute specified.</p>
+<hr>
+<div>
+<p>An <a href="microdata.html#concept-item">item</a> is said to be a <dfn id=typed-item>typed item</dfn> when either it
+has an <a href="microdata.html#item-types">item type</a>, or it is the <a href="microdata.html#concept-property-value">value</a> of a <a href="microdata.html#the-properties-of-an-item">property</a> of a <a href="microdata.html#typed-item">typed item</a>. The <dfn id=relevant-types>relevant types</dfn> for a
+<a href="microdata.html#typed-item">typed item</a> is the <a href="microdata.html#concept-item">item</a>'s <a href="microdata.html#item-types">item types</a>,
+if it has any, or else is the <a href="microdata.html#relevant-types">relevant types</a> of the <a href="microdata.html#concept-item">item</a> for which it is a <a href="microdata.html#the-properties-of-an-item">property</a>'s <a href="microdata.html#concept-property-value">value</a>.</p>
+</div>
+<hr>
+</div><p>Elements with an <code><a href="microdata.html#attr-itemscope">itemscope</a></code> attribute and an <code><a href="microdata.html#attr-itemtype">itemtype</a></code> attribute that references a vocabulary that is defined to
+<dfn id=support-global-identifiers-for-items>support global identifiers for items</dfn> may also have an <dfn id=attr-itemid data-dfn-type=element-attr><code>itemid</code></dfn> attribute specified, to give a
+global identifier for the <a href="microdata.html#concept-item">item</a>, so that it can be related to
+other <a href="microdata.html#concept-item">items</a> on pages elsewhere on the web.</p>
+<p>The <code><a href="microdata.html#attr-itemid">itemid</a></code> attribute, if specified, must have a value that is
+a <a href="urls-and-fetching.html#valid-url-potentially-surrounded-by-spaces">valid URL potentially surrounded by spaces</a>.</p>
+<div>
+<p>The <dfn id=global-identifier>global identifier</dfn> of an <a href="microdata.html#concept-item">item</a> is the value of
+its element's <code><a href="microdata.html#attr-itemid">itemid</a></code> attribute, if it has one, <a href="urls-and-fetching.html#encoding-parsing-a-url">parsed</a> relative to the <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a> of the
+element on which the attribute is specified. If the <code><a href="microdata.html#attr-itemid">itemid</a></code>
+attribute is missing or if parsing it returns failure, it is said to have no <a href="microdata.html#global-identifier">global
+identifier</a>.</p>
+</div>
+<p>The <code><a href="microdata.html#attr-itemid">itemid</a></code> attribute must not be specified on elements that do
+not have both an <code><a href="microdata.html#attr-itemscope">itemscope</a></code> attribute and an <code><a href="microdata.html#attr-itemtype">itemtype</a></code> attribute specified, and must not be specified on elements
+with an <code><a href="microdata.html#attr-itemscope">itemscope</a></code> attribute whose <code><a href="microdata.html#attr-itemtype">itemtype</a></code> attribute specifies a vocabulary that does not <a href="microdata.html#support-global-identifiers-for-items">support
+global identifiers for items</a>, as defined by that vocabulary's specification.</p>
+<p>The exact meaning of a <a href="microdata.html#global-identifier">global identifier</a> is determined by the vocabulary's
+specification. It is up to such specifications to define whether multiple items with the same
+global identifier (whether on the same page or on different pages) are allowed to exist, and what
+the processing rules for that vocabulary are with respect to handling the case of multiple items
+with the same ID.</p>
+<hr>
+</div><p>Elements with an <code><a href="microdata.html#attr-itemscope">itemscope</a></code> attribute may have an <dfn id=attr-itemref data-dfn-type=element-attr><code>itemref</code></dfn> attribute
+specified, to give a list of additional elements to crawl to find the name-value pairs of the
+<a href="microdata.html#concept-item">item</a>.</p>
+<p>The <code><a href="microdata.html#attr-itemref">itemref</a></code> attribute, if specified, must have a value that
+is an <a href="common-microsyntaxes.html#unordered-set-of-unique-space-separated-tokens">unordered set of unique space-separated tokens</a> none of which are
+<a href=https://infra.spec.whatwg.org/#string-is data-x-internal=identical-to>identical to</a> another token and consisting of <a href=https://dom.spec.whatwg.org/#concept-id data-x-internal=concept-id>IDs</a> of
+elements in the same <a href=https://dom.spec.whatwg.org/#concept-tree data-x-internal=tree>tree</a>.</p>
+<p>The <code><a href="microdata.html#attr-itemref">itemref</a></code> attribute must not be specified on elements that
+do not have an <code><a href="microdata.html#attr-itemscope">itemscope</a></code> attribute specified.</p>
+<p>The <code><a href="microdata.html#attr-itemref">itemref</a></code> attribute is not part of the
+microdata data model. It is merely a syntactic construct to aid authors in adding annotations to
+pages where the data to be annotated does not follow a convenient tree structure. For example, it
+allows authors to mark up data in a table so that each column defines a separate <a href="microdata.html#concept-item">item</a>, while keeping the properties in the cells.</p>
+<div>
+<p>This example shows a simple vocabulary used to describe the products of a model railway
+manufacturer. The vocabulary has just five property names:</p>
+<dl><dt>product-code<dd>An integer that names the product in the manufacturer's catalog.<dt>name<dd>A brief description of the product.<dt>scale<dd>One of "HO", "1", or "Z" (potentially with leading or trailing
+whitespace), indicating the scale of the product.<dt>digital<dd>If present, one of "Digital", "Delta", or "Systems"
+(potentially with leading or trailing whitespace) indicating that
+the product has a digital decoder of the given type.<dt>track-type<dd>For track-specific products, one of "K", "M", "C" (potentially
+with leading or trailing whitespace) indicating the type of track
+for which the product is intended.</dl>
+<p>This vocabulary has four defined <a href="microdata.html#item-types">item types</a>:</p>
+<dl><dt>https://md.example.com/loco<dd>Rolling stock with an engine<dt>https://md.example.com/passengers<dd>Passenger rolling stock<dt>https://md.example.com/track<dd>Track pieces<dt>https://md.example.com/lighting<dd>Equipment with lighting</dl>
+<p>Each <a href="microdata.html#concept-item">item</a> that uses this vocabulary can be given one or more
+of these types, depending on what the product is.</p>
+<p>Thus, a locomotive might be marked up as:</p>
+<pre><code>&lt;dl itemscope itemtype=&quot;https://md.example.com/loco
+https://md.example.com/lighting&quot;&gt;
+&lt;dt&gt;Name:
+&lt;dd itemprop=&quot;name&quot;&gt;Tank Locomotive (DB 80)
+&lt;dt&gt;Product code:
+&lt;dd itemprop=&quot;product-code&quot;&gt;33041
+&lt;dt&gt;Scale:
+&lt;dd itemprop=&quot;scale&quot;&gt;HO
+&lt;dt&gt;Digital:
+&lt;dd itemprop=&quot;digital&quot;&gt;Delta
+&lt;/dl&gt;</code></pre>
+<p>A turnout lantern retrofit kit might be marked up as:</p>
+<pre><code>&lt;dl itemscope itemtype=&quot;https://md.example.com/track
+https://md.example.com/lighting&quot;&gt;
+&lt;dt&gt;Name:
+&lt;dd itemprop=&quot;name&quot;&gt;Turnout Lantern Kit
+&lt;dt&gt;Product code:
+&lt;dd itemprop=&quot;product-code&quot;&gt;74470
+&lt;dt&gt;Purpose:
+&lt;dd&gt;For retrofitting 2 &lt;span itemprop=&quot;track-type&quot;&gt;C&lt;/span&gt; Track
+turnouts. &lt;meta itemprop=&quot;scale&quot; content=&quot;HO&quot;&gt;
+&lt;/dl&gt;</code></pre>
+<p>A passenger car with no lighting might be marked up as:</p>
+<pre><code>&lt;dl itemscope itemtype=&quot;https://md.example.com/passengers&quot;&gt;
+&lt;dt&gt;Name:
+&lt;dd itemprop=&quot;name&quot;&gt;Express Train Passenger Car (DB Am 203)
+&lt;dt&gt;Product code:
+&lt;dd itemprop=&quot;product-code&quot;&gt;8710
+&lt;dt&gt;Scale:
+&lt;dd itemprop=&quot;scale&quot;&gt;Z
+&lt;/dl&gt;</code></pre>
+<p>Great care is necessary when creating new vocabularies. Often, a hierarchical approach to
+types can be taken that results in a vocabulary where each item only ever has a single type,
+which is generally much simpler to manage.</p>
+</div>
+<h4>Names: the <dfn data-dfn-type=element-attr><code>itemprop</code></dfn> attribute</h4></div>
+<p>Every <a href="infrastructure.html#html-elements">HTML element</a> may have an <code><a href="microdata.html#names:-the-itemprop-attribute">itemprop</a></code> attribute specified, if doing so <a href="microdata.html#the-properties-of-an-item">adds one or more properties</a> to one or more <a href="microdata.html#concept-item">items</a> (as defined below).</p>
+<p>The <code><a href="microdata.html#names:-the-itemprop-attribute">itemprop</a></code> attribute, if specified, must have a value
+that is an <a href="common-microsyntaxes.html#unordered-set-of-unique-space-separated-tokens">unordered set of unique space-separated tokens</a> none of which are
+<a href=https://infra.spec.whatwg.org/#string-is data-x-internal=identical-to>identical to</a> another token, representing the names of the name-value pairs that it
+adds. The attribute's value must have at least one token.</p>
+<p>Each token must be either:</p>
+<ul><li>If the item is a <a href="microdata.html#typed-item">typed item</a>: a <dfn id=defined-property-name>defined property name</dfn> allowed in this
+situation according to the specification that defines the <a href="microdata.html#relevant-types">relevant types</a> for the
+item, or<li>A <a href=https://url.spec.whatwg.org/#valid-url-string data-x-internal=valid-url-string>valid URL string</a> that is an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a> defined as an item
+property name allowed in this situation by a vocabulary specification, or<li>A <a href=https://url.spec.whatwg.org/#valid-url-string data-x-internal=valid-url-string>valid URL string</a> that is an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>, used as a proprietary
+item property name (i.e. one used by the author for private purposes, not defined in a public
+specification), or<li>If the item is not a <a href="microdata.html#typed-item">typed item</a>: a string that contains no U+002E FULL STOP
+characters (.) and no U+003A COLON characters (:), used as a proprietary item property name (i.e.
+one used by the author for private purposes, not defined in a public specification).</ul>
+<p>Specifications that introduce <a href="microdata.html#defined-property-name">defined property names</a>
+must ensure all such property names contain no U+002E FULL STOP characters (.), no U+003A COLON
+characters (:), and no <a href=https://infra.spec.whatwg.org/#ascii-whitespace data-x-internal=space-characters>ASCII whitespace</a>.</p>
+<p>The rules above disallow U+003A COLON characters (:) in non-URL values because
+otherwise they could not be distinguished from URLs. Values with U+002E FULL STOP characters (.)
+are reserved for future extensions. <a href=https://infra.spec.whatwg.org/#ascii-whitespace data-x-internal=space-characters>ASCII whitespace</a> are disallowed because otherwise
+the values would be parsed as multiple tokens.</p>
+<p>When an element with an <code><a href="microdata.html#names:-the-itemprop-attribute">itemprop</a></code> attribute <a href="microdata.html#the-properties-of-an-item">adds a property</a> to multiple <a href="microdata.html#concept-item">items</a>,
+the requirement above regarding the tokens applies for each <a href="microdata.html#concept-item">item</a>
+individually.</p>
+<div>
+<p>The <dfn id=property-names>property names</dfn> of an element are the tokens that the element's <code><a href="microdata.html#names:-the-itemprop-attribute">itemprop</a></code> attribute is found to contain when its value is <a href=https://infra.spec.whatwg.org/#split-on-ascii-whitespace data-x-internal=split-a-string-on-spaces>split on ASCII whitespace</a>, with the order
+preserved but with duplicates removed (leaving only the first occurrence of each name).</p>
+</div>
+<p>Within an <a href="microdata.html#concept-item">item</a>, the properties are unordered with respect to
+each other, except for properties with the same name, which are ordered in the order they are
+given by the algorithm that defines <a href="microdata.html#the-properties-of-an-item">the properties of an item</a>.</p>
+<div>
+<p>In the following example, the "a" property has the values "1" and "2", <em>in that order</em>,
+but whether the "a" property comes before the "b" property or not is not important:</p>
+<pre><code>&lt;div itemscope&gt;
+&lt;p itemprop=&quot;a&quot;&gt;1&lt;/p&gt;
+&lt;p itemprop=&quot;a&quot;&gt;2&lt;/p&gt;
+&lt;p itemprop=&quot;b&quot;&gt;test&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+<p>Thus, the following is equivalent:</p>
+<pre><code>&lt;div itemscope&gt;
+&lt;p itemprop=&quot;b&quot;&gt;test&lt;/p&gt;
+&lt;p itemprop=&quot;a&quot;&gt;1&lt;/p&gt;
+&lt;p itemprop=&quot;a&quot;&gt;2&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+<p>As is the following:</p>
+<pre><code>&lt;div itemscope&gt;
+&lt;p itemprop=&quot;a&quot;&gt;1&lt;/p&gt;
+&lt;p itemprop=&quot;b&quot;&gt;test&lt;/p&gt;
+&lt;p itemprop=&quot;a&quot;&gt;2&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+<p>And the following:</p>
+<pre><code>&lt;div id=&quot;x&quot;&gt;
+&lt;p itemprop=&quot;a&quot;&gt;1&lt;/p&gt;
+&lt;/div&gt;
+&lt;div itemscope itemref=&quot;x&quot;&gt;
+&lt;p itemprop=&quot;b&quot;&gt;test&lt;/p&gt;
+&lt;p itemprop=&quot;a&quot;&gt;2&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+</div>
+<h4 id=values>Values</h4>
+<div>
+<p>The <dfn id=concept-property-value>property value</dfn> of a name-value pair added by an
+element with an <code><a href="microdata.html#names:-the-itemprop-attribute">itemprop</a></code> attribute is as given for the first
+matching case in the following list:</p>
+<dl><dt>If the element also has an <code><a href="microdata.html#attr-itemscope">itemscope</a></code> attribute<dd>
+<p>The value is the <a href="microdata.html#concept-item">item</a> created by the element.</p>
+<dt>If the element is a <code><a href="semantics.html#the-meta-element">meta</a></code> element<dd>
+<p>The value is the value of the element's <code><a href="semantics.html#attr-meta-content">content</a></code>
+attribute, if any, or the empty string if there is no such attribute.</p>
+<dt>If the element is an <code><a href="media.html#the-audio-element">audio</a></code>, <code><a href="iframe-embed-object.html#the-embed-element">embed</a></code>, <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code>,
+<code><a href="embedded-content.html#the-img-element">img</a></code>, <code><a href="embedded-content.html#the-source-element">source</a></code>, <code><a href="media.html#the-track-element">track</a></code>, or <code><a href="media.html#the-video-element">video</a></code> element<dd>
+<p>The value is the result of <a href="urls-and-fetching.html#encoding-parsing-and-serializing-a-url">encoding-parsing-and-serializing a URL</a> given the
+element's <code>src</code> attribute's value, relative to the element's <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node
+document</a>, at the time the attribute is set, or the empty string if there is no such
+attribute or the result is failure.</p>
+<dt>If the element is an <code><a href="text-level-semantics.html#the-a-element">a</a></code>, <code><a href="image-maps.html#the-area-element">area</a></code>, or <code><a href="semantics.html#the-link-element">link</a></code> element<dd>
+<p>The value is the result of <a href="urls-and-fetching.html#encoding-parsing-and-serializing-a-url">encoding-parsing-and-serializing a URL</a> given the
+element's <code>href</code> attribute's value, relative to the element's <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node
+document</a>, at the time the attribute is set, or the empty string if there is no such
+attribute or the result is failure.</p>
+<dt>If the element is an <code><a href="iframe-embed-object.html#the-object-element">object</a></code> element<dd>
+<p>The value is the result of <a href="urls-and-fetching.html#encoding-parsing-and-serializing-a-url">encoding-parsing-and-serializing a URL</a> given the
+element's <code>data</code> attribute's value, relative to the element's <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node
+document</a>, at the time the attribute is set, or the empty string if there is no such
+attribute or the result is failure.</p>
+<dt>If the element is a <code><a href="text-level-semantics.html#the-data-element">data</a></code> element<dd>
+<p>The value is the value of the element's <code><a href="text-level-semantics.html#attr-data-value">value</a></code> attribute,
+if it has one, or the empty string otherwise.</p>
+<dt>If the element is a <code><a href="form-elements.html#the-meter-element">meter</a></code> element<dd>
+<p>The value is the value of the element's <code><a href="form-elements.html#attr-meter-value">value</a></code> attribute,
+if it has one, or the empty string otherwise.</p>
+<dt>If the element is a <code><a href="text-level-semantics.html#the-time-element">time</a></code> element<dd>
+<p>The value is the element's <a href="text-level-semantics.html#datetime-value">datetime value</a>.</p>
+<dt>Otherwise<dd>
+<p>The value is the element's <a href=https://dom.spec.whatwg.org/#concept-descendant-text-content data-x-internal=descendant-text-content>descendant text content</a>.</p>
+</dl>
+</div>
+<div>
+<p>The <dfn id=url-property-elements>URL property elements</dfn> are the <code><a href="text-level-semantics.html#the-a-element">a</a></code>, <code><a href="image-maps.html#the-area-element">area</a></code>,
+<code><a href="media.html#the-audio-element">audio</a></code>, <code><a href="iframe-embed-object.html#the-embed-element">embed</a></code>, <code><a href="iframe-embed-object.html#the-iframe-element">iframe</a></code>, <code><a href="embedded-content.html#the-img-element">img</a></code>, <code><a href="semantics.html#the-link-element">link</a></code>,
+<code><a href="iframe-embed-object.html#the-object-element">object</a></code>, <code><a href="embedded-content.html#the-source-element">source</a></code>, <code><a href="media.html#the-track-element">track</a></code>, and <code><a href="media.html#the-video-element">video</a></code> elements.</p>
+</div>
+<p>If a property's <a href="microdata.html#concept-property-value">value</a>, as defined by the property's
+definition, is an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>, the property must be specified using a <a href="microdata.html#url-property-elements">URL property element</a>.</p>
+<p>These requirements do not apply just because a property value happens to match the
+syntax for a URL. They only apply if the property is explicitly defined as taking such a
+value.</p>
+<p>For example, a book about the first moon landing  could be
+called "mission:moon". A "title" property from a vocabulary that defines a title as being a string
+would not expect the title to be given in an <code><a href="text-level-semantics.html#the-a-element">a</a></code> element, even though it looks like a
+<a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a>. On the other hand, if there was a (rather narrowly scoped!) vocabulary for
+"books whose titles look like URLs" which had a "title" property defined to take a URL, then the
+property <em>would</em> expect the title to be given in an <code><a href="text-level-semantics.html#the-a-element">a</a></code> element (or one of the
+other <a href="microdata.html#url-property-elements">URL property elements</a>), because of the requirement above.</p>
+<h4 id=associating-names-with-items>Associating names with items</h4>
+<div>
+<p>To find <dfn id=the-properties-of-an-item>the properties of an item</dfn> defined by the element <var>root</var>,
+the user agent must run the following steps. These steps are also used to flag <a href="microdata.html#microdata-error">microdata errors</a>.</p>
+<ol><li><p>Let <var>results</var>, <var>memory</var>, and <var>pending</var> be empty lists of elements.<li><p>Add the element <var>root</var> to <var>memory</var>.<li><p>Add the child elements of <var>root</var>, if any, to <var>pending</var>.<li><p>If <var>root</var> has an <code><a href="microdata.html#attr-itemref">itemref</a></code> attribute, <a href=https://infra.spec.whatwg.org/#split-on-ascii-whitespace data-x-internal=split-a-string-on-spaces>split the value of that <code>itemref</code> attribute on ASCII whitespace</a>. For each resulting
+token <var>ID</var>, if there is an element in the <a href=https://dom.spec.whatwg.org/#concept-tree data-x-internal=tree>tree</a> of <var>root</var> with the
+<a href=https://dom.spec.whatwg.org/#concept-id data-x-internal=concept-id>ID</a> <var>ID</var>, then add the first such element to
+<var>pending</var>.<li>
+<p>While <var>pending</var> is not empty:</p>
+<ol><li><p>Remove an element from <var>pending</var> and let <var>current</var> be that
+element.<li><p>If <var>current</var> is already in <var>memory</var>, there is a
+<a href="microdata.html#microdata-error">microdata error</a>; <a href=https://infra.spec.whatwg.org/#iteration-continue data-x-internal=continue>continue</a>.<li><p>Add <var>current</var> to <var>memory</var>.<li><p>If <var>current</var> does not have an <code><a href="microdata.html#attr-itemscope">itemscope</a></code>
+attribute, then: add all the child elements of <var>current</var> to
+<var>pending</var>.<li><p>If <var>current</var> has an <code><a href="microdata.html#names:-the-itemprop-attribute">itemprop</a></code> attribute
+specified and has one or more <a href="microdata.html#property-names">property names</a>, then add <var>current</var> to
+<var>results</var>.</ol>
+<li><p>Sort <var>results</var> in <a href=https://dom.spec.whatwg.org/#concept-tree-order data-x-internal=tree-order>tree order</a>.<li><p>Return <var>results</var>.</ol>
+</div>
+<p>A document must not contain any <a href="microdata.html#concept-item">items</a> for which the algorithm
+to find <a href="microdata.html#the-properties-of-an-item">the properties of an item</a> finds any <dfn id=microdata-error>microdata
+errors</dfn>.</p>
+<div>
+<p>An <a href="microdata.html#concept-item">item</a> is a <dfn id=top-level-microdata-items>top-level
+microdata item</dfn> if its element does not have an <code><a href="microdata.html#names:-the-itemprop-attribute">itemprop</a></code>
+attribute.</p>
+</div>
+<p>All <code><a href="microdata.html#attr-itemref">itemref</a></code> attributes in a <code><a href="dom.html#document">Document</a></code> must be
+such that there are no cycles in the graph formed from representing each <a href="microdata.html#concept-item">item</a> in the <code><a href="dom.html#document">Document</a></code> as a node in the graph and each
+<a href="microdata.html#the-properties-of-an-item">property</a> of an item whose <a href="microdata.html#concept-property-value">value</a> is another item as an edge in the graph connecting
+those two items.</p>
+<p>A document must not contain any elements that have an <code><a href="microdata.html#names:-the-itemprop-attribute">itemprop</a></code> attribute that would not be found to be a property of any of
+the <a href="microdata.html#concept-item">items</a> in that document were their <a href="microdata.html#the-properties-of-an-item">properties</a> all to be determined.</p>
+<div>
+<p>In this example, a single license statement is applied to two works, using <code><a href="microdata.html#attr-itemref">itemref</a></code> from the items representing the works:</p>
+<pre><code>&lt;!DOCTYPE HTML&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;title&gt;Photo gallery&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;My photos&lt;/h1&gt;
+&lt;figure itemscope itemtype=&quot;http://n.whatwg.org/work&quot; itemref=&quot;licenses&quot;&gt;
+&lt;img itemprop=&quot;work&quot; src=&quot;images/house.jpeg&quot; alt=&quot;A white house, boarded up, sits in a forest.&quot;&gt;
+&lt;figcaption itemprop=&quot;title&quot;&gt;The house I found.&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;figure itemscope itemtype=&quot;http://n.whatwg.org/work&quot; itemref=&quot;licenses&quot;&gt;
+&lt;img itemprop=&quot;work&quot; src=&quot;images/mailbox.jpeg&quot; alt=&quot;Outside the house is a mailbox. It has a leaflet inside.&quot;&gt;
+&lt;figcaption itemprop=&quot;title&quot;&gt;The mailbox.&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;footer&gt;
+&lt;p id=&quot;licenses&quot;&gt;All images licensed under the &lt;a itemprop=&quot;license&quot;
+href=&quot;http://www.opensource.org/licenses/mit-license.php&quot;&gt;MIT
+license&lt;/a&gt;.&lt;/p&gt;
+&lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>The above results in two items with the type "<code>http://n.whatwg.org/work</code>",
+one with:</p>
+<dl><dt>work
+<dd><code>images/house.jpeg</code>
+<dt>title
+<dd>The house I found.
+<dt>license
+<dd><code>http://www.opensource.org/licenses/mit-license.php</code>
+</dl>
+<p>...and one with:</p>
+<dl><dt>work
+<dd><code>images/mailbox.jpeg</code>
+<dt>title
+<dd>The mailbox.
+<dt>license
+<dd><code>http://www.opensource.org/licenses/mit-license.php</code>
+</dl>
+</div>
+<h4 id=microdata-and-other-namespaces>Microdata and other namespaces</h4>
+<p>Currently, the <code><a href="microdata.html#attr-itemscope">itemscope</a></code>, <code><a href="microdata.html#names:-the-itemprop-attribute">itemprop</a></code>, and other microdata attributes are only defined for
+<a href="infrastructure.html#html-elements">HTML elements</a>. This means that attributes with the literal names "<code>itemscope</code>", "<code>itemprop</code>", etc, do not cause microdata
+processing to occur on elements in other namespaces, such as SVG.</p>
+<div>
+<p>Thus, in the following example there is only one item, not
+two.</p>
+<pre><code>&lt;p itemscope&gt;&lt;/p&gt; &lt;!-- this is an item (with no properties and no type) --&gt;
+&lt;svg itemscope&gt;&lt;/svg&gt; &lt;!-- this is not, it&apos;s just an <a href='https://svgwg.org/svg2-draft/struct.html#SVGElement' data-x-internal='svg-svg'>SVG <code>svg</code></a> element with an invalid unknown attribute --&gt;</code></pre>
+</div>
+<h3 id=mdvocabs>Sample microdata vocabularies</h3>
+<p>The vocabularies in this section are primarily intended to demonstrate how a vocabulary is
+specified, though they are also usable in their own right.</p>
+<h4 id=vcard>vCard</h4>
+<p>An item with the <a href="microdata.html#item-types">item type</a> <dfn id=md-vcard><code>http://microformats.org/profile/hcard</code></dfn> represents a person's or
+organization's contact information.</p>
+<p>This vocabulary does not <a href="microdata.html#support-global-identifiers-for-items">support global identifiers for items</a>.</p>
+<p>The following are the type's <a href="microdata.html#defined-property-name">defined property
+names</a>. They are based on the vocabulary defined in <cite>vCard Format Specification</cite>
+(<cite>vCard</cite>) and its extensions, where more information on how to interpret the values can
+be found. <a href="references.html#refsRFC6350">[RFC6350]</a></p>
+<dl><dt><dfn id=md-vcard-kind><code>kind</code></dfn><dd>
+<p>Describes what kind of contact the item represents.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text that is <a href=https://infra.spec.whatwg.org/#string-is data-x-internal=identical-to>identical
+to</a> one of the <a href="microdata.html#kind-strings">kind strings</a>.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vcard-kind">kind</a></code> may be present within
+each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-fn><code>fn</code></dfn><dd>
+<p>Gives the formatted text corresponding to the name of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Exactly one property with the name <code><a href="microdata.html#md-vcard-fn">fn</a></code> must be present within
+each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-n><code>n</code></dfn><dd>
+<p>Gives the structured name of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be an <a href="microdata.html#concept-item">item</a> with zero or more of each of the <code><a href="microdata.html#md-vcard-n-family-name">family-name</a></code>, <code><a href="microdata.html#md-vcard-n-given-name">given-name</a></code>, <code><a href="microdata.html#md-vcard-n-additional-name">additional-name</a></code>, <code><a href="microdata.html#md-vcard-n-honorific-prefix">honorific-prefix</a></code>, and <code><a href="microdata.html#md-vcard-n-honorific-suffix">honorific-suffix</a></code> properties.</p>
+<p>Exactly one property with the name <code><a href="microdata.html#md-vcard-n">n</a></code> must be present within
+each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-n-family-name><code>family-name</code></dfn> (inside <code><a href="microdata.html#md-vcard-n">n</a></code>)<dd>
+<p>Gives the family name of the person, or the full name of the organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-n-family-name">family-name</a></code> may be present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of the <code><a href="microdata.html#md-vcard-n">n</a></code> property of
+an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-n-given-name><code>given-name</code></dfn> (inside <code><a href="microdata.html#md-vcard-n">n</a></code>)<dd>
+<p>Gives the given-name of the person.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-n-given-name">given-name</a></code>
+may be present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of the <code><a href="microdata.html#md-vcard-n">n</a></code> property of
+an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-n-additional-name><code>additional-name</code></dfn> (inside <code><a href="microdata.html#md-vcard-n">n</a></code>)<dd>
+<p>Gives the any additional names of the person.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-n-additional-name">additional-name</a></code> may be present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of the <code><a href="microdata.html#md-vcard-n">n</a></code> property of
+an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-n-honorific-prefix><code>honorific-prefix</code></dfn> (inside <code><a href="microdata.html#md-vcard-n">n</a></code>)<dd>
+<p>Gives the honorific prefix of the person.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-n-honorific-prefix">honorific-prefix</a></code> may be present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of the <code><a href="microdata.html#md-vcard-n">n</a></code> property of
+an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-n-honorific-suffix><code>honorific-suffix</code></dfn> (inside <code><a href="microdata.html#md-vcard-n">n</a></code>)<dd>
+<p>Gives the honorific suffix of the person.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-n-honorific-suffix">honorific-suffix</a></code> may be present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of the <code><a href="microdata.html#md-vcard-n">n</a></code> property of
+an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-nickname><code>nickname</code></dfn><dd>
+<p>Gives the nickname of the person or organization.</p>
+<p>The nickname is the descriptive name given instead of or in addition to the one
+belonging to a person, place, or thing. It can also be used to specify a familiar form of a
+proper name specified by the <code><a href="microdata.html#md-vcard-fn">fn</a></code> or <code><a href="microdata.html#md-vcard-n">n</a></code> properties.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-nickname">nickname</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-photo><code>photo</code></dfn><dd>
+<p>Gives a photograph of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+URL</a>.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-photo">photo</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-bday><code>bday</code></dfn><dd>
+<p>Gives the birth date of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be a <a href="common-microsyntaxes.html#valid-date-string">valid date
+string</a>.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vcard-bday">bday</a></code> may be present within
+each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-anniversary><code>anniversary</code></dfn><dd>
+<p>Gives the birth date of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be a <a href="common-microsyntaxes.html#valid-date-string">valid date
+string</a>.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vcard-anniversary">anniversary</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-sex><code>sex</code></dfn><dd>
+<p>Gives the biological sex of the person.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be one of
+<code>F</code>, meaning "female",
+<code>M</code>, meaning "male",
+<code>N</code>, meaning "none or not applicable",
+<code>O</code>, meaning "other", or
+<code>U</code>, meaning "unknown".</p>
+<p>A single property with the name <code><a href="microdata.html#md-vcard-sex">sex</a></code> may be present within
+each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-gender-identity><code>gender-identity</code></dfn><dd>
+<p>Gives the gender identity of the person.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vcard-gender-identity">gender-identity</a></code>
+may be present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-adr><code>adr</code></dfn><dd>
+<p>Gives the delivery address of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be an <a href="microdata.html#concept-item">item</a> with zero or more <code><a href="microdata.html#md-vcard-adr-type">type</a></code>,
+<code><a href="microdata.html#md-vcard-adr-post-office-box">post-office-box</a></code>, <code><a href="microdata.html#md-vcard-adr-extended-address">extended-address</a></code>, and <code><a href="microdata.html#md-vcard-adr-street-address">street-address</a></code> properties, and optionally a <code><a href="microdata.html#md-vcard-adr-locality">locality</a></code> property, optionally a <code><a href="microdata.html#md-vcard-adr-region">region</a></code> property, optionally a <code><a href="microdata.html#md-vcard-adr-postal-code">postal-code</a></code> property, and optionally a <code><a href="microdata.html#md-vcard-adr-country-name">country-name</a></code> property.</p>
+<p>If no <code><a href="microdata.html#md-vcard-adr-type">type</a></code> properties are present within an <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of an <code><a href="microdata.html#md-vcard-adr">adr</a></code> property
+of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>, then the <a href="microdata.html#address-type-strings">address type string</a> <code><a href="microdata.html#md-vcard-type-adr-work">work</a></code> is
+implied.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-adr">adr</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-adr-type><code>type</code></dfn> (inside <code><a href="microdata.html#md-vcard-adr">adr</a></code>)<dd>
+<p>Gives the type of delivery address.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text that is <a href=https://infra.spec.whatwg.org/#string-is data-x-internal=identical-to>identical
+to</a> one of the <a href="microdata.html#address-type-strings">address type strings</a>.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-adr-type">type</a></code> may be
+present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of an <code><a href="microdata.html#md-vcard-adr">adr</a></code> property
+of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>, but within each such <code><a href="microdata.html#md-vcard-adr">adr</a></code> property <a href="microdata.html#concept-item">item</a> there must only
+be one <code><a href="microdata.html#md-vcard-adr-type">type</a></code> property per distinct value.</p>
+<dt><dfn id=md-vcard-adr-post-office-box><code>post-office-box</code></dfn> (inside <code><a href="microdata.html#md-vcard-adr">adr</a></code>)<dd>
+<p>Gives the post office box component of the delivery address of the person or
+organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-adr-post-office-box">post-office-box</a></code> may be present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of an <code><a href="microdata.html#md-vcard-adr">adr</a></code> property
+of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<p><cite>vCard</cite> urges authors not to use this field.</p>
+<dt><dfn id=md-vcard-adr-extended-address><code>extended-address</code></dfn> (inside <code><a href="microdata.html#md-vcard-adr">adr</a></code>)<dd>
+<p>Gives an additional component of the delivery address of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-adr-extended-address">extended-address</a></code> may be present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of an <code><a href="microdata.html#md-vcard-adr">adr</a></code> property
+of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<p><cite>vCard</cite> urges authors not to use this field.</p>
+<dt><dfn id=md-vcard-adr-street-address><code>street-address</code></dfn> (inside <code><a href="microdata.html#md-vcard-adr">adr</a></code>)<dd>
+<p>Gives the street address component of the delivery address of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-adr-street-address">street-address</a></code> may be present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of an <code><a href="microdata.html#md-vcard-adr">adr</a></code> property
+of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-adr-locality><code>locality</code></dfn> (inside <code><a href="microdata.html#md-vcard-adr">adr</a></code>)<dd>
+<p>Gives the locality component (e.g. city) of the delivery address of the person or
+organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vcard-adr-locality">locality</a></code> may be
+present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of an <code><a href="microdata.html#md-vcard-adr">adr</a></code> property
+of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-adr-region><code>region</code></dfn> (inside <code><a href="microdata.html#md-vcard-adr">adr</a></code>)<dd>
+<p>Gives the region component (e.g. state or province) of the delivery address of the person or
+organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vcard-adr-region">region</a></code> may be
+present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of an <code><a href="microdata.html#md-vcard-adr">adr</a></code> property
+of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-adr-postal-code><code>postal-code</code></dfn> (inside <code><a href="microdata.html#md-vcard-adr">adr</a></code>)<dd>
+<p>Gives the postal code component of the delivery address of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vcard-adr-postal-code">postal-code</a></code> may
+be present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of an <code><a href="microdata.html#md-vcard-adr">adr</a></code> property
+of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-adr-country-name><code>country-name</code></dfn> (inside <code><a href="microdata.html#md-vcard-adr">adr</a></code>)<dd>
+<p>Gives the country name component of the delivery address of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vcard-adr-country-name">country-name</a></code>
+may be present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of an <code><a href="microdata.html#md-vcard-adr">adr</a></code> property
+of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-tel><code>tel</code></dfn><dd>
+<p>Gives the telephone number of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be either text that can be
+interpreted as a telephone number as defined in the CCITT specifications E.163 and X.121, or an
+<a href="microdata.html#concept-item">item</a> with zero or more <code><a href="microdata.html#md-vcard-tel-type">type</a></code> properties and exactly one <code><a href="microdata.html#md-vcard-tel-value">value</a></code> property. <a href="references.html#refsE163">[E163]</a> <a href="references.html#refsX121">[X121]</a></p>
+<p>If no <code><a href="microdata.html#md-vcard-tel-type">type</a></code> properties are present within an <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of a <code><a href="microdata.html#md-vcard-tel">tel</a></code> property
+of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>, or if the <a href="microdata.html#concept-property-value">value</a> of such a <code><a href="microdata.html#md-vcard-tel">tel</a></code>
+property is text, then the <a href="microdata.html#telephone-type-strings">telephone type string</a>
+<code><a href="microdata.html#md-vcard-type-tel-voice">voice</a></code> is implied.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-tel">tel</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-tel-type><code>type</code></dfn> (inside <code><a href="microdata.html#md-vcard-tel">tel</a></code>)<dd>
+<p>Gives the type of telephone number.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text that is <a href=https://infra.spec.whatwg.org/#string-is data-x-internal=identical-to>identical
+to</a> one of the <a href="microdata.html#telephone-type-strings">telephone type strings</a>.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-tel-type">type</a></code> may be
+present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of a <code><a href="microdata.html#md-vcard-tel">tel</a></code> property
+of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>, but within each such <code><a href="microdata.html#md-vcard-tel">tel</a></code> property <a href="microdata.html#concept-item">item</a> there must only
+be one <code><a href="microdata.html#md-vcard-tel-type">type</a></code> property per distinct value.</p>
+<dt><dfn id=md-vcard-tel-value><code>value</code></dfn> (inside <code><a href="microdata.html#md-vcard-tel">tel</a></code>)<dd>
+<p>Gives the actual telephone number of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text that can be interpreted
+as a telephone number as defined in the CCITT specifications E.163 and X.121. <a href="references.html#refsE163">[E163]</a>
+<a href="references.html#refsX121">[X121]</a></p>
+<p>Exactly one property with the name <code><a href="microdata.html#md-vcard-tel-value">value</a></code> must be
+present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of a <code><a href="microdata.html#md-vcard-tel">tel</a></code> property
+of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-email><code>email</code></dfn><dd>
+<p>Gives the email address of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-email">email</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-impp><code>impp</code></dfn><dd>
+<p>Gives a <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> for instant messaging and presence protocol communications with the
+person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+URL</a>.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-impp">impp</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-lang><code>lang</code></dfn><dd>
+<p>Gives a language understood by the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be a valid BCP 47 language tag.
+<a href="references.html#refsBCP47">[BCP47]</a></p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-lang">lang</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-tz><code>tz</code></dfn><dd>
+<p>Gives the time zone of the person or organization.</p>
+<div>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text and must match the
+following syntax:</p>
+<ol><li>Either a U+002B PLUS SIGN character (+) or a U+002D HYPHEN-MINUS character (-).<li>A <a href="common-microsyntaxes.html#valid-non-negative-integer">valid non-negative integer</a> that is exactly two digits long and that
+represents a number in the range 00..23.<li>A U+003A COLON character (:).<li>A <a href="common-microsyntaxes.html#valid-non-negative-integer">valid non-negative integer</a> that is exactly two digits long and that
+represents a number in the range 00..59.</ol>
+</div>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-tz">tz</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-geo><code>geo</code></dfn><dd>
+<p>Gives the geographical position of the person or organization.</p>
+<div>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text and must match the
+following syntax:</p>
+<ol><li>Optionally, either a U+002B PLUS SIGN character (+) or a U+002D HYPHEN-MINUS character
+(-).<li>One or more <a href=https://infra.spec.whatwg.org/#ascii-digit data-x-internal=ascii-digits>ASCII digits</a>.<li>Optionally*, a U+002E FULL STOP character (.) followed by one or more <a href=https://infra.spec.whatwg.org/#ascii-digit data-x-internal=ascii-digits>ASCII
+digits</a>.<li>A U+003B SEMICOLON character (;).<li>Optionally, either a U+002B PLUS SIGN character (+) or a U+002D HYPHEN-MINUS character
+(-).<li>One or more <a href=https://infra.spec.whatwg.org/#ascii-digit data-x-internal=ascii-digits>ASCII digits</a>.<li>Optionally*, a U+002E FULL STOP character (.) followed by one or more <a href=https://infra.spec.whatwg.org/#ascii-digit data-x-internal=ascii-digits>ASCII
+digits</a>.</ol>
+</div>
+<p>The optional components marked with an asterisk (*) should be included, and should have six
+digits each.</p>
+<p>The value specifies latitude and longitude, in that order (i.e., "LAT LON"
+ordering), in decimal degrees. The longitude represents the location east and west of the prime
+meridian as a positive or negative real number, respectively. The latitude represents the
+location north and south of the equator as a positive or negative real number, respectively.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-geo">geo</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-title><code>title</code></dfn><dd>
+<p>Gives the job title, functional position or function of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-title">title</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-role><code>role</code></dfn><dd>
+<p>Gives the role, occupation, or business category of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-role">role</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-logo><code>logo</code></dfn><dd>
+<p>Gives the logo of the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+URL</a>.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-logo">logo</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-agent><code>agent</code></dfn><dd>
+<p>Gives the contact information of another person who will act on behalf of the person or
+organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be either an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>, or an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute URL</a>,
+or text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-agent">agent</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-org><code>org</code></dfn><dd>
+<p>Gives the name and units of the organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be either text or an <a href="microdata.html#concept-item">item</a> with one <code><a href="microdata.html#md-vcard-org-organization-name">organization-name</a></code> property and zero or more <code><a href="microdata.html#md-vcard-org-organization-unit">organization-unit</a></code> properties.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-org">org</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-org-organization-name><code>organization-name</code></dfn> (inside <code><a href="microdata.html#md-vcard-org">org</a></code>)<dd>
+<p>Gives the name of the organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Exactly one property with the name <code><a href="microdata.html#md-vcard-org-organization-name">organization-name</a></code> must be present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of an <code><a href="microdata.html#md-vcard-org">org</a></code> property
+of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-org-organization-unit><code>organization-unit</code></dfn> (inside <code><a href="microdata.html#md-vcard-org">org</a></code>)<dd>
+<p>Gives the name of the organization unit.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-org-organization-unit">organization-unit</a></code> may be present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of the <code><a href="microdata.html#md-vcard-org">org</a></code>
+property of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-member><code>member</code></dfn><dd>
+<p>Gives a <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> that represents a member of the group.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+URL</a>.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-member">member</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code> if the <a href="microdata.html#concept-item">item</a> also has a property with the name <code><a href="microdata.html#md-vcard-kind">kind</a></code> whose value is "<code><a href="microdata.html#md-vcard-kind-group">group</a></code>".</p>
+<dt><dfn id=md-vcard-related><code>related</code></dfn><dd>
+<p>Gives a relationship to another entity.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be an <a href="microdata.html#concept-item">item</a> with one <code><a href="microdata.html#md-vcard-related-url">url</a></code>
+property and one <code><a href="microdata.html#md-vcard-related-rel">rel</a></code> properties.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-related">related</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-related-url><code>url</code></dfn> (inside <code><a href="microdata.html#md-vcard-related">related</a></code>)<dd>
+<p>Gives the <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> for the related entity.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+URL</a>.</p>
+<p>Exactly one property with the name <code><a href="microdata.html#md-vcard-related-url">url</a></code> must be
+present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of a <code><a href="microdata.html#md-vcard-related">related</a></code>
+property of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-related-rel><code>rel</code></dfn> (inside <code><a href="microdata.html#md-vcard-related">related</a></code>)<dd>
+<p>Gives the relationship between the entity and the related entity.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text that is <a href=https://infra.spec.whatwg.org/#string-is data-x-internal=identical-to>identical
+to</a> one of the <a href="microdata.html#relationship-strings">relationship strings</a>.</p>
+<p>Exactly one property with the name <code><a href="microdata.html#md-vcard-related-rel">rel</a></code> must be
+present within the <a href="microdata.html#concept-item">item</a> that forms the <a href="microdata.html#concept-property-value">value</a> of a <code><a href="microdata.html#md-vcard-related">related</a></code>
+property of an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-categories><code>categories</code></dfn><dd>
+<p>Gives the name of a category or tag that the person or organization could be classified
+as.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-categories">categories</a></code>
+may be present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-note><code>note</code></dfn><dd>
+<p>Gives supplemental information or a comment about the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-note">note</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-rev><code>rev</code></dfn><dd>
+<p>Gives the revision date and time of the contact information.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text that is a <a href="common-microsyntaxes.html#valid-global-date-and-time-string">valid
+global date and time string</a>.</p>
+<p>The value distinguishes the current revision of the information for other
+renditions of the information.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-rev">rev</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-sound><code>sound</code></dfn><dd>
+<p>Gives a sound file relating to the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+URL</a>.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-sound">sound</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-uid><code>uid</code></dfn><dd>
+<p>Gives a globally unique identifier corresponding to the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vcard-uid">uid</a></code> may be present within
+each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+<dt><dfn id=md-vcard-url><code>url</code></dfn><dd>
+<p>Gives a <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> relating to the person or organization.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+URL</a>.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vcard-url">url</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.</p>
+</dl>
+<p>The <dfn id=kind-strings>kind strings</dfn> are:</p>
+<dl><dt><dfn id=md-vcard-kind-individual><code>individual</code></dfn><dd>
+<p>Indicates a single entity (e.g. a person).</p>
+<dt><dfn id=md-vcard-kind-group><code>group</code></dfn><dd>
+<p>Indicates multiple entities (e.g. a mailing list).</p>
+<dt><dfn id=md-vcard-kind-org><code>org</code></dfn><dd>
+<p>Indicates a single entity that is not a person (e.g. a company).</p>
+<dt><dfn id=md-vcard-kind-location><code>location</code></dfn><dd>
+<p>Indicates a geographical place (e.g. an office building).</p>
+</dl>
+<p>The <dfn id=address-type-strings>address type strings</dfn> are:</p>
+<dl><dt><dfn id=md-vcard-type-adr-home><code>home</code></dfn><dd>
+<p>Indicates a delivery address for a residence.</p>
+<dt><dfn id=md-vcard-type-adr-work><code>work</code></dfn><dd>
+<p>Indicates a delivery address for a place of work.</p>
+</dl>
+<p>The <dfn id=telephone-type-strings>telephone type strings</dfn> are:</p>
+<dl><dt><dfn id=md-vcard-type-tel-home><code>home</code></dfn><dd>
+<p>Indicates a residential number.</p>
+<dt><dfn id=md-vcard-type-tel-work><code>work</code></dfn><dd>
+<p>Indicates a telephone number for a place of work.</p>
+<dt><dfn id=md-vcard-type-tel-text><code>text</code></dfn><dd>
+<p>Indicates that the telephone number supports text messages (SMS).</p>
+<dt><dfn id=md-vcard-type-tel-voice><code>voice</code></dfn><dd>
+<p>Indicates a voice telephone number.</p>
+<dt><dfn id=md-vcard-type-tel-fax><code>fax</code></dfn><dd>
+<p>Indicates a facsimile telephone number.</p>
+<dt><dfn id=md-vcard-type-tel-cell><code>cell</code></dfn><dd>
+<p>Indicates a cellular telephone number.</p>
+<dt><dfn id=md-vcard-type-tel-video><code>video</code></dfn><dd>
+<p>Indicates a video conferencing telephone number.</p>
+<dt><dfn id=md-vcard-type-tel-pager><code>pager</code></dfn><dd>
+<p>Indicates a paging device telephone number.</p>
+<dt><dfn id=md-vcard-type-tel-textphone><code>textphone</code></dfn><dd>
+<p>Indicates a telecommunication device for people with hearing or speech difficulties.</p>
+</dl>
+<p>The <dfn id=relationship-strings>relationship strings</dfn> are:</p>
+<dl><dt><dfn id=md-vcard-rel-emergency><code>emergency</code></dfn><dd>
+<p>An emergency contact.</p>
+<dt><dfn id=md-vcard-rel-agent><code>agent</code></dfn><dd>
+<p>Another entity that acts on behalf of this entity.</p>
+<dt><dfn id=md-vcard-rel-contact>contact</dfn><dt><dfn id=md-vcard-rel-acquaintance>acquaintance</dfn><dt><dfn id=md-vcard-rel-friend>friend</dfn><dt><dfn id=md-vcard-rel-met>met</dfn><dt><dfn id=md-vcard-rel-co-worker>worker</dfn><dt><dfn id=md-vcard-rel-colleague>colleague</dfn><dt><dfn id=md-vcard-rel-co-resident>resident</dfn><dt><dfn id=md-vcard-rel-neighbor>neighbor</dfn><dt><dfn id=md-vcard-rel-child>child</dfn><dt><dfn id=md-vcard-rel-parent>parent</dfn><dt><dfn id=md-vcard-rel-sibling>sibling</dfn><dt><dfn id=md-vcard-rel-spouse>spouse</dfn><dt><dfn id=md-vcard-rel-kin>kin</dfn><dt><dfn id=md-vcard-rel-muse>muse</dfn><dt><dfn id=md-vcard-rel-crush>crush</dfn><dt><dfn id=md-vcard-rel-date>date</dfn><dt><dfn id=md-vcard-rel-sweetheart>sweetheart</dfn><dt><dfn id=md-vcard-rel-me>me</dfn><dd>
+<p>Has the meaning defined in XFN. <a href="references.html#refsXFN">[XFN]</a></p>
+</dl>
+<h5 id=conversion-to-vcard>Conversion to vCard</h5>
+<div>
+<p>Given a list of nodes <var>nodes</var> in a <code><a href="dom.html#document">Document</a></code>, a user agent must
+run the following algorithm to <dfn id=extracting-a-vcard>extract any vCard data represented
+by those nodes</dfn> (only the first vCard is returned):</p>
+<ol><li><p>If none of the nodes in <var>nodes</var> are <a href="microdata.html#concept-item">items</a> with the <a href="microdata.html#item-types">item type</a> <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>, then there is no vCard. Abort the
+algorithm, returning nothing.<li><p>Let <var>node</var> be the first node in <var>nodes</var> that is an
+<a href="microdata.html#concept-item">item</a> with the <a href="microdata.html#item-types">item type</a> <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>.<li><p>Let <var>output</var> be an empty string.<li><p><a href="microdata.html#add-a-vcard-line">Add a vCard line</a> with the type "<code>BEGIN</code>" and the value
+"<code>VCARD</code>" to <var>output</var>.<li><p><a href="microdata.html#add-a-vcard-line">Add a vCard line</a> with the type "<code>PROFILE</code>" and the value
+"<code>VCARD</code>" to <var>output</var>.<li><p><a href="microdata.html#add-a-vcard-line">Add a vCard line</a> with the type "<code>VERSION</code>" and the value
+"<code>4.0</code>" to <var>output</var>.<li><p><a href="microdata.html#add-a-vcard-line">Add a vCard line</a> with the type "<code>SOURCE</code>" and the result
+of <a href="microdata.html#escaping-the-vcard-text-string">escaping the vCard text string</a> that is the document's <a href=https://dom.spec.whatwg.org/#concept-document-urls-address" data-x-internal="the-document's-address">URL</a> as the value to <var>output</var>.<li><p>If <a href="dom.html#the-title-element-2">the <code>title</code> element</a> is not null, <a href="microdata.html#add-a-vcard-line">add a vCard line</a>
+with the type "<code>NAME</code>" and with the result of <a href="microdata.html#escaping-the-vcard-text-string">escaping the vCard text
+string</a> obtained from <a href="dom.html#the-title-element-2">the <code>title</code> element</a>'s <a href=https://dom.spec.whatwg.org/#concept-descendant-text-content data-x-internal=descendant-text-content>descendant
+text content</a> as the value to <var>output</var>.<li><p>Let <var>sex</var> be the empty string.<li><p>Let <var>gender-identity</var> be the empty string.<li>
+<p>For each element <var>element</var> that is <a href="microdata.html#the-properties-of-an-item">a property of the item</a> <var>node</var>: for each name <var>name</var> in <var>element</var>'s <a href="microdata.html#property-names">property names</a>, run the
+following substeps:</p>
+<ol><li><p>Let <var>parameters</var> be an empty set of name-value pairs.<li>
+<p>Run the appropriate set of substeps from the following list. The steps will set a variable
+<var>value</var>, which is used in the next step.</p>
+<dl><dt>If the property's <a href="microdata.html#concept-property-value">value</a> is an <a href="microdata.html#concept-item">item</a> <var>subitem</var> and <var>name</var> is
+<code><a href="microdata.html#md-vcard-n">n</a></code><dd>
+<ol><li><p>Let <var>value</var> be the empty string.<li><p>Append to <var>value</var> the result of <a href="microdata.html#collecting-the-first-vcard-subproperty">collecting the first vCard
+subproperty</a> named <code><a href="microdata.html#md-vcard-n-family-name">family-name</a></code> in <var>subitem</var>.</p>
+<li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href="microdata.html#collecting-the-first-vcard-subproperty">collecting the first vCard
+subproperty</a> named <code><a href="microdata.html#md-vcard-n-given-name">given-name</a></code> in <var>subitem</var>.</p>
+<li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href="microdata.html#collecting-the-first-vcard-subproperty">collecting the first vCard
+subproperty</a> named <code><a href="microdata.html#md-vcard-n-additional-name">additional-name</a></code> in
+<var>subitem</var>.</p>
+<li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href="microdata.html#collecting-the-first-vcard-subproperty">collecting the first vCard
+subproperty</a> named <code><a href="microdata.html#md-vcard-n-honorific-prefix">honorific-prefix</a></code>
+in <var>subitem</var>.</p>
+<li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href="microdata.html#collecting-the-first-vcard-subproperty">collecting the first vCard
+subproperty</a> named <code><a href="microdata.html#md-vcard-n-honorific-suffix">honorific-suffix</a></code>
+in <var>subitem</var>.</p>
+</ol>
+<dt>If the property's <a href="microdata.html#concept-property-value">value</a> is an <a href="microdata.html#concept-item">item</a> <var>subitem</var> and <var>name</var> is
+<code><a href="microdata.html#md-vcard-adr">adr</a></code><dd>
+<ol><li><p>Let <var>value</var> be the empty string.<li><p>Append to <var>value</var> the result of <a href="microdata.html#collecting-vcard-subproperties">collecting vCard
+subproperties</a> named <code><a href="microdata.html#md-vcard-adr-post-office-box">post-office-box</a></code> in <var>subitem</var>.</p>
+<li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href="microdata.html#collecting-vcard-subproperties">collecting vCard
+subproperties</a> named <code><a href="microdata.html#md-vcard-adr-extended-address">extended-address</a></code> in <var>subitem</var>.</p>
+<li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href="microdata.html#collecting-vcard-subproperties">collecting vCard
+subproperties</a> named <code><a href="microdata.html#md-vcard-adr-street-address">street-address</a></code>
+in <var>subitem</var>.</p>
+<li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href="microdata.html#collecting-the-first-vcard-subproperty">collecting the first vCard
+subproperty</a> named <code><a href="microdata.html#md-vcard-adr-locality">locality</a></code> in <var>subitem</var>.</p>
+<li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href="microdata.html#collecting-the-first-vcard-subproperty">collecting the first vCard
+subproperty</a> named <code><a href="microdata.html#md-vcard-adr-region">region</a></code> in <var>subitem</var>.</p>
+<li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href="microdata.html#collecting-the-first-vcard-subproperty">collecting the first vCard
+subproperty</a> named <code><a href="microdata.html#md-vcard-adr-postal-code">postal-code</a></code> in <var>subitem</var>.</p>
+<li>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append to <var>value</var> the result of <a href="microdata.html#collecting-the-first-vcard-subproperty">collecting the first vCard
+subproperty</a> named <code><a href="microdata.html#md-vcard-adr-country-name">country-name</a></code> in
+<var>subitem</var>.</p>
+<li><p>If there is a property named <code><a href="microdata.html#md-vcard-adr-type">type</a></code> in
+<var>subitem</var>, and the first such property has a <a href="microdata.html#concept-property-value">value</a> that is not an <a href="microdata.html#concept-item">item</a> and whose value consists only of <a href=https://infra.spec.whatwg.org/#ascii-alphanumeric data-x-internal=alphanumeric-ascii-characters>ASCII alphanumerics</a>, then add a parameter named "<code>TYPE</code>" whose value is the <a href="microdata.html#concept-property-value">value</a> of that property to
+<var>parameters</var>.</ol>
+<dt>If the property's <a href="microdata.html#concept-property-value">value</a> is an <a href="microdata.html#concept-item">item</a> <var>subitem</var> and <var>name</var> is
+<code><a href="microdata.html#md-vcard-org">org</a></code><dd>
+<ol><li><p>Let <var>value</var> be the empty string.<li><p>Append to <var>value</var> the result of <a href="microdata.html#collecting-the-first-vcard-subproperty">collecting the first vCard
+subproperty</a> named <code><a href="microdata.html#md-vcard-org-organization-name">organization-name</a></code> in <var>subitem</var>.</p>
+<li>
+<p>For each property named <code><a href="microdata.html#md-vcard-org-organization-unit">organization-unit</a></code> in <var>subitem</var>, run the following steps:</p>
+<ol><li><p>If the <a href="microdata.html#concept-property-value">value</a> of the property is an
+<a href="microdata.html#concept-item">item</a>, then skip this property.<li><p>Append a U+003B SEMICOLON character (;) to <var>value</var>.<li><p>Append the result of <a href="microdata.html#escaping-the-vcard-text-string">escaping the vCard text string</a> given by the
+<a href="microdata.html#concept-property-value">value</a> of the property to <var>value</var>.</ol>
+</ol>
+<dt>If the property's <a href="microdata.html#concept-property-value">value</a> is an <a href="microdata.html#concept-item">item</a> <var>subitem</var> with the <a href="microdata.html#item-types">item type</a> <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>
+and <var>name</var> is <code><a href="microdata.html#md-vcard-related">related</a></code><dd>
+<ol><li><p>Let <var>value</var> be the empty string.<li><p>If there is a property named <code><a href="microdata.html#md-vcard-related-url">url</a></code> in
+<var>subitem</var>, and its element is a <a href="microdata.html#url-property-elements">URL property
+element</a>, then append the result of <a href="microdata.html#escaping-the-vcard-text-string">escaping the vCard text string</a> given
+by the <a href="microdata.html#concept-property-value">value</a> of the first such property to
+<var>value</var>, and add a parameter with the name "<code>VALUE</code>" and the
+value "<code>URI</code>" to <var>parameters</var>.<li><p>If there is a property named <code><a href="microdata.html#md-vcard-related-rel">rel</a></code> in
+<var>subitem</var>, and the first such property has a <a href="microdata.html#concept-property-value">value</a> that is not an <a href="microdata.html#concept-item">item</a> and whose value consists only of <a href=https://infra.spec.whatwg.org/#ascii-alphanumeric data-x-internal=alphanumeric-ascii-characters>ASCII alphanumerics</a>, then add a parameter named "<code>RELATION</code>" whose value is the <a href="microdata.html#concept-property-value">value</a> of that property to
+<var>parameters</var>.</ol>
+<dt>If the property's <a href="microdata.html#concept-property-value">value</a> is an <a href="microdata.html#concept-item">item</a> and <var>name</var> is none of the above<dd>
+<ol><li><p>Let <var>value</var> be the result of <a href="microdata.html#collecting-the-first-vcard-subproperty">collecting the first vCard
+subproperty</a> named <code>value</code> in <var>subitem</var>.</p>
+<li><p>If there is a property named <code>type</code> in <var>subitem</var>, and
+the first such property has a <a href="microdata.html#concept-property-value">value</a> that is
+not an <a href="microdata.html#concept-item">item</a> and whose value consists only of <a href=https://infra.spec.whatwg.org/#ascii-alphanumeric data-x-internal=alphanumeric-ascii-characters>ASCII alphanumerics</a>, then add a parameter named "<code>TYPE</code>" whose value is the <a href="microdata.html#concept-property-value">value</a> of that property to
+<var>parameters</var>.</ol>
+<dt>If the property's <a href="microdata.html#concept-property-value">value</a> is not an <a href="microdata.html#concept-item">item</a> and its <var>name</var> is <code><a href="microdata.html#md-vcard-sex">sex</a></code><dd>
+<p>If this is the first such property to be found, set <var>sex</var> to the
+property's <a href="microdata.html#concept-property-value">value</a>.</p>
+<dt>If the property's <a href="microdata.html#concept-property-value">value</a> is not an <a href="microdata.html#concept-item">item</a> and its <var>name</var> is <code><a href="microdata.html#md-vcard-gender-identity">gender-identity</a></code><dd>
+<p>If this is the first such property to be found, set <var>gender-identity</var>
+to the property's <a href="microdata.html#concept-property-value">value</a>.</p>
+<dt>Otherwise (the property's <a href="microdata.html#concept-property-value">value</a> is not an
+<a href="microdata.html#concept-item">item</a>)<dd>
+<ol><li><p>Let <var>value</var> be the property's <a href="microdata.html#concept-property-value">value</a>.<li><p>If <var>element</var> is one of the <a href="microdata.html#url-property-elements">URL property elements</a>, add
+a parameter with the name "<code>VALUE</code>" and the value "<code>URI</code>" to <var>parameters</var>.<li><p>Otherwise, if <var>name</var> is <code><a href="microdata.html#md-vcard-bday">bday</a></code> or
+<code><a href="microdata.html#md-vcard-anniversary">anniversary</a></code> and the <var>value</var> is
+a <a href="common-microsyntaxes.html#valid-date-string">valid date string</a>, add a parameter with the name "<code>VALUE</code>" and the value "<code>DATE</code>" to <var>parameters</var>.<li><p>Otherwise, if <var>name</var> is <code><a href="microdata.html#md-vcard-rev">rev</a></code> and
+the <var>value</var> is a <a href="common-microsyntaxes.html#valid-global-date-and-time-string">valid global date and time string</a>, add a
+parameter with the name "<code>VALUE</code>" and the value "<code>DATE-TIME</code>" to <var>parameters</var>.<li><p>Prefix every U+005C REVERSE SOLIDUS character (\) in <var>value</var> with
+another U+005C REVERSE SOLIDUS character (\).<li><p>Prefix every U+002C COMMA character (,) in <var>value</var> with a U+005C
+REVERSE SOLIDUS character (\).<li><p>Unless <var>name</var> is <code><a href="microdata.html#md-vcard-geo">geo</a></code>, prefix
+every U+003B SEMICOLON character (;) in <var>value</var> with a U+005C REVERSE
+SOLIDUS character (\).<li><p>Replace every U+000D CARRIAGE RETURN U+000A LINE FEED character pair (CRLF) in <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed by a U+006E LATIN
+SMALL LETTER N character (n).<li><p>Replace every remaining U+000D CARRIAGE RETURN (CR) or U+000A LINE FEED (LF)
+character in <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed
+by a U+006E LATIN SMALL LETTER N character (n).</ol>
+</dl>
+<li>
+<p><a href="microdata.html#add-a-vcard-line">Add a vCard line</a> with the type <var>name</var>, the parameters <var>parameters</var>, and the value <var>value</var> to <var>output</var>.</p>
+</ol>
+<li><p>If either <var>sex</var> or <var>gender-identity</var> has a value that
+is not the empty string, <a href="microdata.html#add-a-vcard-line">add a vCard line</a> with the type "<code>GENDER</code>" and the value consisting of the concatenation of <var>sex</var>,
+a U+003B SEMICOLON character (;), and <var>gender-identity</var> to <var>output</var>.<li><p><a href="microdata.html#add-a-vcard-line">Add a vCard line</a> with the type "<code>END</code>" and the value
+"<code>VCARD</code>" to <var>output</var>.</ol>
+</div>
+<div>
+<p>When the above algorithm says that the user agent is to <dfn id=add-a-vcard-line>add a vCard line</dfn> consisting
+of a type <var>type</var>, optionally some parameters, and a value <var>value</var> to a string <var>output</var>, it must run the following steps:</p>
+<ol><li><p>Let <var>line</var> be an empty string.
+<li><p>Append <var>type</var>, <a href=https://infra.spec.whatwg.org/#ascii-uppercase data-x-internal=converted-to-ascii-uppercase>converted to ASCII uppercase</a>, to <var>line</var>.<li>
+<p>If there are any parameters, then for each parameter, in the order that they were added, run
+these substeps:</p>
+<ol><li><p>Append a U+003B SEMICOLON character (;) to <var>line</var>.<li><p>Append the parameter's name to <var>line</var>.<li><p>Append a U+003D EQUALS SIGN character (=) to <var>line</var>.<li><p>Append the parameter's value to <var>line</var>.</ol>
+<li><p>Append a U+003A COLON character (:) to <var>line</var>.<li><p>Append <var>value</var> to <var>line</var>.<li><p>Let <var>maximum length</var> be 75.<li>
+<p>While <var>line</var>'s <a href=https://infra.spec.whatwg.org/#string-code-point-length data-x-internal=code-point-length>code point length</a> is greater than <var>maximum
+length</var>:</p>
+<ol><li><p>Append the first <var>maximum length</var> code points of <var>line</var> to
+<var>output</var>.<li><p>Remove the first <var>maximum length</var> code points from <var>line</var>.<li><p>Append a U+000D CARRIAGE RETURN character (CR) to <var>output</var>.<li><p>Append a U+000A LINE FEED character (LF) to <var>output</var>.<li><p>Append a U+0020 SPACE character to <var>output</var>.<li><p>Let <var>maximum length</var> be 74.</ol>
+<li><p>Append (what remains of) <var>line</var> to <var>output</var>.<li><p>Append a U+000D CARRIAGE RETURN character (CR) to <var>output</var>.<li><p>Append a U+000A LINE FEED character (LF) to <var>output</var>.</ol>
+</div>
+<div>
+<p>When the steps above require the user agent to obtain the result of <dfn id=collecting-vcard-subproperties>collecting vCard
+subproperties</dfn> named <var>subname</var> in <var>subitem</var>, the user
+agent must run the following steps:</p>
+<ol><li><p>Let <var>value</var> be the empty string.<li>
+<p>For each property named <var>subname</var> in the item <var>subitem</var>,
+run the following substeps:</p>
+<ol><li><p>If the <a href="microdata.html#concept-property-value">value</a> of the property is itself an
+<a href="microdata.html#concept-item">item</a>, then skip this property.<li><p>If this is not the first property named <var>subname</var> in <var>subitem</var> (ignoring any that were skipped by the previous step), then append a
+U+002C COMMA character (,) to <var>value</var>.<li><p>Append the result of <a href="microdata.html#escaping-the-vcard-text-string">escaping the vCard text string</a> given by the <a href="microdata.html#concept-property-value">value</a> of the property to <var>value</var>.</ol>
+<li><p>Return <var>value</var>.</ol>
+</div>
+<div>
+<p>When the steps above require the user agent to obtain the result of <dfn id=collecting-the-first-vcard-subproperty>collecting the first
+vCard subproperty</dfn> named <var>subname</var> in <var>subitem</var>, the user
+agent must run the following steps:</p>
+<ol><li><p>If there are no properties named <var>subname</var> in <var>subitem</var>, then return the
+empty string.<li><p>If the <a href="microdata.html#concept-property-value">value</a> of the first property named
+<var>subname</var> in <var>subitem</var> is an <a href="microdata.html#concept-item">item</a>, then
+return the empty string.<li><p>Return the result of <a href="microdata.html#escaping-the-vcard-text-string">escaping the vCard text string</a> given by the <a href="microdata.html#concept-property-value">value</a> of the first property named <var>subname</var> in
+<var>subitem</var>.</ol>
+</div>
+<div>
+<p>When the above algorithms say the user agent is to <dfn id=escaping-the-vcard-text-string>escape the vCard text string</dfn> <var>value</var>, the user agent must use the
+following steps:</p>
+<ol><li><p>Prefix every U+005C REVERSE SOLIDUS character (\) in <var>value</var> with
+another U+005C REVERSE SOLIDUS character (\).<li><p>Prefix every U+002C COMMA character (,) in <var>value</var> with a U+005C REVERSE
+SOLIDUS character (\).<li><p>Prefix every U+003B SEMICOLON character (;) in <var>value</var> with a U+005C
+REVERSE SOLIDUS character (\).<li><p>Replace every U+000D CARRIAGE RETURN U+000A LINE FEED character pair (CRLF) in <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed by a U+006E LATIN SMALL
+LETTER N character (n).<li><p>Replace every remaining U+000D CARRIAGE RETURN (CR) or U+000A LINE FEED (LF) character in
+<var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed by a U+006E LATIN
+SMALL LETTER N character (n).<li><p>Return the mutated <var>value</var>.</ol>
+</div>
+<p>This algorithm can generate invalid vCard output, if the input does not conform to
+the rules described for the <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>
+<a href="microdata.html#item-types">item type</a> and <a href="microdata.html#defined-property-name">defined property
+names</a>.</p>
+<h5 id=examples-2>Examples</h5>
+<p><i>This section is non-normative.</i></p>
+<div>
+<p>Here is a long example vCard for a fictional character called "Jack Bauer":</p>
+<pre><code>&lt;section id=&quot;jack&quot; itemscope itemtype=&quot;http://microformats.org/profile/hcard&quot;&gt;
+&lt;h1 itemprop=&quot;fn&quot;&gt;
+&lt;span itemprop=&quot;n&quot; itemscope&gt;
+&lt;span itemprop=&quot;given-name&quot;&gt;Jack&lt;/span&gt;
+&lt;span itemprop=&quot;family-name&quot;&gt;Bauer&lt;/span&gt;
+&lt;/span&gt;
+&lt;/h1&gt;
+&lt;img itemprop=&quot;photo&quot; alt=&quot;&quot; src=&quot;jack-bauer.jpg&quot;&gt;
+&lt;p itemprop=&quot;org&quot; itemscope&gt;
+&lt;span itemprop=&quot;organization-name&quot;&gt;Counter-Terrorist Unit&lt;/span&gt;
+(&lt;span itemprop=&quot;organization-unit&quot;&gt;Los Angeles Division&lt;/span&gt;)
+&lt;/p&gt;
+&lt;p&gt;
+&lt;span itemprop=&quot;adr&quot; itemscope&gt;
+&lt;span itemprop=&quot;street-address&quot;&gt;10201 W. Pico Blvd.&lt;/span&gt;&lt;br&gt;
+&lt;span itemprop=&quot;locality&quot;&gt;Los Angeles&lt;/span&gt;,
+&lt;span itemprop=&quot;region&quot;&gt;CA&lt;/span&gt;
+&lt;span itemprop=&quot;postal-code&quot;&gt;90064&lt;/span&gt;&lt;br&gt;
+&lt;span itemprop=&quot;country-name&quot;&gt;United States&lt;/span&gt;&lt;br&gt;
+&lt;/span&gt;
+&lt;span itemprop=&quot;geo&quot;&gt;34.052339;-118.410623&lt;/span&gt;
+&lt;/p&gt;
+&lt;h2&gt;Assorted Contact Methods&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li itemprop=&quot;tel&quot; itemscope&gt;
+&lt;span itemprop=&quot;value&quot;&gt;+1 (310) 597 3781&lt;/span&gt; &lt;span itemprop=&quot;type&quot;&gt;work&lt;/span&gt;
+&lt;meta itemprop=&quot;type&quot; content=&quot;voice&quot;&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a itemprop=&quot;url&quot; href=&quot;https://en.wikipedia.org/wiki/Jack_Bauer&quot;&gt;I&apos;m on Wikipedia&lt;/a&gt;
+so you can leave a message on my user talk page.&lt;/li&gt;
+&lt;li&gt;&lt;a itemprop=&quot;url&quot; href=&quot;http://www.jackbauerfacts.com/&quot;&gt;Jack Bauer Facts&lt;/a&gt;&lt;/li&gt;
+&lt;li itemprop=&quot;email&quot;&gt;&lt;a href=&quot;mailto:j.bauer@la.ctu.gov.invalid&quot;&gt;j.bauer@la.ctu.gov.invalid&lt;/a&gt;&lt;/li&gt;
+&lt;li itemprop=&quot;tel&quot; itemscope&gt;
+&lt;span itemprop=&quot;value&quot;&gt;+1 (310) 555 3781&lt;/span&gt; &lt;span&gt;
+&lt;meta itemprop=&quot;type&quot; content=&quot;cell&quot;&gt;mobile phone&lt;/span&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ins datetime=&quot;2008-07-20 21:00:00+01:00&quot;&gt;
+&lt;meta itemprop=&quot;rev&quot; content=&quot;2008-07-20 21:00:00+01:00&quot;&gt;
+&lt;p itemprop=&quot;tel&quot; itemscope&gt;&lt;strong&gt;Update!&lt;/strong&gt;
+My new &lt;span itemprop=&quot;type&quot;&gt;home&lt;/span&gt; phone number is
+&lt;span itemprop=&quot;value&quot;&gt;01632 960 123&lt;/span&gt;.&lt;/p&gt;
+&lt;/ins&gt;
+&lt;/section&gt;</code></pre>
+<p>The odd line wrapping is needed because newlines are meaningful in microdata: newlines would
+be preserved in a conversion to, for example, the vCard format.</p>
+</div>
+<div>
+<p>This example shows a site's contact details (using the <code><a href="sections.html#the-address-element">address</a></code> element)
+containing an address with two street components:</p>
+<pre><code>&lt;address itemscope itemtype=&quot;http://microformats.org/profile/hcard&quot;&gt;
+&lt;strong itemprop=&quot;fn&quot;&gt;&lt;span itemprop=&quot;n&quot; itemscope&gt;&lt;span itemprop=&quot;given-name&quot;&gt;Alfred&lt;/span&gt;
+&lt;span itemprop=&quot;family-name&quot;&gt;Person&lt;/span&gt;&lt;/span&gt;&lt;/strong&gt; &lt;br&gt;
+&lt;span itemprop=&quot;adr&quot; itemscope&gt;
+&lt;span itemprop=&quot;street-address&quot;&gt;1600 Amphitheatre Parkway&lt;/span&gt; &lt;br&gt;
+&lt;span itemprop=&quot;street-address&quot;&gt;Building 43, Second Floor&lt;/span&gt; &lt;br&gt;
+&lt;span itemprop=&quot;locality&quot;&gt;Mountain View&lt;/span&gt;,
+&lt;span itemprop=&quot;region&quot;&gt;CA&lt;/span&gt; &lt;span itemprop=&quot;postal-code&quot;&gt;94043&lt;/span&gt;
+&lt;/span&gt;
+&lt;/address&gt;</code></pre>
+</div>
+<div>
+<p>The vCard vocabulary can be used to just mark up people's names:</p>
+<pre><code>&lt;span itemscope itemtype=&quot;http://microformats.org/profile/hcard&quot;
+&gt;&lt;span itemprop=fn&gt;&lt;span itemprop=&quot;n&quot; itemscope&gt;&lt;span itemprop=&quot;given-name&quot;
+&gt;George&lt;/span&gt; &lt;span itemprop=&quot;family-name&quot;&gt;Washington&lt;/span&gt;&lt;/span
+&gt;&lt;/span&gt;&lt;/span&gt;</code></pre>
+<p>This creates a single item with a two name-value pairs, one with the name "fn" and the value
+"George Washington", and the other with the name "n" and a second item as its value, the second
+item having the two name-value pairs "given-name" and "family-name" with the values "George" and
+"Washington" respectively. This is defined to map to the following vCard:</p>
+<pre>BEGIN:VCARD
+PROFILE:VCARD
+VERSION:4.0
+SOURCE:<var>document's address</var>
+FN:George Washington
+N:Washington;George;;;
+END:VCARD</pre>
+</div>
+<h4 id=vevent>vEvent</h4>
+<p>An item with the <a href="microdata.html#item-types">item type</a> <dfn id=md-vevent><code>http://microformats.org/profile/hcalendar#vevent</code></dfn> represents
+an event.</p>
+<p>This vocabulary does not <a href="microdata.html#support-global-identifiers-for-items">support global identifiers for items</a>.</p>
+<p>The following are the type's <a href="microdata.html#defined-property-name">defined property
+names</a>. They are based on the vocabulary defined in <cite>Internet Calendaring and
+Scheduling Core Object Specification</cite> (<cite>iCalendar</cite>), where more information on
+how to interpret the values can be found. <a href="references.html#refsRFC5545">[RFC5545]</a></p>
+<p>Only the parts of the iCalendar vocabulary relating to events are used here; this
+vocabulary cannot express a complete iCalendar instance.</p>
+<dl><dt><dfn id=md-vevent-attach><code>attach</code></dfn><dd>
+<p>Gives the address of an associated document for the event.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+URL</a>.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vevent-attach">attach</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-categories><code>categories</code></dfn><dd>
+<p>Gives the name of a category or tag that the event could be classified as.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vevent-categories">categories</a></code>
+may be present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-class><code>class</code></dfn><dd>
+<p>Gives the access classification of the information regarding the event.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text with one of the following
+values:</p>
+<ul><li><code>public</code><li><code>private</code><li><code>confidential</code></ul>
+<p>This is merely advisory and cannot be considered a confidentiality
+measure.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vevent-class">class</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-comment><code>comment</code></dfn><dd>
+<p>Gives a comment regarding the event.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vevent-comment">comment</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-description><code>description</code></dfn><dd>
+<p>Gives a detailed description of the event.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vevent-description">description</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-geo><code>geo</code></dfn><dd>
+<p>Gives the geographical position of the event.</p>
+<div>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text and must match the
+following syntax:</p>
+<ol><li>Optionally, either a U+002B PLUS SIGN character (+) or a U+002D HYPHEN-MINUS character
+(-).<li>One or more <a href=https://infra.spec.whatwg.org/#ascii-digit data-x-internal=ascii-digits>ASCII digits</a>.<li>Optionally*, a U+002E FULL STOP character (.) followed by one or more <a href=https://infra.spec.whatwg.org/#ascii-digit data-x-internal=ascii-digits>ASCII
+digits</a>.<li>A U+003B SEMICOLON character (;).<li>Optionally, either a U+002B PLUS SIGN character (+) or a U+002D HYPHEN-MINUS character
+(-).<li>One or more <a href=https://infra.spec.whatwg.org/#ascii-digit data-x-internal=ascii-digits>ASCII digits</a>.<li>Optionally*, a U+002E FULL STOP character (.) followed by one or more <a href=https://infra.spec.whatwg.org/#ascii-digit data-x-internal=ascii-digits>ASCII
+digits</a>.</ol>
+</div>
+<p>The optional components marked with an asterisk (*) should be included, and should have six
+digits each.</p>
+<p>The value specifies latitude and longitude, in that order (i.e., "LAT LON"
+ordering), in decimal degrees. The longitude represents the location east and west of the prime
+meridian as a positive or negative real number, respectively. The latitude represents the
+location north and south of the equator as a positive or negative real number, respectively.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vevent-geo">geo</a></code> may be present within
+each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-location><code>location</code></dfn><dd>
+<p>Gives the location of the event.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vevent-location">location</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-resources><code>resources</code></dfn><dd>
+<p>Gives a resource that will be needed for the event.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vevent-resources">resources</a></code> may
+be present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-status><code>status</code></dfn><dd>
+<p>Gives the confirmation status of the event.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text with one of the following
+values:</p>
+<ul><li><code>tentative</code><li><code>confirmed</code><li><code>canceled</code></ul>
+<p>A single property with the name <code><a href="microdata.html#md-vevent-status">status</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-summary><code>summary</code></dfn><dd>
+<p>Gives a short summary of the event.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>User agents should replace U+000A LINE FEED (LF) characters in the <a href="microdata.html#concept-property-value">value</a> by U+0020 SPACE characters when using the value.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vevent-summary">summary</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-dtend><code>dtend</code></dfn><dd>
+<p>Gives the date and time by which the event ends.</p>
+<p>If the property with the name <code><a href="microdata.html#md-vevent-dtend">dtend</a></code> is present within an
+<a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code> that has a property
+with the name <code><a href="microdata.html#md-vevent-dtstart">dtstart</a></code> whose value is a <a href="common-microsyntaxes.html#valid-date-string">valid date
+string</a>, then the <a href="microdata.html#concept-property-value">value</a> of the property with
+the name <code><a href="microdata.html#md-vevent-dtend">dtend</a></code> must be text that is a <a href="common-microsyntaxes.html#valid-date-string">valid date
+string</a> also. Otherwise, the <a href="microdata.html#concept-property-value">value</a> of the
+property must be text that is a <a href="common-microsyntaxes.html#valid-global-date-and-time-string">valid global date and time string</a>.</p>
+<p>In either case, the <a href="microdata.html#concept-property-value">value</a> be later in time than
+the value of the <code><a href="microdata.html#md-vevent-dtstart">dtstart</a></code> property of the same <a href="microdata.html#concept-item">item</a>.</p>
+<p>The time given by the <code><a href="microdata.html#md-vevent-dtend">dtend</a></code> property is not
+inclusive. For day-long events, therefore, the <code><a href="microdata.html#md-vevent-dtend">dtend</a></code>
+property's <a href="microdata.html#concept-property-value">value</a> will be the day <em>after</em> the
+end of the event.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vevent-dtend">dtend</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>, so long as that <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code> does not have a
+property with the name <code><a href="microdata.html#md-vevent-duration">duration</a></code>.</p>
+<dt><dfn id=md-vevent-dtstart><code>dtstart</code></dfn><dd>
+<p>Gives the date and time at which the event starts.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text that is either a
+<a href="common-microsyntaxes.html#valid-date-string">valid date string</a> or a <a href="common-microsyntaxes.html#valid-global-date-and-time-string">valid global date and time string</a>.</p>
+<p>Exactly one property with the name <code><a href="microdata.html#md-vevent-dtstart">dtstart</a></code> must be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-duration><code>duration</code></dfn><dd>
+<p>Gives the duration of the event.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text that is a <a href="microdata.html#valid-vevent-duration-string">valid
+vevent duration string</a>.</p>
+<p>The duration represented is the sum of all the durations represented by integers in the
+value.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vevent-duration">duration</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>, so long as that <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code> does not have a
+property with the name <code><a href="microdata.html#md-vevent-dtend">dtend</a></code>.</p>
+<dt><dfn id=md-vevent-transp><code>transp</code></dfn><dd>
+<p>Gives whether the event is to be considered as consuming time on a calendar, for the purpose
+of free-busy time searches.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text with one of the following
+values:</p>
+<ul><li><code>opaque</code><li><code>transparent</code></ul>
+<p>A single property with the name <code><a href="microdata.html#md-vevent-transp">transp</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-contact><code>contact</code></dfn><dd>
+<p>Gives the contact information for the event.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vevent-contact">contact</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-url><code>url</code></dfn><dd>
+<p>Gives a <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URL</a> for the event.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+URL</a>.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vevent-url">url</a></code> may be present within
+each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-uid><code>uid</code></dfn><dd>
+<p>Gives a globally unique identifier corresponding to the event.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vevent-uid">uid</a></code> may be present within
+each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-exdate><code>exdate</code></dfn><dd>
+<p>Gives a date and time at which the event does not occur despite the recurrence rules.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text that is either a
+<a href="common-microsyntaxes.html#valid-date-string">valid date string</a> or a <a href="common-microsyntaxes.html#valid-global-date-and-time-string">valid global date and time string</a>.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vevent-exdate">exdate</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-rdate><code>rdate</code></dfn><dd>
+<p>Gives a date and time at which the event recurs.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text that is one of the
+following:
+<ul><li>A <a href="common-microsyntaxes.html#valid-date-string">valid date string</a>.<li>A <a href="common-microsyntaxes.html#valid-global-date-and-time-string">valid global date and time string</a>.<li>A <a href="common-microsyntaxes.html#valid-global-date-and-time-string">valid global date and time string</a> followed by a U+002F SOLIDUS character (/)
+followed by a second <a href="common-microsyntaxes.html#valid-global-date-and-time-string">valid global date and time string</a> representing a later
+time.<li>A <a href="common-microsyntaxes.html#valid-global-date-and-time-string">valid global date and time string</a> followed by a U+002F SOLIDUS character (/)
+followed by a <a href="microdata.html#valid-vevent-duration-string">valid vevent duration string</a>.</ul>
+<p>Any number of properties with the name <code><a href="microdata.html#md-vevent-rdate">rdate</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-rrule><code>rrule</code></dfn><dd>
+<p>Gives a rule for finding dates and times at which the event occurs.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text that matches the RECUR
+value type defined in <cite>iCalendar</cite>. <a href="references.html#refsRFC5545">[RFC5545]</a></p>
+<p>A single property with the name <code><a href="microdata.html#md-vevent-rrule">rrule</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-created><code>created</code></dfn><dd>
+<p>Gives the date and time at which the event information was first created in a calendaring
+system.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text that is a <a href="common-microsyntaxes.html#valid-global-date-and-time-string">valid
+global date and time string</a>.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vevent-created">created</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-last-modified><code>last-modified</code></dfn><dd>
+<p>Gives the date and time at which the event information was last modified in a calendaring
+system.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text that is a <a href="common-microsyntaxes.html#valid-global-date-and-time-string">valid
+global date and time string</a>.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vevent-last-modified">last-modified</a></code>
+may be present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+<dt><dfn id=md-vevent-sequence><code>sequence</code></dfn><dd>
+<p>Gives a revision number for the event information.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be text that is a <a href="common-microsyntaxes.html#valid-non-negative-integer">valid
+non-negative integer</a>.</p>
+<p>A single property with the name <code><a href="microdata.html#md-vevent-sequence">sequence</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>.</p>
+</dl>
+<div>
+<p>A string is a <dfn id=valid-vevent-duration-string>valid vevent duration string</dfn> if it matches the following pattern:</p>
+<ol><li><p>A U+0050 LATIN CAPITAL LETTER P character (P).<li>
+<p>One of the following:</p>
+<ul><li><p>A <a href="common-microsyntaxes.html#valid-non-negative-integer">valid non-negative integer</a> followed by a U+0057 LATIN CAPITAL LETTER W
+character (W). The integer represents a duration of that number of weeks.<li>
+<p>At least one, and possible both in this order, of the following:</p>
+<ol><li><p>A <a href="common-microsyntaxes.html#valid-non-negative-integer">valid non-negative integer</a> followed by a U+0044 LATIN CAPITAL LETTER D
+character (D). The integer represents a duration of that number of days.<li>
+<p>A U+0054 LATIN CAPITAL LETTER T character (T) followed by any one of the following, or
+the first and second of the following in that order, or the second and third of the
+following in that order, or all three of the following in this order:</p>
+<ol><li><p>A <a href="common-microsyntaxes.html#valid-non-negative-integer">valid non-negative integer</a> followed by a U+0048 LATIN CAPITAL LETTER
+H character (H). The integer represents a duration of that number of hours.<li><p>A <a href="common-microsyntaxes.html#valid-non-negative-integer">valid non-negative integer</a> followed by a U+004D LATIN CAPITAL LETTER
+M character (M). The integer represents a duration of that number of minutes.<li><p>A <a href="common-microsyntaxes.html#valid-non-negative-integer">valid non-negative integer</a> followed by a U+0053 LATIN CAPITAL LETTER
+S character (S). The integer represents a duration of that number of seconds.</ol>
+</ol>
+</ul>
+</ol>
+</div>
+<h5 id=conversion-to-icalendar>Conversion to iCalendar</h5>
+<div>
+<p>Given a list of nodes <var>nodes</var> in a <code><a href="dom.html#document">Document</a></code>, a user agent must
+run the following algorithm to <dfn id=extracting-vevent-data>extract any vEvent data
+represented by those nodes</dfn>:</p>
+<ol><li><p>If none of the nodes in <var>nodes</var> are <a href="microdata.html#concept-item">items</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>, then there is no
+vEvent data. Abort the algorithm, returning nothing.<li><p>Let <var>output</var> be an empty string.<li><p><a href="microdata.html#add-an-icalendar-line">Add an iCalendar line</a> with the type "<code>BEGIN</code>" and the
+value "<code>VCALENDAR</code>" to <var>output</var>.<li><p><a href="microdata.html#add-an-icalendar-line">Add an iCalendar line</a> with the type "<code>PRODID</code>" and the
+value equal to a user-agent-specific string representing the user agent to <var>output</var>.<li><p><a href="microdata.html#add-an-icalendar-line">Add an iCalendar line</a> with the type "<code>VERSION</code>" and the
+value "<code>2.0</code>" to <var>output</var>.<li>
+<p>For each node <var>node</var> in <var>nodes</var> that is an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code>, run the following
+steps:</p>
+<ol><li><p><a href="microdata.html#add-an-icalendar-line">Add an iCalendar line</a> with the type "<code>BEGIN</code>" and the
+value "<code>VEVENT</code>" to <var>output</var>.<li><p><a href="microdata.html#add-an-icalendar-line">Add an iCalendar line</a> with the type "<code>DTSTAMP</code>" and a
+value consisting of an iCalendar DATE-TIME string representing the current date and time, with
+the annotation "<code>VALUE=DATE-TIME</code>", to <var>output</var>.
+<a href="references.html#refsRFC5545">[RFC5545]</a><li>
+<p>For each element <var>element</var> that is <a href="microdata.html#the-properties-of-an-item">a property of the item</a> <var>node</var>: for each name <var>name</var> in <var>element</var>'s <a href="microdata.html#property-names">property names</a>, run the
+appropriate set of substeps from the following list:</p>
+<dl><dt>If the property's <a href="microdata.html#concept-property-value">value</a> is an <a href="microdata.html#concept-item">item</a><dd>
+<p>Skip the property.</p>
+<dt>If the property is <code><a href="microdata.html#md-vevent-dtend">dtend</a></code><dt>If the property is <code><a href="microdata.html#md-vevent-dtstart">dtstart</a></code><dt>If the property is <code><a href="microdata.html#md-vevent-exdate">exdate</a></code><dt>If the property is <code><a href="microdata.html#md-vevent-rdate">rdate</a></code><dt>If the property is <code><a href="microdata.html#md-vevent-created">created</a></code><dt>If the property is <code><a href="microdata.html#md-vevent-last-modified">last-modified</a></code><dd>
+<p>Let <var>value</var> be the result of stripping all U+002D HYPHEN-MINUS (-) and
+U+003A COLON (:) characters from the property's <a href="microdata.html#concept-property-value">value</a>.</p>
+<p>If the property's <a href="microdata.html#concept-property-value">value</a> is a <a href="common-microsyntaxes.html#valid-date-string">valid date
+string</a>, then <a href="microdata.html#add-an-icalendar-line">add an iCalendar line</a> with the type <var>name</var>
+and the value <var>value</var> to <var>output</var>, with the annotation
+"<code>VALUE=DATE</code>".</p>
+<p>Otherwise, if the property's <a href="microdata.html#concept-property-value">value</a> is a
+<a href="common-microsyntaxes.html#valid-global-date-and-time-string">valid global date and time string</a>, then <a href="microdata.html#add-an-icalendar-line">add an iCalendar line</a> with
+the type <var>name</var> and the value <var>value</var> to <var>output</var>, with the annotation "<code>VALUE=DATE-TIME</code>".</p>
+<p>Otherwise, skip the property.</p>
+<dt>Otherwise<dd>
+<p><a href="microdata.html#add-an-icalendar-line">Add an iCalendar line</a> with the type <var>name</var> and the
+property's <a href="microdata.html#concept-property-value">value</a> to <var>output</var>.</p>
+</dl>
+<li><p><a href="microdata.html#add-an-icalendar-line">Add an iCalendar line</a> with the type "<code>END</code>" and the
+value "<code>VEVENT</code>" to <var>output</var>.</ol>
+<li><p><a href="microdata.html#add-an-icalendar-line">Add an iCalendar line</a> with the type "<code>END</code>" and the value
+"<code>VCALENDAR</code>" to <var>output</var>.</ol>
+</div>
+<div>
+<p>When the above algorithm says that the user agent is to <dfn id=add-an-icalendar-line>add an iCalendar line</dfn>
+consisting of a type <var>type</var>, a value <var>value</var>, and optionally
+an annotation, to a string <var>output</var>, it must run the following steps:</p>
+<ol><li><p>Let <var>line</var> be an empty string.<li><p>Append <var>type</var>, <a href=https://infra.spec.whatwg.org/#ascii-uppercase data-x-internal=converted-to-ascii-uppercase>converted to ASCII uppercase</a>, to <var>line</var>.<li>
+<p>If there is an annotation:</p>
+<ol><li><p>Append a U+003B SEMICOLON character (;) to <var>line</var>.<li><p>Append the annotation to <var>line</var>.</ol>
+<li><p>Append a U+003A COLON character (:) to <var>line</var>.<li><p>Prefix every U+005C REVERSE SOLIDUS character (\) in <var>value</var> with
+another U+005C REVERSE SOLIDUS character (\).<li><p>Prefix every U+002C COMMA character (,) in <var>value</var> with a U+005C REVERSE
+SOLIDUS character (\).<li><p>Prefix every U+003B SEMICOLON character (;) in <var>value</var> with a U+005C
+REVERSE SOLIDUS character (\).<li><p>Replace every U+000D CARRIAGE RETURN U+000A LINE FEED character pair (CRLF) in <var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed by a U+006E LATIN SMALL
+LETTER N character (n).<li><p>Replace every remaining U+000D CARRIAGE RETURN (CR) or U+000A LINE FEED (LF) character in
+<var>value</var> with a U+005C REVERSE SOLIDUS character (\) followed by a U+006E LATIN
+SMALL LETTER N character (n).<li><p>Append <var>value</var> to <var>line</var>.<li><p>Let <var>maximum length</var> be 75.<li>
+<p>While <var>line</var>'s <a href=https://infra.spec.whatwg.org/#string-code-point-length data-x-internal=code-point-length>code point length</a> is greater than <var>maximum
+length</var>:</p>
+<ol><li><p>Append the first <var>maximum length</var> code points of <var>line</var> to
+<var>output</var>.<li><p>Remove the first <var>maximum length</var> code points from <var>line</var>.<li><p>Append a U+000D CARRIAGE RETURN character (CR) to <var>output</var>.<li><p>Append a U+000A LINE FEED character (LF) to <var>output</var>.<li><p>Append a U+0020 SPACE character to <var>output</var>.<li><p>Let <var>maximum length</var> be 74.</ol>
+<li><p>Append (what remains of) <var>line</var> to <var>output</var>.<li><p>Append a U+000D CARRIAGE RETURN character (CR) to <var>output</var>.<li><p>Append a U+000A LINE FEED character (LF) to <var>output</var>.</ol>
+</div>
+<p>This algorithm can generate invalid iCalendar output, if the input does not
+conform to the rules described for the <code><a href="microdata.html#md-vevent">http://microformats.org/profile/hcalendar#vevent</a></code> <a href="microdata.html#item-types">item type</a> and <a href="microdata.html#defined-property-name">defined property names</a>.</p>
+<h5 id=examples-3>Examples</h5>
+<p><i>This section is non-normative.</i></p>
+<div>
+<p>Here is an example of a page that uses the vEvent vocabulary to mark up an event:</p>
+<pre><code>&lt;body itemscope itemtype=&quot;http://microformats.org/profile/hcalendar#vevent&quot;&gt;
+...
+&lt;h1 itemprop=&quot;summary&quot;&gt;Bluesday Tuesday: Money Road&lt;/h1&gt;
+...
+&lt;time itemprop=&quot;dtstart&quot; datetime=&quot;2009-05-05T19:00:00Z&quot;&gt;May 5th @ 7pm&lt;/time&gt;
+(until &lt;time itemprop=&quot;dtend&quot; datetime=&quot;2009-05-05T21:00:00Z&quot;&gt;9pm&lt;/time&gt;)
+...
+&lt;a href=&quot;http://livebrum.co.uk/2009/05/05/bluesday-tuesday-money-road&quot;
+rel=&quot;bookmark&quot; itemprop=&quot;url&quot;&gt;Link to this page&lt;/a&gt;
+...
+&lt;p&gt;Location: &lt;span itemprop=&quot;location&quot;&gt;The RoadHouse&lt;/span&gt;&lt;/p&gt;
+...
+&lt;p&gt;&lt;input type=button value=&quot;Add to Calendar&quot;
+onclick=&quot;location = getCalendar(this)&quot;&gt;&lt;/p&gt;
+...
+&lt;meta itemprop=&quot;description&quot; content=&quot;via livebrum.co.uk&quot;&gt;
+&lt;/body&gt;</code></pre>
+<p>The <code>getCalendar()</code> function is left as an exercise for the reader.</p>
+<p>The same page could offer some markup, such as the following,
+for copy-and-pasting into blogs:</p>
+<pre><code>&lt;div itemscope itemtype=&quot;http://microformats.org/profile/hcalendar#vevent&quot;&gt;
+&lt;p&gt;I&apos;m going to
+&lt;strong itemprop=&quot;summary&quot;&gt;Bluesday Tuesday: Money Road&lt;/strong&gt;,
+&lt;time itemprop=&quot;dtstart&quot; datetime=&quot;2009-05-05T19:00:00Z&quot;&gt;May 5th at 7pm&lt;/time&gt;
+to &lt;time itemprop=&quot;dtend&quot; datetime=&quot;2009-05-05T21:00:00Z&quot;&gt;9pm&lt;/time&gt;,
+at &lt;span itemprop=&quot;location&quot;&gt;The RoadHouse&lt;/span&gt;!&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://livebrum.co.uk/2009/05/05/bluesday-tuesday-money-road&quot;
+itemprop=&quot;url&quot;&gt;See this event on livebrum.co.uk&lt;/a&gt;.&lt;/p&gt;
+&lt;meta itemprop=&quot;description&quot; content=&quot;via livebrum.co.uk&quot;&gt;
+&lt;/div&gt;</code></pre>
+</div>
+<h4 id=licensing-works>Licensing works</h4>
+<p>An item with the <a href="microdata.html#item-types">item type</a> <dfn id=md-work><code>http://n.whatwg.org/work</code></dfn> represents a work (e.g. an article, an
+image, a video, a song, etc.). This type is primarily intended to allow authors to include
+licensing information for works.</p>
+<p>The following are the type's <a href="microdata.html#defined-property-name">defined property
+names</a>.</p>
+<dl><dt><dfn id=md-work-work><code>work</code></dfn><dd>
+<p>Identifies the work being described.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+URL</a>.</p>
+<p>Exactly one property with the name <code><a href="microdata.html#md-work-work">work</a></code> must be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-work">http://n.whatwg.org/work</a></code>.</p>
+<dt><dfn id=md-work-title><code>title</code></dfn><dd>
+<p>Gives the name of the work.</p>
+<p>A single property with the name <code><a href="microdata.html#md-work-title">title</a></code> may be present
+within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-work">http://n.whatwg.org/work</a></code>.</p>
+<dt><dfn id=md-work-author><code>author</code></dfn><dd>
+<p>Gives the name or contact information of one of the authors or creators of the work.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be either an <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-vcard">http://microformats.org/profile/hcard</a></code>, or text.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-work-author">author</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-work">http://n.whatwg.org/work</a></code>.</p>
+<dt><dfn id=md-work-license><code>license</code></dfn><dd>
+<p>Identifies one of the licenses under which the work is available.</p>
+<p>The <a href="microdata.html#concept-property-value">value</a> must be an <a href=https://url.spec.whatwg.org/#syntax-url-absolute data-x-internal=absolute-url>absolute
+URL</a>.</p>
+<p>Any number of properties with the name <code><a href="microdata.html#md-work-license">license</a></code> may be
+present within each <a href="microdata.html#concept-item">item</a> with the type <code><a href="microdata.html#md-work">http://n.whatwg.org/work</a></code>.</p>
+</dl>
+<h5 id=examples-4>Examples</h5>
+<p><i>This section is non-normative.</i></p>
+<div>
+<p>This example shows an embedded image entitled <cite>My Pond</cite>, licensed under the
+Creative Commons Attribution-Share Alike 4.0 International License and the MIT license
+simultaneously.</p>
+<pre><code>&lt;figure <strong>itemscope itemtype=&quot;http://n.whatwg.org/work&quot;</strong>&gt;
+&lt;img <strong>itemprop=&quot;work&quot;</strong> src=&quot;mypond.jpeg&quot;&gt;
+&lt;figcaption&gt;
+&lt;p&gt;&lt;cite <strong>itemprop=&quot;title&quot;</strong>&gt;My Pond&lt;/cite&gt;&lt;/p&gt;
+&lt;p&gt;&lt;small&gt;Licensed under the &lt;a <strong>itemprop=&quot;license&quot;</strong>
+href=&quot;https://creativecommons.org/licenses/by-sa/4.0/&quot;&gt;Creative
+Commons Attribution-Share Alike 4.0 International License&lt;/a&gt;
+and the &lt;a <strong>itemprop=&quot;license&quot;</strong>
+href=&quot;http://www.opensource.org/licenses/mit-license.php&quot;&gt;MIT
+license&lt;/a&gt;.&lt;/small&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre>
+</div>
+<h3 id=converting-html-to-other-formats>Converting HTML to other formats</h3>
+<h4 id=json>JSON</h4>
+<div>
+<p>Given a list of nodes <var>nodes</var> in a <code><a href="dom.html#document">Document</a></code>, a user agent must
+run the following algorithm to <dfn id=extracting-json>extract the microdata from those nodes
+into a JSON form</dfn>:</p>
+<ol><li><p>Let <var>result</var> be an empty object.<li><p>Let <var>items</var> be an empty array.<li><p>For each <var>node</var> in <var>nodes</var>, check if the element is a
+<a href="microdata.html#top-level-microdata-items">top-level microdata item</a>, and if it is then
+<a href="microdata.html#get-the-object">get the object</a> for that element and add it to <var>items</var>.<li><p>Add an entry to <var>result</var> called "<code>items</code>" whose
+value is the array <var>items</var>.<li><p>Return the result of serializing <var>result</var> to JSON in the shortest
+possible way (meaning no whitespace between tokens, no unnecessary zero digits in numbers, and
+only using Unicode escapes in strings for characters that do not have a dedicated escape
+sequence), and with a lowercase "<code>e</code>" used, when appropriate, in the
+representation of any numbers. <a href="references.html#refsJSON">[JSON]</a></ol>
+</div>
+<p>This algorithm returns an object with a single property that is an array, instead
+of just returning an array, so that it is possible to extend the algorithm in the future if
+necessary.</p>
+<div>
+<p>When the user agent is to <dfn id=get-the-object>get the object</dfn> for an item <var>item</var>,
+optionally with a list of elements <var>memory</var>, it must run the following
+substeps:</p>
+<ol><li><p>Let <var>result</var> be an empty object.<li><p>If no <var>memory</var> was passed to the algorithm, let <var>memory</var> be an empty list.<li><p>Add <var>item</var> to <var>memory</var>.<li><p>If the <var>item</var> has any <a href="microdata.html#item-types">item types</a>, add an entry to <var>result</var> called "<code>type</code>" whose value is an array listing the
+<a href="microdata.html#item-types">item types</a> of <var>item</var>, in the order they were specified on the
+<code><a href="microdata.html#attr-itemtype">itemtype</a></code> attribute.</p>
+<li><p>If the <var>item</var> has a <a href="microdata.html#global-identifier">global identifier</a>, add an entry to <var>result</var> called "<code>id</code>" whose value is the <a href="microdata.html#global-identifier">global
+identifier</a> of <var>item</var>.<li><p>Let <var>properties</var> be an empty object.<li>
+<p>For each element <var>element</var> that has one or more <a href="microdata.html#property-names">property names</a>
+and is one of <a href="microdata.html#the-properties-of-an-item">the properties of the item</a> <var>item</var>, in the order those elements are given by the algorithm that returns
+<a href="microdata.html#the-properties-of-an-item">the properties of an item</a>, run the following substeps:</p>
+<ol><li><p>Let <var>value</var> be the <a href="microdata.html#concept-property-value">property
+value</a> of <var>element</var>.<li><p>If <var>value</var> is an <a href="microdata.html#concept-item">item</a>, then: If <var>value</var> is in <var>memory</var>, then let <var>value</var> be
+the string "<code>ERROR</code>". Otherwise, <a href="microdata.html#get-the-object">get the object</a> for <var>value</var>, passing a copy of <var>memory</var>, and then replace <var>value</var> with the object returned from those steps.<li>
+<p>For each name <var>name</var> in <var>element</var>'s <a href="microdata.html#property-names">property
+names</a>, run the following substeps:</p>
+<ol><li><p>If there is no entry named <var>name</var> in <var>properties</var>,
+then add an entry named <var>name</var> to <var>properties</var> whose
+value is an empty array.<li><p>Append <var>value</var> to the entry named <var>name</var> in <var>properties</var>.</ol>
+</ol>
+<li><p>Add an entry to <var>result</var> called "<code>properties</code>" whose
+value is the object <var>properties</var>.<li><p>Return <var>result</var>.</ol>
+</div>
+<div>
+<p>For example, take this markup:</p>
+<pre><code>&lt;!DOCTYPE HTML&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;title&gt;My Blog&lt;/title&gt;
+&lt;article itemscope itemtype=&quot;http://schema.org/BlogPosting&quot;&gt;
+&lt;header&gt;
+&lt;h1 itemprop=&quot;headline&quot;&gt;Progress report&lt;/h1&gt;
+&lt;p&gt;&lt;time itemprop=&quot;datePublished&quot; datetime=&quot;2013-08-29&quot;&gt;today&lt;/time&gt;&lt;/p&gt;
+&lt;link itemprop=&quot;url&quot; href=&quot;?comments=0&quot;&gt;
+&lt;/header&gt;
+&lt;p&gt;All in all, he&apos;s doing well with his swim lessons. The biggest thing was he had trouble
+putting his head in, but we got it down.&lt;/p&gt;
+&lt;section&gt;
+&lt;h1&gt;Comments&lt;/h1&gt;
+&lt;article itemprop=&quot;comment&quot; itemscope itemtype=&quot;http://schema.org/UserComments&quot; id=&quot;c1&quot;&gt;
+&lt;link itemprop=&quot;url&quot; href=&quot;#c1&quot;&gt;
+&lt;footer&gt;
+&lt;p&gt;Posted by: &lt;span itemprop=&quot;creator&quot; itemscope itemtype=&quot;http://schema.org/Person&quot;&gt;
+&lt;span itemprop=&quot;name&quot;&gt;Greg&lt;/span&gt;
+&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;time itemprop=&quot;commentTime&quot; datetime=&quot;2013-08-29&quot;&gt;15 minutes ago&lt;/time&gt;&lt;/p&gt;
+&lt;/footer&gt;
+&lt;p&gt;Ha!&lt;/p&gt;
+&lt;/article&gt;
+&lt;article itemprop=&quot;comment&quot; itemscope itemtype=&quot;http://schema.org/UserComments&quot; id=&quot;c2&quot;&gt;
+&lt;link itemprop=&quot;url&quot; href=&quot;#c2&quot;&gt;
+&lt;footer&gt;
+&lt;p&gt;Posted by: &lt;span itemprop=&quot;creator&quot; itemscope itemtype=&quot;http://schema.org/Person&quot;&gt;
+&lt;span itemprop=&quot;name&quot;&gt;Charlotte&lt;/span&gt;
+&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;time itemprop=&quot;commentTime&quot; datetime=&quot;2013-08-29&quot;&gt;5 minutes ago&lt;/time&gt;&lt;/p&gt;
+&lt;/footer&gt;
+&lt;p&gt;When you say &quot;we got it down&quot;...&lt;/p&gt;
+&lt;/article&gt;
+&lt;/section&gt;
+&lt;/article&gt;</code></pre>
+<p>It would be turned into the following JSON by the algorithm above (supposing that the page's
+URL was <code>https://blog.example.com/progress-report</code>):</p>
+<pre><code>{
+&quot;items&quot;: [
+{
+&quot;type&quot;: [ &quot;http://schema.org/BlogPosting&quot; ],
+&quot;properties&quot;: {
+&quot;headline&quot;: [ &quot;Progress report&quot; ],
+&quot;datePublished&quot;: [ &quot;2013-08-29&quot; ],
+&quot;url&quot;: [ &quot;https://blog.example.com/progress-report?comments=0&quot; ],
+&quot;comment&quot;: [
+{
+&quot;type&quot;: [ &quot;http://schema.org/UserComments&quot; ],
+&quot;properties&quot;: {
+&quot;url&quot;: [ &quot;https://blog.example.com/progress-report#c1&quot; ],
+&quot;creator&quot;: [
+{
+&quot;type&quot;: [ &quot;http://schema.org/Person&quot; ],
+&quot;properties&quot;: {
+&quot;name&quot;: [ &quot;Greg&quot; ]
+}
+}
+],
+&quot;commentTime&quot;: [ &quot;2013-08-29&quot; ]
+}
+},
+{
+&quot;type&quot;: [ &quot;http://schema.org/UserComments&quot; ],
+&quot;properties&quot;: {
+&quot;url&quot;: [ &quot;https://blog.example.com/progress-report#c2&quot; ],
+&quot;creator&quot;: [
+{
+&quot;type&quot;: [ &quot;http://schema.org/Person&quot; ],
+&quot;properties&quot;: {
+&quot;name&quot;: [ &quot;Charlotte&quot; ]
+}
+}
+],
+&quot;commentTime&quot;: [ &quot;2013-08-29&quot; ]
+}
+}
+]
+}
+}
+]
+}</code></pre>
+</div>
+</body>
+</html>

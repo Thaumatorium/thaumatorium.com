@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+<li><a href="imagebitmap-and-animations.html#animation-frames">Animation frames</a></ol></ol><h3 id=images-2>Images</h3>
+<h4 id=the-imagedata-interface>The <code><a href="imagebitmap-and-animations.html#imagedata">ImageData</a></code> interface</h4>
+</div><pre><code>
+typedef (<a href='https://webidl.spec.whatwg.org/#idl-Uint8ClampedArray' data-x-internal='idl-uint8clampedarray'>Uint8ClampedArray</a> or <a href='https://webidl.spec.whatwg.org/#idl-Float16Array' data-x-internal='idl-float16array'>Float16Array</a>) <dfn id='imagedataarray' data-dfn-type='typedef'>ImageDataArray</dfn>;
+enum <dfn id='imagedatapixelformat' data-dfn-type='enum'>ImageDataPixelFormat</dfn> { &quot;<a href='imagebitmap-and-animations.html#dom-imagedatapixelformat-rgba-unorm8'>rgba-unorm8</a>&quot;, &quot;<a href='imagebitmap-and-animations.html#dom-imagedatapixelformat-rgba-float16'>rgba-float16</a>&quot; };
+dictionary <dfn id='imagedatasettings' data-dfn-type='dictionary'>ImageDataSettings</dfn> {
+<a href='canvas.html#predefinedcolorspace'>PredefinedColorSpace</a> <a href='canvas.html#dom-predefinedcolorspace-srgb'>colorSpace</a>;
+<a href='imagebitmap-and-animations.html#imagedatapixelformat'>ImageDataPixelFormat</a> <a href='imagebitmap-and-animations.html#dom-imagedatasettings-pixelformat'>pixelFormat</a> = &quot;<a href='imagebitmap-and-animations.html#dom-imagedatapixelformat-rgba-unorm8'>rgba-unorm8</a>&quot;;
+};
+[Exposed=(Window,Worker),
+<a href='structured-data.html#serializable'>Serializable</a>]
+interface <dfn id='imagedata' data-dfn-type='interface'>ImageData</dfn> {
+<a href='imagebitmap-and-animations.html#dom-imagedata'>constructor</a>(unsigned long sw, unsigned long sh, optional <a href='imagebitmap-and-animations.html#imagedatasettings'>ImageDataSettings</a> settings = {});
+<a href='imagebitmap-and-animations.html#dom-imagedata-with-data'>constructor</a>(<a href='imagebitmap-and-animations.html#imagedataarray'>ImageDataArray</a> data, unsigned long sw, optional unsigned long sh, optional <a href='imagebitmap-and-animations.html#imagedatasettings'>ImageDataSettings</a> settings = {});
+readonly attribute unsigned long <a href='imagebitmap-and-animations.html#dom-imagedata-width'>width</a>;
+readonly attribute unsigned long <a href='imagebitmap-and-animations.html#dom-imagedata-height'>height</a>;
+readonly attribute <a href='imagebitmap-and-animations.html#imagedataarray'>ImageDataArray</a> <a href='imagebitmap-and-animations.html#dom-imagedata-data'>data</a>;
+readonly attribute <a href='imagebitmap-and-animations.html#imagedatapixelformat'>ImageDataPixelFormat</a> <a href='imagebitmap-and-animations.html#dom-imagedata-pixelformat'>pixelFormat</a>;
+readonly attribute <a href='canvas.html#predefinedcolorspace'>PredefinedColorSpace</a> <a href='imagebitmap-and-animations.html#dom-imagedata-colorspace'>colorSpace</a>;
+};
+</code></pre>
+<p>An <code><a href="imagebitmap-and-animations.html#imagedata">ImageData</a></code> object <dfn id=concept-imagedata-bitmap-representation>
+represents a rectanglar bitmap</dfn> with width equal to the <code><a href="imagebitmap-and-animations.html#dom-imagedata-width">
+width</a></code> attribute and height equal to the <code><a href="imagebitmap-and-animations.html#dom-imagedata-height">height</a></code>
+attribute. The pixel values of this bitmap are stored in the <code><a href="imagebitmap-and-animations.html#dom-imagedata-data">
+data</a></code> attribute in left-to-right order, row by row from top to bottom, starting with 0 for
+the top left pixel, with the order and numerical representation of the color components of each
+pixel determined by the <code><a href="imagebitmap-and-animations.html#dom-imagedata-pixelformat">pixelFormat</a></code> attribute.
+The color space of the pixel values of the bitmap is determined by the <code><a href="imagebitmap-and-animations.html#dom-imagedata-colorspace">colorSpace</a></code> attribute.</p>
+<dl><dt><code><var>imageData</var> = new <a href="imagebitmap-and-animations.html#dom-imagedata" id=dom-imagedata-dev>ImageData</a>(<var>sw</var>, <var>sh</var> [, <var>settings</var>])</code></div><dd>
+<p>Returns an <code><a href="imagebitmap-and-animations.html#imagedata">ImageData</a></code> object with the given dimensions and the color space
+indicated by <var>settings</var>. All the pixels in the returned object are <a href=https://drafts.csswg.org/css-color/#transparent-black data-x-internal=transparent-black>transparent
+black</a>.</p>
+<p>Throws an <a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> if either of
+the width or height arguments are zero.</p>
+<dt><code><var>imageData</var> = new <a href="imagebitmap-and-animations.html#dom-imagedata-with-data" id=dom-imagedata-with-data-dev>ImageData</a>(<var>data</var>, <var>sw</var> [, <var>sh</var> [, <var>settings</var> ] ])</code><dd>
+<p>Returns an <code><a href="imagebitmap-and-animations.html#imagedata">ImageData</a></code> object using the data provided in the <code><a href="imagebitmap-and-animations.html#imagedataarray">ImageDataArray</a></code>
+argument, interpreted using the given dimensions and the color space indicated by <var>settings</var>.</p>
+<p>The byte length of the data needs to be a multiple of the number of bytes per pixel times the
+given width. If the height is provided as well, then the length needs to be exactly the number of
+bytes per pixel times the width times the height.</p>
+<p>Throws an <a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> if the given
+data and dimensions can't be interpreted consistently, or if either dimension is zero.</p>
+<dt><code><var>imageData</var>.<a href="imagebitmap-and-animations.html#dom-imagedata-width" id=dom-imagedata-width-dev>width</a></code></div><dt><code><var>imageData</var>.<a href="imagebitmap-and-animations.html#dom-imagedata-height" id=dom-imagedata-height-dev>height</a></code></div><dd><p>Returns the actual dimensions of the data in the <code><a href="imagebitmap-and-animations.html#imagedata">ImageData</a></code> object, in
+pixels.<dt><code><var>imageData</var>.<a href="imagebitmap-and-animations.html#dom-imagedata-data" id=dom-imagedata-data-dev>data</a></code></div><dd><p>Returns the one-dimensional array containing the data in RGBA order, as integers in the
+range 0 to 255.<dt><code><var>imageData</var>.<a href="imagebitmap-and-animations.html#dom-imagedata-colorspace" id=dom-imagedata-colorspace-dev>colorSpace</a></code><dd><p>Returns the color space of the pixels.</dl>
+<div>
+<p>The <dfn id=dom-imagedata data-dfn-type=constructor><code>new ImageData(<var>sw</var>,
+<var>sh</var>, <var>settings</var>)</code></dfn> constructor steps are:</p>
+<ol><li><p>If one or both of <var>sw</var> and <var>sh</var> are zero, then throw an
+<a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p><a href="imagebitmap-and-animations.html#initialize-an-imagedata-object">Initialize</a> <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a> given
+<var>sw</var>, <var>sh</var>, and <var>settings</var>.<li><p>Initialize the image data of <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a> to <a href=https://drafts.csswg.org/css-color/#transparent-black data-x-internal=transparent-black>transparent black</a>.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-imagedata-with-data data-dfn-type=constructor><code>new
+ImageData(<var>data</var>, <var>sw</var>, <var>sh</var>, <var>settings</var>)</code></dfn>
+constructor steps are:</p>
+<ol><li><p>Let <var>bytesPerPixel</var> be 4 if
+<var>settings</var>["<code><a href="imagebitmap-and-animations.html#dom-imagedatasettings-pixelformat">pixelFormat</a></code>"] is
+"<a href="imagebitmap-and-animations.html#dom-imagedatapixelformat-rgba-unorm8">rgba-unorm8</a>"; otherwise 8.<li><p>Let <var>length</var> be the <a href=https://webidl.spec.whatwg.org/#buffersource-byte-length data-x-internal=buffer-source-byte-length>buffer source byte length</a> of <var>data</var>.<li><p>If <var>length</var> is not a nonzero integral multiple of <var>bytesPerPixel</var>, then throw an
+<a href=https://webidl.spec.whatwg.org/#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Let <var>length</var> be <var>length</var> divided by <var>bytesPerPixel</var>.</p>
+<li>
+<p>If <var>length</var> is not an integral multiple of <var>sw</var>, then throw an
+<a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.</p>
+<p>At this step, the length is guaranteed to be greater than zero (otherwise the
+second step above would have aborted the steps), so if <var>sw</var> is zero, this
+step will throw the exception and return.</p>
+<li><p>Let <var>height</var> be <var>length</var> divided by <var>sw</var>.<li><p>If <var>sh</var> was given and its value is not equal to <var>height</var>, then throw an
+<a href=https://webidl.spec.whatwg.org/#indexsizeerror data-x-internal=indexsizeerror>"<code>IndexSizeError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li>
+<p><a href="imagebitmap-and-animations.html#initialize-an-imagedata-object">Initialize</a> <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a> given
+<var>sw</var>, <var>sh</var>, <var>settings</var>, and
+<i><a href="imagebitmap-and-animations.html#initialize-imagedata-source">source</a></i> set to <var>data</var>.</p>
+<p>This step does not set <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s data to a copy of <var>data</var>.
+It sets it to the actual <code><a href="imagebitmap-and-animations.html#imagedataarray">ImageDataArray</a></code> object passed as <var>data</var>.</p>
+</ol>
+</div>
+</div><div>
+<p>To <dfn id=initialize-an-imagedata-object>initialize an <code>ImageData</code> object</dfn> <var>imageData</var>, given a
+positive integer number of pixels per row <var>pixelsPerRow</var>, a positive integer number
+of rows <var>rows</var>, an <code><a href="imagebitmap-and-animations.html#imagedatasettings">ImageDataSettings</a></code> <var>settings</var>, an optional
+<code><a href="imagebitmap-and-animations.html#imagedataarray">ImageDataArray</a></code> <dfn id=initialize-imagedata-source><var>source</var></dfn>,
+and an optional <code><a href="canvas.html#predefinedcolorspace">PredefinedColorSpace</a></code> <dfn id=initialize-imagedata-defaultcolorspace><var>defaultColorSpace</var></dfn>:</p>
+<ol><li>
+<p>If <var>source</var> was given:</p>
+<ol><li><p>If <var>settings</var>["<code><a href="imagebitmap-and-animations.html#dom-imagedatasettings-pixelformat">pixelFormat</a></code>"]
+equals "<a href="imagebitmap-and-animations.html#dom-imagedatapixelformat-rgba-unorm8">rgba-unorm8</a>" and
+<var>source</var> is not a <code><a data-x-internal=idl-uint8clampedarray href=https://webidl.spec.whatwg.org/#idl-Uint8ClampedArray>Uint8ClampedArray</a></code>,
+then throw an <a href=https://webidl.spec.whatwg.org/#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If <var>settings</var>["<code><a href="imagebitmap-and-animations.html#dom-imagedatasettings-pixelformat">pixelFormat</a></code>"]
+is "<a href="imagebitmap-and-animations.html#dom-imagedatapixelformat-rgba-float16">rgba-float16</a>" and
+<var>source</var> is not a <code><a data-x-internal=idl-float16array href=https://webidl.spec.whatwg.org/#idl-Float16Array>Float16Array</a></code>,
+then throw an <a href=https://webidl.spec.whatwg.org/#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Initialize the <dfn id=dom-imagedata-data data-dfn-type=attribute><code>data</code></dfn> attribute of <var>imageData</var> to
+<var>source</var>.</ol>
+<li>
+<p>Otherwise (<var>source</var> was not given):</p>
+<ol><li><p>If <var>settings</var>["<code><a href="imagebitmap-and-animations.html#dom-imagedatasettings-pixelformat">pixelFormat</a></code>"] is "<a href="imagebitmap-and-animations.html#dom-imagedatapixelformat-rgba-unorm8">rgba-unorm8</a>", then initialize the <code><a href="imagebitmap-and-animations.html#dom-imagedata-data">data</a></code> attribute of <var>imageData</var> to a new <code><a data-x-internal=idl-uint8clampedarray href=https://webidl.spec.whatwg.org/#idl-Uint8ClampedArray>Uint8ClampedArray</a></code> object. The <code><a data-x-internal=idl-uint8clampedarray href=https://webidl.spec.whatwg.org/#idl-Uint8ClampedArray>Uint8ClampedArray</a></code> object must use a new
+<code><a data-x-internal=idl-arraybuffer href=https://webidl.spec.whatwg.org/#idl-ArrayBuffer>ArrayBuffer</a></code> for its storage, and must have
+a zero byte offset and byte length equal to the length of its storage, in bytes.
+The storage <code><a data-x-internal=idl-arraybuffer href=https://webidl.spec.whatwg.org/#idl-ArrayBuffer>ArrayBuffer</a></code> must have a length
+of 4 × <var>rows</var> × <var>pixelsPerRow</var> bytes.<li><p>Otherwise, if <var>settings</var>["<code><a href="imagebitmap-and-animations.html#dom-imagedatasettings-pixelformat">pixelFormat</a></code>"] is "<a href="imagebitmap-and-animations.html#dom-imagedatapixelformat-rgba-unorm8">rgba-float16</a>", then initialize the <code><a href="imagebitmap-and-animations.html#dom-imagedata-data">data</a></code> attribute of <var>imageData</var> to a new <code><a data-x-internal=idl-float16array href=https://webidl.spec.whatwg.org/#idl-Float16Array>Float16Array</a></code> object. The <code><a data-x-internal=idl-float16array href=https://webidl.spec.whatwg.org/#idl-Float16Array>Float16Array</a></code> object must use a new
+<code><a data-x-internal=idl-arraybuffer href=https://webidl.spec.whatwg.org/#idl-ArrayBuffer>ArrayBuffer</a></code> for its storage, and must have
+a zero byte offset and byte length equal to the length of its storage, in bytes.
+The storage <code><a data-x-internal=idl-arraybuffer href=https://webidl.spec.whatwg.org/#idl-ArrayBuffer>ArrayBuffer</a></code> must have a length
+of 8 × <var>rows</var> × <var>pixelsPerRow</var> bytes.<li><p>If the storage <code><a data-x-internal=idl-arraybuffer href=https://webidl.spec.whatwg.org/#idl-ArrayBuffer>ArrayBuffer</a></code> could not be
+allocated, then rethrow the <code><a data-x-internal=js-rangeerror href=https://tc39.es/ecma262/#sec-native-error-types-used-in-this-standard-rangeerror>RangeError</a></code> thrown by JavaScript,
+and return.</ol>
+<li><p>Initialize the <dfn id=dom-imagedata-width data-dfn-type=attribute><code>width</code></dfn> attribute of <var>imageData</var> to
+<var>pixelsPerRow</var>.<li><p>Initialize the <dfn id=dom-imagedata-height data-dfn-type=attribute><code>height</code></dfn> attribute of <var>imageData</var> to
+<var>rows</var>.<li><p>Initialize the
+<dfn id=dom-imagedata-pixelformat data-dfn-type=attribute><code>pixelFormat</code></dfn>
+attribute of <var>imageData</var> to
+<var>settings</var>["<dfn id=dom-imagedatasettings-pixelformat data-dfn-type=dict-member><code>pixelFormat</code></dfn>"].<li><p>If <var>settings</var>["<code><a href="imagebitmap-and-animations.html#dom-imagedatasettings-colorspace">colorSpace</a></code>"]
+<a href=https://infra.spec.whatwg.org/#map-exists data-x-internal=map-exists>exists</a>, then initialize the <dfn id=dom-imagedata-colorspace data-dfn-type=attribute><code>colorSpace</code></dfn> attribute of <var>imageData</var> to
+<var>settings</var>["<dfn id=dom-imagedatasettings-colorspace data-dfn-type=dict-member><code>colorSpace</code></dfn>"].<li><p>Otherwise, if <var>defaultColorSpace</var> was given, then initialize the <code><a href="imagebitmap-and-animations.html#dom-imagedata-colorspace">colorSpace</a></code> attribute of <var>imageData</var> to
+<var>defaultColorSpace</var>.<li><p>Otherwise, initialize the <code><a href="imagebitmap-and-animations.html#dom-imagedata-colorspace">colorSpace</a></code>
+attribute of <var>imageData</var> to "<a href="canvas.html#dom-predefinedcolorspace-srgb">srgb</a>".</ol>
+</div>
+<div>
+<p><code><a href="imagebitmap-and-animations.html#imagedata">ImageData</a></code> objects are <a href="structured-data.html#serializable-objects">serializable objects</a>. Their <a href="structured-data.html#serialization-steps">serialization
+steps</a>, given <var>value</var> and <var>serialized</var>, are:</p>
+<ol><li><p>Set <var>serialized</var>.[[Data]] to the <a href="structured-data.html#sub-serialization">sub-serialization</a> of the value of
+<var>value</var>'s <code><a href="imagebitmap-and-animations.html#dom-imagedata-data">data</a></code> attribute.<li><p>Set <var>serialized</var>.[[Width]] to the value of <var>value</var>'s <code><a href="imagebitmap-and-animations.html#dom-imagedata-width">width</a></code> attribute.<li><p>Set <var>serialized</var>.[[Height]] to the value of <var>value</var>'s <code><a href="imagebitmap-and-animations.html#dom-imagedata-height">height</a></code> attribute.<li><p>Set <var>serialized</var>.[[ColorSpace]] to the value of <var>value</var>'s <code><a href="imagebitmap-and-animations.html#dom-imagedata-colorspace">colorSpace</a></code> attribute.<li><p>Set <var>serialized</var>.[[PixelFormat]] to the value of <var>value</var>'s <code><a href="imagebitmap-and-animations.html#dom-imagedata-pixelformat">pixelFormat</a></code> attribute.</ol>
+</div>
+<div>
+<p>Their <a href="structured-data.html#deserialization-steps">deserialization steps</a>, given <var>serialized</var>, <var>value</var>,
+and <var>targetRealm</var>, are:</p>
+<ol><li><p>Initialize <var>value</var>'s <code><a href="imagebitmap-and-animations.html#dom-imagedata-data">data</a></code> attribute
+to the <a href="structured-data.html#sub-deserialization">sub-deserialization</a> of <var>serialized</var>.[[Data]].<li><p>Initialize <var>value</var>'s <code><a href="imagebitmap-and-animations.html#dom-imagedata-width">width</a></code> attribute
+to <var>serialized</var>.[[Width]].<li><p>Initialize <var>value</var>'s <code><a href="imagebitmap-and-animations.html#dom-imagedata-height">height</a></code> attribute
+to <var>serialized</var>.[[Height]].<li><p>Initialize <var>value</var>'s <code><a href="imagebitmap-and-animations.html#dom-imagedata-colorspace">colorSpace</a></code>
+attribute to <var>serialized</var>.[[ColorSpace]].<li><p>Initialize <var>value</var>'s <code><a href="imagebitmap-and-animations.html#dom-imagedata-pixelformat">pixelFormat</a></code>
+attribute to <var>serialized</var>.[[PixelFormat]].</ol>
+</div>
+<p>The <code><a href="imagebitmap-and-animations.html#imagedatapixelformat">ImageDataPixelFormat</a></code> enumeration is used to specify type of the
+<code><a href="imagebitmap-and-animations.html#dom-imagedata-data">data</a></code> attribute of an <code><a href="imagebitmap-and-animations.html#imagedata">ImageData</a></code>
+and the arrangement and numerical representation of the color components for each pixel.</p>
+<p>The "<dfn id=dom-imagedatapixelformat-rgba-unorm8 data-dfn-type=enum-value><code>rgba-unorm8</code></dfn>" value indicates that the
+<code><a href="imagebitmap-and-animations.html#dom-imagedata-data">data</a></code> attribute of an <code><a href="imagebitmap-and-animations.html#imagedata">ImageData</a></code> must be of
+type <a href=https://webidl.spec.whatwg.org/#idl-Uint8ClampedArray data-x-internal=idl-uint8clampedarray>Uint8ClampedArray</a>. The color components of each
+pixel must be stored in four sequential elements in the order of red, green, blue, and then alpha.
+Each element represents the 8-bit unsigned normalized value for that component.</p>
+<p>The "<dfn id=dom-imagedatapixelformat-rgba-float16 data-dfn-type=enum-value><code>rgba-float16</code></dfn>" value indicates that the
+<code><a href="imagebitmap-and-animations.html#dom-imagedata-data">data</a></code> attribute of an <code><a href="imagebitmap-and-animations.html#imagedata">ImageData</a></code> must be of
+type <a href=https://webidl.spec.whatwg.org/#idl-Float16Array data-x-internal=idl-float16array>Float16Array</a>. The color components of each pixel must
+be stored in four sequential elements in the order of red, green, blue, and then alpha. Each
+element represents the value for that component.</p>
+<h4 id=the-imagebitmap-interface>The <code><a href="imagebitmap-and-animations.html#imagebitmap">ImageBitmap</a></code> interface</h4>
+</div><pre><code>[Exposed=(Window,Worker), <a href='structured-data.html#serializable'>Serializable</a>, <a href='structured-data.html#transferable'>Transferable</a>]
+interface <dfn id='imagebitmap' data-dfn-type='interface'>ImageBitmap</dfn> {
+readonly attribute unsigned long <a href='imagebitmap-and-animations.html#dom-imagebitmap-width'>width</a>;
+readonly attribute unsigned long <a href='imagebitmap-and-animations.html#dom-imagebitmap-height'>height</a>;
+undefined <a href='imagebitmap-and-animations.html#dom-imagebitmap-close'>close</a>();
+};
+typedef (<a href='canvas.html#canvasimagesource'>CanvasImageSource</a> or
+<a href='https://w3c.github.io/FileAPI/#dfn-Blob' data-x-internal='blob'>Blob</a> or
+<a href='imagebitmap-and-animations.html#imagedata'>ImageData</a>) <dfn id='imagebitmapsource' data-dfn-type='typedef'>ImageBitmapSource</dfn>;
+enum <dfn id='imageorientation' data-dfn-type='enum'>ImageOrientation</dfn> { &quot;<a href='imagebitmap-and-animations.html#dom-imageorientation-from-image'>from-image</a>&quot;, &quot;<a href='imagebitmap-and-animations.html#dom-imageorientation-flipy'>flipY</a>&quot; };
+enum <dfn id='premultiplyalpha' data-dfn-type='enum'>PremultiplyAlpha</dfn> { &quot;<a href='imagebitmap-and-animations.html#dom-premultiplyalpha-none'>none</a>&quot;, &quot;<a href='imagebitmap-and-animations.html#dom-premultiplyalpha-premultiply'>premultiply</a>&quot;, &quot;<a href='imagebitmap-and-animations.html#dom-premultiplyalpha-default'>default</a>&quot; };
+enum <dfn id='colorspaceconversion' data-dfn-type='enum'>ColorSpaceConversion</dfn> { &quot;<a href='imagebitmap-and-animations.html#dom-colorspaceconversion-none'>none</a>&quot;, &quot;<a href='imagebitmap-and-animations.html#dom-colorspaceconversion-default'>default</a>&quot; };
+enum <dfn id='resizequality' data-dfn-type='enum'>ResizeQuality</dfn> { &quot;<a href='imagebitmap-and-animations.html#dom-resizequality-pixelated'>pixelated</a>&quot;, &quot;<a href='imagebitmap-and-animations.html#dom-resizequality-low'>low</a>&quot;, &quot;<a href='imagebitmap-and-animations.html#dom-resizequality-medium'>medium</a>&quot;, &quot;<a href='imagebitmap-and-animations.html#dom-resizequality-high'>high</a>&quot; };
+dictionary <dfn id='imagebitmapoptions' data-dfn-type='dictionary'>ImageBitmapOptions</dfn> {
+<a href='imagebitmap-and-animations.html#imageorientation'>ImageOrientation</a> <a href='imagebitmap-and-animations.html#dom-imagebitmapoptions-imageorientation'>imageOrientation</a> = &quot;<a href='imagebitmap-and-animations.html#dom-imageorientation-from-image'>from-image</a>&quot;;
+<a href='imagebitmap-and-animations.html#premultiplyalpha'>PremultiplyAlpha</a> <a href='imagebitmap-and-animations.html#dom-imagebitmapoptions-premultiplyalpha'>premultiplyAlpha</a> = &quot;<a href='imagebitmap-and-animations.html#dom-premultiplyalpha-default'>default</a>&quot;;
+<a href='imagebitmap-and-animations.html#colorspaceconversion'>ColorSpaceConversion</a> <a href='imagebitmap-and-animations.html#dom-imagebitmapoptions-colorspaceconversion'>colorSpaceConversion</a> = &quot;<a href='imagebitmap-and-animations.html#dom-colorspaceconversion-default'>default</a>&quot;;
+[EnforceRange] unsigned long <a href='imagebitmap-and-animations.html#dom-imagebitmapoptions-resizewidth'>resizeWidth</a>;
+[EnforceRange] unsigned long <a href='imagebitmap-and-animations.html#dom-imagebitmapoptions-resizeheight'>resizeHeight</a>;
+<a href='imagebitmap-and-animations.html#resizequality'>ResizeQuality</a> <a href='imagebitmap-and-animations.html#dom-imagebitmapoptions-resizequality'>resizeQuality</a> = &quot;<a href='imagebitmap-and-animations.html#dom-resizequality-low'>low</a>&quot;;
+};</code></pre>
+<p>An <code><a href="imagebitmap-and-animations.html#imagebitmap">ImageBitmap</a></code> object represents a bitmap image that can be painted to a canvas
+without undue latency.</p>
+<p>The exact judgement of what is undue latency of this is left up to the
+implementer, but in general if making use of the bitmap requires network I/O, or even local disk
+I/O, then the latency is probably undue; whereas if it only requires a blocking read from a GPU or
+system RAM, the latency is probably acceptable.</p>
+<dl><dt><code><var>promise</var> = self.<a href="imagebitmap-and-animations.html#dom-createimagebitmap" id=dom-createimagebitmap-dev>createImageBitmap</a>(<var>image</var> [, <var>options</var> ])</code></div><dt><code><var>promise</var> = self.<a href="imagebitmap-and-animations.html#dom-createimagebitmap">createImageBitmap</a>(<var>image</var>, <var>sx</var>, <var>sy</var>, <var>sw</var>, <var>sh</var> [, <var>options</var> ])</code><dd>
+<p>Takes <var>image</var>, which can be an <code><a href="embedded-content.html#the-img-element">img</a></code> element, an <a href=https://svgwg.org/svg2-draft/embedded.html#ImageElement data-x-internal=svg-image>SVG
+<code>image</code></a> element, a <code><a href="media.html#the-video-element">video</a></code> element, a <code><a href="canvas.html#the-canvas-element">canvas</a></code> element,
+a <code><a data-x-internal=blob href=https://w3c.github.io/FileAPI/#dfn-Blob>Blob</a></code> object, an <code><a href="imagebitmap-and-animations.html#imagedata">ImageData</a></code> object, or another
+<code><a href="imagebitmap-and-animations.html#imagebitmap">ImageBitmap</a></code> object, and returns a promise that is resolved when a new
+<code><a href="imagebitmap-and-animations.html#imagebitmap">ImageBitmap</a></code> is created.</p>
+<p>If no <code><a href="imagebitmap-and-animations.html#imagebitmap">ImageBitmap</a></code> object can be constructed, for example because the provided
+<var>image</var> data is not actually an image, then the promise is rejected instead.</p>
+<p>If <var>sx</var>, <var>sy</var>, <var>sw</var>, and <var>sh</var> arguments are provided, the
+source image is cropped to the given pixels, with any pixels missing in the original replaced by
+<a href=https://drafts.csswg.org/css-color/#transparent-black data-x-internal=transparent-black>transparent black</a>. These coordinates are in the source image's pixel coordinate
+space, <em>not</em> in <a href=https://drafts.csswg.org/css-values/#pxpx'" data-x-internal="'px'">CSS pixels</a>.</p>
+<p>If <var>options</var> is provided, the <code><a href="imagebitmap-and-animations.html#imagebitmap">ImageBitmap</a></code> object's bitmap data is
+modified according to <var>options</var>. For example, if the <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-premultiplyalpha">premultiplyAlpha</a></code> option is set to "<code><a href="imagebitmap-and-animations.html#dom-premultiplyalpha-premultiply">premultiply</a></code>", the <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap data</a>'s non-alpha color components are
+<a href="canvas.html#concept-premultiplied-alpha">premultiplied by the alpha component</a>.</p>
+<p>Rejects the promise with an <a href=https://webidl.spec.whatwg.org/#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> if the source image is not in a valid state (e.g., an <code><a href="embedded-content.html#the-img-element">img</a></code>
+element that hasn't loaded successfully, an <code><a href="imagebitmap-and-animations.html#imagebitmap">ImageBitmap</a></code> object whose
+<a href="structured-data.html#detached">[[Detached]]</a> internal slot value is true, an <code><a href="imagebitmap-and-animations.html#imagedata">ImageData</a></code> object whose
+<code><a href="imagebitmap-and-animations.html#dom-imagedata-data">data</a></code> attribute value's [[ViewedArrayBuffer]] internal
+slot is detached, or a <code><a data-x-internal=blob href=https://w3c.github.io/FileAPI/#dfn-Blob>Blob</a></code> whose data cannot be interpreted as a bitmap
+image).</p>
+<p>Rejects the promise with a <a href=https://webidl.spec.whatwg.org/#securityerror data-x-internal=securityerror>"<code>SecurityError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> if the script is not allowed to access the image data of the source
+image (e.g. a <code><a href="media.html#the-video-element">video</a></code> that is <a href="urls-and-fetching.html#cors-cross-origin">CORS-cross-origin</a>, or a
+<code><a href="canvas.html#the-canvas-element">canvas</a></code> being drawn on by a script in a worker from another
+<a href="browsers.html#concept-origin">origin</a>).</p>
+<dt><code><var>imageBitmap</var>.<a href="imagebitmap-and-animations.html#dom-imagebitmap-close" id=dom-imagebitmap-close-dev>close</a>()</code></div><dd><p>Releases <var>imageBitmap</var>'s underlying <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap data</a>.<dt><code><var>imageBitmap</var>.<a href="imagebitmap-and-animations.html#dom-imagebitmap-width" id=dom-imagebitmap-width-dev>width</a></code></div><dd>
+<p>Returns the <a href=https://drafts.csswg.org/css-images/#natural-width data-x-internal=natural-width>natural width</a> of the image, in <a href=https://drafts.csswg.org/css-values/#pxpx'-2" data-x-internal="'px'">CSS
+pixels</a>.</p>
+<dt><code><var>imageBitmap</var>.<a href="imagebitmap-and-animations.html#dom-imagebitmap-height" id=dom-imagebitmap-height-dev>height</a></code></div><dd>
+<p>Returns the <a href=https://drafts.csswg.org/css-images/#natural-height data-x-internal=natural-height>natural height</a> of the image, in <a href=https://drafts.csswg.org/css-values/#pxpx'-3" data-x-internal="'px'">CSS
+pixels</a>.</p>
+</dl>
+<p>An <code><a href="imagebitmap-and-animations.html#imagebitmap">ImageBitmap</a></code> object whose <a href="structured-data.html#detached">[[Detached]]</a> internal slot value
+is false always has associated <dfn id=concept-imagebitmap-bitmap-data>bitmap data</dfn>,
+with a width and a height. However, it is possible for this data to be corrupted. If an
+<code><a href="imagebitmap-and-animations.html#imagebitmap">ImageBitmap</a></code> object's media data can be decoded without errors, it is said to be <dfn id=concept-imagebitmap-good>fully decodable</dfn>.</p>
+<p>An <code><a href="imagebitmap-and-animations.html#imagebitmap">ImageBitmap</a></code> object's bitmap has an <a href="canvas.html#concept-canvas-origin-clean">origin-clean</a> flag, which indicates whether the
+bitmap is tainted by content from a different <a href="browsers.html#concept-origin">origin</a>. The flag is initially set to
+true and may be changed to false by the steps of <code><a href="imagebitmap-and-animations.html#dom-createimagebitmap">createImageBitmap()</a></code>.</p>
+<hr>
+<p><code><a href="imagebitmap-and-animations.html#imagebitmap">ImageBitmap</a></code> objects are <a href="structured-data.html#serializable-objects">serializable objects</a> and <a href="structured-data.html#transferable-objects">transferable
+objects</a>.</p>
+<div>
+<p>Their <a href="structured-data.html#serialization-steps">serialization steps</a>, given <var>value</var> and <var>serialized</var>,
+are:</p>
+<ol><li><p>If <var>value</var>'s <a href="canvas.html#concept-canvas-origin-clean">origin-clean</a>
+flag is not set, then throw a <a href=https://webidl.spec.whatwg.org/#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.
+<li><p>Set <var>serialized</var>.[[BitmapData]] to a copy of <var>value</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap data</a>.</ol>
+</div>
+<div>
+<p>Their <a href="structured-data.html#deserialization-steps">deserialization steps</a>, given <var>serialized</var>, <var>value</var>,
+and <var>targetRealm</var>, are:</p>
+<ol><li><p>Set <var>value</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap data</a>
+to <var>serialized</var>.[[BitmapData]].</ol>
+</div>
+<div>
+<p>Their <a href="structured-data.html#transfer-steps">transfer steps</a>, given <var>value</var> and <var>dataHolder</var>, are:</p>
+<ol><li><p>If <var>value</var>'s <a href="canvas.html#concept-canvas-origin-clean">origin-clean</a>
+flag is not set, then throw a <a href=https://webidl.spec.whatwg.org/#datacloneerror data-x-internal=datacloneerror>"<code>DataCloneError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.
+<li><p>Set <var>dataHolder</var>.[[BitmapData]] to <var>value</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap data</a>.<li><p>Unset <var>value</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap
+data</a>.</ol>
+</div>
+<div>
+<p>Their <a href="structured-data.html#transfer-receiving-steps">transfer-receiving steps</a>, given <var>dataHolder</var> and <var>value</var>,
+are:</p>
+<ol><li><p>Set <var>value</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap data</a>
+to <var>dataHolder</var>.[[BitmapData]].</ol>
+</div>
+<hr>
+<p>The <a href="imagebitmap-and-animations.html#dom-createimagebitmap">createImageBitmap</a> method uses the <dfn id=bitmap-task-source>bitmap
+task source</dfn> to settle its returned Promise.</p>
+<div>
+<div>
+<p>The <dfn id=dom-createimagebitmap data-dfn-type=method><code>createImageBitmap(<var>image</var>,
+<var>options</var>)</code></dfn> and <code>createImageBitmap(<var>image</var>,
+<var>sx</var>, <var>sy</var>, <var>sw</var>, <var>sh</var>, <var>options</var>)</code> methods,
+when invoked, must run these steps:</p>
+<ol><li><p>If either <var>sw</var> or <var>sh</var> is given and is 0, then return <a href=https://webidl.spec.whatwg.org/#a-promise-rejected-with data-x-internal=a-promise-rejected-with>a promise
+rejected with</a> a <code><a data-x-internal=js-rangeerror href=https://tc39.es/ecma262/#sec-native-error-types-used-in-this-standard-rangeerror>RangeError</a></code>.<li><p>If either <var>options</var>'s <dfn id=dom-imagebitmapoptions-resizewidth data-dfn-type=dict-member><code>resizeWidth</code></dfn> or <var>options</var>'s
+<dfn id=dom-imagebitmapoptions-resizeheight data-dfn-type=dict-member><code>resizeHeight</code></dfn> is present and is 0, then
+return <a href=https://webidl.spec.whatwg.org/#a-promise-rejected-with data-x-internal=a-promise-rejected-with>a promise rejected with</a> an <a href=https://webidl.spec.whatwg.org/#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p><a href="canvas.html#check-the-usability-of-the-image-argument">Check the usability of the <var>image</var> argument</a>. If this throws an
+exception or returns <i>bad</i>, then return <a href=https://webidl.spec.whatwg.org/#a-promise-rejected-with data-x-internal=a-promise-rejected-with>a promise rejected with</a> an
+<a href=https://webidl.spec.whatwg.org/#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.
+<li><p>Let <var>promise</var> be a new promise.<li><p>Let <var>imageBitmap</var> be a new <code><a href="imagebitmap-and-animations.html#imagebitmap">ImageBitmap</a></code> object.<li>
+<p>Switch on <var>image</var>:</p>
+<dl><dt><code><a href="embedded-content.html#the-img-element">img</a></code>
+<dt><a href=https://svgwg.org/svg2-draft/embedded.html#ImageElement data-x-internal=svg-image>SVG <code>image</code></a>
+<dd>
+<ol><li><p>If <var>image</var>'s media data has no <a href=https://drafts.csswg.org/css-images/#natural-dimensions data-x-internal=natural-dimensions>natural dimensions</a> (e.g., it's
+a vector graphic with no specified content size) and either <var>options</var>'s <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizewidth">resizeWidth</a></code> or <var>options</var>'s <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizeheight">resizeHeight</a></code> is not present, then return
+<a href=https://webidl.spec.whatwg.org/#a-promise-rejected-with data-x-internal=a-promise-rejected-with>a promise rejected with</a> an <a href=https://webidl.spec.whatwg.org/#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>If <var>image</var>'s media data has no <a href=https://drafts.csswg.org/css-images/#natural-dimensions data-x-internal=natural-dimensions>natural dimensions</a> (e.g., it's
+a vector graphic with no specified content size), it should be rendered to a bitmap of the
+size specified by the <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizewidth">resizeWidth</a></code>
+and the <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizeheight">resizeHeight</a></code>
+options.<li><p>Set <var>imageBitmap</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap
+data</a> to a copy of <var>image</var>'s media data, <a href="imagebitmap-and-animations.html#cropped-to-the-source-rectangle-with-formatting">cropped to the source rectangle
+with formatting</a>. If this is an animated image, <var>imageBitmap</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap data</a> must only be taken from the
+default image of the animation (the one that the format defines is to be used when animation
+is not supported or is disabled), or, if there is no such image, the first frame of the
+animation.<li><p>If <var>image</var> <a href="canvas.html#the-image-argument-is-not-origin-clean">is not origin-clean</a>, then set the <a href="canvas.html#concept-canvas-origin-clean">origin-clean</a> flag of <var>imageBitmap</var>'s
+bitmap to false.<li><p><a href="webappapis.html#queue-a-global-task">Queue a global task</a>, using the <a href="imagebitmap-and-animations.html#bitmap-task-source">bitmap task source</a>, to
+resolve <var>promise</var> with <var>imageBitmap</var>.</ol>
+<dt><code><a href="media.html#the-video-element">video</a></code>
+<dd>
+<ol><li><p>If <var>image</var>'s <code><a href="media.html#dom-media-networkstate">networkState</a></code>
+attribute is <code><a href="media.html#dom-media-network_empty">NETWORK_EMPTY</a></code>, then return
+<a href=https://webidl.spec.whatwg.org/#a-promise-rejected-with data-x-internal=a-promise-rejected-with>a promise rejected with</a> an <a href=https://webidl.spec.whatwg.org/#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Set <var>imageBitmap</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap
+data</a> to a copy of the frame at the <a href="media.html#current-playback-position">current playback position</a>, at the
+<a href="media.html#media-resource">media resource</a>'s <a href="media.html#concept-video-intrinsic-width">natural
+width</a> and <a href="media.html#concept-video-intrinsic-height">natural height</a> (i.e.,
+after any aspect-ratio correction has been applied), <a href="imagebitmap-and-animations.html#cropped-to-the-source-rectangle-with-formatting">cropped to the source rectangle
+with formatting</a>.</p>
+<li><p>If <var>image</var> <a href="canvas.html#the-image-argument-is-not-origin-clean">is not origin-clean</a>, then set the <a href="canvas.html#concept-canvas-origin-clean">origin-clean</a> flag of <var>imageBitmap</var>'s
+bitmap to false.<li><p><a href="webappapis.html#queue-a-global-task">Queue a global task</a>, using the <a href="imagebitmap-and-animations.html#bitmap-task-source">bitmap task source</a>, to
+resolve <var>promise</var> with <var>imageBitmap</var>.</ol>
+<dt><code><a href="canvas.html#the-canvas-element">canvas</a></code>
+<dd>
+<ol><li><p>Set <var>imageBitmap</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap
+data</a> to a copy of <var>image</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap data</a>, <a href="imagebitmap-and-animations.html#cropped-to-the-source-rectangle-with-formatting">cropped to the source
+rectangle with formatting</a>.<li><p>Set the <a href="canvas.html#concept-canvas-origin-clean">origin-clean</a> flag of the
+<var>imageBitmap</var>'s bitmap to the same value as the <a href="canvas.html#concept-canvas-origin-clean">origin-clean</a> flag of <var>image</var>'s
+bitmap.<li><p><a href="webappapis.html#queue-a-global-task">Queue a global task</a>, using the <a href="imagebitmap-and-animations.html#bitmap-task-source">bitmap task source</a>, to
+resolve <var>promise</var> with <var>imageBitmap</var>.</ol>
+<dt><code><a data-x-internal=blob href=https://w3c.github.io/FileAPI/#dfn-Blob>Blob</a></code>
+<dd>
+<p>Run these steps <a href="infrastructure.html#in-parallel">in parallel</a>:</p>
+<ol><li><p>Let <var>imageData</var> be the result of reading <var>image</var>'s data. If an <a href="infrastructure.html#file-error-read">error occurs during reading of the object</a>, then <a href="webappapis.html#queue-a-global-task">queue a
+global task</a>, using the <a href="imagebitmap-and-animations.html#bitmap-task-source">bitmap task source</a>, to reject <var>promise</var>
+with an <a href=https://webidl.spec.whatwg.org/#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> and abort
+these steps.<li><p>Apply the <a href=https://mimesniff.spec.whatwg.org/#rules-for-sniffing-images-specifically data-x-internal=content-type-sniffing:-image>image sniffing rules</a> to
+determine the file format of <var>imageData</var>, with MIME type of <var>image</var> (as
+given by <var>image</var>'s <code><a data-x-internal=dom-blob-type href=https://w3c.github.io/FileAPI/#dfn-type>type</a></code> attribute) giving the
+official type.<li><p>If <var>imageData</var> is not in a supported image file format (e.g., it's not an
+image at all), or if <var>imageData</var> is corrupted in some fatal way such that the image
+dimensions cannot be obtained (e.g., a vector graphic with no natural size), then <a href="webappapis.html#queue-a-global-task">queue
+a global task</a>, using the <a href="imagebitmap-and-animations.html#bitmap-task-source">bitmap task source</a>, to reject <var>promise</var>
+with an <a href=https://webidl.spec.whatwg.org/#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code> and abort
+these steps.<li><p>Set <var>imageBitmap</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap
+data</a> to <var>imageData</var>, <a href="imagebitmap-and-animations.html#cropped-to-the-source-rectangle-with-formatting">cropped to the source rectangle with
+formatting</a>. If this is an animated image, <var>imageBitmap</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap data</a> must only be taken from the
+default image of the animation (the one that the format defines is to be used when animation
+is not supported or is disabled), or, if there is no such image, the first frame of the
+animation.<li><p><a href="webappapis.html#queue-a-global-task">Queue a global task</a>, using the <a href="imagebitmap-and-animations.html#bitmap-task-source">bitmap task source</a>, to
+resolve <var>promise</var> with <var>imageBitmap</var>.</ol>
+<dt><code><a href="imagebitmap-and-animations.html#imagedata">ImageData</a></code>
+<dd>
+<ol><li><p>Let <var>buffer</var> be <var>image</var>'s <code><a href="imagebitmap-and-animations.html#dom-imagedata-data">data</a></code> attribute value's [[ViewedArrayBuffer]] internal
+slot.<li><p>If <a href=https://tc39.es/ecma262/#sec-isdetachedbuffer data-x-internal=isdetachedbuffer>IsDetachedBuffer</a>(<var>buffer</var>) is true, then return <a href=https://webidl.spec.whatwg.org/#a-promise-rejected-with data-x-internal=a-promise-rejected-with>a
+promise rejected with</a> an <a href=https://webidl.spec.whatwg.org/#invalidstateerror data-x-internal=invalidstateerror>"<code>InvalidStateError</code>"</a>
+<code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Set <var>imageBitmap</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap
+data</a> to <var>image</var>'s image data, <a href="imagebitmap-and-animations.html#cropped-to-the-source-rectangle-with-formatting">cropped to the source rectangle with
+formatting</a>.<li><p><a href="webappapis.html#queue-a-global-task">Queue a global task</a>, using the <a href="imagebitmap-and-animations.html#bitmap-task-source">bitmap task source</a>, to
+resolve <var>promise</var> with <var>imageBitmap</var>.</ol>
+<dt><code><a href="imagebitmap-and-animations.html#imagebitmap">ImageBitmap</a></code>
+<dd>
+<ol><li><p>Set <var>imageBitmap</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap
+data</a> to a copy of <var>image</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap data</a>, <a href="imagebitmap-and-animations.html#cropped-to-the-source-rectangle-with-formatting">cropped to the source
+rectangle with formatting</a>.<li><p>Set the <a href="canvas.html#concept-canvas-origin-clean">origin-clean</a> flag of
+<var>imageBitmap</var>'s bitmap to the same value as the <a href="canvas.html#concept-canvas-origin-clean">origin-clean</a> flag of <var>image</var>'s
+bitmap.<li><p><a href="webappapis.html#queue-a-global-task">Queue a global task</a>, using the <a href="imagebitmap-and-animations.html#bitmap-task-source">bitmap task source</a>, to
+resolve <var>promise</var> with <var>imageBitmap</var>.</ol>
+<dt><code><a data-x-internal=videoframe href=https://w3c.github.io/webcodecs/#videoframe-interface>VideoFrame</a></code>
+<dd>
+<ol><li><p>Set <var>imageBitmap</var>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap
+data</a> to a copy of <var>image</var>'s visible pixel data, <a href="imagebitmap-and-animations.html#cropped-to-the-source-rectangle-with-formatting">cropped to the source
+rectangle with formatting</a>.<li><p><a href="webappapis.html#queue-a-global-task">Queue a global task</a>, using the <a href="imagebitmap-and-animations.html#bitmap-task-source">bitmap task source</a>, to
+resolve <var>promise</var> with <var>imageBitmap</var>.</ol>
+</dl>
+<li><p>Return <var>promise</var>.</ol>
+</div>
+<div>
+<p>When the steps above require that the user agent <dfn id=cropped-to-the-source-rectangle-with-formatting>crop bitmap data to the source rectangle with formatting</dfn>,
+the user agent must run the following steps:</p>
+<ol><li><p>Let <var>input</var> be the <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap
+data</a> being transformed.<li>
+<p>If <var>sx</var>, <var>sy</var>, <var>sw</var> and <var>sh</var> are specified, let
+<var>sourceRectangle</var> be a rectangle whose corners are the four points (<var>sx</var>,
+<var>sy</var>), (<var>sx</var>+<var>sw</var>, <var>sy</var>), (<var>sx</var>+<var>sw</var>,
+<var>sy</var>+<var>sh</var>), (<var>sx</var>, <var>sy</var>+<var>sh</var>). Otherwise, let
+<var>sourceRectangle</var> be a rectangle whose corners are the four points (0, 0), (width of
+<var>input</var>, 0), (width of <var>input</var>, height of <var>input</var>), (0, height of
+<var>input</var>).</p>
+<p>If either <var>sw</var> or <var>sh</var> are negative, then
+the top-left corner of this rectangle will be to the left or above the (<var>sx</var>,
+<var>sy</var>) point.</p>
+<li>
+<p>Let <var>outputWidth</var> be determined as follows:</p>
+<dl><dt>If the <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizewidth">resizeWidth</a></code> member of
+<var>options</var> is specified<dd>the value of the <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizewidth">resizeWidth</a></code>
+member of <var>options</var><dt>If the <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizewidth">resizeWidth</a></code> member of
+<var>options</var> is not specified, but the <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizeheight">resizeHeight</a></code> member is specified<dd>the width of <var>sourceRectangle</var>, times the value of the <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizeheight">resizeHeight</a></code> member of <var>options</var>,
+divided by the height of <var>sourceRectangle</var>, rounded up to the nearest integer<dt>If neither <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizewidth">resizeWidth</a></code> nor <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizeheight">resizeHeight</a></code> are specified<dd>the width of <var>sourceRectangle</var></dl>
+<li>
+<p>Let <var>outputHeight</var> be determined as follows:</p>
+<dl><dt>If the <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizeheight">resizeHeight</a></code> member of
+<var>options</var> is specified<dd>the value of the <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizeheight">resizeHeight</a></code>
+member of <var>options</var><dt>If the <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizeheight">resizeHeight</a></code> member of
+<var>options</var> is not specified, but the <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizewidth">resizeWidth</a></code> member is specified<dd>the height of <var>sourceRectangle</var>, times the value of the <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizewidth">resizeWidth</a></code> member of <var>options</var>,
+divided by the width of <var>sourceRectangle</var>, rounded up to the nearest integer<dt>If neither <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizewidth">resizeWidth</a></code> nor <code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-resizeheight">resizeHeight</a></code> are specified<dd>the height of <var>sourceRectangle</var></dl>
+<li><p>Place <var>input</var> on an infinite <a href=https://drafts.csswg.org/css-color/#transparent-black data-x-internal=transparent-black>transparent black</a> grid plane,
+positioned so that its top left corner is at the origin of the plane, with the
+<var>x</var>-coordinate increasing to the right, and the <var>y</var>-coordinate increasing down,
+and with each pixel in the <var>input</var> image data occupying a cell on the plane's
+grid.<li><p>Let <var>output</var> be the rectangle on the plane denoted by
+<var>sourceRectangle</var>.<li><p>Scale <var>output</var> to the size specified by <var>outputWidth</var> and
+<var>outputHeight</var>. The user agent should use the value of the <dfn id=dom-imagebitmapoptions-resizequality data-dfn-type=dict-member><code>resizeQuality</code></dfn> option to guide the
+choice of scaling algorithm.<li>
+<p>If the value of the <dfn id=dom-imagebitmapoptions-imageorientation data-dfn-type=dict-member><code>imageOrientation</code></dfn> member of
+<var>options</var> is "<dfn id=dom-imageorientation-flipy data-dfn-type=enum-value><code>flipY</code></dfn>", <var>output</var> must be flipped
+vertically, disregarding any image orientation metadata of the source (such as EXIF metadata),
+if any. <a href="references.html#refsEXIF">[EXIF]</a></p>
+<p>If the value is "<dfn id=dom-imageorientation-from-image data-dfn-type=enum-value><code>from-image</code></dfn>", no extra step is needed.</p>
+<p>There used to be a "<dfn id=dom-imagebitmapoptions-imageorientation-none><code>none</code></dfn>" enum value. It was
+renamed to "<code><a href="imagebitmap-and-animations.html#dom-imageorientation-from-image">from-image</a></code>". In the future,
+"<code><a href="imagebitmap-and-animations.html#dom-imagebitmapoptions-imageorientation-none">none</a></code>" will be added back
+with a different meaning.</p>
+<li>
+<p>If <var>image</var> is an <code><a href="embedded-content.html#the-img-element">img</a></code> element or a <code><a data-x-internal=blob href=https://w3c.github.io/FileAPI/#dfn-Blob>Blob</a></code> object, let
+<var>val</var> be the value of the <dfn id=dom-imagebitmapoptions-colorspaceconversion data-dfn-type=dict-member><code>colorSpaceConversion</code></dfn> member
+of <var>options</var>, and then run these substeps:</p>
+<ol><li><p>If <var>val</var> is "<dfn id=dom-colorspaceconversion-default data-dfn-type=enum-value><code>default</code></dfn>",
+the color space conversion behavior is implementation-specific, and should be chosen according
+to the default color space that the implementation uses for drawing images onto the canvas.</p>
+<li><p>If <var>val</var> is "<dfn id=dom-colorspaceconversion-none data-dfn-type=enum-value><code>none</code></dfn>", <var>output</var> must be decoded
+without performing any color space conversions. This means that the image decoding algorithm
+must ignore color profile metadata embedded in the source data as well as the display device
+color profile.</ol>
+<li>
+<p>Let <var>val</var> be the value of <dfn id=dom-imagebitmapoptions-premultiplyalpha data-dfn-type=dict-member><code>premultiplyAlpha</code></dfn> member of
+<var>options</var>, and then run these substeps:</p>
+<ol><li><p>If <var>val</var> is "<dfn id=dom-premultiplyalpha-default data-dfn-type=enum-value><code>default</code></dfn>", the alpha premultiplication
+behavior is implementation-specific, and should be chosen according to implementation deems
+optimal for drawing images onto the canvas.<li><p>If <var>val</var> is "<dfn id=dom-premultiplyalpha-premultiply data-dfn-type=enum-value><code>premultiply</code></dfn>", the <var>output</var> that
+is not premultiplied by alpha must have its color components <a href="canvas.html#convert-to-premultiplied">multiplied by alpha</a> and that is premultiplied by alpha
+must be left untouched.<li><p>If <var>val</var> is "<dfn id=dom-premultiplyalpha-none data-dfn-type=enum-value><code>none</code></dfn>", the <var>output</var> that is not
+premultiplied by alpha must be left untouched and that is premultiplied by alpha must have its
+color components <a href="canvas.html#convert-from-premultiplied">divided by alpha</a>.</ol>
+<li><p>Return <var>output</var>.</ol>
+</div>
+</div>
+<div>
+<p>The <dfn id=dom-imagebitmap-close data-dfn-type=method><code>close()</code></dfn>
+method steps are:</p>
+<ol><li><p>Set <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="structured-data.html#detached">[[Detached]]</a> internal slot value to true.<li><p>Unset <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="imagebitmap-and-animations.html#concept-imagebitmap-bitmap-data">bitmap
+data</a>.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-imagebitmap-width data-dfn-type=attribute><code>width</code></dfn>
+getter steps are:</p>
+<ol><li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="structured-data.html#detached">[[Detached]]</a> internal slot's value is true, then
+return 0.<li><p>Return <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s width, in <a href=https://drafts.csswg.org/css-values/#pxpx'-4" data-x-internal="'px'">CSS pixels</a>.</ol>
+</div>
+<div>
+<p>The <dfn id=dom-imagebitmap-height data-dfn-type=attribute><code>height</code></dfn>
+getter steps are:</p>
+<ol><li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="structured-data.html#detached">[[Detached]]</a> internal slot's value is true, then
+return 0.<li><p>Return <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s height, in <a href=https://drafts.csswg.org/css-values/#pxpx'-5" data-x-internal="'px'">CSS pixels</a>.</ol>
+</div>
+<p>The <code><a href="imagebitmap-and-animations.html#resizequality">ResizeQuality</a></code> enumeration is used to express a preference for the
+interpolation quality to use when scaling images.</p>
+<p>The "<dfn id=dom-resizequality-pixelated data-dfn-type=enum-value><code>pixelated</code></dfn>" value indicates a preference for
+scaling the image to preserve the pixelation of the original as much as possible, with minor
+smoothing as necessary to avoid distorting the image when the target size is not a clean multiple
+of the original.</p>
+<p>To implement "<code><a href="imagebitmap-and-animations.html#dom-resizequality-pixelated">pixelated</a></code>", for each axis
+independently, first determine the integer multiple of its natural size that puts it closest to
+the target size and is greater than zero. Scale it to this integer-multiple-size using nearest
+neighbor, then scale it the rest of the way to the target size using bilinear interpolation.</p>
+<p>The "<dfn id=dom-resizequality-low data-dfn-type=enum-value><code>low</code></dfn>"
+value indicates a preference for a low level of image interpolation quality. Low-quality image
+interpolation may be more computationally efficient than higher settings.</p>
+<p>The "<dfn id=dom-resizequality-medium data-dfn-type=enum-value><code>medium</code></dfn>" value indicates a preference for a medium
+level of image interpolation quality.</p>
+<p>The "<dfn id=dom-resizequality-high data-dfn-type=enum-value><code>high</code></dfn>" value indicates a preference for a high level
+of image interpolation quality. High-quality image interpolation may be more computationally
+expensive than lower settings.</p>
+<p>Bilinear scaling is an example of a relatively fast, lower-quality image-smoothing
+algorithm. Bicubic or Lanczos scaling are examples of image-scaling algorithms that produce
+higher-quality output. This specification does not mandate that specific interpolation algorithms
+be used, except for "<code><a href="imagebitmap-and-animations.html#dom-resizequality-pixelated">pixelated</a></code>" as described
+above.</p>
+<div>
+<p>Using this API, a sprite sheet can be precut and prepared:</p>
+<pre><code>var sprites = {};
+function loadMySprites() {
+var image = new Image();
+image.src = &apos;mysprites.png&apos;;
+var resolver;
+var promise = new Promise(function (arg) { resolver = arg });
+image.onload = function () {
+resolver(Promise.all([
+createImageBitmap(image,  0,  0, 40, 40).then(function (image) { sprites.person = image }),
+createImageBitmap(image, 40,  0, 40, 40).then(function (image) { sprites.grass  = image }),
+createImageBitmap(image, 80,  0, 40, 40).then(function (image) { sprites.tree   = image }),
+createImageBitmap(image,  0, 40, 40, 40).then(function (image) { sprites.hut    = image }),
+createImageBitmap(image, 40, 40, 40, 40).then(function (image) { sprites.apple  = image }),
+createImageBitmap(image, 80, 40, 40, 40).then(function (image) { sprites.snake  = image })
+]));
+};
+return promise;
+}
+function runDemo() {
+var canvas = document.querySelector(&apos;canvas#demo&apos;);
+var context = canvas.getContext(&apos;2d&apos;);
+context.drawImage(sprites.tree, 30, 10);
+context.drawImage(sprites.snake, 70, 10);
+}
+loadMySprites().then(runDemo);</code></pre>
+</div>
+<h3 id=animation-frames>Animation frames</h3>
+<p>Some objects include the <code><a href="imagebitmap-and-animations.html#animationframeprovider">AnimationFrameProvider</a></code> interface mixin.</p>
+<pre><code>callback <dfn id='framerequestcallback' data-dfn-type='callback'>FrameRequestCallback</dfn> = undefined (<a href='https://w3c.github.io/hr-time/#dom-domhighrestimestamp' data-x-internal='domhighrestimestamp'>DOMHighResTimeStamp</a> time);
+interface mixin <dfn id='animationframeprovider' data-dfn-type='interface'>AnimationFrameProvider</dfn> {
+unsigned long <a href='imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe'>requestAnimationFrame</a>(<a href='imagebitmap-and-animations.html#framerequestcallback'>FrameRequestCallback</a> callback);
+undefined <a href='imagebitmap-and-animations.html#animationframeprovider-cancelanimationframe'>cancelAnimationFrame</a>(unsigned long handle);
+};
+<a href='nav-history-apis.html#window'>Window</a> includes <a href='imagebitmap-and-animations.html#animationframeprovider'>AnimationFrameProvider</a>;
+<a href='workers.html#dedicatedworkerglobalscope'>DedicatedWorkerGlobalScope</a> includes <a href='imagebitmap-and-animations.html#animationframeprovider'>AnimationFrameProvider</a>;</code></pre>
+<div>
+<p>Each <code><a href="imagebitmap-and-animations.html#animationframeprovider">AnimationFrameProvider</a></code> object also has a <dfn id=concept-animationframeprovider-target-object>target object</dfn> that stores the
+provider's internal state. It is defined as follows:</p>
+<dl><dt>If the <code><a href="imagebitmap-and-animations.html#animationframeprovider">AnimationFrameProvider</a></code> is a <code><a href="nav-history-apis.html#window">Window</a></code><dd>The <code><a href="nav-history-apis.html#window">Window</a></code>'s <a href="nav-history-apis.html#concept-document-window">associated
+<code>Document</code></a><dt>If the <code><a href="imagebitmap-and-animations.html#animationframeprovider">AnimationFrameProvider</a></code> is a <code><a href="workers.html#dedicatedworkerglobalscope">DedicatedWorkerGlobalScope</a></code><dd>The <code><a href="workers.html#dedicatedworkerglobalscope">DedicatedWorkerGlobalScope</a></code></dl>
+</div>
+<p>Each <a href="imagebitmap-and-animations.html#concept-animationframeprovider-target-object">target object</a> has a
+<dfn id=list-of-animation-frame-callbacks>map of animation frame callbacks</dfn>, which is an
+<a href=https://infra.spec.whatwg.org/#ordered-map data-x-internal=ordered-map>ordered map</a> that must be initially empty, and an <dfn id=animation-frame-callback-identifier>animation frame callback
+identifier</dfn>, which is a number that must initially be zero.</p>
+<div>
+<p>An <code><a href="imagebitmap-and-animations.html#animationframeprovider">AnimationFrameProvider</a></code> <var>provider</var> is considered <dfn id=concept-animationframeprovider-supported>supported</dfn> if any of the following are
+true:</p>
+<ul><li><p><var>provider</var> is a <code><a href="nav-history-apis.html#window">Window</a></code>.<li><p><var>provider</var>'s <a href="workers.html#concept-WorkerGlobalScope-owner-set">owner set</a> <a href=https://infra.spec.whatwg.org/#list-contain data-x-internal=list-contains>contains</a>
+a <code><a href="dom.html#document">Document</a></code> object.<li><p>Any of the <code><a href="workers.html#dedicatedworkerglobalscope">DedicatedWorkerGlobalScope</a></code> objects in <var>provider</var>'s
+<a href="workers.html#concept-WorkerGlobalScope-owner-set">owner set</a> are <a href="imagebitmap-and-animations.html#concept-animationframeprovider-supported">supported</a>.</ul>
+</div>
+<hr>
+</div><div>
+<p>The <dfn id=dom-animationframeprovider-requestanimationframe data-dfn-type=method><code>requestAnimationFrame(<var>callback</var>)</code></dfn>
+method steps are:</p>
+<ol><li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a> is not <a href="imagebitmap-and-animations.html#concept-animationframeprovider-supported">supported</a>, then throw a
+<a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Let <var>target</var> be <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="imagebitmap-and-animations.html#concept-animationframeprovider-target-object">target object</a>.<li><p>Increment <var>target</var>'s <a href="imagebitmap-and-animations.html#animation-frame-callback-identifier">animation frame callback identifier</a> by one,
+and let <var>handle</var> be the result.<li><p>Let <var>callbacks</var> be <var>target</var>'s <a href="imagebitmap-and-animations.html#list-of-animation-frame-callbacks">map of animation frame
+callbacks</a>.<li><p><a href=https://infra.spec.whatwg.org/#map-set data-x-internal=map-set>Set</a> <var>callbacks</var>[<var>handle</var>] to
+<var>callback</var>.<li><p>Return <var>handle</var>.</ol>
+</div>
+</div><div>
+<p>The <dfn id=animationframeprovider-cancelanimationframe data-dfn-type=method><code>cancelAnimationFrame(<var>handle</var>)</code></dfn>
+method steps are:</p>
+<ol><li><p>If <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a> is not <a href="imagebitmap-and-animations.html#concept-animationframeprovider-supported">supported</a>, then throw a
+<a href=https://webidl.spec.whatwg.org/#notsupportederror data-x-internal=notsupportederror>"<code>NotSupportedError</code>"</a> <code><a data-x-internal=domexception href=https://webidl.spec.whatwg.org/#dfn-DOMException>DOMException</a></code>.<li><p>Let <var>callbacks</var> be <a href=https://webidl.spec.whatwg.org/#this data-x-internal=this>this</a>'s <a href="imagebitmap-and-animations.html#concept-animationframeprovider-target-object">target object</a>'s <a href="imagebitmap-and-animations.html#list-of-animation-frame-callbacks">map of
+animation frame callbacks</a>.<li><p><a href=https://infra.spec.whatwg.org/#map-remove data-x-internal=map-remove>Remove</a> <var>callbacks</var>[<var>handle</var>].</ol>
+</div>
+<div>
+<p>To <dfn id=run-the-animation-frame-callbacks>run the animation frame callbacks</dfn> for a <a href="imagebitmap-and-animations.html#concept-animationframeprovider-target-object">target object</a> <var>target</var> with
+a timestamp <var>now</var>:</p>
+<ol><li><p>Let <var>callbacks</var> be <var>target</var>'s <a href="imagebitmap-and-animations.html#list-of-animation-frame-callbacks">map of animation frame
+callbacks</a>.<li><p>Let <var>callbackHandles</var> be the result of <a href=https://infra.spec.whatwg.org/#map-getting-the-keys data-x-internal=map-get-the-keys>getting
+the keys</a> of <var>callbacks</var>.<li>
+<p><a href=https://infra.spec.whatwg.org/#list-iterate data-x-internal=list-iterate>For each</a> <var>handle</var> in
+<var>callbackHandles</var>, if <var>handle</var> <a href=https://infra.spec.whatwg.org/#map-exists data-x-internal=map-exists>exists</a> in
+<var>callbacks</var>:</p>
+<ol><li><p>Let <var>callback</var> be <var>callbacks</var>[<var>handle</var>].<li><p><a href=https://infra.spec.whatwg.org/#map-remove data-x-internal=map-remove>Remove</a>
+<var>callbacks</var>[<var>handle</var>].<li><p><a href=https://webidl.spec.whatwg.org/#invoke-a-callback-function data-x-internal=es-invoking-callback-functions>Invoke</a> <var>callback</var> with «
+<var>now</var> » and "<code>report</code>".</ol>
+</ol>
+</div>
+<div>
+<p>Inside workers, <code><a href="imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe">requestAnimationFrame()</a></code> can be
+used together with an <code><a href="canvas.html#offscreencanvas">OffscreenCanvas</a></code> transferred from a <code><a href="canvas.html#the-canvas-element">canvas</a></code>
+element. First, in the document, transfer control to the worker:</p>
+<pre><code>const offscreenCanvas = document.getElementById(&quot;c&quot;).transferControlToOffscreen();
+worker.postMessage(offscreenCanvas, [offscreenCanvas]);</code></pre>
+<p>Then, in the worker, the following code will draw a rectangle moving from left to right:</p>
+<pre><code>let ctx, pos = 0;
+function draw(dt) {
+ctx.clearRect(0, 0, 100, 100);
+ctx.fillRect(pos, 0, 10, 10);
+pos += 10 * dt;
+requestAnimationFrame(draw);
+}
+self.onmessage = function(ev) {
+const transferredCanvas = ev.data;
+ctx = transferredCanvas.getContext(&quot;2d&quot;);
+draw();
+};</code></pre>
+</div>
+</body>
+</html>

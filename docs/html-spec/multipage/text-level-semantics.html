@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>HTML Standard</title>
+<body>
+</ol></ol><h3 id=text-level-semantics>Text-level semantics</h3>
+<h4 id=the-a-element>The <dfn data-dfn-type=element><code>a</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd>If the element has an <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute: <a href="dom.html#interactive-content-2">Interactive content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#transparent">Transparent</a>, but there must be no <a href="dom.html#interactive-content-2">interactive content</a> descendant,
+<code><a href="text-level-semantics.html#the-a-element">a</a></code> element descendant, or descendant with the <code><a href="interaction.html#attr-tabindex">tabindex</a></code> attribute specified.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="links.html#attr-hyperlink-href">href</a></code> —  Address of the <a href="links.html#hyperlink">hyperlink</a>
+<dd><code><a href="links.html#attr-hyperlink-target">target</a></code> —  <a href="document-sequences.html#navigable">Navigable</a> for <a href="links.html#hyperlink">hyperlink</a> <a href="browsing-the-web.html#navigate">navigation</a>
+<dd><code><a href="links.html#attr-hyperlink-download">download</a></code> —  Whether to download the resource instead of navigating to it, and its filename if so
+<dd><code><a href="links.html#ping">ping</a></code> —  <a href=https://url.spec.whatwg.org/#concept-url data-x-internal=url>URLs</a> to ping
+<dd><code><a href="links.html#attr-hyperlink-rel">rel</a></code> —  Relationship between the location in the document containing the <a href="links.html#hyperlink">hyperlink</a> and the destination resource
+<dd><code><a href="links.html#attr-hyperlink-hreflang">hreflang</a></code> —  Language of the linked resource
+<dd><code><a href="links.html#attr-hyperlink-type">type</a></code> —  Hint for the type of the referenced resource
+<dd><code><a href="links.html#attr-hyperlink-referrerpolicy">referrerpolicy</a></code> —  <a href=https://w3c.github.io/webappsec-referrer-policy/#referrer-policy data-x-internal=referrer-policy>Referrer policy</a> for <a href=https://fetch.spec.whatwg.org/#concept-fetch data-x-internal=concept-fetch>fetches</a> initiated by the element
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd>If the element has an <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute: <a href=https://w3c.github.io/html-aria/#el-a>for authors</a>; <a href=https://w3c.github.io/html-aam/#el-a>for implementers</a>.<dd>Otherwise: <a href=https://w3c.github.io/html-aria/#el-a-no-href>for authors</a>; <a href=https://w3c.github.io/html-aam/#el-a-no-href>for implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlanchorelement' data-dfn-type='interface'>HTMLAnchorElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-a-target' data-dfn-type='attribute'>target</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-a-download' data-dfn-type='attribute'>download</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute USVString <dfn id='dom-a-ping' data-dfn-type='attribute'>ping</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-a-rel' data-dfn-type='attribute'>rel</dfn>;
+[SameObject, PutForwards=<a href='https://dom.spec.whatwg.org/#dom-domtokenlist-value' data-x-internal='dom-domtokenlist-value'>value</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>=&quot;<a href='links.html#attr-hyperlink-rel'>rel</a>&quot;] readonly attribute <a href='https://dom.spec.whatwg.org/#interface-domtokenlist' data-x-internal='domtokenlist'>DOMTokenList</a> <dfn id='dom-a-rellist' data-dfn-type='attribute'>relList</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-a-hreflang' data-dfn-type='attribute'>hreflang</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-a-type' data-dfn-type='attribute'>type</dfn>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString <a href='text-level-semantics.html#dom-a-text'>text</a>;
+[<a href='custom-elements.html#cereactions'>CEReactions</a>] attribute DOMString <a href='text-level-semantics.html#dom-a-referrerpolicy'>referrerPolicy</a>;
+// <a href='obsolete.html#HTMLAnchorElement-partial'>also has obsolete members</a>
+};
+<a href='text-level-semantics.html#htmlanchorelement'>HTMLAnchorElement</a> includes <a href='links.html#htmlhyperlinkelementutils'>HTMLHyperlinkElementUtils</a>;</code></pre>
+</dl>
+<p>If the <code><a href="text-level-semantics.html#the-a-element">a</a></code> element has an <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute,
+then it <a href="dom.html#represents">represents</a> a <a href="links.html#hyperlink">hyperlink</a> (a hypertext anchor) labeled by its
+contents.</p>
+<p>If the <code><a href="text-level-semantics.html#the-a-element">a</a></code> element has no <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute,
+then the element <a href="dom.html#represents">represents</a> a placeholder for where a link might otherwise have been
+placed, if it had been relevant, consisting of just the element's contents.</p>
+<p>The <code><a href="links.html#attr-hyperlink-target">target</a></code>, <code><a href="links.html#attr-hyperlink-download">download</a></code>, <code><a href="links.html#ping">ping</a></code>,
+<code><a href="links.html#attr-hyperlink-rel">rel</a></code>, <code><a href="links.html#attr-hyperlink-hreflang">hreflang</a></code>, <code><a href="links.html#attr-hyperlink-type">type</a></code>,
+and <code><a href="links.html#attr-hyperlink-referrerpolicy">referrerpolicy</a></code> attributes must be omitted
+if the <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute is not present.</p>
+<p>If the <code><a href="microdata.html#names:-the-itemprop-attribute">itemprop</a></code> attribute is specified on an <code><a href="text-level-semantics.html#the-a-element">a</a></code> element,
+then the <code><a href="links.html#attr-hyperlink-href">href</a></code> attribute must also be specified.</p>
+<div>
+<p>If a site uses a consistent navigation toolbar on every page, then the link that would
+normally link to the page itself could be marked up using an <code><a href="text-level-semantics.html#the-a-element">a</a></code> element:</p>
+<pre><code>&lt;nav&gt;
+&lt;ul&gt;
+&lt;li&gt; &lt;a href=&quot;/&quot;&gt;Home&lt;/a&gt; &lt;/li&gt;
+&lt;li&gt; &lt;a href=&quot;/news&quot;&gt;News&lt;/a&gt; &lt;/li&gt;
+&lt;li&gt; &lt;a&gt;Examples&lt;/a&gt; &lt;/li&gt;
+&lt;li&gt; &lt;a href=&quot;/legal&quot;&gt;Legal&lt;/a&gt; &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/nav&gt;</code></pre>
+</div>
+<p>The <code><a href="links.html#attr-hyperlink-href">href</a></code>, <code><a href="links.html#attr-hyperlink-target">target</a></code>, <code><a href="links.html#attr-hyperlink-download">download</a></code>, <code><a href="links.html#ping">ping</a></code>,
+and <code><a href="links.html#attr-hyperlink-referrerpolicy">referrerpolicy</a></code> attributes affect what
+happens when users <a href="links.html#following-hyperlinks-2">follow hyperlinks</a> or <a href="links.html#downloading-hyperlinks">download hyperlinks</a> created using the <code><a href="text-level-semantics.html#the-a-element">a</a></code>
+element. The <code><a href="links.html#attr-hyperlink-rel">rel</a></code>, <code><a href="links.html#attr-hyperlink-hreflang">hreflang</a></code>, and <code><a href="links.html#attr-hyperlink-type">type</a></code>
+attributes may be used to indicate to the user the likely nature of the target resource before the
+user follows the link.</p>
+<dl><dt><code><var>a</var>.<a href="text-level-semantics.html#dom-a-text" id=dom-a-text-dev>text</a></code><dd><p>Same as <code><a data-x-internal=textcontent href=https://dom.spec.whatwg.org/#dom-node-textcontent>textContent</a></code>.</dl>
+</div><div>
+<p>The IDL attribute <dfn id=dom-a-referrerpolicy data-dfn-type=attribute><code>referrerPolicy</code></dfn> must <a href="common-dom-interfaces.html#reflect">reflect</a> the <code><a href="links.html#attr-hyperlink-referrerpolicy">referrerpolicy</a></code> content attribute, <a href="common-dom-interfaces.html#limited-to-only-known-values">limited to
+only known values</a>.</p>
+</div>
+<div>
+<p>The <dfn id=dom-a-text data-dfn-type=attribute><code>text</code></dfn>
+attribute's getter must return this element's <a href=https://dom.spec.whatwg.org/#concept-descendant-text-content data-x-internal=descendant-text-content>descendant text content</a>.</p>
+</div>
+<div>
+<p>The <code><a href="text-level-semantics.html#dom-a-text">text</a></code> attribute's setter must <a href=https://dom.spec.whatwg.org/#string-replace-all data-x-internal=string-replace-all>string replace
+all</a> with the given value within this element.</p>
+</div>
+<div>
+<p>The <code><a href="text-level-semantics.html#the-a-element">a</a></code> element can be wrapped around entire paragraphs, lists, tables, and so
+forth, even entire sections, so long as there is no interactive content within (e.g., buttons or
+other links). This example shows how this can be used to make an entire advertising block into a
+link:</p>
+<pre><code>&lt;aside
+&lt;h1&gt;Advertising&lt;/h1&gt;
+&lt;a href=&quot;https://ad.example.com/?adid=1929&amp;amp;pubid=1422&quot;&gt;
+&lt;section&gt;
+&lt;h1&gt;Mellblomatic 9000!&lt;/h1&gt;
+&lt;p&gt;Turn all your widgets into mellbloms!&lt;/p&gt;
+&lt;p&gt;Only $9.99 plus shipping and handling.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/a&gt;
+&lt;a href=&quot;https://ad.example.com/?adid=375&amp;amp;pubid=1422&quot;&gt;
+&lt;section&gt;
+&lt;h1&gt;The Mellblom Browser&lt;/h1&gt;
+&lt;p&gt;Web browsing at the speed of light.&lt;/p&gt;
+&lt;p&gt;No other browser goes faster!&lt;/p&gt;
+&lt;/section&gt;
+&lt;/a&gt;
+&lt;/aside&gt;</code></pre>
+</div>
+<div>
+<p>The following example shows how a bit of script can be used to effectively make an entire row
+in a job listing table a hyperlink:</p>
+<pre><code>&lt;table&gt;
+&lt;tr&gt;
+&lt;th&gt;Position
+&lt;th&gt;Team
+&lt;th&gt;Location
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;/jobs/manager&quot;&gt;Manager&lt;/a&gt;
+&lt;td&gt;Remotees
+&lt;td&gt;Remote
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;/jobs/director&quot;&gt;Director&lt;/a&gt;
+&lt;td&gt;Remotees
+&lt;td&gt;Remote
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;/jobs/astronaut&quot;&gt;Astronaut&lt;/a&gt;
+&lt;td&gt;Architecture
+&lt;td&gt;Remote
+&lt;/table&gt;
+&lt;script&gt;
+document.querySelector(&quot;table&quot;).onclick = ({ target }) =&gt; {
+if (target.parentElement.localName === &quot;tr&quot;) {
+const link = target.parentElement.querySelector(&quot;a&quot;);
+if (link) {
+link.click();
+}
+}
+}
+&lt;/script&gt;</code></pre>
+</div>
+<h4 id=the-em-element>The <dfn data-dfn-type=element><code>em</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-em>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-em>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-em-element">em</a></code> element <a href="dom.html#represents">represents</a> stress emphasis of its contents.</p>
+<p>The level of stress that a particular piece of content has is given by its number of ancestor
+<code><a href="text-level-semantics.html#the-em-element">em</a></code> elements.</p>
+<p>The placement of stress emphasis changes the meaning of the sentence. The element thus forms an
+integral part of the content. The precise way in which stress is used in this way depends on the
+language.</p>
+<div>
+<p>These examples show how changing the stress emphasis changes the meaning. First, a general
+statement of fact, with no stress:</p>
+<pre><code>&lt;p&gt;Cats are cute animals.&lt;/p&gt;</code></pre>
+<p>By emphasizing the first word, the statement implies that the kind of animal under discussion
+is in question (maybe someone is asserting that dogs are cute):</p>
+<pre><code>&lt;p&gt;&lt;em&gt;Cats&lt;/em&gt; are cute animals.&lt;/p&gt;</code></pre>
+<p>Moving the stress to the verb, one highlights that the truth of the entire sentence is in
+question (maybe someone is saying cats are not cute):</p>
+<pre><code>&lt;p&gt;Cats &lt;em&gt;are&lt;/em&gt; cute animals.&lt;/p&gt;</code></pre>
+<p>By moving it to the adjective, the exact nature of the cats is reasserted (maybe someone
+suggested cats were <em>mean</em> animals):</p>
+<pre><code>&lt;p&gt;Cats are &lt;em&gt;cute&lt;/em&gt; animals.&lt;/p&gt;</code></pre>
+<p>Similarly, if someone asserted that cats were vegetables, someone correcting this might
+emphasize the last word:</p>
+<pre><code>&lt;p&gt;Cats are cute &lt;em&gt;animals&lt;/em&gt;.&lt;/p&gt;</code></pre>
+<p>By emphasizing the entire sentence, it becomes clear that the speaker is fighting hard to get
+the point across. This kind of stress emphasis also typically affects the punctuation, hence the
+exclamation mark here.</p>
+<pre><code>&lt;p&gt;&lt;em&gt;Cats are cute animals!&lt;/em&gt;&lt;/p&gt;</code></pre>
+<p>Anger mixed with emphasizing the cuteness could lead to markup such as:</p>
+<pre><code>&lt;p&gt;&lt;em&gt;Cats are &lt;em&gt;cute&lt;/em&gt; animals!&lt;/em&gt;&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>The <code><a href="text-level-semantics.html#the-em-element">em</a></code> element isn't a generic "italics" element. Sometimes, text is intended to
+stand out from the rest of the paragraph, as if it was in a different mood or voice. For this,
+the <code><a href="text-level-semantics.html#the-i-element">i</a></code> element is more appropriate.</p>
+<p>The <code><a href="text-level-semantics.html#the-em-element">em</a></code> element also isn't intended to convey importance; for that purpose, the
+<code><a href="text-level-semantics.html#the-strong-element">strong</a></code> element is more appropriate.</p>
+</div>
+<h4 id=the-strong-element>The <dfn data-dfn-type=element><code>strong</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-strong>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-strong>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-strong-element">strong</a></code> element <a href="dom.html#represents">represents</a> strong importance, seriousness, or
+urgency for its contents.</p>
+<p><strong>Importance</strong>: the <code><a href="text-level-semantics.html#the-strong-element">strong</a></code> element can be used in a heading, caption,
+or paragraph to distinguish the part that really matters from other parts that might be more
+detailed, more jovial, or merely boilerplate. (This is distinct from marking up subheadings, for
+which the <code><a href="sections.html#the-hgroup-element">hgroup</a></code> element is appropriate.)</p>
+<p>For example, the first word of the previous paragraph is marked up with
+<code><a href="text-level-semantics.html#the-strong-element">strong</a></code> to distinguish it from the more detailed text in the rest of the
+paragraph.</p>
+<p><strong>Seriousness</strong>: the <code><a href="text-level-semantics.html#the-strong-element">strong</a></code> element can be used to mark up a warning
+or caution notice.</p>
+<p><strong>Urgency</strong>: the <code><a href="text-level-semantics.html#the-strong-element">strong</a></code> element can be used to denote contents that
+the user needs to see sooner than other parts of the document.</p>
+<p>The relative level of importance of a piece of content is given by its number of ancestor
+<code><a href="text-level-semantics.html#the-strong-element">strong</a></code> elements; each <code><a href="text-level-semantics.html#the-strong-element">strong</a></code> element increases the importance of its
+contents.</p>
+<p>Changing the importance of a piece of text with the <code><a href="text-level-semantics.html#the-strong-element">strong</a></code> element does not change
+the meaning of the sentence.</p>
+<div>
+<p>Here, the word "chapter" and the actual chapter number are mere boilerplate, and the actual
+name of the chapter is marked up with <code><a href="text-level-semantics.html#the-strong-element">strong</a></code>:</p>
+<pre><code>&lt;h1&gt;Chapter 1: &lt;strong&gt;The Praxis&lt;/strong&gt;&lt;/h1&gt;</code></pre>
+<p>In the following example, the name of the diagram in the caption is marked up with
+<code><a href="text-level-semantics.html#the-strong-element">strong</a></code>, to distinguish it from boilerplate text (before) and the description
+(after):</p>
+<pre><code>&lt;figcaption&gt;Figure 1. &lt;strong&gt;Ant colony dynamics&lt;/strong&gt;. The ants in this colony are
+affected by the heat source (upper left) and the food source (lower right).&lt;/figcaption&gt;</code></pre>
+<p>In this example, the heading is really "Flowers, Bees, and Honey", but the author has added a
+light-hearted addition to the heading. The <code><a href="text-level-semantics.html#the-strong-element">strong</a></code> element is thus used to mark up
+the first part to distinguish it from the latter part.</p>
+<pre><code>&lt;h1&gt;&lt;strong&gt;Flowers, Bees, and Honey&lt;/strong&gt; and other things I don&apos;t understand&lt;/h1&gt;</code></pre>
+</div>
+<div>
+<p>Here is an example of a warning notice in a game, with the
+various parts marked up according to how important they are:</p>
+<pre><code>&lt;p&gt;&lt;strong&gt;Warning.&lt;/strong&gt; This dungeon is dangerous.
+&lt;strong&gt;Avoid the ducks.&lt;/strong&gt; Take any gold you find.
+&lt;strong&gt;&lt;strong&gt;Do not take any of the diamonds&lt;/strong&gt;,
+they are explosive and &lt;strong&gt;will destroy anything within
+ten meters.&lt;/strong&gt;&lt;/strong&gt; You have been warned.&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>In this example, the <code><a href="text-level-semantics.html#the-strong-element">strong</a></code> element is used to denote the part of the text that
+the user is intended to read first.</p>
+<pre><code>&lt;p&gt;Welcome to Remy, the reminder system.&lt;/p&gt;
+&lt;p&gt;Your tasks for today:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Turn off the oven.&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Put out the trash.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Do the laundry.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+</div>
+<h4 id=the-small-element>The <dfn data-dfn-type=element><code>small</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-small>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-small>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-small-element">small</a></code> element <a href="dom.html#represents">represents</a> side comments such as small print.</p>
+<p>Small print typically features disclaimers, caveats, legal restrictions, or
+copyrights. Small print is also sometimes used for attribution, or for satisfying licensing
+requirements.</p>
+<p>The <code><a href="text-level-semantics.html#the-small-element">small</a></code> element does not "de-emphasize" or lower the importance of
+text emphasized by the <code><a href="text-level-semantics.html#the-em-element">em</a></code> element or marked as important with the <code><a href="text-level-semantics.html#the-strong-element">strong</a></code>
+element. To mark text as not emphasized or important, simply do not mark it up with the
+<code><a href="text-level-semantics.html#the-em-element">em</a></code> or <code><a href="text-level-semantics.html#the-strong-element">strong</a></code> elements respectively.</p>
+<p>The <code><a href="text-level-semantics.html#the-small-element">small</a></code> element should not be used for extended spans of text, such as multiple
+paragraphs, lists, or sections of text. It is only intended for short runs of text. The text of a
+page listing terms of use, for instance, would not be a suitable candidate for the
+<code><a href="text-level-semantics.html#the-small-element">small</a></code> element: in such a case, the text is not a side comment, it is the main content
+of the page.</p>
+<p>The <code><a href="text-level-semantics.html#the-small-element">small</a></code> element must not be used for subheadings; for that purpose, use the
+<code><a href="sections.html#the-hgroup-element">hgroup</a></code> element.</p>
+<div>
+<p>In this example, the <code><a href="text-level-semantics.html#the-small-element">small</a></code> element is used to indicate that value-added tax is
+not included in a price of a hotel room:</p>
+<pre><code>&lt;dl&gt;
+&lt;dt&gt;Single room
+&lt;dd&gt;199 € &lt;small&gt;breakfast included, VAT not included&lt;/small&gt;
+&lt;dt&gt;Double room
+&lt;dd&gt;239 € &lt;small&gt;breakfast included, VAT not included&lt;/small&gt;
+&lt;/dl&gt;</code></pre>
+</div>
+<div>
+<p>In this second example, the <code><a href="text-level-semantics.html#the-small-element">small</a></code> element is used for a side comment in an
+article.</p>
+<pre><code>&lt;p&gt;Example Corp today announced record profits for the
+second quarter &lt;small&gt;(Full Disclosure: Foo News is a subsidiary of
+Example Corp)&lt;/small&gt;, leading to speculation about a third quarter
+merger with Demo Group.&lt;/p&gt;</code></pre>
+<p>This is distinct from a sidebar, which might be multiple paragraphs long and is removed from
+the main flow of text. In the following example, we see a sidebar from the same article. This
+sidebar also has small print, indicating the source of the information in the sidebar.</p>
+<pre><code>&lt;aside&gt;
+&lt;h1&gt;Example Corp&lt;/h1&gt;
+&lt;p&gt;This company mostly creates small software and Web
+sites.&lt;/p&gt;
+&lt;p&gt;The Example Corp company mission is &quot;To provide entertainment
+and news on a sample basis&quot;.&lt;/p&gt;
+&lt;p&gt;&lt;small&gt;Information obtained from &lt;a
+href=&quot;https://example.com/about.html&quot;&gt;example.com&lt;/a&gt; home
+page.&lt;/small&gt;&lt;/p&gt;
+&lt;/aside&gt;</code></pre>
+</div>
+<div>
+<p>In this last example, the <code><a href="text-level-semantics.html#the-small-element">small</a></code> element is marked as being <em>important</em>
+small print.</p>
+<pre><code>&lt;p&gt;&lt;strong&gt;&lt;small&gt;Continued use of this service will result in a kiss.&lt;/small&gt;&lt;/strong&gt;&lt;/p&gt;</code></pre>
+</div>
+<h4 id=the-s-element>The <dfn data-dfn-type=element><code>s</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-s>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-s>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-s-element">s</a></code> element <a href="dom.html#represents">represents</a> contents that are no longer accurate or no
+longer relevant.</p>
+<p>The <code><a href="text-level-semantics.html#the-s-element">s</a></code> element is not appropriate when indicating document edits; to
+mark a span of text as having been removed from a document, use the <code><a href="edits.html#the-del-element">del</a></code> element.</p>
+<div>
+<p>In this example a recommended retail price has been marked as no longer relevant as the
+product in question has a new sale price.</p>
+<pre><code>&lt;p&gt;Buy our Iced Tea and Lemonade!&lt;/p&gt;
+&lt;p&gt;&lt;s&gt;Recommended retail price: $3.99 per bottle&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Now selling for just $2.99 a bottle!&lt;/strong&gt;&lt;/p&gt;</code></pre>
+</div>
+<h4 id=the-cite-element>The <dfn data-dfn-type=element><code>cite</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-cite>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-cite>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-cite-element">cite</a></code> element <a href="dom.html#represents">represents</a> the title of a work (e.g.
+a book,
+a paper,
+an essay,
+a poem,
+a score,
+a song,
+a script,
+a film,
+a TV show,
+a game,
+a sculpture,
+a painting,
+a theatre production,
+a play,
+an opera,
+a musical,
+an exhibition,
+a legal case report,
+a computer program,
+etc.). This can be a work that is being quoted or <a href="dom.html#referenced">referenced</a> in detail (i.e., a
+citation), or it can just be a work that is mentioned in passing.</p>
+<p>A person's name is not the title of a work — even if people call that person a piece of
+work — and the element must therefore not be used to mark up people's names. (In some cases,
+the <code><a href="text-level-semantics.html#the-b-element">b</a></code> element might be appropriate for names; e.g. in a gossip article where the
+names of famous people are keywords rendered with a different style to draw attention to them. In
+other cases, if an element is <em>really</em> needed, the <code><a href="text-level-semantics.html#the-span-element">span</a></code> element can be
+used.)</p>
+<div>
+<p>This next example shows a typical use of the <code><a href="text-level-semantics.html#the-cite-element">cite</a></code> element:</p>
+<pre><code>&lt;p&gt;My favorite book is &lt;cite&gt;The Reality Dysfunction&lt;/cite&gt; by
+Peter F. Hamilton. My favorite comic is &lt;cite&gt;Pearls Before
+Swine&lt;/cite&gt; by Stephan Pastis. My favorite track is &lt;cite&gt;Jive
+Samba&lt;/cite&gt; by the Cannonball Adderley Sextet.&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>This is correct usage:</p>
+<pre><code>&lt;p&gt;According to the Wikipedia article &lt;cite&gt;HTML&lt;/cite&gt;, as it
+stood in mid-February 2008, leaving attribute values unquoted is
+unsafe. This is obviously an over-simplification.&lt;/p&gt;</code></pre>
+<p>The following, however, is incorrect usage, as the <code><a href="text-level-semantics.html#the-cite-element">cite</a></code> element here is
+containing far more than the title of the work:</p>
+<pre><code>&lt;!-- do not copy this example, it is an example of bad usage! --&gt;
+&lt;p&gt;According to &lt;cite&gt;the Wikipedia article on HTML&lt;/cite&gt;, as it
+stood in mid-February 2008, leaving attribute values unquoted is
+unsafe. This is obviously an over-simplification.&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>The <code><a href="text-level-semantics.html#the-cite-element">cite</a></code> element is a key part of any citation in a bibliography, but it is only
+used to mark the title:</p>
+<pre><code>&lt;p&gt;&lt;cite&gt;Universal Declaration of Human Rights&lt;/cite&gt;, United Nations,
+December 1948. Adopted by General Assembly resolution 217 A (III).&lt;/p&gt;</code></pre>
+</div>
+<p>A <em>citation</em> is not a <em>quote</em> (for which the <code><a href="text-level-semantics.html#the-q-element">q</a></code> element
+is appropriate).</p>
+<div>
+<p>This is incorrect usage, because <code><a href="text-level-semantics.html#the-cite-element">cite</a></code> is not for quotes:</p>
+<pre><code>&lt;p&gt;&lt;cite&gt;This is wrong!&lt;/cite&gt;, said Ian.&lt;/p&gt;</code></pre>
+<p>This is also incorrect usage, because a person is not a work:</p>
+<pre><code>&lt;p&gt;&lt;q&gt;This is still wrong!&lt;/q&gt;, said &lt;cite&gt;Ian&lt;/cite&gt;.&lt;/p&gt;</code></pre>
+<p>The correct usage does not use a <code><a href="text-level-semantics.html#the-cite-element">cite</a></code> element:</p>
+<pre><code>&lt;p&gt;&lt;q&gt;This is correct&lt;/q&gt;, said Ian.&lt;/p&gt;</code></pre>
+<p>As mentioned above, the <code><a href="text-level-semantics.html#the-b-element">b</a></code> element might be relevant for marking names as being
+keywords in certain kinds of documents:</p>
+<pre><code>&lt;p&gt;And then &lt;b&gt;Ian&lt;/b&gt; said &lt;q&gt;this might be right, in a
+gossip column, maybe!&lt;/q&gt;.&lt;/p&gt;</code></pre>
+</div>
+<h4 id=the-q-element>The <dfn data-dfn-type=element><code>q</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="text-level-semantics.html#attr-q-cite">cite</a></code> —  Link to the source of the quotation or more information about the edit
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-q>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-q>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="grouping-content.html#htmlquoteelement">HTMLQuoteElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-q-element">q</a></code> element <a href="dom.html#represents">represents</a> some <a href="dom.html#phrasing-content-2">phrasing
+content</a> quoted from another source.</p>
+<p>Quotation punctuation (such as quotation marks) that is quoting the contents of the element
+must not appear immediately before, after, or inside <code><a href="text-level-semantics.html#the-q-element">q</a></code> elements; they will be
+inserted into the rendering by the user agent.</p>
+<p>Content inside a <code><a href="text-level-semantics.html#the-q-element">q</a></code> element must be quoted from another source, whose address, if
+it has one, may be cited in the <dfn id=attr-q-cite data-dfn-type=element-attr><code>cite</code></dfn> attribute. The source may be fictional, as when quoting
+characters in a novel or screenplay.</p>
+<p>If the <code><a href="text-level-semantics.html#attr-q-cite">cite</a></code> attribute is present, it must be a <a href="urls-and-fetching.html#valid-url-potentially-surrounded-by-spaces">valid
+URL potentially surrounded by spaces</a>. To obtain the corresponding citation
+link, the value of the attribute must be <a href="urls-and-fetching.html#encoding-parsing-a-url">parsed</a>
+relative to the element's <a href=https://dom.spec.whatwg.org/#concept-node-document data-x-internal=node-document>node document</a>. User agents may allow users to follow
+such citation links, but they are primarily intended for private use (e.g., by server-side scripts
+collecting statistics about a site's use of quotations), not for readers.</p>
+<p>The <code><a href="text-level-semantics.html#the-q-element">q</a></code> element must not be used in place of quotation marks that do not represent
+quotes; for example, it is inappropriate to use the <code><a href="text-level-semantics.html#the-q-element">q</a></code> element for marking up
+sarcastic statements.</p>
+<p>The use of <code><a href="text-level-semantics.html#the-q-element">q</a></code> elements to mark up quotations is entirely optional; using explicit
+quotation punctuation without <code><a href="text-level-semantics.html#the-q-element">q</a></code> elements is just as correct.</p>
+<div>
+<p>Here is a simple example of the use of the <code><a href="text-level-semantics.html#the-q-element">q</a></code> element:</p>
+<pre><code>&lt;p&gt;The man said &lt;q&gt;Things that are impossible just take
+longer&lt;/q&gt;. I disagreed with him.&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>Here is an example with both an explicit citation link in the <code><a href="text-level-semantics.html#the-q-element">q</a></code> element, and an
+explicit citation outside:</p>
+<pre><code>&lt;p&gt;The W3C page &lt;cite&gt;About W3C&lt;/cite&gt; says the W3C&apos;s
+mission is &lt;q cite=&quot;https://www.w3.org/Consortium/&quot;&gt;To lead the
+World Wide Web to its full potential by developing protocols and
+guidelines that ensure long-term growth for the Web&lt;/q&gt;. I
+disagree with this mission.&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>In the following example, the quotation itself contains a quotation:</p>
+<pre><code>&lt;p&gt;In &lt;cite&gt;Example One&lt;/cite&gt;, he writes &lt;q&gt;The man
+said &lt;q&gt;Things that are impossible just take longer&lt;/q&gt;. I
+disagreed with him&lt;/q&gt;. Well, I disagree even more!&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>In the following example, quotation marks are used instead of the <code><a href="text-level-semantics.html#the-q-element">q</a></code> element:</p>
+<pre><code>&lt;p&gt;His best argument was ❝I disagree❞, which
+I thought was laughable.&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>In the following example, there is no quote — the quotation marks are used to name a
+word. Use of the <code><a href="text-level-semantics.html#the-q-element">q</a></code> element in this case would be inappropriate.</p>
+<pre><code>&lt;p&gt;The word &quot;ineffable&quot; could have been used to describe the disaster
+resulting from the campaign&apos;s mismanagement.&lt;/p&gt;</code></pre>
+</div>
+<h4 id=the-dfn-element>The <dfn data-dfn-type=element><code>dfn</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>, but there must be no <code><a href="text-level-semantics.html#the-dfn-element">dfn</a></code> element descendants.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd>Also, the <code><a href="text-level-semantics.html#attr-dfn-title">title</a></code> attribute <a href="text-level-semantics.html#attr-dfn-title">has special semantics</a> on this element:  Full term or expansion of abbreviation
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-dfn>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-dfn>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-dfn-element">dfn</a></code> element <a href="dom.html#represents">represents</a> the defining instance of a term. The <a href="dom.html#paragraph">paragraph</a>, <a href="grouping-content.html#the-dl-element">description list group</a>, or <a href="dom.html#sectioning-content-2">section</a> that is the nearest ancestor of the <code><a href="text-level-semantics.html#the-dfn-element">dfn</a></code>
+element must also contain the definition(s) for the <a href="text-level-semantics.html#defining-term">term</a> given
+by the <code><a href="text-level-semantics.html#the-dfn-element">dfn</a></code> element.</p>
+<div>
+<p><dfn id=defining-term>Defining term</dfn>: if the <code><a href="text-level-semantics.html#the-dfn-element">dfn</a></code> element has a <dfn id=attr-dfn-title data-dfn-type=element-attr><code>title</code></dfn> attribute, then the exact value of that
+attribute is the term being defined. Otherwise, if it contains exactly one element child node and
+no child <code><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> nodes, and that child element is an <code><a href="text-level-semantics.html#the-abbr-element">abbr</a></code> element with a
+<code><a href="text-level-semantics.html#attr-abbr-title">title</a></code> attribute, then the exact value of <em>that</em>
+attribute is the term being defined. Otherwise, it is the <a href=https://dom.spec.whatwg.org/#concept-descendant-text-content data-x-internal=descendant-text-content>descendant text content</a> of
+the <code><a href="text-level-semantics.html#the-dfn-element">dfn</a></code> element that gives the term being defined.</p>
+</div>
+<p>If the <code><a href="text-level-semantics.html#attr-dfn-title">title</a></code> attribute of the <code><a href="text-level-semantics.html#the-dfn-element">dfn</a></code> element is
+present, then it must contain only the term being defined.</p>
+<p>The <code><a href="dom.html#attr-title">title</a></code> attribute of ancestor elements does not
+affect <code><a href="text-level-semantics.html#the-dfn-element">dfn</a></code> elements.</p>
+<p>An <code><a href="text-level-semantics.html#the-a-element">a</a></code> element that links to a <code><a href="text-level-semantics.html#the-dfn-element">dfn</a></code> element represents an instance of
+the term defined by the <code><a href="text-level-semantics.html#the-dfn-element">dfn</a></code> element.</p>
+<div>
+<p>In the following fragment, the term "Garage Door Opener" is first defined in the first
+paragraph, then used in the second. In both cases, its abbreviation is what is actually
+displayed.</p>
+<pre><code>&lt;p&gt;The <strong>&lt;dfn&gt;&lt;abbr title=&quot;Garage Door Opener&quot;&gt;GDO&lt;/abbr&gt;&lt;/dfn&gt;</strong>
+is a device that allows off-world teams to open the iris.&lt;/p&gt;
+&lt;!-- ... later in the document: --&gt;
+&lt;p&gt;Teal&apos;c activated his <strong>&lt;abbr title=&quot;Garage Door Opener&quot;&gt;GDO&lt;/abbr&gt;</strong>
+and so Hammond ordered the iris to be opened.&lt;/p&gt;</code></pre>
+<p>With the addition of an <code><a href="text-level-semantics.html#the-a-element">a</a></code> element, the <a href="dom.html#referenced">reference</a>
+can be made explicit:</p>
+<pre><code>&lt;p&gt;The &lt;dfn <strong>id=gdo</strong>&gt;&lt;abbr title=&quot;Garage Door Opener&quot;&gt;GDO&lt;/abbr&gt;&lt;/dfn&gt;
+is a device that allows off-world teams to open the iris.&lt;/p&gt;
+&lt;!-- ... later in the document: --&gt;
+&lt;p&gt;Teal&apos;c activated his <strong>&lt;a href=#gdo&gt;</strong>&lt;abbr title=&quot;Garage Door Opener&quot;&gt;GDO&lt;/abbr&gt;<strong>&lt;/a&gt;</strong>
+and so Hammond ordered the iris to be opened.&lt;/p&gt;</code></pre>
+</div>
+<h4 id=the-abbr-element>The <dfn data-dfn-type=element><code>abbr</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd>Also, the <code><a href="text-level-semantics.html#attr-abbr-title">title</a></code> attribute <a href="text-level-semantics.html#attr-abbr-title">has special semantics</a> on this element:  Full term or expansion of abbreviation
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-abbr>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-abbr>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-abbr-element">abbr</a></code> element <a href="dom.html#represents">represents</a> an abbreviation or acronym, optionally
+with its expansion. The <dfn id=attr-abbr-title data-dfn-type=element-attr><code>title</code></dfn> attribute may be used to provide an expansion of the
+abbreviation. The attribute, if specified, must contain an expansion of the abbreviation, and
+nothing else.</p>
+<div>
+<p>The paragraph below contains an abbreviation marked up with the <code><a href="text-level-semantics.html#the-abbr-element">abbr</a></code> element.
+This paragraph <a href="text-level-semantics.html#defining-term">defines the term</a> "Web Hypertext Application
+Technology Working Group".</p>
+<pre><code>&lt;p&gt;The &lt;dfn id=whatwg&gt;&lt;abbr
+title=&quot;Web Hypertext Application Technology Working Group&quot;&gt;WHATWG&lt;/abbr&gt;&lt;/dfn&gt;
+is a loose unofficial collaboration of web browser manufacturers and
+interested parties who wish to develop new technologies designed to
+allow authors to write and deploy Applications over the World Wide
+Web.&lt;/p&gt;</code></pre>
+<p>An alternative way to write this would be:</p>
+<pre><code>&lt;p&gt;The &lt;dfn id=whatwg&gt;Web Hypertext Application Technology
+Working Group&lt;/dfn&gt; (&lt;abbr
+title=&quot;Web Hypertext Application Technology Working Group&quot;&gt;WHATWG&lt;/abbr&gt;)
+is a loose unofficial collaboration of web browser manufacturers and
+interested parties who wish to develop new technologies designed to
+allow authors to write and deploy Applications over the World Wide
+Web.&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>This paragraph has two abbreviations. Notice how only one is defined; the other, with no
+expansion associated with it, does not use the <code><a href="text-level-semantics.html#the-abbr-element">abbr</a></code> element.</p>
+<pre><code>&lt;p&gt;The
+&lt;abbr title=&quot;Web Hypertext Application Technology Working Group&quot;&gt;WHATWG&lt;/abbr&gt;
+started working on HTML5 in 2004.&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>This paragraph links an abbreviation to its definition.</p>
+<pre><code>&lt;p&gt;The &lt;a href=&quot;#whatwg&quot;&gt;&lt;abbr
+title=&quot;Web Hypertext Application Technology Working Group&quot;&gt;WHATWG&lt;/abbr&gt;&lt;/a&gt;
+community does not have much representation from Asia.&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>This paragraph marks up an abbreviation without giving an expansion, possibly as a hook to
+apply styles for abbreviations (e.g. smallcaps).</p>
+<pre><code>&lt;p&gt;Philip` and Dashiva both denied that they were going to
+get the issue counts from past revisions of the specification to
+backfill the &lt;abbr&gt;WHATWG&lt;/abbr&gt; issue graph.&lt;/p&gt;</code></pre>
+</div>
+<p>If an abbreviation is pluralized, the expansion's grammatical number (plural vs singular) must
+match the grammatical number of the contents of the element.</p>
+<div>
+<p>Here the plural is outside the element, so the expansion is in the singular:</p>
+<pre><code>&lt;p&gt;Two &lt;abbr title=&quot;Working Group&quot;&gt;WG&lt;/abbr&gt;s worked on
+this specification: the &lt;abbr&gt;WHATWG&lt;/abbr&gt; and the
+&lt;abbr&gt;HTMLWG&lt;/abbr&gt;.&lt;/p&gt;</code></pre>
+<p>Here the plural is inside the element, so the expansion is in the plural:</p>
+<pre><code>&lt;p&gt;Two &lt;abbr title=&quot;Working Groups&quot;&gt;WGs&lt;/abbr&gt; worked on
+this specification: the &lt;abbr&gt;WHATWG&lt;/abbr&gt; and the
+&lt;abbr&gt;HTMLWG&lt;/abbr&gt;.&lt;/p&gt;</code></pre>
+</div>
+<p>Abbreviations do not have to be marked up using this element. It is expected to be useful in
+the following cases:</p>
+<ul><li>Abbreviations for which the author wants to give expansions, where using the
+<code><a href="text-level-semantics.html#the-abbr-element">abbr</a></code> element with a <code><a href="dom.html#attr-title">title</a></code> attribute is an
+alternative to including the expansion inline (e.g. in parentheses).<li>Abbreviations that are likely to be unfamiliar to the document's readers, for which authors
+are encouraged to either mark up the abbreviation using an <code><a href="text-level-semantics.html#the-abbr-element">abbr</a></code> element with a <code><a href="dom.html#attr-title">title</a></code> attribute or include the expansion inline in the text the first
+time the abbreviation is used.<li>Abbreviations whose presence needs to be semantically annotated, e.g. so that they can be
+identified from a style sheet and given specific styles, for which the <code><a href="text-level-semantics.html#the-abbr-element">abbr</a></code> element
+can be used without a <code><a href="dom.html#attr-title">title</a></code> attribute.</ul>
+<p>Providing an expansion in a <code><a href="dom.html#attr-title">title</a></code> attribute once
+will not necessarily cause other <code><a href="text-level-semantics.html#the-abbr-element">abbr</a></code> elements in the same document with the same
+contents but without a <code><a href="dom.html#attr-title">title</a></code> attribute to behave as if they had
+the same expansion. Every <code><a href="text-level-semantics.html#the-abbr-element">abbr</a></code> element is independent.</p>
+<h4 id=the-ruby-element>The <dfn data-dfn-type=element><code>ruby</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>See prose.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-ruby>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-ruby>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element allows one or more spans of phrasing content to be marked with
+ruby annotations. Ruby annotations are short runs of text presented alongside base text, primarily
+used in East Asian typography as a guide for pronunciation or to include other annotations. In
+Japanese, this form of typography is also known as <i>furigana</i>.</p>
+<p>The content model of <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> elements consists of one or more of the following
+sequences:</p>
+<ol><li>
+<p>One or the other of the following:</p>
+<ul><li><p><a href="dom.html#phrasing-content-2">Phrasing content</a>, but with no <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> elements and with no
+<code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element descendants<li><p>A single <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element that itself has no <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element
+descendants</ul>
+<li>
+<p>One or the other of the following:</p>
+<ul><li><p>One or more <code><a href="text-level-semantics.html#the-rt-element">rt</a></code> elements</p>
+<li><p>An <code><a href="text-level-semantics.html#the-rp-element">rp</a></code> element followed by one or more <code><a href="text-level-semantics.html#the-rt-element">rt</a></code> elements, each of
+which is itself followed by an <code><a href="text-level-semantics.html#the-rp-element">rp</a></code> element</ul>
+</ol>
+<p>The <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> and <code><a href="text-level-semantics.html#the-rt-element">rt</a></code> elements can be used for a variety of kinds of
+annotations, including in particular (though by no means limited to) those described below. For
+more details on Japanese Ruby in particular, and how to render Ruby for Japanese, see
+<cite>Requirements for Japanese Text Layout</cite>. <a href="references.html#refsJLREQ">[JLREQ]</a></p>
+<p>At the time of writing, CSS does not yet provide a way to fully control the
+rendering of the HTML <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element. It is hoped that CSS will be extended to support
+the styles described below in due course.</p>
+<dl><dt>Mono-ruby for individual base characters in Japanese
+<dd>
+<p>One or more hiragana or katakana characters (the ruby annotation) are placed with each
+ideographic character (the base text). This is used to provide readings of kanji characters.
+<div>
+<pre><code>&lt;ruby&gt;B&lt;rt&gt;annotation&lt;/ruby&gt;</code></pre>
+</div>
+<div>
+<p>In this example, notice how each annotation corresponds to a single base character.
+<pre><code>&lt;ruby&gt;君&lt;rt&gt;くん&lt;/ruby&gt;&lt;ruby&gt;子&lt;rt&gt;し&lt;/ruby&gt;は&lt;ruby&gt;和&lt;rt&gt;わ&lt;/ruby&gt;して&lt;ruby&gt;同&lt;rt&gt;どう&lt;/ruby&gt;ぜず。</code></pre>
+<p lang=ja><ruby>君<rt>くん</ruby><ruby>子<rt>し</ruby>は<ruby>和<rt>わ</ruby>して<ruby>同<rt>どう</ruby>ぜず。
+<p>This example can also be written as follows, using one <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element with two
+segments of base text and two annotations (one for each) rather than two back-to-back
+<code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> elements each with one base text segment and annotation (as in the markup
+above):
+<pre><code>&lt;ruby&gt;君&lt;rt&gt;くん&lt;/rt&gt;子&lt;rt&gt;し&lt;/ruby&gt;は&lt;ruby&gt;和&lt;rt&gt;わ&lt;/ruby&gt;して&lt;ruby&gt;同&lt;rt&gt;どう&lt;/ruby&gt;ぜず。</code></pre>
+</div>
+<dt>Mono-ruby for compound words (jukugo)
+<dd>
+<p>This is similar to the previous case: each ideographic character in the compound word (the
+base text) has its reading given in hiragana or katakana characters (the ruby annotation). The
+difference is that the base text segments form a compound word rather than being separate from
+each other.
+<div>
+<pre><code>&lt;ruby&gt;B&lt;rt&gt;annotation&lt;/rt&gt;B&lt;rt&gt;annotation&lt;/ruby&gt;</code></pre>
+</div>
+<div>
+<p>In this example, notice again how each annotation corresponds to a single base character. In this example, each compound word (jukugo) corresponds to a single <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element.</p>
+<p>The rendering here is expected to be that each annotation be placed over (or next to, in vertical text) the corresponding base character, with the annotations not overhanging any of the adjacent characters.</p>
+<pre><code>&lt;ruby&gt;鬼&lt;rt&gt;き&lt;/rt&gt;門&lt;rt&gt;もん&lt;/rt&gt;&lt;/ruby&gt;の&lt;ruby&gt;方&lt;rt&gt;ほう&lt;/rt&gt;角&lt;rt&gt;がく&lt;/rt&gt;&lt;/ruby&gt;を&lt;ruby&gt;凝&lt;rt&gt;ぎょう&lt;/rt&gt;視&lt;rt&gt;し&lt;/rt&gt;&lt;/ruby&gt;する</code></pre>
+<p lang=ja><ruby>鬼<rt>き</rt>門<rt>もん</ruby>の<ruby>方<rt>ほう</rt>角<rt>がく</ruby>を<ruby>凝<rt>ぎょう</rt>視<rt>し</ruby>する
+</div>
+<dt>Jukugo-ruby
+<dd>
+<p>This is semantically identical to the previous case (each individual ideographic character in
+the base compound word has its reading given in an annotation in hiragana or katakana
+characters), but the rendering is the more complicated Jukugo Ruby rendering.
+<div>
+<p>This is the same example as above for mono-ruby for compound words. The different rendering is expected to be achieved using different styling (e.g. in CSS), and is not shown here.</p>
+<pre><code>&lt;ruby&gt;鬼&lt;rt&gt;き&lt;/rt&gt;門&lt;rt&gt;もん&lt;/rt&gt;&lt;/ruby&gt;の&lt;ruby&gt;方&lt;rt&gt;ほう&lt;/rt&gt;角&lt;rt&gt;がく&lt;/rt&gt;&lt;/ruby&gt;を&lt;ruby&gt;凝&lt;rt&gt;ぎょう&lt;/rt&gt;視&lt;rt&gt;し&lt;/rt&gt;&lt;/ruby&gt;する</code></pre>
+</div>
+<p>For more details on <a href=https://www.w3.org/TR/jlreq/#positioning_of_jukugoruby>Jukugo Ruby rendering</a>, see
+Appendix F in the <cite>Requirements for Japanese Text Layout</cite>. <a href="references.html#refsJLREQ">[JLREQ]</a></p>
+<dt>Group ruby for describing meanings
+<dd>
+<p>The annotation describes the meaning of the base text, rather than (or in addition to) the
+pronunciation. As such, both the base text and the annotation can be multiple characters long.
+<div> <pre><code>&lt;ruby&gt;BASE&lt;rt&gt;annotation&lt;/ruby&gt;</code></pre> </div>
+<div>
+<p>Here a compound ideographic word has its corresponding katakana given as an annotation.
+<pre><code>&lt;ruby&gt;境界面&lt;rt&gt;インターフェース&lt;/ruby&gt;</code></pre>
+<p lang=ja><ruby>境界面<rt>インターフェース</ruby>
+</div>
+<div>
+<p>Here a compound ideographic word has its translation in English provided as an annotation.
+<pre><code>&lt;ruby lang=&quot;ja&quot;&gt;編集者&lt;rt lang=&quot;en&quot;&gt;editor&lt;/ruby&gt;</code></pre>
+<p><ruby lang=ja>編集者<rt lang=en>editor</ruby>
+</div>
+<dt>Group ruby for Jukuji readings
+<dd>
+<p>A phonetic reading that corresponds to multiple base characters, because a one-to-one mapping
+would be difficult. (In English, the words "Colonel" and "Lieutenant" are examples of words
+where a direct mapping of pronunciation to individual letters is, in some dialects, rather
+unclear.)
+<div>
+<p>In this example, the name of a species of flowers has a phonetic reading provided using group ruby:
+<pre><code>&lt;ruby&gt;紫陽花&lt;rt&gt;あじさい&lt;/ruby&gt;</code></pre>
+<p lang=ja><ruby>紫陽花<rt>あじさい</ruby>
+</div>
+<dt>Text with both phonetic and semantic annotations (double-sided ruby)
+<dd>
+<p>Sometimes, ruby styles described above are combined.
+<p>If this results in two annotations covering the same single base segment, then the
+annotations can just be placed back to back.
+<div>
+<pre><code>&lt;ruby&gt;BASE&lt;rt&gt;annotation 1&lt;rt&gt;annotation 2&lt;/ruby&gt;</code></pre>
+</div>
+<div>
+<pre><code>&lt;ruby&gt;B&lt;rt&gt;a&lt;rt&gt;a&lt;/ruby&gt;&lt;ruby&gt;A&lt;rt&gt;a&lt;rt&gt;a&lt;/ruby&gt;&lt;ruby&gt;S&lt;rt&gt;a&lt;rt&gt;a&lt;/ruby&gt;&lt;ruby&gt;E&lt;rt&gt;a&lt;rt&gt;a&lt;/ruby&gt;</code></pre>
+</div>
+<div>
+<p>In this contrived example, some symbols are given names in English and French.
+<pre><code>&lt;ruby&gt;
+♥ &lt;rt&gt; Heart &lt;rt lang=fr&gt; Cœur &lt;/rt&gt;
+☘ &lt;rt&gt; Shamrock &lt;rt lang=fr&gt; Trèfle &lt;/rt&gt;
+✶ &lt;rt&gt; Star &lt;rt lang=fr&gt; Étoile &lt;/rt&gt;
+&lt;/ruby&gt;</code></pre>
+</div>
+<p>In more complicated situations such as the following examples, a nested <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code>
+element is used to give the inner annotations, and then that whole <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> is then
+given an annotation at the "outer" level.
+<div>
+<pre><code>&lt;ruby&gt;&lt;ruby&gt;B&lt;rt&gt;a&lt;/rt&gt;A&lt;rt&gt;n&lt;/rt&gt;S&lt;rt&gt;t&lt;/rt&gt;E&lt;rt&gt;n&lt;/rt&gt;&lt;/ruby&gt;&lt;rt&gt;annotation&lt;/ruby&gt;</code></pre>
+</div>
+<div>
+<p>Here both a phonetic reading and the meaning are given in ruby annotations. The annotation on the nested <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element gives a mono-ruby phonetic annotation for each base character, while the annotation in the <code><a href="text-level-semantics.html#the-rt-element">rt</a></code> element that is a child of the outer <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element gives the meaning using hiragana.
+<pre><code>&lt;ruby&gt;&lt;ruby&gt;東&lt;rt&gt;とう&lt;/rt&gt;南&lt;rt&gt;なん&lt;/rt&gt;&lt;/ruby&gt;&lt;rt&gt;たつみ&lt;/rt&gt;&lt;/ruby&gt;の方角</code></pre>
+<p lang=ja><ruby><ruby>東<rt>とう</rt>南<rt>なん</ruby><rt>たつみ</ruby>の方角
+</div>
+<div>
+<p>This is the same example, but the meaning is given in English instead of Japanese:
+<pre><code>&lt;ruby&gt;&lt;ruby&gt;東&lt;rt&gt;とう&lt;/rt&gt;南&lt;rt&gt;なん&lt;/rt&gt;&lt;/ruby&gt;&lt;rt lang=en&gt;Southeast&lt;/rt&gt;&lt;/ruby&gt;の方角</code></pre>
+<p lang=ja><ruby><ruby>東<rt>とう</rt>南<rt>なん</ruby><rt lang=en>Southeast</ruby>の方角
+</div>
+</dl>
+<hr>
+<p>Within a <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element that does not have a <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element ancestor,
+content is segmented and segments are placed into three categories: base text segments, annotation
+segments, and ignored segments. Ignored segments do not form part of the document's semantics
+(they consist of some <a href="dom.html#inter-element-whitespace">inter-element whitespace</a> and <code><a href="text-level-semantics.html#the-rp-element">rp</a></code> elements, the
+latter of which are used for legacy user agents that do not support ruby at all). Base text
+segments can overlap (with a limit of two segments overlapping any one position in the DOM, and
+with any segment having an earlier start point than an overlapping segment also having an equal or
+later end point, and any segment have a later end point than an overlapping segment also having an
+equal or earlier start point). Annotation segments correspond to <code><a href="text-level-semantics.html#the-rt-element">rt</a></code> elements. Each annotation
+segment can be associated with a base text segment, and each base text segment can have annotation
+segments associated with it. (In a conforming document, each base text segment is associated with
+at least one annotation segment, and each annotation segment is associated with one base text
+segment.) A <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element <a href="dom.html#represents">represents</a> the union of the segments of base
+text it contains, along with the mapping from those base text segments to annotation segments.
+Segments are described in terms of DOM ranges; annotation segment ranges always
+consist of exactly one element. <a href="references.html#refsDOM">[DOM]</a></p>
+<div>
+<div>
+<p>At any particular time, the segmentation and categorization of content of a <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code>
+element is the result that would be obtained from running the following algorithm:</p>
+<ol><li><p>Let <var>base text segments</var> be an empty list of base text segments, each
+potentially with a list of base text subsegments.<li><p>Let <var>annotation segments</var> be an empty list of annotation segments, each
+potentially being associated with a base text segment or subsegment.<li><p>Let <var>root</var> be the <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element for which the algorithm is
+being run.<li><p>If <var>root</var> has a <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element ancestor, then jump to the
+step labeled <i>end</i>.<li><p>Let <var>current parent</var> be <var>root</var>.<li><p>Let <var>index</var> be 0.<li><p>Let <var>start index</var> be null.<li><p>Let <var>saved start index</var> be null.<li><p>Let <var>current base text</var> be null.<li><p><i>Start mode</i>: If <var>index</var> is greater than or equal to the number of child
+nodes in <var>current parent</var>, then jump to the step labeled <i>end mode</i>.</p>
+<li><p>If the <var>index</var>th node in <var>current parent</var> is an
+<code><a href="text-level-semantics.html#the-rt-element">rt</a></code> or <code><a href="text-level-semantics.html#the-rp-element">rp</a></code> element, jump to the step labeled <i>annotation
+mode</i>.<li><p>Set <var>start index</var> to the value of <var>index</var>.<li><p><i>Base mode</i>: If the <var>index</var>th node in <var>current
+parent</var> is a <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element, and if <var>current parent</var> is the
+same element as <var>root</var>, then <a href="text-level-semantics.html#push-a-ruby-level">push a ruby level</a> and then jump to
+the step labeled <i>start mode</i>.<li><p>If the <var>index</var>th node in <var>current parent</var> is an
+<code><a href="text-level-semantics.html#the-rt-element">rt</a></code> or <code><a href="text-level-semantics.html#the-rp-element">rp</a></code> element, then <a href="text-level-semantics.html#set-the-current-base-text">set the current base text</a> and then
+jump to the step labeled <i>annotation mode</i>.<li><p>Increment <var>index</var> by one.<li><p><i>Base mode post-increment</i>: If <var>index</var> is greater than or equal to the
+number of child nodes in <var>current parent</var>, then jump to the step labeled <i>end
+mode</i>.<li><p>Jump back to the step labeled <i>base mode</i>.<li><p><i>Annotation mode</i>: If the <var>index</var>th node in <var>current
+parent</var> is an <code><a href="text-level-semantics.html#the-rt-element">rt</a></code> element, then <a href="text-level-semantics.html#push-a-ruby-annotation">push a ruby annotation</a> and jump to
+the step labeled <i>annotation mode increment</i>.<li><p>If the <var>index</var>th node in <var>current parent</var> is an
+<code><a href="text-level-semantics.html#the-rp-element">rp</a></code> element, jump to the step labeled <i>annotation mode increment</i>.<li><p>If the <var>index</var>th node in <var>current parent</var> is not a
+<code><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> node, or is a <code><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> node that is not <a href="dom.html#inter-element-whitespace">inter-element
+whitespace</a>, then jump to the step labeled <i>base mode</i>.<li><p><i>Annotation mode increment</i>: Let <var>lookahead index</var> be <var>index</var> plus one.<li><p><i>Annotation mode white-space skipper</i>: If <var>lookahead index</var> is
+equal to the number of child nodes in <var>current parent</var> then jump to the step
+labeled <i>end mode</i>.<li><p>If the <var>lookahead index</var>th node in <var>current parent</var> is
+an <code><a href="text-level-semantics.html#the-rt-element">rt</a></code> element or an <code><a href="text-level-semantics.html#the-rp-element">rp</a></code> element, then set <var>index</var> to
+<var>lookahead index</var> and jump to the step labeled <i>annotation mode</i>.<li><p>If the <var>lookahead index</var>th node in <var>current parent</var> is
+not a <code><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> node, or is a <code><a data-x-internal=text href=https://dom.spec.whatwg.org/#interface-text>Text</a></code> node that is not <a href="dom.html#inter-element-whitespace">inter-element
+whitespace</a>, then jump to the step labeled <i>base mode</i> (without further incrementing
+<var>index</var>, so the <a href="dom.html#inter-element-whitespace">inter-element whitespace</a> seen so far becomes part
+of the next base text segment).<li><p>Increment <var>lookahead index</var> by one.<li><p>Jump to the step labeled <i>annotation mode white-space skipper</i>.<li><p><i>End mode</i>: If <var>current parent</var> is not the same element as <var>root</var>, then <a href="text-level-semantics.html#pop-a-ruby-level">pop a ruby level</a> and jump to the step labeled <i>base mode
+post-increment</i>.<li><p><i>End</i>: Return <var>base text segments</var> and <var>annotation
+segments</var>. Any content of the <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element not described by segments in either
+of those lists is implicitly in an <i>ignored segment</i>.</ol>
+</div>
+<div>
+<p>When the steps above say to <dfn id=set-the-current-base-text>set the current base text</dfn>, it means to run the following
+steps at that point in the algorithm:</p>
+<ol><li><p>Let <var>text range</var> be a DOM range whose <a href=https://dom.spec.whatwg.org/#concept-range-start data-x-internal=concept-range-start>start</a> is the <a href=https://dom.spec.whatwg.org/#concept-range-bp data-x-internal=concept-range-bp>boundary
+point</a> (<var>current parent</var>, <var>start index</var>) and whose
+<a href=https://dom.spec.whatwg.org/#concept-range-end data-x-internal=concept-range-end>end</a> is the <a href=https://dom.spec.whatwg.org/#concept-range-bp data-x-internal=concept-range-bp>boundary
+point</a> (<var>current parent</var>, <var>index</var>).<li><p>Let <var>new text segment</var> be a base text segment described by the range
+<var>text range</var>.</p>
+<li><p>Add <var>new text segment</var> to <var>base text
+segments</var>.<li><p>Let <var>current base text</var> be <var>new text
+segment</var>.<li><p>Let <var>start index</var> be null.</ol>
+</div>
+<div>
+<p>When the steps above say to <dfn id=push-a-ruby-level>push a ruby level</dfn>, it means to run the following steps
+at that point in the algorithm:</p>
+<ol><li><p>Let <var>current parent</var> be the <var>index</var>th node in <var>current parent</var>.<li><p>Let <var>index</var> be 0.<li><p>Set <var>saved start index</var> to the value of <var>start
+index</var>.<li><p>Let <var>start index</var> be null.</ol>
+</div>
+<div>
+<p>When the steps above say to <dfn id=pop-a-ruby-level>pop a ruby level</dfn>, it means to run the following steps at
+that point in the algorithm:</p>
+<ol><li><p>Let <var>index</var> be the position of <var>current parent</var> in
+<var>root</var>.<li><p>Let <var>current parent</var> be <var>root</var>.<li><p>Increment <var>index</var> by one.<li><p>Set <var>start index</var> to the value of <var>saved start
+index</var>.<li><p>Let <var>saved start index</var> be null.</ol>
+</div>
+<div>
+<p>When the steps above say to <dfn id=push-a-ruby-annotation>push a ruby annotation</dfn>, it means to run the following
+steps at that point in the algorithm:</p>
+<ol><li><p>Let <var>rt</var> be the <code><a href="text-level-semantics.html#the-rt-element">rt</a></code> element that is the <var>index</var>th node of <var>current parent</var>.<li><p>Let <var>annotation range</var> be a DOM range whose <a href=https://dom.spec.whatwg.org/#concept-range-start data-x-internal=concept-range-start>start</a> is the <a href=https://dom.spec.whatwg.org/#concept-range-bp data-x-internal=concept-range-bp>boundary
+point</a> (<var>current parent</var>, <var>index</var>) and whose <a href=https://dom.spec.whatwg.org/#concept-range-end data-x-internal=concept-range-end>end</a> is the <a href=https://dom.spec.whatwg.org/#concept-range-bp data-x-internal=concept-range-bp>boundary point</a>
+(<var>current parent</var>, <var>index</var> plus one) (i.e. that contains only
+<var>rt</var>).<li><p>Let <var>new annotation segment</var> be an annotation segment described by the
+range <var>annotation range</var>.<li><p>If <var>current base text</var> is not null, associate <var>new
+annotation segment</var> with <var>current base text</var>.<li><p>Add <var>new annotation segment</var> to <var>annotation
+segments</var>.</ol>
+</div>
+</div>
+<div>
+<p>In this example, each ideograph in the Japanese text <span lang=ja>漢字</span> is annotated with its reading in hiragana.</p>
+<pre lang=ja><code>...
+&lt;ruby&gt;漢&lt;rt&gt;かん&lt;/rt&gt;字&lt;rt&gt;じ&lt;/rt&gt;&lt;/ruby&gt;
+...</code></pre>
+<p>This might be rendered as:</p>
+<p><img src="../images/sample-ruby-ja.png" width=171 alt="The two main ideographs, each with its annotation in hiragana rendered in a smaller font above it." height=78></p>
+</div>
+<div>
+<p>In this example, each ideograph in the traditional Chinese text <span lang=zh-TW>漢字</span> is annotated with its bopomofo reading.</p>
+<pre lang=zh-TW><code>&lt;ruby&gt;漢&lt;rt&gt;ㄏㄢˋ&lt;/rt&gt;字&lt;rt&gt;ㄗˋ&lt;/rt&gt;&lt;/ruby&gt;</code></pre>
+<p>This might be rendered as:</p>
+<p><img src="../images/sample-ruby-bopomofo.png" width=78 alt="The two main ideographs, each with its bopomofo annotation rendered in a smaller font next to it." height=100></p>
+</div>
+<div>
+<p>In this example, each ideograph in the simplified Chinese text <span lang=zh-CN>汉字</span> is annotated with its pinyin reading.</p>
+<pre lang=zh-CN><code>...&lt;ruby&gt;汉&lt;rt&gt;hàn&lt;/rt&gt;字&lt;rt&gt;zì&lt;/rt&gt;&lt;/ruby&gt;...</code></pre>
+<p>This might be rendered as:</p>
+<p><img src="../images/sample-ruby-pinyin.png" width=173 alt="The two main ideographs, each with its pinyin annotation rendered in a smaller font above it." height=79></p>
+</div>
+<div>
+<p>In this more contrived example, the acronym "HTML" has four annotations: one for the whole
+acronym, briefly describing what it is, one for the letters "HT" expanding them to "Hypertext",
+one for the letter "M" expanding it to "Markup", and one for the letter "L" expanding it to
+"Language".</p>
+<pre><code>&lt;ruby&gt;
+&lt;ruby&gt;HT&lt;rt&gt;Hypertext&lt;/rt&gt;M&lt;rt&gt;Markup&lt;/rt&gt;L&lt;rt&gt;Language&lt;/rt&gt;&lt;/ruby&gt;
+&lt;rt&gt;An abstract language for describing documents and applications
+&lt;/ruby&gt;</code></pre>
+</div>
+<h4 id=the-rt-element>The <dfn data-dfn-type=element><code>rt</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>As a child of a <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>An <code><a href="text-level-semantics.html#the-rt-element">rt</a></code> element's <a href="syntax.html#syntax-end-tag">end tag</a> can be omitted if the
+<code><a href="text-level-semantics.html#the-rt-element">rt</a></code> element is immediately followed by an <code><a href="text-level-semantics.html#the-rt-element">rt</a></code> or <code><a href="text-level-semantics.html#the-rp-element">rp</a></code> element,
+or if there is no more content in the parent element.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-rt>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-rt>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-rt-element">rt</a></code> element marks the ruby text component of a ruby annotation. When it is the
+child of a <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element, it doesn't <a href="dom.html#represents">represent</a>
+anything itself, but the <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element uses it as part of determining what <em>it</em>
+<a href="dom.html#represents">represents</a>.</p>
+<p>An <code><a href="text-level-semantics.html#the-rt-element">rt</a></code> element that is not a child of a <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element
+<a href="dom.html#represents">represents</a> the same thing as its children.</p>
+<h4 id=the-rp-element>The <dfn data-dfn-type=element><code>rp</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd>None.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>As a child of a <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element, either immediately before or immediately after an <code><a href="text-level-semantics.html#the-rt-element">rt</a></code> element.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#text-content">Text</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>An <code><a href="text-level-semantics.html#the-rp-element">rp</a></code> element's <a href="syntax.html#syntax-end-tag">end tag</a> can be omitted if the
+<code><a href="text-level-semantics.html#the-rp-element">rp</a></code> element is immediately followed by an <code><a href="text-level-semantics.html#the-rt-element">rt</a></code> or <code><a href="text-level-semantics.html#the-rp-element">rp</a></code> element,
+or if there is no more content in the parent element.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-rp>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-rp>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-rp-element">rp</a></code> element can be used to provide parentheses or other content around a ruby
+text component of a ruby annotation, to be shown by user agents that don't support ruby
+annotations.</p>
+<p>An <code><a href="text-level-semantics.html#the-rp-element">rp</a></code> element that is a child of a <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code>
+element <a href="dom.html#represents">represents</a> nothing. An <code><a href="text-level-semantics.html#the-rp-element">rp</a></code> element
+whose parent element is not a <code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element <a href="dom.html#represents">represents</a> its
+children.</p>
+<div>
+<p>The example above, in which each ideograph in the text <span lang=ja>漢字</span> is annotated with its phonetic reading, could be expanded to
+use <code><a href="text-level-semantics.html#the-rp-element">rp</a></code> so that in legacy user agents the readings are in parentheses:</p>
+<pre lang=ja><code>...
+&lt;ruby&gt;漢&lt;rp&gt;（&lt;/rp&gt;&lt;rt&gt;かん&lt;/rt&gt;&lt;rp&gt;）&lt;/rp&gt;字&lt;rp&gt;（&lt;/rp&gt;&lt;rt&gt;じ&lt;/rt&gt;&lt;rp&gt;）&lt;/rp&gt;&lt;/ruby&gt;
+...</code></pre>
+<p>In conforming user agents the rendering would be as above, but in user agents that do not
+support ruby, the rendering would be:</p>
+<pre lang=ja>... 漢（かん）字（じ）...</pre>
+</div>
+<div>
+<p>When there are multiple annotations for a segment, <code><a href="text-level-semantics.html#the-rp-element">rp</a></code> elements can also be placed
+between the annotations. Here is another copy of an earlier contrived example showing some
+symbols with names given in English and French, but this time with <code><a href="text-level-semantics.html#the-rp-element">rp</a></code> elements as
+well:
+<pre><code>&lt;ruby&gt;
+♥&lt;rp&gt;: &lt;/rp&gt;&lt;rt&gt;Heart&lt;/rt&gt;&lt;rp&gt;, &lt;/rp&gt;&lt;rt lang=fr&gt;Cœur&lt;/rt&gt;&lt;rp&gt;.&lt;/rp&gt;
+☘&lt;rp&gt;: &lt;/rp&gt;&lt;rt&gt;Shamrock&lt;/rt&gt;&lt;rp&gt;, &lt;/rp&gt;&lt;rt lang=fr&gt;Trèfle&lt;/rt&gt;&lt;rp&gt;.&lt;/rp&gt;
+✶&lt;rp&gt;: &lt;/rp&gt;&lt;rt&gt;Star&lt;/rt&gt;&lt;rp&gt;, &lt;/rp&gt;&lt;rt lang=fr&gt;Étoile&lt;/rt&gt;&lt;rp&gt;.&lt;/rp&gt;
+&lt;/ruby&gt;</code></pre>
+<p>This would make the example render as follows in non-ruby-capable user agents:
+<pre>♥: Heart, <span lang=fr>Cœur</span>. ☘: Shamrock, <span lang=fr>Trèfle</span>. ✶: Star, <span lang=fr>Étoile</span>.</pre>
+</div>
+<h4 id=the-data-element>The <dfn data-dfn-type=element><code>data</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="text-level-semantics.html#attr-data-value">value</a></code> —  Machine-readable value
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-data>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-data>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmldataelement' data-dfn-type='interface'>HTMLDataElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-data-value' data-dfn-type='attribute'>value</dfn>;
+};</code></pre>
+</dl>
+<p>The <code><a href="text-level-semantics.html#the-data-element">data</a></code> element <a href="dom.html#represents">represents</a> its contents, along with a
+machine-readable form of those contents in the <code><a href="text-level-semantics.html#attr-data-value">value</a></code>
+attribute.</p>
+<p>The <dfn id=attr-data-value data-dfn-type=element-attr><code>value</code></dfn> attribute
+must be present. Its value must be a representation of the element's contents in a
+machine-readable format.</p>
+<p>When the value is date- or time-related, the more specific <code><a href="text-level-semantics.html#the-time-element">time</a></code>
+element can be used instead.</p>
+<p>The element can be used for several purposes.</p>
+<p>When combined with microformats or the <a href="microdata.html#microdata">microdata attributes</a> defined in
+this specification, the element serves to provide both a machine-readable value for the purposes
+of data processors, and a human-readable value for the purposes of rendering in a web browser. In
+this case, the format to be used in the <code><a href="text-level-semantics.html#attr-data-value">value</a></code> attribute is
+determined by the microformats or microdata vocabulary in use.</p>
+<p>The element can also, however, be used in conjunction with scripts in the page, for when a
+script has a literal value to store alongside a human-readable value. In such cases, the format to
+be used depends only on the needs of the script. (The <code><a href="dom.html#attr-data-*">data-*</a></code>
+attributes can also be useful in such situations.)</p>
+<div>
+<p>Here, a short table has its numeric values encoded using the <code><a href="text-level-semantics.html#the-data-element">data</a></code> element so
+that the table sorting JavaScript library can provide a sorting mechanism on each column
+despite the numbers being presented in textual form in one column and in a decomposed form in
+another.</p>
+<pre><code>&lt;script src=&quot;sortable.js&quot;&gt;&lt;/script&gt;
+&lt;table
+&lt;thead&gt; &lt;tr&gt; &lt;th&gt; Game &lt;th&gt; Corporations &lt;th&gt; Map Size
+&lt;tbody&gt;
+&lt;tr&gt; &lt;td&gt; 1830 &lt;td&gt; &lt;data value=&quot;8&quot;&gt;Eight&lt;/data&gt; &lt;td&gt; &lt;data value=&quot;93&quot;&gt;19+74 hexes (93 total)&lt;/data&gt;
+&lt;tr&gt; &lt;td&gt; 1856 &lt;td&gt; &lt;data value=&quot;11&quot;&gt;Eleven&lt;/data&gt; &lt;td&gt; &lt;data value=&quot;99&quot;&gt;12+87 hexes (99 total)&lt;/data&gt;
+&lt;tr&gt; &lt;td&gt; 1870 &lt;td&gt; &lt;data value=&quot;10&quot;&gt;Ten&lt;/data&gt; &lt;td&gt; &lt;data value=&quot;149&quot;&gt;4+145 hexes (149 total)&lt;/data&gt;
+&lt;/table&gt;</code></pre>
+</div>
+<h4 id=the-time-element>The <dfn data-dfn-type=element><code>time</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>If the element has a <code><a href="text-level-semantics.html#attr-time-datetime">datetime</a></code> attribute: <a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd>Otherwise: <a href="dom.html#text-content">Text</a>, but must match requirements described in prose below.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd><code><a href="text-level-semantics.html#attr-time-datetime">datetime</a></code> —  Machine-readable value
+<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-time>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-time>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmltimeelement' data-dfn-type='interface'>HTMLTimeElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+[<a href='custom-elements.html#cereactions'>CEReactions</a>, <a href='common-dom-interfaces.html#xattr-reflect'>Reflect</a>] attribute DOMString <dfn id='dom-time-datetime' data-dfn-type='attribute'>dateTime</dfn>;
+};</code></pre>
+</dl>
+<p>The <code><a href="text-level-semantics.html#the-time-element">time</a></code> element <a href="dom.html#represents">represents</a> its contents, along with a
+machine-readable form of those contents in the <code><a href="text-level-semantics.html#attr-time-datetime">datetime</a></code>
+attribute. The kind of content is limited to various kinds of dates, times, time-zone offsets, and
+durations, as described below.</p>
+<p>The <dfn id=attr-time-datetime data-dfn-type=element-attr><code>datetime</code></dfn>
+attribute may be present. If present, its value must be a representation of the element's contents
+in a machine-readable format.</p>
+<p>A <code><a href="text-level-semantics.html#the-time-element">time</a></code> element that does not have a <code><a href="text-level-semantics.html#attr-time-datetime">datetime</a></code> content attribute must not have any element
+descendants.</p>
+<div>
+<p>The <dfn id=datetime-value>datetime value</dfn> of a <code><a href="text-level-semantics.html#the-time-element">time</a></code> element is the value of the element's
+<code><a href="text-level-semantics.html#attr-time-datetime">datetime</a></code> content attribute, if it has one, otherwise the
+<a href=https://dom.spec.whatwg.org/#concept-child-text-content data-x-internal=child-text-content>child text content</a> of the <code><a href="text-level-semantics.html#the-time-element">time</a></code> element.</p>
+</div>
+<p>The <a href="text-level-semantics.html#datetime-value">datetime value</a> of a <code><a href="text-level-semantics.html#the-time-element">time</a></code> element must match one of the following
+syntaxes.</p>
+<dl><dt>A <a href="common-microsyntaxes.html#valid-month-string">valid month string</a><dd>
+<pre><code>&lt;time&gt;2011-11&lt;/time&gt;</code></pre>
+<dt>A <a href="common-microsyntaxes.html#valid-date-string">valid date string</a><dd>
+<pre><code>&lt;time&gt;2011-11-18&lt;/time&gt;</code></pre>
+<dt>A <a href="common-microsyntaxes.html#valid-yearless-date-string">valid yearless date string</a><dd>
+<pre><code>&lt;time&gt;11-18&lt;/time&gt;</code></pre>
+<dt>A <a href="common-microsyntaxes.html#valid-time-string">valid time string</a><dd>
+<pre><code>&lt;time&gt;14:54&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;14:54:39&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;14:54:39.929&lt;/time&gt;</code></pre>
+<dt>A <a href="common-microsyntaxes.html#valid-local-date-and-time-string">valid local date and time string</a><dd>
+<pre><code>&lt;time&gt;2011-11-18T14:54&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T14:54:39&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T14:54:39.929&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 14:54&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 14:54:39&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 14:54:39.929&lt;/time&gt;</code></pre>
+<p>Times with dates but without a time zone offset are useful for specifying events
+that are observed at the same specific time in each time zone, throughout a day. For example,
+the 2020 new year is celebrated at 2020-01-01 00:00 in each time zone, not at the same precise
+moment across all time zones. For events that occur at the same time across all time zones, for
+example a videoconference meeting, a <a href="common-microsyntaxes.html#valid-global-date-and-time-string">valid global date and time string</a> is likely
+more useful.</p>
+<dt>A <a href="common-microsyntaxes.html#valid-time-zone-offset-string">valid time-zone offset string</a><dd>
+<pre><code>&lt;time&gt;Z&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;+0000&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;+00:00&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;-0800&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;-08:00&lt;/time&gt;</code></pre>
+<p>For times without dates (or times referring to events that recur on multiple
+dates), specifying the geographic location that controls the time is usually more useful than
+specifying a time zone offset, because geographic locations change time zone offsets with
+daylight saving time. In some cases, geographic locations even change time zone, e.g. when the
+boundaries of those time zones are redrawn, as happened with Samoa at the end of 2011. There
+exists a time zone database that describes the boundaries of time zones and what rules apply
+within each such zone, known as the <i>time zone database</i>. <a href="references.html#refsTZDATABASE">[TZDATABASE]</a></p>
+<dt>A <a href="common-microsyntaxes.html#valid-global-date-and-time-string">valid global date and time string</a><dd>
+<pre><code>&lt;time&gt;2011-11-18T14:54Z&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T14:54:39Z&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T14:54:39.929Z&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T14:54+0000&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T14:54:39+0000&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T14:54:39.929+0000&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T14:54+00:00&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T14:54:39+00:00&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T14:54:39.929+00:00&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T06:54-0800&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T06:54:39-0800&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T06:54:39.929-0800&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T06:54-08:00&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T06:54:39-08:00&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18T06:54:39.929-08:00&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 14:54Z&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 14:54:39Z&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 14:54:39.929Z&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 14:54+0000&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 14:54:39+0000&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 14:54:39.929+0000&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 14:54+00:00&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 14:54:39+00:00&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 14:54:39.929+00:00&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 06:54-0800&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 06:54:39-0800&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 06:54:39.929-0800&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 06:54-08:00&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 06:54:39-08:00&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;2011-11-18 06:54:39.929-08:00&lt;/time&gt;</code></pre>
+<p>Times with dates and a time zone offset are useful for specifying specific
+events, or recurring virtual events where the time is not anchored to a specific geographic
+location. For example, the precise time of an asteroid impact, or a particular meeting in a
+series of meetings held at 1400 UTC every day, regardless of whether any particular part of the
+world is observing daylight saving time or not. For events where the precise time varies by the
+local time zone offset of a specific geographic location, a <a href="common-microsyntaxes.html#valid-local-date-and-time-string">valid local date and time
+string</a> combined with that geographic location is likely more useful.</p>
+<dt>A <a href="common-microsyntaxes.html#valid-week-string">valid week string</a><dd>
+<pre><code>&lt;time&gt;2011-W47&lt;/time&gt;</code></pre>
+<dt>Four or more <a href=https://infra.spec.whatwg.org/#ascii-digit data-x-internal=ascii-digits>ASCII digits</a>, at least one of which is not U+0030 DIGIT ZERO (0)<dd>
+<pre><code>&lt;time&gt;2011&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;0001&lt;/time&gt;</code></pre>
+<dt>A <a href="common-microsyntaxes.html#valid-duration-string">valid duration string</a><dd>
+<pre><code>&lt;time&gt;PT4H18M3S&lt;/time&gt;</code></pre>
+<pre><code>&lt;time&gt;4h 18m 3s&lt;/time&gt;</code></pre>
+</dl>
+<div>
+<p>The <dfn id="machine-readable-equivalent-of-the-element's-contents">machine-readable equivalent of the element's contents</dfn> must be obtained from the
+element's <a href="text-level-semantics.html#datetime-value">datetime value</a> by using the following algorithm:</p>
+<ol><li><p>If <a href="common-microsyntaxes.html#parse-a-month-string">parsing a month string</a> from the element's
+<a href="text-level-semantics.html#datetime-value">datetime value</a> returns a <a href="common-microsyntaxes.html#concept-month">month</a>, that is the
+machine-readable equivalent; return.<li><p>If <a href="common-microsyntaxes.html#parse-a-date-string">parsing a date string</a> from the element's
+<a href="text-level-semantics.html#datetime-value">datetime value</a> returns a <a href="common-microsyntaxes.html#concept-date">date</a>, that is the
+machine-readable equivalent; return.<li><p>If <a href="common-microsyntaxes.html#parse-a-yearless-date-string">parsing a yearless date string</a> from
+the element's <a href="text-level-semantics.html#datetime-value">datetime value</a> returns a <a href="common-microsyntaxes.html#concept-yearless-date">yearless
+date</a>, that is the machine-readable equivalent; return.<li><p>If <a href="common-microsyntaxes.html#parse-a-time-string">parsing a time string</a> from the element's
+<a href="text-level-semantics.html#datetime-value">datetime value</a> returns a <a href="common-microsyntaxes.html#concept-time">time</a>, that is the
+machine-readable equivalent; return.<li><p>If <a href="common-microsyntaxes.html#parse-a-local-date-and-time-string">parsing a local date and time
+string</a> from the element's <a href="text-level-semantics.html#datetime-value">datetime value</a> returns a <a href="common-microsyntaxes.html#concept-datetime-local">local date and time</a>, that is the machine-readable
+equivalent; return.<li><p>If <a href="common-microsyntaxes.html#parse-a-time-zone-offset-string">parsing a time-zone offset string</a>
+from the element's <a href="text-level-semantics.html#datetime-value">datetime value</a> returns a <a href="common-microsyntaxes.html#concept-timezone">time-zone
+offset</a>, that is the machine-readable equivalent; return.<li><p>If <a href="common-microsyntaxes.html#parse-a-global-date-and-time-string">parsing a global date and time
+string</a> from the element's <a href="text-level-semantics.html#datetime-value">datetime value</a> returns a <a href="common-microsyntaxes.html#concept-datetime">global date and time</a>, that is the machine-readable equivalent;
+return.<li><p>If <a href="common-microsyntaxes.html#parse-a-week-string">parsing a week string</a> from the element's
+<a href="text-level-semantics.html#datetime-value">datetime value</a> returns a <a href="common-microsyntaxes.html#concept-week">week</a>, that is the
+machine-readable equivalent; return.<li><p>If the element's <a href="text-level-semantics.html#datetime-value">datetime value</a> consists of only <a href=https://infra.spec.whatwg.org/#ascii-digit data-x-internal=ascii-digits>ASCII digits</a>,
+at least one of which is not U+0030 DIGIT ZERO (0), then the machine-readable equivalent is the
+base-ten interpretation of those digits, representing a year; return.<li><p>If <a href="common-microsyntaxes.html#parse-a-duration-string">parsing a duration string</a> from the
+element's <a href="text-level-semantics.html#datetime-value">datetime value</a> returns a <a href="common-microsyntaxes.html#concept-duration">duration</a>,
+that is the machine-readable equivalent; return.<li><p>There is no machine-readable equivalent.</ol>
+</div>
+<p>The algorithms referenced above are intended to be designed such that for any
+arbitrary string <var>s</var>, only one of the algorithms returns a value. A more
+efficient approach might be to create a single algorithm that parses all these data types in one
+pass; developing such an algorithm is left as an exercise to the reader.</p>
+<div>
+<p>The <code><a href="text-level-semantics.html#the-time-element">time</a></code> element can be used to encode dates, for example in microformats. The
+following shows a hypothetical way of encoding an event using a variant on hCalendar that uses
+the <code><a href="text-level-semantics.html#the-time-element">time</a></code> element:</p>
+<pre><code>&lt;div
+&lt;a href=&quot;http://www.web2con.com/&quot;&gt;http://www.web2con.com/&lt;/a&gt;
+&lt;span 2.0 Conference&lt;/span&gt;:
+&lt;time datetime=&quot;2005-10-05&quot;&gt;October 5&lt;/time&gt; -
+&lt;time datetime=&quot;2005-10-07&quot;&gt;7&lt;/time&gt;,
+at the &lt;span Hotel, San Francisco, CA&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+</div>
+<div>
+<p>Here, a fictional microdata vocabulary based on the Atom vocabulary is used with the
+<code><a href="text-level-semantics.html#the-time-element">time</a></code> element to mark up a blog post's publication date.</p>
+<pre><code>&lt;article itemscope itemtype=&quot;https://n.example.org/rfc4287&quot;&gt;
+&lt;h1 itemprop=&quot;title&quot;&gt;Big tasks&lt;/h1&gt;
+&lt;footer&gt;Published &lt;time itemprop=&quot;published&quot; datetime=&quot;2009-08-29&quot;&gt;two days ago&lt;/time&gt;.&lt;/footer&gt;
+&lt;p itemprop=&quot;content&quot;&gt;Today, I went out and bought a bike for my kid.&lt;/p&gt;
+&lt;/article&gt;</code></pre>
+</div>
+<div>
+<p>In this example, another article's publication date is marked up using <code><a href="text-level-semantics.html#the-time-element">time</a></code>, this
+time using the schema.org microdata vocabulary:</p>
+<pre><code>&lt;article itemscope itemtype=&quot;http://schema.org/BlogPosting&quot;&gt;
+&lt;h1 itemprop=&quot;headline&quot;&gt;Small tasks&lt;/h1&gt;
+&lt;footer&gt;Published &lt;time itemprop=&quot;datePublished&quot; datetime=&quot;2009-08-30&quot;&gt;yesterday&lt;/time&gt;.&lt;/footer&gt;
+&lt;p itemprop=&quot;articleBody&quot;&gt;I put a bike bell on her bike.&lt;/p&gt;
+&lt;/article&gt;</code></pre>
+</div>
+<div>
+<p>In the following snippet, the <code><a href="text-level-semantics.html#the-time-element">time</a></code> element is used to encode a date in the
+ISO8601 format, for later processing by a script:</p>
+<pre><code>&lt;p&gt;Our first date was &lt;time datetime=&quot;2006-09-23&quot;&gt;a Saturday&lt;/time&gt;.&lt;/p&gt;</code></pre>
+<p>In this second snippet, the value includes a time:</p>
+<pre><code>&lt;p&gt;We stopped talking at &lt;time datetime=&quot;2006-09-24T05:00-07:00&quot;&gt;5am the next morning&lt;/time&gt;.&lt;/p&gt;</code></pre>
+<p>A script loaded by the page (and thus privy to the page's internal convention of marking up
+dates and times using the <code><a href="text-level-semantics.html#the-time-element">time</a></code> element) could scan through the page and look at all
+the <code><a href="text-level-semantics.html#the-time-element">time</a></code> elements therein to create an index of dates and times.</p>
+</div>
+<div>
+<p>For example, this element conveys the string "Friday" with the additional semantic that the
+18th of November 2011 is the meaning that corresponds to "Friday":</p>
+<pre><code>Today is &lt;time datetime=&quot;2011-11-18&quot;&gt;Friday&lt;/time&gt;.</code></pre>
+</div>
+<div>
+<p>In this example, a specific time in the Pacific Standard Time timezone is specified:</p>
+<pre><code>Your next meeting is at &lt;time datetime=&quot;2011-11-18T15:00-08:00&quot;&gt;3pm&lt;/time&gt;.</code></pre>
+</div>
+<h4 id=the-code-element>The <dfn data-dfn-type=element><code>code</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-code>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-code>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-code-element">code</a></code> element <a href="dom.html#represents">represents</a> a fragment of computer code. This could
+be an XML element name, a filename, a computer program, or any other string that a computer would
+recognize.</p>
+<p>There is no formal way to indicate the language of computer code being marked up. Authors who
+wish to mark <code><a href="text-level-semantics.html#the-code-element">code</a></code> elements with the language used, e.g. so that syntax highlighting
+scripts can use the right rules, can use the <code><a href="dom.html#classes">class</a></code> attribute, e.g.
+by adding a class prefixed with "<code>language-</code>" to the element.</p>
+<div>
+<p>The following example shows how the element can be used in a paragraph to mark up element
+names and computer code, including punctuation.</p>
+<pre><code>&lt;p&gt;The &lt;code&gt;code&lt;/code&gt; element represents a fragment of computer
+code.&lt;/p&gt;
+&lt;p&gt;When you call the &lt;code&gt;activate()&lt;/code&gt; method on the
+&lt;code&gt;robotSnowman&lt;/code&gt; object, the eyes glow.&lt;/p&gt;
+&lt;p&gt;The example below uses the &lt;code&gt;begin&lt;/code&gt; keyword to indicate
+the start of a statement block. It is paired with an &lt;code&gt;end&lt;/code&gt;
+keyword, which is followed by the &lt;code&gt;.&lt;/code&gt; punctuation character
+(full stop) to indicate the end of the program.&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>The following example shows how a block of code could be marked up using the <code><a href="grouping-content.html#the-pre-element">pre</a></code>
+and <code><a href="text-level-semantics.html#the-code-element">code</a></code> elements.</p>
+<pre><code>&lt;pre&gt;&lt;code i: Integer;
+begin
+i := 1;
+end.&lt;/code&gt;&lt;/pre&gt;</code></pre>
+<p>A class is used in that example to indicate the language used.</p>
+</div>
+<p>See the <code><a href="grouping-content.html#the-pre-element">pre</a></code> element for more details.</p>
+<h4 id=the-var-element>The <dfn data-dfn-type=element><code>var</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-var>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-var>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-var-element">var</a></code> element <a href="dom.html#represents">represents</a> a variable. This could be an actual
+variable in a mathematical expression or programming context, an identifier representing a
+constant, a symbol identifying a physical quantity, a function parameter, or just be a term used
+as a placeholder in prose.</p>
+<div>
+<p>In the paragraph below, the letter "n" is being used as a
+variable in prose:</p>
+<pre><code>&lt;p&gt;If there are &lt;var&gt;n&lt;/var&gt; pipes leading to the ice
+cream factory then I expect at &lt;em&gt;least&lt;/em&gt; &lt;var&gt;n&lt;/var&gt;
+flavors of ice cream to be available for purchase!&lt;/p&gt;</code></pre>
+</div>
+<p>For mathematics, in particular for anything beyond the simplest of expressions, MathML is more
+appropriate. However, the <code><a href="text-level-semantics.html#the-var-element">var</a></code> element can still be used to refer to specific
+variables that are then mentioned in MathML expressions.</p>
+<div>
+<p>In this example, an equation is shown, with a legend that references the variables in the
+equation. The expression itself is marked up with MathML, but the variables are mentioned in the
+figure's legend using <code><a href="text-level-semantics.html#the-var-element">var</a></code>.</p>
+<pre><code>&lt;figure&gt;
+&lt;math&gt;
+&lt;mi&gt;a&lt;/mi&gt;
+&lt;mo&gt;=&lt;/mo&gt;
+&lt;msqrt&gt;
+&lt;msup&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;
+&lt;mi&gt;+&lt;/mi&gt;
+&lt;msup&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;
+&lt;/msqrt&gt;
+&lt;/math&gt;
+&lt;figcaption&gt;
+Using Pythagoras&apos; theorem to solve for the hypotenuse &lt;var&gt;a&lt;/var&gt; of
+a triangle with sides &lt;var&gt;b&lt;/var&gt; and &lt;var&gt;c&lt;/var&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre>
+</div>
+<div>
+<p>Here, the equation describing mass-energy equivalence is used in a sentence, and the
+<code><a href="text-level-semantics.html#the-var-element">var</a></code> element is used to mark the variables and constants in that equation:</p>
+<pre><code>&lt;p&gt;Then she turned to the blackboard and picked up the chalk. After a few moment&apos;s
+thought, she wrote &lt;var&gt;E&lt;/var&gt; = &lt;var&gt;m&lt;/var&gt; &lt;var&gt;c&lt;/var&gt;&lt;sup&gt;2&lt;/sup&gt;. The teacher
+looked pleased.&lt;/p&gt;</code></pre>
+</div>
+<h4 id=the-samp-element>The <dfn data-dfn-type=element><code>samp</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-samp>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-samp>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-samp-element">samp</a></code> element <a href="dom.html#represents">represents</a> sample or quoted output from another
+program or computing system.</p>
+<p>See the <code><a href="grouping-content.html#the-pre-element">pre</a></code> and <code><a href="text-level-semantics.html#the-kbd-element">kbd</a></code> elements for more details.</p>
+<p>This element can be contrasted with the <code><a href="form-elements.html#the-output-element">output</a></code> element, which can be
+used to provide immediate output in a web application.</p>
+<div>
+<p>This example shows the <code><a href="text-level-semantics.html#the-samp-element">samp</a></code> element being used
+inline:</p>
+<pre><code>&lt;p&gt;The computer said &lt;samp&gt;Too much cheese in tray
+two&lt;/samp&gt; but I didn&apos;t know what that meant.&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>This second example shows a block of sample output from a console program. Nested
+<code><a href="text-level-semantics.html#the-samp-element">samp</a></code> and <code><a href="text-level-semantics.html#the-kbd-element">kbd</a></code> elements allow for the styling of specific elements
+of the sample output using a style sheet. There's also a few parts of the <code><a href="text-level-semantics.html#the-samp-element">samp</a></code> that
+are annotated with even more detailed markup, to enable very precise styling. To achieve this,
+<code><a href="text-level-semantics.html#the-span-element">span</a></code> elements are used.</p>
+<pre><code>&lt;pre&gt;&lt;samp&gt;&lt;span &lt;kbd&gt;ssh demo.example.com&lt;/kbd&gt;
+Last login: Tue Apr 12 09:10:17 2005 from mowmow.example.com on pts/1
+Linux demo 2.6.10-grsec+gg3+e+fhs6b+nfs+gr0501+++p3+c4a+gr2b-reslog-v6.189 #1 SMP Tue Feb 1 11:22:36 PST 2005 i686 unknown
+&lt;span &lt;span></pre>
+</div>
+<div>
+<p>This third example shows a block of input and its respective output. The example uses
+both <code><a href="text-level-semantics.html#the-code-element">code</a></code> and <code><a href="text-level-semantics.html#the-samp-element">samp</a></code> elements.</p>
+<pre><code>&lt;pre&gt;
+&lt;code + 2.4)&lt;/code&gt;
+&lt;samp&gt;4.699999999999999&lt;/samp&gt;
+&lt;/pre&gt;</code></pre>
+</div>
+<h4 id=the-kbd-element>The <dfn data-dfn-type=element><code>kbd</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-kbd>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-kbd>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-kbd-element">kbd</a></code> element <a href="dom.html#represents">represents</a> user input (typically keyboard input,
+although it may also be used to represent other input, such as voice commands).</p>
+<p>When the <code><a href="text-level-semantics.html#the-kbd-element">kbd</a></code> element is nested inside a <code><a href="text-level-semantics.html#the-samp-element">samp</a></code> element, it represents
+the input as it was echoed by the system.</p>
+<p>When the <code><a href="text-level-semantics.html#the-kbd-element">kbd</a></code> element <em>contains</em> a <code><a href="text-level-semantics.html#the-samp-element">samp</a></code> element, it represents
+input based on system output, for example invoking a menu item.</p>
+<p>When the <code><a href="text-level-semantics.html#the-kbd-element">kbd</a></code> element is nested inside another <code><a href="text-level-semantics.html#the-kbd-element">kbd</a></code> element, it
+represents an actual key or other single unit of input as appropriate for the input mechanism.</p>
+<div>
+<p>Here the <code><a href="text-level-semantics.html#the-kbd-element">kbd</a></code> element is used to indicate keys to press:</p>
+<pre><code>&lt;p&gt;To make George eat an apple, press &lt;kbd&gt;&lt;kbd&gt;Shift&lt;/kbd&gt; + &lt;kbd&gt;F3&lt;/kbd&gt;&lt;/kbd&gt;&lt;/p&gt;</code></pre>
+<p>In this second example, the user is told to pick a particular menu item. The outer
+<code><a href="text-level-semantics.html#the-kbd-element">kbd</a></code> element marks up a block of input, with the inner <code><a href="text-level-semantics.html#the-kbd-element">kbd</a></code> elements
+representing each individual step of the input, and the <code><a href="text-level-semantics.html#the-samp-element">samp</a></code> elements inside them
+indicating that the steps are input based on something being displayed by the system, in this
+case menu labels:</p>
+<pre><code>&lt;p&gt;To make George eat an apple, select
+&lt;kbd&gt;&lt;kbd&gt;&lt;samp&gt;File&lt;/samp&gt;&lt;/kbd&gt;|&lt;kbd&gt;&lt;samp&gt;Eat Apple...&lt;/samp&gt;&lt;/kbd&gt;&lt;/kbd&gt;
+&lt;/p&gt;</code></pre>
+<p>Such precision isn't necessary; the following is equally fine:</p>
+<pre><code>&lt;p&gt;To make George eat an apple, select &lt;kbd&gt;File | Eat Apple...&lt;/kbd&gt;&lt;/p&gt;</code></pre>
+</div>
+<h4 id=the-sub-and-sup-elements>The <dfn id=the-sub-element data-dfn-type=element><code>sub</code></dfn> and <dfn id=the-sup-element data-dfn-type=element><code>sup</code></dfn> elements</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd>The <code><a href="text-level-semantics.html#the-sub-and-sup-elements">sub</a></code> element: <a href=https://w3c.github.io/html-aria/#el-sub>for authors</a>; <a href=https://w3c.github.io/html-aam/#el-sub>for implementers</a>.<dd>The <code><a href="text-level-semantics.html#the-sub-and-sup-elements">sup</a></code> element: <a href=https://w3c.github.io/html-aria/#el-sup>for authors</a>; <a href=https://w3c.github.io/html-aam/#el-sup>for implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Use <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-sub-and-sup-elements">sup</a></code> element <a href="dom.html#represents">represents</a> a superscript and the <code><a href="text-level-semantics.html#the-sub-and-sup-elements">sub</a></code>
+element <a href="dom.html#represents">represents</a> a subscript.</p>
+<p>These elements must be used only to mark up typographical conventions with specific meanings,
+not for typographical presentation for presentation's sake. For example, it would be inappropriate
+for the <code><a href="text-level-semantics.html#the-sub-and-sup-elements">sub</a></code> and <code><a href="text-level-semantics.html#the-sub-and-sup-elements">sup</a></code> elements to be used in the name of the LaTeX
+document preparation system. In general, authors should use these elements only if the
+<em>absence</em> of those elements would change the meaning of the content.</p>
+<p>In certain languages, superscripts are part of the typographical conventions for some
+abbreviations.</p>
+<div>
+<pre><code>&lt;p&gt;Their names are
+&lt;span lang=&quot;fr&quot;&gt;&lt;abbr&gt;M&lt;sup&gt;lle&lt;/sup&gt;&lt;/abbr&gt; Gwendoline&lt;/span&gt; and
+&lt;span lang=&quot;fr&quot;&gt;&lt;abbr&gt;M&lt;sup&gt;me&lt;/sup&gt;&lt;/abbr&gt; Denise&lt;/span&gt;.&lt;/p&gt;</code></pre>
+</div>
+<p>The <code><a href="text-level-semantics.html#the-sub-and-sup-elements">sub</a></code> element can be used inside a <code><a href="text-level-semantics.html#the-var-element">var</a></code> element, for variables that
+have subscripts.</p>
+<div>
+<p>Here, the <code><a href="text-level-semantics.html#the-sub-and-sup-elements">sub</a></code> element is used to represent the subscript that identifies the
+variable in a family of variables:</p>
+<pre><code>&lt;p&gt;The coordinate of the &lt;var&gt;i&lt;/var&gt;th point is
+(&lt;var&gt;x&lt;sub&gt;&lt;var&gt;i&lt;/var&gt;&lt;/sub&gt;&lt;/var&gt;, &lt;var&gt;y&lt;sub&gt;&lt;var&gt;i&lt;/var&gt;&lt;/sub&gt;&lt;/var&gt;).
+For example, the 10th point has coordinate
+(&lt;var&gt;x&lt;sub&gt;10&lt;/sub&gt;&lt;/var&gt;, &lt;var&gt;y&lt;sub&gt;10&lt;/sub&gt;&lt;/var&gt;).&lt;/p&gt;</code></pre>
+</div>
+<p>Mathematical expressions often use subscripts and superscripts. Authors are encouraged to use
+MathML for marking up mathematics, but authors may opt to use <code><a href="text-level-semantics.html#the-sub-and-sup-elements">sub</a></code> and
+<code><a href="text-level-semantics.html#the-sub-and-sup-elements">sup</a></code> if detailed mathematical markup is not desired. <a href="references.html#refsMATHML">[MATHML]</a></p>
+<div>
+<pre><code>&lt;var&gt;E&lt;/var&gt;=&lt;var&gt;m&lt;/var&gt;&lt;var&gt;c&lt;/var&gt;&lt;sup&gt;2&lt;/sup&gt;</code></pre>
+<pre><code>f(&lt;var&gt;x&lt;/var&gt;, &lt;var&gt;n&lt;/var&gt;) = log&lt;sub&gt;4&lt;/sub&gt;&lt;var&gt;x&lt;/var&gt;&lt;sup&gt;&lt;var&gt;n&lt;/var&gt;&lt;/sup&gt;</code></pre>
+</div>
+<h4 id=the-i-element>The <dfn data-dfn-type=element><code>i</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-i>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-i>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-i-element">i</a></code> element <a href="dom.html#represents">represents</a> a span of text in an alternate voice or
+mood, or otherwise offset from the normal prose in a manner indicating a different quality of
+text, such as a taxonomic designation, a technical term, an idiomatic phrase from another
+language, transliteration, a thought, or a ship name in Western texts.</p>
+<p>Terms in languages different from the main text should be annotated with <code><a href="dom.html#attr-lang">lang</a></code> attributes (or, in XML, <a href=https://www.w3.org/TR/xml/#sec-lang-tag data-x-internal=attr-xml-lang><code>lang</code> attributes in the <span>XML namespace</span></a>).</p>
+<div>
+<p>The examples below show uses of the <code><a href="text-level-semantics.html#the-i-element">i</a></code> element:</p>
+<pre><code>&lt;p&gt;The &lt;i silvestris catus&lt;/i&gt; is cute.&lt;/p&gt;
+&lt;p&gt;The term &lt;i&gt;prose content&lt;/i&gt; is defined above.&lt;/p&gt;
+&lt;p&gt;There is a certain &lt;i lang=&quot;fr&quot;&gt;je ne sais quoi&lt;/i&gt; in the air.&lt;/p&gt;</code></pre>
+<p>In the following example, a dream sequence is marked up using
+<code><a href="text-level-semantics.html#the-i-element">i</a></code> elements.</p>
+<pre><code>&lt;p&gt;Raymond tried to sleep.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;The ship sailed away on Thursday&lt;/i&gt;, he
+dreamt. &lt;i&gt;The ship had many people aboard, including a beautiful
+princess called Carey. He watched her, day-in, day-out, hoping she
+would notice him, but she never did.&lt;/i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Finally one night he picked up the courage to speak with
+her—&lt;/i&gt;&lt;/p&gt;
+&lt;p&gt;Raymond woke with a start as the fire alarm rang out.&lt;/p&gt;</code></pre>
+</div>
+<p>Authors can use the <code><a href="dom.html#classes">class</a></code> attribute on the <code><a href="text-level-semantics.html#the-i-element">i</a></code>
+element to identify why the element is being used, so that if the style of a particular use (e.g.
+dream sequences as opposed to taxonomic terms) is to be changed at a later date, the author
+doesn't have to go through the entire document (or series of related documents) annotating each
+use.</p>
+<p>Authors are encouraged to consider whether other elements might be more applicable than the
+<code><a href="text-level-semantics.html#the-i-element">i</a></code> element, for instance the <code><a href="text-level-semantics.html#the-em-element">em</a></code> element for marking up stress emphasis,
+or the <code><a href="text-level-semantics.html#the-dfn-element">dfn</a></code> element to mark up the defining instance of a term.</p>
+<p>Style sheets can be used to format <code><a href="text-level-semantics.html#the-i-element">i</a></code> elements, just like any other
+element can be restyled. Thus, it is not the case that content in <code><a href="text-level-semantics.html#the-i-element">i</a></code> elements will
+necessarily be italicized.</p>
+<h4 id=the-b-element>The <dfn data-dfn-type=element><code>b</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-b>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-b>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-b-element">b</a></code> element <a href="dom.html#represents">represents</a> a span of text to which attention is being
+drawn for utilitarian purposes without conveying any extra importance and with no implication of
+an alternate voice or mood, such as key words in a document abstract, product names in a review,
+actionable words in interactive text-driven software, or an article lede.</p>
+<div>
+<p>The following example shows a use of the <code><a href="text-level-semantics.html#the-b-element">b</a></code> element to highlight key words without
+marking them up as important:</p>
+<pre><code>&lt;p&gt;The &lt;b&gt;frobonitor&lt;/b&gt; and &lt;b&gt;barbinator&lt;/b&gt; components are fried.&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>In the following example, objects in a text adventure are highlighted as being special by use
+of the <code><a href="text-level-semantics.html#the-b-element">b</a></code> element.</p>
+<pre><code>&lt;p&gt;You enter a small room. Your &lt;b&gt;sword&lt;/b&gt; glows
+brighter. A &lt;b&gt;rat&lt;/b&gt; scurries past the corner wall.&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>Another case where the <code><a href="text-level-semantics.html#the-b-element">b</a></code> element is appropriate is in marking up the lede (or
+lead) sentence or paragraph. The following example shows how a <a href=http://news.bbc.co.uk/2/hi/uk_news/scotland/north_east/7101506.stm>BBC article about
+kittens adopting a rabbit as their own</a> could be marked up:</p>
+<pre><code>&lt;article&gt;
+&lt;h2&gt;Kittens &apos;adopted&apos; by pet rabbit&lt;/h2&gt;
+&lt;p&gt;&lt;b abandoned kittens have found an
+unexpected new mother figure — a pet rabbit.&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Veterinary nurse Melanie Humble took the three-week-old
+kittens to her Aberdeen home.&lt;/p&gt;
+<i>[...]</i></code></pre>
+</div>
+<p>As with the <code><a href="text-level-semantics.html#the-i-element">i</a></code> element, authors can use the <code><a href="dom.html#classes">class</a></code>
+attribute on the <code><a href="text-level-semantics.html#the-b-element">b</a></code> element to identify why the element is being used, so that if the
+style of a particular use is to be changed at a later date, the author doesn't have to go through
+annotating each use.</p>
+<p>The <code><a href="text-level-semantics.html#the-b-element">b</a></code> element should be used as a last resort when no other element is more
+appropriate. In particular, headings should use the <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h1</a></code> to <code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h6</a></code> elements,
+stress emphasis should use the <code><a href="text-level-semantics.html#the-em-element">em</a></code> element, importance should be denoted with the
+<code><a href="text-level-semantics.html#the-strong-element">strong</a></code> element, and text marked or highlighted should use the <code><a href="text-level-semantics.html#the-mark-element">mark</a></code>
+element.</p>
+<div>
+<p>The following would be <em>incorrect</em> usage:</p>
+<pre><code>&lt;p&gt;&lt;b&gt;WARNING!&lt;/b&gt; Do not frob the barbinator!&lt;/p&gt;</code></pre>
+<p>In the previous example, the correct element to use would have been <code><a href="text-level-semantics.html#the-strong-element">strong</a></code>, not
+<code><a href="text-level-semantics.html#the-b-element">b</a></code>.</p>
+</div>
+<p>Style sheets can be used to format <code><a href="text-level-semantics.html#the-b-element">b</a></code> elements, just like any other
+element can be restyled. Thus, it is not the case that content in <code><a href="text-level-semantics.html#the-b-element">b</a></code> elements will
+necessarily be boldened.</p>
+<h4 id=the-u-element>The <dfn data-dfn-type=element><code>u</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-u>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-u>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-u-element">u</a></code> element <a href="dom.html#represents">represents</a> a span of text with an unarticulated, though
+explicitly rendered, non-textual annotation, such as labeling the text as being a proper name in
+Chinese text (a Chinese proper name mark), or labeling the text as being misspelt.</p>
+<p>In most cases, another element is likely to be more appropriate: for marking stress emphasis,
+the <code><a href="text-level-semantics.html#the-em-element">em</a></code> element should be used; for marking key words or phrases either the
+<code><a href="text-level-semantics.html#the-b-element">b</a></code> element or the <code><a href="text-level-semantics.html#the-mark-element">mark</a></code> element should be used, depending on the context;
+for marking book titles, the <code><a href="text-level-semantics.html#the-cite-element">cite</a></code> element should be used; for labeling text with explicit textual annotations, the
+<code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code> element should be used; for technical terms, taxonomic designation,
+transliteration, a thought, or for labeling ship names in Western texts, the <code><a href="text-level-semantics.html#the-i-element">i</a></code>
+element should be used.</p>
+<p>The default rendering of the <code><a href="text-level-semantics.html#the-u-element">u</a></code> element in visual presentations
+clashes with the conventional rendering of hyperlinks (underlining). Authors are encouraged to
+avoid using the <code><a href="text-level-semantics.html#the-u-element">u</a></code> element where it could be confused for a hyperlink.</p>
+<div>
+<p>In this example, a <code><a href="text-level-semantics.html#the-u-element">u</a></code> element is used to mark a word as misspelt:</p>
+<pre><code>&lt;p&gt;The &lt;u&gt;see&lt;/u&gt; is full of fish.&lt;/p&gt;</code></pre>
+</div>
+<h4 id=the-mark-element>The <dfn data-dfn-type=element><code>mark</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-mark>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-mark>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-mark-element">mark</a></code> element <a href="dom.html#represents">represents</a> a run of text in one document marked or
+highlighted for <a href="dom.html#referenced">reference</a> purposes, due to its relevance in
+another context. When used in a quotation or other block of text referred to from the prose, it
+indicates a highlight that was not originally present but which has been added to bring the
+reader's attention to a part of the text that might not have been considered important by the
+original author when the block was originally written, but which is now under previously
+unexpected scrutiny. When used in the main prose of a document, it indicates a part of the
+document that has been highlighted due to its likely relevance to the user's current activity.</p>
+<div>
+<p>This example shows how the <code><a href="text-level-semantics.html#the-mark-element">mark</a></code> element can be used to bring attention to a
+particular part of a quotation:</p>
+<pre><code>&lt;p lang=&quot;en-US&quot;&gt;Consider the following quote:&lt;/p&gt;
+<span lang='en-GB'>&lt;blockquote lang=&quot;en-GB&quot;&gt;
+&lt;p&gt;Look around and you will find, no-one&apos;s really
+&lt;mark&gt;colour&lt;/mark&gt; blind.&lt;/p&gt;
+&lt;/blockquote&gt;</span>
+&lt;p lang=&quot;en-US&quot;&gt;As we can tell from the &lt;em&gt;spelling&lt;/em&gt; of the word,
+the person writing this quote is clearly not American.&lt;/p&gt;</code></pre>
+<p>(If the goal was to mark the element as misspelt, however, the <code><a href="text-level-semantics.html#the-u-element">u</a></code> element,
+possibly with a class, would be more appropriate.)</p>
+</div>
+<div>
+<p>Another example of the <code><a href="text-level-semantics.html#the-mark-element">mark</a></code> element is highlighting parts of a document that are
+matching some search string. If someone looked at a document, and the server knew that the user
+was searching for the word "kitten", then the server might return the document with one paragraph
+modified as follows:</p>
+<pre><code>&lt;p&gt;I also have some &lt;mark&gt;kitten&lt;/mark&gt;s who are visiting me
+these days. They&apos;re really cute. I think they like my garden! Maybe I
+should adopt a &lt;mark&gt;kitten&lt;/mark&gt;.&lt;/p&gt;</code></pre>
+</div>
+<div>
+<p>In the following snippet, a paragraph of text refers to a specific part of a code
+fragment.</p>
+<pre><code>&lt;p&gt;The highlighted part below is where the error lies:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var i: Integer;
+begin
+i := &lt;mark&gt;1.1&lt;/mark&gt;;
+end.&lt;/code&gt;&lt;/pre&gt;</code></pre>
+<p>This is separate from <em>syntax highlighting</em>, for which <code><a href="text-level-semantics.html#the-span-element">span</a></code> is more
+appropriate. Combining both, one would get:</p>
+<pre><code>&lt;p&gt;The highlighted part below is where the error lies:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&lt;span &lt;span &lt;span
+&lt;span
+&lt;span := &lt;span
+&lt;span></pre>
+</div>
+<div>
+<p>This is another example showing the use of <code><a href="text-level-semantics.html#the-mark-element">mark</a></code> to highlight a part of quoted
+text that was originally not emphasized. In this example, common typographic conventions have led
+the author to explicitly style <code><a href="text-level-semantics.html#the-mark-element">mark</a></code> elements in quotes to render in italics.</p>
+<pre><code>&lt;style&gt;
+blockquote mark, q mark {
+font: inherit; font-style: italic;
+text-decoration: none;
+background: transparent; color: inherit;
+}
+.bubble em {
+font: inherit; font-size: larger;
+text-decoration: underline;
+}
+&lt;/style&gt;
+&lt;article&gt;
+&lt;h1&gt;She knew&lt;/h1&gt;
+&lt;p&gt;Did you notice the subtle joke in the joke on panel 4?&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p didn&apos;t &lt;em&gt;want&lt;/em&gt; to believe. &lt;mark&gt;Of course
+on some level I realized it was a known-plaintext attack.&lt;/mark&gt; But I
+couldn&apos;t admit it until I saw for myself.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;(Emphasis mine.) I thought that was great. It&apos;s so pedantic, yet it
+explains everything neatly.&lt;/p&gt;
+&lt;/article&gt;</code></pre>
+<p>Note, incidentally, the distinction between the <code><a href="text-level-semantics.html#the-em-element">em</a></code> element in this example, which
+is part of the original text being quoted, and the <code><a href="text-level-semantics.html#the-mark-element">mark</a></code> element, which is
+highlighting a part for comment.</p>
+</div>
+<div>
+<p>The following example shows the difference between denoting the <em>importance</em> of a span
+of text (<code><a href="text-level-semantics.html#the-strong-element">strong</a></code>) as opposed to denoting the <em>relevance</em> of a span of text
+(<code><a href="text-level-semantics.html#the-mark-element">mark</a></code>). It is an extract from a textbook, where the extract has had the parts
+relevant to the exam highlighted. The safety warnings, important though they may be, are
+apparently not relevant to the exam.</p>
+<pre><code>&lt;h3&gt;Wormhole Physics Introduction&lt;/h3&gt;
+&lt;p&gt;&lt;mark&gt;A wormhole in normal conditions can be held open for a
+maximum of just under 39 minutes.&lt;/mark&gt; Conditions that can increase
+the time include a powerful energy source coupled to one or both of
+the gates connecting the wormhole, and a large gravity well (such as a
+black hole).&lt;/p&gt;
+&lt;p&gt;&lt;mark&gt;Momentum is preserved across the wormhole. Electromagnetic
+radiation can travel in both directions through a wormhole,
+but matter cannot.&lt;/mark&gt;&lt;/p&gt;
+&lt;p&gt;When a wormhole is created, a vortex normally forms.
+&lt;strong&gt;Warning: The vortex caused by the wormhole opening will
+annihilate anything in its path.&lt;/strong&gt; Vortexes can be avoided when
+using sufficiently advanced dialing technology.&lt;/p&gt;
+&lt;p&gt;&lt;mark&gt;An obstruction in a gate will prevent it from accepting a
+wormhole connection.&lt;/mark&gt;&lt;/p&gt;</code></pre>
+</div>
+<h4 id=the-bdi-element>The <dfn data-dfn-type=element><code>bdi</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd>Also, the <code><a href="dom.html#attr-dir">dir</a></code> global attribute has special semantics on this element.<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-bdi>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-bdi>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-bdi-element">bdi</a></code> element <a href="dom.html#represents">represents</a> a span of text that is to be isolated from
+its surroundings for the purposes of bidirectional text formatting. <a href="references.html#refsBIDI">[BIDI]</a></p>
+<p>The <code><a href="dom.html#attr-dir">dir</a></code> global attribute defaults to <code><a href="dom.html#attr-dir-auto">auto</a></code> on this element (it never inherits from the parent element like
+with other elements).</p>
+<p>This element <a href="dom.html#bidireq">has rendering requirements involving the
+bidirectional algorithm</a>.</p>
+<div>
+<p>This element is especially useful when embedding user-generated content with an unknown
+directionality.</p>
+<p>In this example, usernames are shown along with the number of posts that the user has
+submitted. If the <code><a href="text-level-semantics.html#the-bdi-element">bdi</a></code> element were not used, the username of the Arabic user would
+end up confusing the text (the bidirectional algorithm would put the colon and the number "3"
+next to the word "User" rather than next to the word "posts").</p>
+<pre><code>&lt;ul&gt;
+&lt;li&gt;User &lt;bdi&gt;jcranmer&lt;/bdi&gt;: 12 posts.
+&lt;li&gt;User &lt;bdi&gt;hober&lt;/bdi&gt;: 5 posts.
+&lt;li&gt;User &lt;bdi&gt;<bdo dir='rtl'>إيان</bdo>&lt;/bdi&gt;: 3 posts.
+&lt;/ul&gt;</code></pre>
+<figure>
+<img src="../images/sample-bdi.png" alt="">
+<figcaption>When using the <code><a href="text-level-semantics.html#the-bdi-element">bdi</a></code> element, the username acts as expected.</figcaption>
+</figure>
+<figure>
+<img src="../images/sample-not-bdi.png" alt="">
+<figcaption>If the <code><a href="text-level-semantics.html#the-bdi-element">bdi</a></code> element were to be replaced by a <code><a href="text-level-semantics.html#the-b-element">b</a></code> element, the username would confuse the bidirectional algorithm and the third bullet would end up saying "User 3 :", followed by the Arabic name (right-to-left), followed by "posts" and a period.</figcaption>
+</figure>
+</div>
+<h4 id=the-bdo-element>The <dfn data-dfn-type=element><code>bdo</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dd>Also, the <code><a href="dom.html#attr-dir">dir</a></code> global attribute has special semantics on this element.<dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-bdo>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-bdo>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-bdo-element">bdo</a></code> element <a href="dom.html#represents">represents</a> explicit text directionality formatting
+control for its children. It allows authors to override the Unicode bidirectional algorithm by
+explicitly specifying a direction override. <a href="references.html#refsBIDI">[BIDI]</a></p>
+<p>Authors must specify the <code><a href="dom.html#attr-dir">dir</a></code> attribute on this element, with the
+value <code><a href="dom.html#attr-dir-ltr">ltr</a></code> to specify a left-to-right override and with the value <code><a href="dom.html#attr-dir-rtl">rtl</a></code> to
+specify a right-to-left override. The <code><a href="dom.html#attr-dir-auto">auto</a></code> value must not be specified.</p>
+<p>This element <a href="dom.html#bidireq">has rendering requirements involving the
+bidirectional algorithm</a>.</p>
+<h4 id=the-span-element>The <dfn data-dfn-type=element><code>span</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dd><a href="dom.html#palpable-content-2">Palpable content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd>If the element is a descendant of an <code><a href="form-elements.html#the-option-element">option</a></code> element: Zero or more
+<a href="dom.html#option-element-inner-content-elements-2"><code>option</code> element inner content elements</a>, except <code><a href="grouping-content.html#the-div-element">div</a></code>
+elements.<dd>Otherwise: <a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>Neither tag is omissible.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-span>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-span>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlspanelement' data-dfn-type='interface'>HTMLSpanElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+};</code></pre>
+</dl>
+<p>The <code><a href="text-level-semantics.html#the-span-element">span</a></code> element doesn't mean anything on its own, but can be useful when used
+together with the <a href="dom.html#global-attributes">global attributes</a>, e.g. <code><a href="dom.html#classes">class</a></code>,
+<code><a href="dom.html#attr-lang">lang</a></code>, or <code><a href="dom.html#attr-dir">dir</a></code>. It
+<a href="dom.html#represents">represents</a> its children.</p>
+<div>
+<p>In this example, a code fragment is marked up using <code><a href="text-level-semantics.html#the-span-element">span</a></code> elements and <code><a href="dom.html#classes">class</a></code> attributes so that its keywords and identifiers can be
+color-coded from CSS:</p>
+<pre><code>&lt;pre&gt;&lt;code (&lt;span = 0; &lt;span &amp;lt; 256; &lt;span {
+&lt;span = (&lt;span &amp; 0x1ffff) | (&lt;span &amp;lt;&amp;lt; 17);
+&lt;span = (((((((&lt;span &gt;&gt; 3) ^ &lt;span &gt;&gt; 1) ^ &lt;span &gt;&gt; 8) ^ &lt;span &gt;&gt; 5) &amp; 0xff;
+&lt;span (&lt;span == &lt;span
+&lt;span
+}&lt;/code&gt;&lt;/pre&gt;</code></pre>
+</div>
+<h4 id=the-br-element>The <dfn data-dfn-type=element><code>br</code></dfn> element</h4></div>
+</div><dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#concept-content-nothing">Nothing</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>No <a href="syntax.html#syntax-end-tag">end tag</a>.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-br>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-br>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>
+<pre><code>[Exposed=Window]
+interface <dfn id='htmlbrelement' data-dfn-type='interface'>HTMLBRElement</dfn> : <a href='dom.html#htmlelement'>HTMLElement</a> {
+[<a href='dom.html#htmlconstructor'>HTMLConstructor</a>] constructor();
+// <a href='obsolete.html#HTMLBRElement-partial'>also has obsolete members</a>
+};</code></pre>
+</dl>
+<p>The <code><a href="text-level-semantics.html#the-br-element">br</a></code> element <a href="dom.html#represents">represents</a> a line break.</p>
+<p>While line breaks are usually represented in visual media by physically moving
+subsequent text to a new line, a style sheet or user agent would be equally justified in causing
+line breaks to be rendered in a different manner, for instance as green dots, or as extra
+spacing.</p>
+<p><code><a href="text-level-semantics.html#the-br-element">br</a></code> elements must be used only for line breaks that are actually part of the
+content, as in poems or addresses.</p>
+<div>
+<p>The following example is correct usage of the <code><a href="text-level-semantics.html#the-br-element">br</a></code> element:</p>
+<pre><code>&lt;p&gt;P. Sherman&lt;br&gt;
+42 Wallaby Way&lt;br&gt;
+Sydney&lt;/p&gt;</code></pre>
+</div>
+<p><code><a href="text-level-semantics.html#the-br-element">br</a></code> elements must not be used for separating thematic groups in a paragraph.</p>
+<div>
+<p>The following examples are non-conforming, as they abuse the <code><a href="text-level-semantics.html#the-br-element">br</a></code> element:</p>
+<pre><code>&lt;p&gt;&lt;a ...&gt;34 comments.&lt;/a&gt;&lt;br&gt;
+&lt;a ...&gt;Add a comment.&lt;/a&gt;&lt;/p&gt;</code></pre>
+<pre><code>&lt;p&gt;&lt;label&gt;Name: &lt;input name=&quot;name&quot;&gt;&lt;/label&gt;&lt;br&gt;
+&lt;label&gt;Address: &lt;input name=&quot;address&quot;&gt;&lt;/label&gt;&lt;/p&gt;</code></pre>
+<p>Here are alternatives to the above, which are correct:</p>
+<pre><code>&lt;p&gt;&lt;a ...&gt;34 comments.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a ...&gt;Add a comment.&lt;/a&gt;&lt;/p&gt;</code></pre>
+<pre><code>&lt;p&gt;&lt;label&gt;Name: &lt;input name=&quot;name&quot;&gt;&lt;/label&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;Address: &lt;input name=&quot;address&quot;&gt;&lt;/label&gt;&lt;/p&gt;</code></pre>
+</div>
+<p>If a <a href="dom.html#paragraph">paragraph</a> consists of nothing but a single <code><a href="text-level-semantics.html#the-br-element">br</a></code> element, it
+represents a placeholder blank line (e.g. as in a template). Such blank lines must not be used for
+presentation purposes.</p>
+<p>Any content inside <code><a href="text-level-semantics.html#the-br-element">br</a></code> elements must not be considered part of the surrounding
+text.</p>
+<p>This element <a href="dom.html#bidireq">has rendering requirements involving the
+bidirectional algorithm</a>.</p>
+<h4 id=the-wbr-element>The <dfn data-dfn-type=element><code>wbr</code></dfn> element</h4></div>
+<dl><dt><a href="dom.html#concept-element-categories">Categories</a>:<dd><a href="dom.html#flow-content-2">Flow content</a>.<dd><a href="dom.html#phrasing-content-2">Phrasing content</a>.<dt><a href="dom.html#concept-element-contexts">Contexts in which this element can be used</a>:<dd>Where <a href="dom.html#phrasing-content-2">phrasing content</a> is expected.<dt><a href="dom.html#concept-element-content-model">Content model</a>:<dd><a href="dom.html#concept-content-nothing">Nothing</a>.<dt><a href="dom.html#concept-element-tag-omission">Tag omission in text/html</a>:<dd>No <a href="syntax.html#syntax-end-tag">end tag</a>.<dt><a href="dom.html#concept-element-attributes">Content attributes</a>:<dd><a href="dom.html#global-attributes">Global attributes</a><dt><a href="dom.html#concept-element-accessibility-considerations">Accessibility considerations</a>:<dd><a href=https://w3c.github.io/html-aria/#el-wbr>For authors</a>.<dd><a href=https://w3c.github.io/html-aam/#el-wbr>For implementers</a>.<dt><a href="dom.html#concept-element-dom">DOM interface</a>:<dd>Uses <code><a href="dom.html#htmlelement">HTMLElement</a></code>.</dl>
+<p>The <code><a href="text-level-semantics.html#the-wbr-element">wbr</a></code> element <a href="dom.html#represents">represents</a> a line break opportunity.</p>
+<div>
+<p>In the following example, someone is quoted as saying something which, for effect, is written
+as one long word. However, to ensure that the text can be wrapped in a readable fashion, the
+individual words in the quote are separated using a <code><a href="text-level-semantics.html#the-wbr-element">wbr</a></code> element.</p>
+<pre><code>&lt;p&gt;So then she pointed at the tiger and screamed
+&quot;there&lt;wbr&gt;is&lt;wbr&gt;no&lt;wbr&gt;way&lt;wbr&gt;you&lt;wbr&gt;are&lt;wbr&gt;ever&lt;wbr&gt;going&lt;wbr&gt;to&lt;wbr&gt;catch&lt;wbr&gt;me&quot;!&lt;/p&gt;</code></pre>
+</div>
+<p>Any content inside <code><a href="text-level-semantics.html#the-wbr-element">wbr</a></code> elements must not be considered part of the surrounding
+text.</p>
+<pre><code>var wbr = document.createElement(&quot;wbr&quot;);
+wbr.textContent = &quot;This is wrong&quot;;
+document.body.appendChild(wbr);</code></pre>
+<p>This element <a href="dom.html#bidireq">has rendering requirements involving the
+bidirectional algorithm</a>.</p>
+<h4 id=usage-summary>Usage summary</h4>
+<p><i>This section is non-normative.</i></p>
+<table><thead><tr><th>Element
+<th>Purpose
+<th>Example
+<tbody><tr><td><code><a href="text-level-semantics.html#the-a-element">a</a></code>
+<td>Hyperlinks
+<td><pre><code>Visit my <strong>&lt;a href=&quot;drinks.html&quot;&gt;drinks&lt;/a&gt;</strong> page.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-em-element">em</a></code>
+<td>Stress emphasis
+<td><pre><code>I must say I <strong>&lt;em&gt;adore&lt;/em&gt;</strong> lemonade.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-strong-element">strong</a></code>
+<td>Importance
+<td><pre><code>This tea is <strong>&lt;strong&gt;very hot&lt;/strong&gt;</strong>.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-small-element">small</a></code>
+<td>Side comments
+<td><pre><code>These grapes are made into wine. <strong>&lt;small&gt;Alcohol is addictive.&lt;/small&gt;</strong></code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-s-element">s</a></code>
+<td>Inaccurate text
+<td><pre><code>Price: <strong>&lt;s&gt;£4.50&lt;/s&gt;</strong> £2.00!</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-cite-element">cite</a></code>
+<td>Titles of works
+<td><pre><code>The case <strong>&lt;cite&gt;Hugo v. Danielle&lt;/cite&gt;</strong> is relevant here.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-q-element">q</a></code>
+<td>Quotations
+<td><pre><code>The judge said <strong>&lt;q&gt;You can drink water from the fish tank&lt;/q&gt;</strong> but advised against it.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-dfn-element">dfn</a></code>
+<td>Defining instance
+<td><pre><code>The term <strong>&lt;dfn&gt;organic food&lt;/dfn&gt;</strong> refers to food produced without synthetic chemicals.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-abbr-element">abbr</a></code>
+<td>Abbreviations
+<td><pre><code>Organic food in Ireland is certified by the <strong>&lt;abbr title=&quot;Irish Organic Farmers and Growers Association&quot;&gt;IOFGA&lt;/abbr&gt;</strong>.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-ruby-element">ruby</a></code>, <code><a href="text-level-semantics.html#the-rt-element">rt</a></code>, <code><a href="text-level-semantics.html#the-rp-element">rp</a></code>
+<td>Ruby annotations
+<td><pre><code><strong>&lt;ruby&gt; OJ &lt;rp&gt;(&lt;rt&gt;Orange Juice&lt;rp&gt;)&lt;/ruby&gt;</strong></code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-data-element">data</a></code>
+<td>Machine-readable equivalent
+<td><pre><code>Available starting today! <strong>&lt;data value=&quot;UPC:022014640201&quot;&gt;North Coast Organic Apple Cider&lt;/data&gt;</strong></code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-time-element">time</a></code>
+<td>Machine-readable equivalent of date- or time-related data
+<td><pre><code>Available starting on <strong>&lt;time datetime=&quot;2011-11-18&quot;&gt;November 18th&lt;/time&gt;</strong>!</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-code-element">code</a></code>
+<td>Computer code
+<td><pre><code>The <strong>&lt;code&gt;fruitdb&lt;/code&gt;</strong> program can be used for tracking fruit production.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-var-element">var</a></code>
+<td>Variables
+<td><pre><code>If there are <strong>&lt;var&gt;n&lt;/var&gt;</strong> fruit in the bowl, at least <strong>&lt;var&gt;n&lt;/var&gt;</strong>÷2 will be ripe.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-samp-element">samp</a></code>
+<td>Computer output
+<td><pre><code>The computer said <strong>&lt;samp&gt;Unknown error -3&lt;/samp&gt;</strong>.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-kbd-element">kbd</a></code>
+<td>User input
+<td><pre><code>Hit <strong>&lt;kbd&gt;F1&lt;/kbd&gt;</strong> to continue.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-sub-and-sup-elements">sub</a></code>
+<td>Subscripts
+<td><pre><code>Water is H<strong>&lt;sub&gt;2&lt;/sub&gt;</strong>O.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-sub-and-sup-elements">sup</a></code>
+<td>Superscripts
+<td><pre><code>The Hydrogen in heavy water is usually <strong>&lt;sup&gt;2&lt;/sup&gt;</strong>H.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-i-element">i</a></code>
+<td>Alternative voice
+<td><pre><code>Lemonade consists primarily of <strong>&lt;i&gt;Citrus limon&lt;/i&gt;</strong>.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-b-element">b</a></code>
+<td>Keywords
+<td><pre><code>Take a <strong>&lt;b&gt;lemon&lt;/b&gt;</strong> and squeeze it with a <strong>&lt;b&gt;juicer&lt;/b&gt;</strong>.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-u-element">u</a></code>
+<td>Annotations
+<td><pre><code>The mixture of apple juice and <strong>&lt;u> juice is very pleasant.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-mark-element">mark</a></code>
+<td>Highlight
+<td><pre><code>Elderflower cordial, with one <strong>&lt;mark&gt;part&lt;/mark&gt;</strong> cordial to ten <strong>&lt;mark&gt;part&lt;/mark&gt;</strong>s water, stands a<strong>&lt;mark&gt;part&lt;/mark&gt;</strong> from the rest.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-bdi-element">bdi</a></code>
+<td>Text directionality isolation
+<td><pre><code>The recommended restaurant is <strong>&lt;bdi lang=&quot;&quot;&gt;My Juice Café (At The Beach)&lt;/bdi&gt;</strong>.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-bdo-element">bdo</a></code>
+<td>Text directionality formatting
+<td><pre><code>The proposal is to write English, but in reverse order. &quot;Juice&quot; would become &quot;<strong>&lt;bdo dir=rtl&gt;Juice&lt;/bdo&gt;</strong>&quot;&gt;</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-span-element">span</a></code>
+<td>Other
+<td><pre><code>In French we call it <strong>&lt;span lang=&quot;fr&quot;&gt;sirop de sureau&lt;/span&gt;</strong>.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-br-element">br</a></code>
+<td>Line break
+<td><pre><code>Simply Orange Juice Company<strong>&lt;br&gt;</strong>Apopka, FL 32703<strong>&lt;br&gt;</strong>U.S.A.</code></pre>
+<tr><td><code><a href="text-level-semantics.html#the-wbr-element">wbr</a></code>
+<td>Line breaking opportunity
+<td><pre><code>www.simply<strong>&lt;wbr&gt;</strong>orange<strong>&lt;wbr&gt;</strong>juice.com</code></pre>
+</table>
+</body>
+</html>
