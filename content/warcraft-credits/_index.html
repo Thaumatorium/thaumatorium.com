@@ -140,6 +140,7 @@ lastmod: 2025-04-09T20:20:00+02:00
 
     .stats-box .stat-value {
         font-family: monospace;
+        font-variant-numeric: tabular-nums;
         color: #111;
     }
 
@@ -203,6 +204,34 @@ lastmod: 2025-04-09T20:20:00+02:00
         border: 1px solid #dde;
     }
 
+    #loadingMessage::before {
+        content: '';
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        border: 2px solid currentColor;
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+        margin-right: 0.5em;
+        vertical-align: middle;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .shared-stats {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #555;
+        padding: 4px 0;
+    }
+
+    .shared-stats strong {
+        color: #2c3e50;
+    }
+
     .error-message {
         color: #a94442;
         background-color: #f2dede;
@@ -250,6 +279,10 @@ lastmod: 2025-04-09T20:20:00+02:00
         stroke-width: 1.5px;
     }
 
+    .zoom-layer {
+        will-change: transform;
+    }
+
     #d3-graph-container.links-hidden .links line {
         stroke-opacity: 0;
         pointer-events: none;
@@ -268,8 +301,7 @@ lastmod: 2025-04-09T20:20:00+02:00
         transition: stroke 0.2s ease-in-out, stroke-width 0.2s ease-in-out;
     }
 
-    .nodes g.node:not(.game) text.node-label {
-        opacity: 0;
+    .nodes g.node text.node-label {
         font-family: sans-serif;
         font-size: 10px;
         fill: #444;
@@ -280,27 +312,17 @@ lastmod: 2025-04-09T20:20:00+02:00
         stroke-linejoin: miter;
         pointer-events: none;
         user-select: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
+    }
+
+    .nodes g.node:not(.game) text.node-label {
+        opacity: 0;
         transition: opacity 0.15s ease-in-out, fill 0.15s ease-in-out;
     }
 
     .nodes g.node.game text.node-label {
         opacity: 1;
-        font-family: sans-serif;
-        font-size: 10px;
-        fill: #444;
-        paint-order: stroke;
-        stroke: white;
-        stroke-width: 2.5px;
-        stroke-linecap: butt;
-        stroke-linejoin: miter;
-        pointer-events: none;
-        user-select: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
+        font-size: 12px;
+        font-weight: bold;
     }
 
     .nodes g.node:not(.game):hover text.node-label,
@@ -386,9 +408,6 @@ lastmod: 2025-04-09T20:20:00+02:00
         white-space: normal;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
         user-select: text;
-        -webkit-user-select: text;
-        -moz-user-select: text;
-        -ms-user-select: text;
         pointer-events: none;
         font-family: sans-serif;
         line-height: 1.4;
@@ -412,9 +431,8 @@ lastmod: 2025-04-09T20:20:00+02:00
         width: 100%;
         max-width: 100%;
         padding: 0 15px;
-        margin: 0 auto;
+        margin: 0;
         box-sizing: border-box;
-        margin: 0 0%;
     }
 
     .filter-controls {
@@ -496,9 +514,13 @@ lastmod: 2025-04-09T20:20:00+02:00
         </div>
     </div>
 
+    <div class="shared-stats" id="sharedStats" style="display: none;" aria-live="polite">
+        🤝 <strong id="sharedCount">0</strong> people worked on both games
+    </div>
+
     <div class="filter-controls">
         <div class="filter-group">
-            <label for="nameFilter">Name Filter:</label>
+            <label for="nameFilterInput">Name Filter:</label>
             <select id="nameFilterMode" aria-label="Name filter mode">
                 <option value="contains" selected>Contains</option>
                 <option value="not_contains">Does Not Contain</option>
@@ -508,7 +530,7 @@ lastmod: 2025-04-09T20:20:00+02:00
             <input type="text" id="nameFilterInput" placeholder="e.g., Smith, Jones (comma-sep)" aria-label="Name filter text">
         </div>
         <div class="filter-group">
-            <label for="roleFilter">Role Filter:</label>
+            <label for="roleFilterInput">Role Filter:</label>
             <select id="roleFilterMode" aria-label="Role filter mode">
                 <option value="contains" selected>Contains</option>
                 <option value="not_contains">Does Not Contain</option>

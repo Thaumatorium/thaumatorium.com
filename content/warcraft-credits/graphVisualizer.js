@@ -178,7 +178,6 @@ export function visualizeGraphD3(
 		d.fx = null;
 		d.fy = null;
 	});
-	console.log("Set initial node positions based on roles and game category.");
 
 	const zoomLayer = svg.append("g").attr("class", "zoom-layer");
 	const linkGroup = zoomLayer.append("g").attr("class", "links");
@@ -316,19 +315,17 @@ export function visualizeGraphD3(
 	const zoomHandler = d3
 		.zoom()
 		.scaleExtent([0.1, 5])
+		.on("start", () => {
+			tooltipElement.style.display = "none";
+			if (nodeSelection) nodeSelection.classed("tooltip-active", false);
+		})
 		.on("zoom", (event) => {
 			zoomLayer.attr("transform", event.transform);
-			tooltipElement.style.display = "none";
-			if (nodeSelection) {
-				nodeSelection.classed("tooltip-active", false).classed("highlighted-department", false);
-			}
-			if (nodeGroup) nodeGroup.classed("department-highlight-active", false);
 		});
 
 	svg.call(zoomHandler).on("dblclick.zoom", null);
 
 	setupD3Tooltips(nodeSelection, tooltipElement, personRolesMap, svg.node(), game1Name, game2Name, isSingleGameView);
 
-	console.log("D3 visualization setup complete. Simulation started.");
 	return simulation;
 }

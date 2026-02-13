@@ -7,7 +7,7 @@ export const gameTitleMap = {
 	"wc2_tod.json": "Warcraft 2: Tides of Darkness",
 	"wc3_roc.json": "Warcraft 3: Reign of Chaos",
 	"wc3_tft.json": "Warcraft 3: The Frozen Throne",
-	"wow_0.json": "WoW  (Vanilla)",
+	"wow_0.json": "WoW (Vanilla)",
 	"wow_1_tbc.json": "WoW: The Burning Crusade",
 	"wow_2_wotlk.json": "WoW: Wrath of the Lich King",
 	"wow_3_cata.json": "WoW: Cataclysm",

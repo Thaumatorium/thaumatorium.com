@@ -1,4 +1,4 @@
-import { generatePersonId } from "./dataUtils.js";
+import { generatePersonId, getGameNameFromData } from "./dataUtils.js";
 import { gameTitleMap, NODE_TYPE_PERSON, NODE_TYPE_GAME, LINK_TYPE_WORKED_ON, CATEGORY_GAME, CATEGORY_SINGLE_GAME, CATEGORY_BOTH, CATEGORY_GAME1_ONLY, CATEGORY_GAME2_ONLY, CATEGORY_OTHER, DEFAULT_ROLE } from "./config.js";
 
 /**
@@ -27,25 +27,6 @@ function getPrimaryRole(roles) {
 		return role ? role : DEFAULT_ROLE;
 	}
 	return DEFAULT_ROLE;
-}
-
-/**
- * Safely extracts the game name from the loaded JSON data (which should have one top-level key).
- * @param {Object | null} jsonData - The parsed JSON data for a game.
- * @param {string} filename - The filename used to fetch this data (for fallback/logging).
- * @returns {string | null} The extracted game name or null if undetermined.
- */
-function getGameNameFromData(jsonData, filename) {
-	if (!jsonData || typeof jsonData !== "object") {
-		console.warn(`Cannot extract game name: Invalid JSON data provided for ${filename}.`);
-		return null;
-	}
-	const keys = Object.keys(jsonData);
-	if (keys.length === 1 && typeof keys[0] === "string" && keys[0].trim() !== "") {
-		return keys[0].trim();
-	}
-	console.warn(`Cannot extract game name: Expected one top-level key in ${filename}, found ${keys.length}. Using title map fallback.`);
-	return null;
 }
 
 /**
@@ -128,8 +109,6 @@ export function processDataForD3(jsonData1, jsonData2, filename1, filename2, isS
 	if (!jsonData1 && !jsonData2) {
 		throw new Error("Both input data sources are missing or invalid.");
 	}
-	if (!jsonData1) console.warn("jsonData1 is missing or invalid for:", filename1);
-	if (!jsonData2) console.warn("jsonData2 is missing or invalid for:", filename2);
 
 	personRolesMap.clear();
 	const nodes = [];
@@ -163,7 +142,6 @@ export function processDataForD3(jsonData1, jsonData2, filename1, filename2, isS
 				.replace(".json", "")
 				.replace(/_/g, " ")
 				.replace(/\b\w/g, (l) => l.toUpperCase());
-			console.warn(`Using filename guess fallback for Game 1: ${gameName1}`);
 		}
 
 		if (gameName1) {
@@ -182,7 +160,6 @@ export function processDataForD3(jsonData1, jsonData2, filename1, filename2, isS
 			} else console.warn(`Game 1 data for '${gameName1}' is not an array in ${filename1}`);
 		} else console.error(`Could not determine identity for Game 1 from ${filename1}.`);
 	} else console.error(`Could not load data for Game 1 (${filename1}).`);
-
 	// Process Game 2
 	if (!isSameGame && jsonData2) {
 		gameName2 = getGameNameFromData(jsonData2, filename2) || gameTitleMap[filename2];
@@ -191,12 +168,10 @@ export function processDataForD3(jsonData1, jsonData2, filename1, filename2, isS
 				.replace(".json", "")
 				.replace(/_/g, " ")
 				.replace(/\b\w/g, (l) => l.toUpperCase());
-			console.warn(`Using filename guess fallback for Game 2: ${gameName2}`);
 		}
 		if (gameName2) {
 			gameId2 = generateGameId(gameName2);
 			if (gameId1 && gameId1 === gameId2) {
-				console.warn(`Game 2 ('${gameName2}') resolved to the same ID as Game 1 ('${gameName1}'). Forcing single game view.`);
 				isSameGame = true;
 				gameName2 = gameName1;
 				gameId2 = gameId1;
@@ -355,8 +330,6 @@ export function processDataForD3(jsonData1, jsonData2, filename1, filename2, isS
 			degree: 0,
 		};
 		addNode(game1DataNode);
-	} else if (gameId1) {
-		console.log(`Processor: Game 1 (${gameName1 || "ID:" + gameId1}) has no links after filtering. Node not added.`);
 	}
 
 	if (gameId2 && !isSameGame && links.some((link) => link.target === gameId2 || link.source === gameId2)) {
@@ -369,8 +342,6 @@ export function processDataForD3(jsonData1, jsonData2, filename1, filename2, isS
 			degree: 0,
 		};
 		addNode(game2DataNode);
-	} else if (gameId2 && !isSameGame) {
-		console.log(`Processor: Game 2 (${gameName2 || "ID:" + gameId2}) has no links after filtering. Node not added.`);
 	} else if (isSameGame && game1DataNode) {
 		game2DataNode = game1DataNode; // Point to the same node object
 	}
@@ -401,8 +372,13 @@ export function processDataForD3(jsonData1, jsonData2, filename1, filename2, isS
 		  }
 		: null;
 
-	console.log(`D3 Processor: Filtered to ${nodes.length} nodes and ${links.length} links.`);
-	console.log(`D3 Processor: Filtered Role map contains ${personRolesMap.size} entries.`);
+	// Calculate shared count (people who worked on both games)
+	let sharedCount = 0;
+	if (!isSameGame) {
+		for (const id of filteredPeopleGame1) {
+			if (filteredPeopleGame2.has(id)) sharedCount++;
+		}
+	}
 
-	return { nodes, links, filteredStats1, filteredStats2 };
+	return { nodes, links, filteredStats1, filteredStats2, sharedCount };
 }

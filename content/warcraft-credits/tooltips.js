@@ -15,10 +15,7 @@ import { NODE_TYPE_PERSON, NODE_TYPE_GAME, CATEGORY_GAME1_ONLY, CATEGORY_GAME2_O
  * @param {boolean} isSingleGameView - Flag indicating if only one distinct game is shown.
  */
 export function setupD3Tooltips(nodeSelection, tooltipElement, personRolesMap, svgNode, game1Name, game2Name, isSingleGameView) {
-	if (!nodeSelection || !tooltipElement || !personRolesMap || !svgNode) {
-		console.error("D3 Tooltip setup missing required arguments.");
-		return;
-	}
+	if (!nodeSelection || !tooltipElement || !personRolesMap || !svgNode) return;
 
 	// Get the closest positioned ancestor (or null if none)
 	// We assume the SVG or its container is the intended context
@@ -184,7 +181,7 @@ export function setupD3Tooltips(nodeSelection, tooltipElement, personRolesMap, s
 			hideTooltipAndHighlights();
 		}
 	});
-	d3.select("body").on("keydown", (event) => {
+	d3.select("body").on("keydown.tooltip", (event) => {
 		if (event.key === "Escape") {
 			hideTooltipAndHighlights();
 		}

@@ -18,8 +18,6 @@ function debounce(func, wait) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-	console.log("DOM fully loaded and parsed.");
-
 	const elements = {
 		fileSelect1: document.getElementById("fileSelect1"),
 		fileSelect2: document.getElementById("fileSelect2"),
@@ -39,6 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		nameFilterMode: document.getElementById("nameFilterMode"),
 		roleFilterInput: document.getElementById("roleFilterInput"),
 		roleFilterMode: document.getElementById("roleFilterMode"),
+		sharedCount: document.getElementById("sharedCount"),
+		sharedStats: document.getElementById("sharedStats"),
 	};
 
 	let missingElement = false;
@@ -80,12 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	};
 
 	const handleDragRestart = () => {
-		if (state.isSimulationStoppedByUser && state.d3Simulation && state.d3Simulation.alpha() < state.d3Simulation.alphaMin()) {
-			console.log("Main: Simulation restarted by drag, updating state and buttons.");
-			state.isSimulationStoppedByUser = false; // Mark as running again
-			setSimulationButtonState(true); // Update buttons
-		} else if (!state.isSimulationStoppedByUser && state.d3Simulation && state.d3Simulation.alpha() < state.d3Simulation.alphaMin()) {
-			console.log("Main: Simulation restarted by drag from cooled state, ensuring buttons are correct.");
+		if (state.d3Simulation && state.d3Simulation.alpha() < state.d3Simulation.alphaMin()) {
+			state.isSimulationStoppedByUser = false;
 			setSimulationButtonState(true);
 		}
 	};
@@ -107,11 +103,23 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	};
 
+	/** Show/hide the error/warning message element. Call with no args to clear. */
+	const showMessage = (text, type) => {
+		const el = elements.errorMessage;
+		if (!text) {
+			el.textContent = "";
+			el.style.display = "none";
+			el.classList.remove("error-message", "warning-message");
+			return;
+		}
+		el.textContent = text;
+		el.style.display = "block";
+		el.classList.toggle("error-message", type === "error");
+		el.classList.toggle("warning-message", type === "warning");
+	};
+
 	async function runWorkerAndVisualize(filename1, filename2, filters) {
-		console.log(`Main: Attempting D3 load via worker: ${filename1}, ${filename2}`, "Filters:", filters);
-		elements.errorMessage.textContent = "";
-		elements.errorMessage.style.display = "none";
-		elements.errorMessage.classList.remove("error-message", "warning-message");
+		showMessage(); // clear
 		elements.loadingMessage.style.display = "block";
 		elements.tooltip.style.display = "none";
 		elements.svgContainer.classList.remove("links-hidden", "show-all-labels");
@@ -119,14 +127,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		setSimulationButtonState(!!state.d3Simulation && !state.isSimulationStoppedByUser);
 
 		if (state.activeWorker) {
-			console.log("Main: Terminating previous worker.");
 			state.activeWorker.terminate();
 			state.activeWorker = null;
 		}
 
 		// Stop simulation *before* clearing SVG if it exists
 		if (state.d3Simulation) {
-			console.log("Main: Stopping previous simulation before update.");
 			state.d3Simulation.stop();
 			state.d3Simulation = null; // Nullify the simulation reference
 		}
@@ -142,10 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			state.activeWorker = worker;
 
 			worker.onmessage = (event) => {
-				if (worker !== state.activeWorker) {
-					console.log("Main: Received message from outdated D3 worker, ignoring.");
-					return;
-				}
+				if (worker !== state.activeWorker) return;
 				const {
 					status,
 					graphData,
@@ -157,21 +160,26 @@ document.addEventListener("DOMContentLoaded", () => {
 					effectiveFilters, // Worker sends back the parsed/validated filters
 				} = event.data;
 
-				// Update state's filters if the worker changed them (e.g., sanitized)
 				if (effectiveFilters) {
-					// Reflect the potentially split/trimmed filter text back in state
-					// but maybe not in the UI input to avoid surprising the user.
 					state.currentFilters = effectiveFilters;
-					console.log("Main: Updated state with effective filters from worker:", state.currentFilters);
 				}
 
 				state.stats1 = stats1;
 				state.stats2 = stats2;
 				updateStatsUI(state.stats1, state.stats2, elements);
 
+				// Update shared count display
+				const sharedCount = event.data.sharedCount;
+				if (elements.sharedStats && elements.sharedCount) {
+					if (typeof sharedCount === "number" && sharedCount > 0) {
+						elements.sharedCount.textContent = sharedCount.toLocaleString();
+						elements.sharedStats.style.display = "";
+					} else {
+						elements.sharedStats.style.display = "none";
+					}
+				}
+
 				if (status === "success" && graphData?.nodes) {
-					console.log("Main: Worker returned success.");
-					// elements.svgContainer.innerHTML = ""; // Already cleared before worker starts
 
 					state.personRolesMap = new Map();
 					if (Array.isArray(personRolesMapData)) {
@@ -181,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
 							}
 						});
 					}
-					console.log(`Main: Reconstructed personRolesMap with ${state.personRolesMap.size} entries (post-filter).`);
+
 
 					state.normalizedRolePositions = new Map();
 					if (Array.isArray(normalizedRolePositionsData)) {
@@ -191,21 +199,14 @@ document.addEventListener("DOMContentLoaded", () => {
 							}
 						});
 					}
-					console.log(`Main: Reconstructed normalizedRolePositions with ${state.normalizedRolePositions.size} entries (post-filter).`);
+
 
 					let shouldHideLinks = false;
 					if (graphData.nodes.length > MAX_NODES_FOR_LINKS) {
-						console.warn(`Node count (${graphData.nodes.length}) exceeds limit (${MAX_NODES_FOR_LINKS}). Links will be visually hidden.`);
 						shouldHideLinks = true;
-						elements.errorMessage.textContent = `Links visually hidden for performance (${graphData.nodes.length} nodes > ${MAX_NODES_FOR_LINKS}). Filtering applied.`;
-						elements.errorMessage.style.display = "block";
-						elements.errorMessage.classList.add("warning-message");
-						elements.errorMessage.classList.remove("error-message");
+						showMessage(`Links visually hidden for performance (${graphData.nodes.length} nodes > ${MAX_NODES_FOR_LINKS}). Filtering applied.`, "warning");
 					} else if (elements.errorMessage.classList.contains("warning-message") && !elements.errorMessage.classList.contains("error-message")) {
-						// Clear only link warning if count is now okay and no other error exists
-						elements.errorMessage.textContent = "";
-						elements.errorMessage.style.display = "none";
-						elements.errorMessage.classList.remove("warning-message");
+						showMessage();
 					}
 
 					const visualizerDomElements = {
@@ -216,18 +217,12 @@ document.addEventListener("DOMContentLoaded", () => {
 					state.d3Simulation = visualizeGraphD3(graphData, visualizerDomElements, state.personRolesMap, state.normalizedRolePositions, handleDragRestart);
 
 					if (!state.d3Simulation) {
-						console.warn("Main: visualizeGraphD3 returned null or failed.");
 						const filterText = state.currentFilters.name.text || state.currentFilters.role.text ? " with current filters" : "";
-						if (!elements.errorMessage.textContent || (!elements.errorMessage.classList.contains("warning-message") && !elements.errorMessage.classList.contains("error-message"))) {
-							elements.errorMessage.textContent = `D3 Graph visualization failed to initialize${filterText}. Check console for details.`;
-							elements.errorMessage.style.display = "block";
-							elements.errorMessage.classList.add("error-message");
-							elements.errorMessage.classList.remove("warning-message"); // Ensure it's an error
+						if (!elements.errorMessage.textContent) {
+							showMessage(`D3 Graph visualization failed to initialize${filterText}. Check console for details.`, "error");
 						}
 						setSimulationButtonState(false);
 					} else {
-						console.log("Main: D3 Graph visualization initiated.");
-						// Don't reset stop state here, keep user's preference
 						if (shouldHideLinks) {
 							elements.svgContainer.classList.add("links-hidden");
 						} else {
@@ -240,52 +235,35 @@ document.addEventListener("DOMContentLoaded", () => {
 						setSimulationButtonState(!state.isSimulationStoppedByUser);
 					}
 				} else {
-					// Worker failed or returned no nodes
 					const errorMsg = message || (status === "error" ? "Worker reported an error." : "Worker returned invalid data or no nodes passed filters.");
 					console.error("Main: D3 Worker reported error or invalid data:", errorMsg, event.data);
-					elements.errorMessage.textContent = `Error processing data: ${errorMsg}`;
-					elements.errorMessage.style.display = "block";
-					elements.errorMessage.classList.add("error-message");
-					elements.errorMessage.classList.remove("warning-message");
+					showMessage(`Error processing data: ${errorMsg}`, "error");
 					setSimulationButtonState(false);
-					// elements.svgContainer.innerHTML = ""; // Already clear
 				}
 				elements.loadingMessage.style.display = "none";
 				if (state.activeWorker === worker) {
 					worker.terminate();
 					state.activeWorker = null;
-					console.log("Main: D3 Worker terminated after processing message.");
 				}
 			};
 
 			worker.onerror = (error) => {
-				if (worker !== state.activeWorker) {
-					return;
-				}
+				if (worker !== state.activeWorker) return;
 				console.error("Main: D3 Worker onerror event:", error);
-				elements.errorMessage.textContent = `D3 Worker failed unexpectedly. (${error.message || "Unknown error"}) Check console.`;
-				elements.errorMessage.style.display = "block";
-				elements.errorMessage.classList.add("error-message");
-				elements.errorMessage.classList.remove("warning-message");
+				showMessage(`D3 Worker failed unexpectedly. (${error.message || "Unknown error"}) Check console.`, "error");
 				setSimulationButtonState(false);
 				elements.loadingMessage.style.display = "none";
 				updateStatsUI(null, null, elements);
-				// elements.svgContainer.innerHTML = ""; // Already clear
 				if (state.activeWorker === worker) {
 					worker.terminate();
 					state.activeWorker = null;
-					console.log("Main: D3 Worker terminated after onerror.");
 				}
 			};
 
 			worker.postMessage({ filename1, filename2, filters });
-			console.log("Main: Sent job to D3 worker with filters.");
 		} catch (error) {
 			console.error("Main: Error setting up D3 worker or pre-check:", error);
-			elements.errorMessage.textContent = `Initialization Error: ${error.message}`;
-			elements.errorMessage.style.display = "block";
-			elements.errorMessage.classList.add("error-message");
-			elements.errorMessage.classList.remove("warning-message");
+			showMessage(`Initialization Error: ${error.message}`, "error");
 			setSimulationButtonState(false);
 			elements.loadingMessage.style.display = "none";
 			updateStatsUI(null, null, elements);
@@ -338,16 +316,13 @@ document.addEventListener("DOMContentLoaded", () => {
 				elements.svgContainer.innerHTML = "";
 			}
 			elements.tooltip.style.display = "none";
-			elements.errorMessage.textContent = "";
-			elements.errorMessage.style.display = "none";
-			elements.errorMessage.classList.remove("error-message", "warning-message");
+			showMessage();
 			updateStatsUI(null, null, elements);
+			if (elements.sharedStats) elements.sharedStats.style.display = "none";
 			state.lastFile1 = null;
-			state.lastFile2 = null; // Reset last selected
+			state.lastFile2 = null;
 			state.stats1 = null;
 			state.stats2 = null;
-			// Keep current filters as they are in the UI
-			console.log("Selection incomplete, graph and stats cleared.");
 			if (elements.fileSelect1.options.length > 0) elements.fileSelect1.options[0].disabled = !!selectedFile1;
 			if (elements.fileSelect2.options.length > 0) elements.fileSelect2.options[0].disabled = !!selectedFile2;
 			return;
@@ -355,7 +330,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		// Reload if forced, games changed, or filters changed
 		if (forceReload || gamesChanged || filtersChanged) {
-			console.log(`Triggering load. Games changed: ${gamesChanged}, Filters changed: ${filtersChanged}, Force reload: ${forceReload}`);
 			state.lastFile1 = selectedFile1;
 			state.lastFile2 = selectedFile2;
 			// Update state filters *before* calling worker, so state reflects what was sent
@@ -364,8 +338,6 @@ document.addEventListener("DOMContentLoaded", () => {
 				state.isSimulationStoppedByUser = false; // Reset stop only on game change
 			}
 			runWorkerAndVisualize(selectedFile1, selectedFile2, currentRawFilters); // Pass raw UI filters
-		} else {
-			console.log("No relevant changes detected, skipping reload.");
 		}
 
 		if (elements.fileSelect1.options.length > 0) elements.fileSelect1.options[0].disabled = true;
@@ -373,10 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	// Debounced version specifically for text inputs
-	const debouncedTriggerLoadForFilters = debounce(() => {
-		console.log("Debounced filter trigger fired.");
-		triggerLoad(false); // Don't force reload, let triggerLoad decide based on changes
-	}, FILTER_DEBOUNCE_MS);
+	const debouncedTriggerLoadForFilters = debounce(() => triggerLoad(false), FILTER_DEBOUNCE_MS);
 
 	try {
 		populateDropdown(elements.fileSelect1, gameTitleMap);
@@ -398,9 +367,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		setDefaultSelections(elements, () => triggerLoad(true)); // Use force=true for initial load
 	} catch (uiError) {
 		console.error("Error setting up UI:", uiError);
-		elements.errorMessage.textContent = `Fatal UI Setup Error: ${uiError.message}`;
-		elements.errorMessage.style.display = "block";
-		elements.errorMessage.classList.add("error-message");
+		showMessage(`Fatal UI Setup Error: ${uiError.message}`, "error");
 		elements.loadingMessage.style.display = "none";
 		setSimulationButtonState(false);
 		updateStatsUI(null, null, elements);
@@ -408,7 +375,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	elements.stopButton.addEventListener("click", () => {
 		if (state.d3Simulation) {
-			console.log("Main: Stopping simulation via button.");
 			state.d3Simulation.stop();
 			state.isSimulationStoppedByUser = true;
 			setSimulationButtonState(false);
@@ -416,7 +382,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 	elements.resumeButton.addEventListener("click", () => {
 		if (state.d3Simulation) {
-			console.log("Main: Resuming simulation via button.");
 			state.isSimulationStoppedByUser = false;
 			state.d3Simulation.alphaTarget(0.3).restart();
 			setSimulationButtonState(true);
@@ -429,10 +394,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			state.isShiftPressed = true;
 			elements.svgContainer.classList.add("show-all-labels");
 		}
-		// Allow Enter in filter inputs to trigger the *debounced* function immediately
+		// Allow Enter in filter inputs to trigger load immediately
 		if (event.key === "Enter" && (document.activeElement === elements.nameFilterInput || document.activeElement === elements.roleFilterInput)) {
 			event.preventDefault();
-			debouncedTriggerLoadForFilters(); 
+			triggerLoad(false);
 		}
 	});
 	window.addEventListener("keyup", (event) => {
@@ -447,15 +412,4 @@ document.addEventListener("DOMContentLoaded", () => {
 			elements.svgContainer.classList.remove("show-all-labels");
 		}
 	});
-
-	const styleEl = document.createElement("style");
-	document.head.appendChild(styleEl);
-	const styleSheet = styleEl.sheet;
-	try {
-		styleSheet.insertRule(`.warning-message { color: #8a6d3b; background-color: #fcf8e3; border: 1px solid #faebcc; font-weight: normal; }`, styleSheet.cssRules.length);
-		styleSheet.insertRule(`.error-message { color: #a94442; background-color: #f2dede; border: 1px solid #ebccd1; font-weight: bold; }`, styleSheet.cssRules.length);
-		styleSheet.insertRule(`.status-message.warning-message, .status-message.error-message { display: block; }`, styleSheet.cssRules.length);
-	} catch (e) {
-		console.error("Failed to insert status message styles:", e);
-	}
 });

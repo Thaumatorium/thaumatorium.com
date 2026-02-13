@@ -12,29 +12,35 @@ export async function fetchJsonFile(filename) {
 	}
 
 	try {
-		const request = new Request(filename, {
-			method: "GET",
+		const response = await fetch(filename, {
 			headers: { Accept: "application/json" },
 		});
-		const response = await fetch(request);
 
 		if (!response.ok) {
-			console.error(`HTTP Error ${response.status} (${response.statusText}) while fetching ${filename}`);
+			console.error(`HTTP ${response.status} fetching ${filename}`);
 			return null;
 		}
 
-		const contentType = response.headers.get("content-type");
-		if (!contentType || !contentType.includes("application/json")) {
-			console.warn(`Received non-JSON Content-Type "${contentType}" for ${filename}. Attempting to parse anyway.`);
-		}
-
-		const data = await response.json();
-
-		return data;
+		return await response.json();
 	} catch (error) {
-		console.error(`Fetch or JSON parse error for ${filename}:`, error);
+		console.error(`Fetch/parse error for ${filename}:`, error);
 		return null;
 	}
+}
+
+/**
+ * Safely extracts the game name from JSON data (which should have one top-level key).
+ * @param {Object | null} jsonData - The parsed JSON data for a game.
+ * @param {string} filename - The filename used to fetch this data (for logging).
+ * @returns {string | null} The extracted game name or null if undetermined.
+ */
+export function getGameNameFromData(jsonData, filename) {
+	if (!jsonData || typeof jsonData !== "object") return null;
+	const keys = Object.keys(jsonData);
+	if (keys.length === 1 && typeof keys[0] === "string" && keys[0].trim() !== "") {
+		return keys[0].trim();
+	}
+	return null;
 }
 
 let invalidIdCounter = 0;
@@ -51,9 +57,7 @@ let invalidIdCounter = 0;
 export function generatePersonId(name) {
 	if (!name || typeof name !== "string" || name.trim() === "") {
 		invalidIdCounter++;
-		const fallbackId = `person_invalid_${invalidIdCounter}`;
-		console.warn(`Generating fallback ID "${fallbackId}" for invalid/empty name input:`, name);
-		return fallbackId;
+		return `person_invalid_${invalidIdCounter}`;
 	}
 
 	const sanitizedName = name
@@ -66,7 +70,6 @@ export function generatePersonId(name) {
 		invalidIdCounter++;
 		const originalSimplified = name.trim().replace(/[^a-zA-Z0-9]/g, "") || `original_empty_${invalidIdCounter}`;
 		const fallbackId = `person_${originalSimplified}_sanitized_empty_${invalidIdCounter}`;
-		console.warn(`Generating fallback ID "${fallbackId}" because name sanitized to empty:`, name);
 		return fallbackId.substring(0, 60);
 	}
 
