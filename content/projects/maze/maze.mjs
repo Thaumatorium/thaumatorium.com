@@ -55,7 +55,7 @@ const coordsOf = (grid, index) => ({ x: index % grid.width, y: Math.floor(index 
 const toKey = ({ x, y }) => `${x},${y}`;
 const getSpeedFactor = () => Math.max(0.02, (MAZE.animationSpeed / 100) ** 2 * 12);
 const getEffectiveGenerationTimeLimitMs = () => (
-	Math.max(50, Math.round(MAZE.generationTimeLimitMs / Math.max(0.25, MAZE.animationSpeed / 10)))
+	Math.max(50, Math.round(MAZE.generationTimeLimitMs / getSpeedFactor()))
 );
 const shuffle = (items) => {
 	const result = [...items];
@@ -323,22 +323,28 @@ const runGeneration = () => {
 	render();
 
 	const generationStartTime = performance.now();
+	let lastFrameTime = generationStartTime;
+	let generationBudget = 0;
 	setStatus(`Generating ${MAZE.width} x ${MAZE.height} maze with Origin Shift using ${getGenerationSummary()}...`);
 
 	const step = () => {
+		const now = performance.now();
 		const speedFactor = getSpeedFactor();
 		const totalCells = MAZE.width * MAZE.height;
 		const targetVisitedCells = Math.max(1, Math.ceil((totalCells * MAZE.generationCoverage) / 100));
-		const elapsedMs = performance.now() - generationStartTime;
+		const elapsedMs = now - generationStartTime;
+		const frameDelta = now - lastFrameTime;
+		lastFrameTime = now;
 		const effectiveTimeLimitMs = getEffectiveGenerationTimeLimitMs();
 		const generationDone = (
 			MAZE.grid.visitedByOrigin.size >= targetVisitedCells ||
 			elapsedMs >= effectiveTimeLimitMs
 		);
 		const remainingCells = targetVisitedCells - MAZE.grid.visitedByOrigin.size;
-		const batchSize = Math.max(1, Math.ceil((Math.max(remainingCells, 1) * speedFactor) / 12));
+		generationBudget += ((Math.max(remainingCells, 1) * speedFactor) / 12) * (frameDelta / 16.67);
 
-		for (let i = 0; i < batchSize && !generationDone; i++) {
+		while (generationBudget >= 1 && !generationDone) {
+			generationBudget -= 1;
 			const crawlerIndex = randomInt(MAZE.grid.crawlers.length);
 			shiftCrawler(MAZE.grid, crawlerIndex);
 			if (
