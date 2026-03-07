@@ -1,12 +1,12 @@
 ---
-title: "Optimizing Your Site by Splitting JS/CSS into Multiple Files"
+title: "Optimizing your site by splitting JS/CSS into layers"
 description: "A spark of an idea to enhance site performance"
 publishDate: 2019-11-29T00:00:00+02:00
 lastmod: 2024-07-24T19:54:00+02:00
 layout: article
 ---
 
-Optimizing the performance of your website can be significantly enhanced by splitting your JavaScript (JS) and Cascading Style Sheets (CSS) into multiple files. This idea emerged from analyzing coverage using [Chrome DevTools](https://developers.google.com/web/tools/chrome-devtools/coverage).
+My idea is to split CSS into 3 parts (layers), where each outer part effectively builds on top of the inner part. The same applies to JS. This idea came from analyzing coverage using [Chrome DevTools](https://developers.google.com/web/tools/chrome-devtools/coverage).
 
 ### Steps to Optimize
 
