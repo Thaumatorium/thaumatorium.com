@@ -1,4 +1,5 @@
 import { generatorMap, generators } from "./generators/index.js";
+import { strategyMap, strategies } from "./strategies/index.js";
 
 const COLOUR = {
 	BACKGROUND: "#ffffff",
@@ -32,8 +33,6 @@ const MAZE = {
 	visitedProgress: 0,
 	deadEndProgress: 0,
 	pathProgress: 0,
-	dfsSearchBudget: 0,
-	dfsPathBudget: 0,
 	showUntouchedCells: false,
 	showCrawlers: false,
 	status: document.getElementById("maze-status"),
@@ -85,15 +84,25 @@ const populateGeneratorOptions = () => {
 	generationAlgorithmInput.value = MAZE.generationAlgorithm;
 };
 
-const getCornerCrawlerStarts = (width, height) => {
-	const corners = [
-		indexOf({ width }, 0, 0),
-		indexOf({ width }, width - 1, 0),
-		indexOf({ width }, 0, height - 1),
-		indexOf({ width }, width - 1, height - 1),
-	];
+const populateStrategyOptions = () => {
+	searchStrategyInput.innerHTML = strategies
+		.map((entry) => `<option value="${entry.id}">${entry.name}</option>`)
+		.join("");
+	searchStrategyInput.value = MAZE.searchStrategy;
+};
 
-	return [...new Set(corners)];
+const getCornerCrawlerStarts = (width, height) => {
+	const xPositions = [0, Math.floor((width - 1) / 2), width - 1];
+	const yPositions = [0, Math.floor((height - 1) / 2), height - 1];
+	const starts = [];
+
+	for (const y of yPositions) {
+		for (const x of xPositions) {
+			starts.push(indexOf({ width }, x, y));
+		}
+	}
+
+	return [...new Set(starts)];
 };
 
 const createInitialGrid = (width, height) => {
@@ -117,6 +126,7 @@ const createInitialGrid = (width, height) => {
 	return {
 		width,
 		height,
+		size,
 		topology: "square",
 		parent,
 		links: Array.from({ length: size }, () => new Set()),
@@ -190,10 +200,6 @@ const shiftCrawler = (grid, crawlerIndex) => {
 };
 
 const areConnected = (grid, first, second) => grid.links[first]?.has(second) ?? false;
-
-const getConnectedNeighbours = (grid, index) => (
-	shuffle([...(grid.links[index] ?? [])])
-);
 
 const isHexGrid = () => MAZE.grid?.topology === "hex";
 
@@ -513,132 +519,16 @@ const runGeneration = () => {
 	MAZE.animationId = requestAnimationFrame(step);
 };
 
-const solveMaze = (grid, strategy) => {
-	const frontier = [grid.start];
-	const visited = new Set([grid.start]);
-	const parentByNode = new Map();
-	const searchOrder = [grid.start];
-
-	while (frontier.length > 0) {
-		const current = strategy === "dfs" ? frontier.pop() : frontier.shift();
-
-		if (current === grid.end) {
-			const path = [];
-			let cursor = current;
-
-			while (cursor !== undefined) {
-				path.push(cursor);
-				cursor = parentByNode.get(cursor);
-			}
-
-			path.reverse();
-			return { searchOrder, path };
-		}
-
-		for (const neighbour of getConnectedNeighbours(grid, current)) {
-			if (visited.has(neighbour)) {
-				continue;
-			}
-
-			visited.add(neighbour);
-			parentByNode.set(neighbour, current);
-			frontier.push(neighbour);
-			searchOrder.push(neighbour);
-		}
-	}
-
-	return { searchOrder, path: [] };
-};
-
-const animateSolveDFS = () => {
-	const visited = new Set([MAZE.grid.start]);
-	const stack = [MAZE.grid.start];
-
-	MAZE.searchOrder = [MAZE.grid.start];
-	MAZE.deadEndOrder = [];
-	MAZE.solutionPath = [];
-	MAZE.visitedProgress = 1;
-	MAZE.deadEndProgress = 0;
-	MAZE.pathProgress = 0;
-	MAZE.dfsSearchBudget = 0;
-	MAZE.dfsPathBudget = 0;
-
-	setStatus("Solving maze with DFS...");
-
-	const step = () => {
-		const speedFactor = getSpeedFactor();
-		MAZE.dfsSearchBudget += (MAZE.grid.width * MAZE.grid.height * speedFactor) / 7000;
-
-		while (MAZE.dfsSearchBudget >= 1) {
-			MAZE.dfsSearchBudget -= 1;
-			const current = stack[stack.length - 1];
-
-			if (current === undefined) {
-				MAZE.animationId = null;
-				setStatus("No path found. That should not happen in a perfect maze.");
-				render();
-				return;
-			}
-
-			if (current === MAZE.grid.end) {
-				MAZE.solutionPath = [...stack];
-				break;
-			}
-
-			const next = getConnectedNeighbours(MAZE.grid, current).find((neighbour) => !visited.has(neighbour));
-
-			if (next !== undefined) {
-				visited.add(next);
-				stack.push(next);
-				MAZE.searchOrder.push(next);
-				MAZE.visitedProgress = MAZE.searchOrder.length;
-				continue;
-			}
-
-			const deadNode = stack.pop();
-			if (deadNode !== MAZE.grid.start) {
-				MAZE.deadEndOrder.push(deadNode);
-				MAZE.deadEndProgress = MAZE.deadEndOrder.length;
-			}
-		}
-
-		if (MAZE.solutionPath.length > 0) {
-			MAZE.dfsPathBudget += (MAZE.solutionPath.length * speedFactor) / 3000;
-			while (MAZE.dfsPathBudget >= 1 && MAZE.pathProgress < MAZE.solutionPath.length) {
-				MAZE.dfsPathBudget -= 1;
-				MAZE.pathProgress += 1;
-			}
-		}
-
-		render();
-
-		if (MAZE.solutionPath.length === 0 || MAZE.pathProgress < MAZE.solutionPath.length) {
-			MAZE.animationId = requestAnimationFrame(step);
-			return;
-		}
-
-		MAZE.animationId = null;
-		setStatus(`DFS visited ${MAZE.searchOrder.length} cells and found a path of length ${MAZE.solutionPath.length}.`);
-	};
-
-	MAZE.animationId = requestAnimationFrame(step);
-};
-
 const animateSolve = () => {
 	if (!MAZE.grid) {
 		return;
 	}
 
 	cancelAnimation();
-
-	if (MAZE.searchStrategy === "dfs") {
-		animateSolveDFS();
-		return;
-	}
-
-	const { searchOrder, path } = solveMaze(MAZE.grid, MAZE.searchStrategy);
+	const solver = strategyMap.get(MAZE.searchStrategy);
+	const { searchOrder, path, deadEndOrder = searchOrder.filter((index) => !path.includes(index)).reverse() } = solver.solve(MAZE.grid);
 	MAZE.searchOrder = searchOrder;
-	MAZE.deadEndOrder = searchOrder.filter((index) => !path.includes(index)).reverse();
+	MAZE.deadEndOrder = deadEndOrder;
 	MAZE.solutionPath = path;
 	MAZE.visitedProgress = 0;
 	MAZE.deadEndProgress = 0;
@@ -650,7 +540,7 @@ const animateSolve = () => {
 		return;
 	}
 
-	setStatus(`Solving maze with ${MAZE.searchStrategy.toUpperCase()}...`);
+	setStatus(`Solving maze with ${solver.name}...`);
 
 	const step = () => {
 		const speedFactor = getSpeedFactor();
@@ -678,7 +568,7 @@ const animateSolve = () => {
 		}
 
 		MAZE.animationId = null;
-		setStatus(`${MAZE.searchStrategy.toUpperCase()} visited ${MAZE.searchOrder.length} cells and found a path of length ${MAZE.solutionPath.length}.`);
+		setStatus(`${solver.name} visited ${MAZE.searchOrder.length} cells and found a path of length ${MAZE.solutionPath.length}.`);
 	};
 
 	MAZE.animationId = requestAnimationFrame(step);
@@ -716,7 +606,7 @@ searchStrategyInput.onchange = () => {
 		MAZE.deadEndProgress = 0;
 		MAZE.pathProgress = 0;
 		render();
-		setStatus(`Ready to solve with ${MAZE.searchStrategy.toUpperCase()}.`);
+		setStatus(`Ready to solve with ${strategyMap.get(MAZE.searchStrategy).name}.`);
 	}
 };
 
@@ -764,6 +654,7 @@ MAZE.animationSpeed = 100;
 animationSpeedInput.value = "100";
 animationSpeedValue.value = "100";
 populateGeneratorOptions();
+populateStrategyOptions();
 applySettings();
 setStatus(`Ready to generate a ${MAZE.width} x ${MAZE.height} maze with ${getGenerationSummary()}.`);
 runGeneration();
