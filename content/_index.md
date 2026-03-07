@@ -6,7 +6,7 @@ lastmod: 2025-04-09T20:14:00+02:00
 ---
 
 This is my ~~handcrafted~~ _Hugo-generated_ website. I post [articles](/articles), [bits of knowledge](/knowledge-base),
-[projects](/projects) and [others](/warcraft-credits). This is effectively my personal playground/dumping-ground that I
+[projects](/projects) and [others](/projects/warcraft-credits). This is effectively my personal playground/dumping-ground that I
 care enough about to make public.
 
 This site is basically 2 github repos: [one to contain the
@@ -24,3 +24,7 @@ If you want more details about this site, check out the [About](/about) page.
   thoughts](/articles/spark-files-and-keeping-track-of-your-ideas-concepts-thoughts)
 - [The different types of functions in Functional
   Programming](/articles/the-different-types-of-functions-in-functional-programming)
+
+## Top projects
+
+- [Warcraft Credits](/projects/warcraft-credits)
