@@ -2,16 +2,36 @@
 
 This folder contains the Hugo code to generate the static site :D
 
+## Dev setup
+
+This project uses `devenv` + `direnv` for the Hugo development shell.
+
+```bash
+direnv allow
+```
+
+If you want to enter the shell manually instead of using `direnv`:
+
+```bash
+devenv shell
+```
+
+Project commands live in `just`:
+
+```bash
+just
+```
+
 ## Add article
 
 ```bash
-hugo new articles/test/_index.md
+just new-article articles/test/_index.md
 ```
 
 ## Run the server
 
 ```bash
-hugo server --buildDrafts
+just serve
 ```
 
 ## Tools
@@ -20,11 +40,3 @@ These were used to create this Hugo version of the site:
 
 * [html-to-markdown](https://codebeautify.org/html-to-markdown)
 * [html-to-markdown](https://tableconvert.com/html-to-markdown)
-
-## Dev setup
-
-```bash
-sudo apt update && apt upgrade -y
-sudo apt install golang
-sudo apt install hugo
-```
