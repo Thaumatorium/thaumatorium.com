@@ -1,84 +1,8 @@
-const getStartPoint = (imageData) => {
-	// loop over the top row until you find the first white pixel
-	for (let i = 0; i < imageData.width; i++) {
-		// pixel is a {r,g,b,a} structure
-		let pixel = imageData[0][i];
-		if (pixel.r == 255) {
-			// return a 2D vector
-			return { x: i, y: 0, colour: COLOUR.GREEN }
-		}
-	}
-}
-
-const getEndPoint = (imageData) => {
-	for (let i = 0; i < imageData.width; i++) {
-		// pixel is a {r,g,b,a} structure
-		let pixel = imageData[imageData.height - 1][i];
-		if (pixel.r == 255) {
-			// return a 2D vector
-			return { x: i, y: imageData.height - 1 }
-		}
-	}
-}
-
-const drawPixel = (x, y, colour) => {
-	MAZE.ctx.fillStyle =
-		"rgba(" +
-		colour.r +
-		"," +
-		colour.g +
-		"," +
-		colour.b +
-		"," +
-		colour.a / 255 +
-		")";
-	MAZE.ctx.fillRect(x, y, 1, 1);
-};
-
-const getBitmapData = HTMLImageElement => {
-	const canvas = document.createElement("canvas");
-	canvas.width = HTMLImageElement.width;
-	canvas.height = HTMLImageElement.height;
-
-	const context = canvas.getContext("2d");
-	context.drawImage(HTMLImageElement, 0, 0, HTMLImageElement.width, HTMLImageElement.height);
-
-	const imageData = context.getImageData(
-		0,
-		0,
-		HTMLImageElement.width,
-		HTMLImageElement.height
-	).data;
-
-	const Uint8ClampedArrayToObjectArray = (RGBAlphaArray, width, height) => {
-		let result = [];
-
-		result.width = width;
-		result.height = height;
-
-		for (let y = 0; y < height; y++) {
-			let row = [];
-			for (let x = 0; x < width * 4; x += 4) {
-				const stepSize = 4;
-				const pixel = {
-					r: RGBAlphaArray[(x + 0) + (y * width * stepSize)],
-					g: RGBAlphaArray[(x + 1) + (y * width * stepSize)],
-					b: RGBAlphaArray[(x + 2) + (y * width * stepSize)],
-					a: RGBAlphaArray[(x + 3) + (y * width * stepSize)]
-				};
-				row.push(pixel);
-			}
-			result.push(row);
-		}
-
-		return result;
-	};
-
-	return Uint8ClampedArrayToObjectArray(
-		imageData,
-		HTMLImageElement.width,
-		HTMLImageElement.height
-	);
+const COLOUR = {
+	BLACK: { r: 0, g: 0, b: 0, a: 255 },
+	BLUE: { r: 0, g: 102, b: 255, a: 180 },
+	GREEN: { r: 0, g: 200, b: 120, a: 255 },
+	RED: { r: 255, g: 64, b: 64, a: 255 },
 };
 
 const MAZE = {
@@ -87,114 +11,276 @@ const MAZE = {
 	image: new Image(),
 	bitmap: null,
 	scale: 10,
-	path: [],
+	startPoint: null,
 	endPoint: null,
-}
+	searchOrder: [],
+	solutionPath: [],
+	animationId: null,
+	visitedProgress: 0,
+	pathProgress: 0,
+	animationSpeed: 35,
+	searchStrategy: "bfs",
+};
 
-MAZE.image.src = `mazes/maze.png`;
-MAZE.image.onload = () => {
-	MAZE.bitmap = getBitmapData(MAZE.image);
-	MAZE.endPoint = getEndPoint(MAZE.bitmap);
-	MAZE.canvas.width = MAZE.image.width;
-	MAZE.canvas.height = MAZE.image.height;
-	MAZE.canvas.width *= MAZE.scale;
-	MAZE.canvas.height *= MAZE.scale;
-	MAZE.ctx.scale(MAZE.scale, MAZE.scale);
-	MAZE.ctx.imageSmoothingEnabled = false;
-}
-
-/****************************************************************
- * set events for HTML elements
- ****************************************************************/
 const selectedMaze = document.getElementById("selected-maze");
-selectedMaze.onchange = () => {
-	console.log(`You have chosen ${selectedMaze.value}`);
-	MAZE.image.src = selectedMaze.value
-	MAZE.path = [getStartPoint(MAZE.bitmap)];
+const mazeScale = document.getElementById("maze-scale");
+const searchStrategy = document.getElementById("search-strategy");
+const animationSpeed = document.getElementById("animation-speed");
+const animationSpeedValue = document.getElementById("animation-speed-value");
+const playAnimation = document.getElementById("play-animation");
+
+const getBitmapData = (image) => {
+	const canvas = document.createElement("canvas");
+	canvas.width = image.width;
+	canvas.height = image.height;
+
+	const context = canvas.getContext("2d");
+	context.drawImage(image, 0, 0, image.width, image.height);
+
+	const raw = context.getImageData(0, 0, image.width, image.height).data;
+	const rows = [];
+
+	rows.width = image.width;
+	rows.height = image.height;
+
+	for (let y = 0; y < image.height; y++) {
+		const row = [];
+		for (let x = 0; x < image.width; x++) {
+			const offset = (y * image.width + x) * 4;
+			row.push({
+				r: raw[offset + 0],
+				g: raw[offset + 1],
+				b: raw[offset + 2],
+				a: raw[offset + 3],
+			});
+		}
+		rows.push(row);
+	}
+
+	return rows;
 };
 
-const mazeScale = document.getElementById("maze-scale");
-mazeScale.onchange = () => {
-	console.log(`You have chosen ${mazeScale.value}`);
-	MAZE.path = [getStartPoint(MAZE.bitmap)];
-	MAZE.scale = parseInt(mazeScale.value);
-	MAZE.canvas.width = MAZE.image.width;
-	MAZE.canvas.height = MAZE.image.height;
-	MAZE.canvas.width *= MAZE.scale;
-	MAZE.canvas.height *= MAZE.scale;
-	MAZE.ctx.scale(MAZE.scale, MAZE.scale);
+const isWalkable = (pixel) => pixel && pixel.r > 200 && pixel.g > 200 && pixel.b > 200;
+
+const findOpening = (bitmap, edge) => {
+	if (edge === "top") {
+		for (let x = 0; x < bitmap.width; x++) {
+			if (isWalkable(bitmap[0][x])) {
+				return { x, y: 0 };
+			}
+		}
+	}
+
+	if (edge === "bottom") {
+		const y = bitmap.height - 1;
+		for (let x = 0; x < bitmap.width; x++) {
+			if (isWalkable(bitmap[y][x])) {
+				return { x, y };
+			}
+		}
+	}
+
+	return null;
+};
+
+const toKey = ({ x, y }) => `${x},${y}`;
+
+const getNeighbours = (bitmap, { x, y }) => {
+	const candidates = [
+		{ x, y: y + 1 },
+		{ x: x + 1, y },
+		{ x: x - 1, y },
+		{ x, y: y - 1 },
+	];
+
+	return candidates.filter(({ x: nextX, y: nextY }) => (
+		nextY >= 0 &&
+		nextY < bitmap.height &&
+		nextX >= 0 &&
+		nextX < bitmap.width &&
+		isWalkable(bitmap[nextY][nextX])
+	));
+};
+
+const solveMaze = (bitmap, start, end, strategy) => {
+	const frontier = [start];
+	const visited = new Set([toKey(start)]);
+	const parentByNode = new Map();
+	const searchOrder = [start];
+
+	while (frontier.length > 0) {
+		const current = strategy === "dfs" ? frontier.pop() : frontier.shift();
+
+		if (current.x === end.x && current.y === end.y) {
+			const path = [];
+			let cursor = current;
+
+			while (cursor) {
+				path.push(cursor);
+				cursor = parentByNode.get(toKey(cursor));
+			}
+
+			path.reverse();
+			return { searchOrder, path };
+		}
+
+		for (const neighbour of getNeighbours(bitmap, current)) {
+			const key = toKey(neighbour);
+			if (visited.has(key)) {
+				continue;
+			}
+
+			visited.add(key);
+			parentByNode.set(key, current);
+			frontier.push(neighbour);
+			searchOrder.push(neighbour);
+		}
+	}
+
+	return { searchOrder, path: [] };
+};
+
+const resizeCanvas = () => {
+	MAZE.canvas.width = MAZE.image.width * MAZE.scale;
+	MAZE.canvas.height = MAZE.image.height * MAZE.scale;
+	MAZE.ctx.setTransform(MAZE.scale, 0, 0, MAZE.scale, 0, 0);
 	MAZE.ctx.imageSmoothingEnabled = false;
 };
 
-const playAnimation = document.getElementById("play-animation");
-playAnimation.onclick = () => {
-	MAZE.path = [getStartPoint(MAZE.bitmap)];
-
-	console.log(`starting animation`)
-	window.requestAnimationFrame(step);
+const drawPixel = (x, y, colour) => {
+	MAZE.ctx.fillStyle = `rgba(${colour.r},${colour.g},${colour.b},${colour.a / 255})`;
+	MAZE.ctx.fillRect(x, y, 1, 1);
 };
 
-// not really an ENUM, but just act as if it is.
-const COLOUR = {
-	BLACK: { r: 0, g: 0, b: 0, a: 255 },
-	WHITE: { r: 255, g: 255, b: 255, a: 255 },
-	RED: { r: 255, g: 0, b: 0, a: 255 },
-	GREEN: { r: 0, g: 255, b: 0, a: 255 }
-};
-
-const addNewDir = (x, y) => {
-	let result = {};
-	// check south, east, west, north, in that order
-	if (JSON.stringify(MAZE.bitmap[y + 1][x]) === JSON.stringify(COLOUR.WHITE)) {
-		result = { x: x, y: y + 1, colour: COLOUR.GREEN };
-		if (!MAZE.path.includes(result)) {
-			MAZE.bitmap[y + 1][x] = COLOUR.GREEN;
-			MAZE.path.push(result);
-			return;
-		}
-	}
-	if (JSON.stringify(MAZE.bitmap[y][x + 1]) === JSON.stringify(COLOUR.WHITE)) {
-		result = { x: x + 1, y: y, colour: COLOUR.GREEN };
-		if (!MAZE.path.includes(result)) {
-			MAZE.bitmap[y][x + 1] = COLOUR.GREEN;
-			MAZE.path.push(result);
-			return;
-		}
-	}
-	if (JSON.stringify(MAZE.bitmap[y][x - 1]) === JSON.stringify(COLOUR.WHITE)) {
-		result = { x: x - 1, y: y, colour: COLOUR.GREEN };
-		if (!MAZE.path.includes(result)) {
-			MAZE.bitmap[y][x - 1] = COLOUR.GREEN;
-			MAZE.path.push(result);
-			return;
-		}
-	}
-	if (JSON.stringify(MAZE.bitmap[y - 1][x]) === JSON.stringify(COLOUR.WHITE)) {
-		result = { x: x, y: y - 1, colour: COLOUR.GREEN };
-		if (!MAZE.path.includes(result)) {
-			MAZE.bitmap[y - 1][x] = COLOUR.GREEN;
-			MAZE.path.push(result);
-			return;
-		}
-	}
-}
-
-const step = (timestamp) => {
-	console.log(`step: ${timestamp}`)
-	MAZE.ctx.clearRect(0, 0, MAZE.canvas.width, MAZE.canvas.height);
+const render = (visitedCount = 0, pathCount = 0) => {
+	MAZE.ctx.clearRect(0, 0, MAZE.image.width, MAZE.image.height);
 	MAZE.ctx.drawImage(MAZE.image, 0, 0, MAZE.image.width, MAZE.image.height);
 
-	let currentPos = MAZE.path[MAZE.path.length - 1];
-	addNewDir(currentPos.x, currentPos.y);
-
-	for (let i = 0; i < MAZE.path.length; i++) {
-		const pixel = MAZE.path[i];
-		drawPixel(pixel.x, pixel.y, pixel.colour)
+	for (let i = 0; i < visitedCount; i++) {
+		const point = MAZE.searchOrder[i];
+		if (point) {
+			drawPixel(point.x, point.y, COLOUR.BLUE);
+		}
 	}
 
-	if (currentPos.x === MAZE.endPoint.x && currentPos.y === MAZE.endPoint.y) {
+	for (let i = 0; i < pathCount; i++) {
+		const point = MAZE.solutionPath[i];
+		if (point) {
+			drawPixel(point.x, point.y, COLOUR.GREEN);
+		}
+	}
+
+	if (MAZE.startPoint) {
+		drawPixel(MAZE.startPoint.x, MAZE.startPoint.y, COLOUR.RED);
+	}
+
+	if (MAZE.endPoint) {
+		drawPixel(MAZE.endPoint.x, MAZE.endPoint.y, COLOUR.RED);
+	}
+};
+
+const cancelAnimation = () => {
+	if (MAZE.animationId !== null) {
+		cancelAnimationFrame(MAZE.animationId);
+		MAZE.animationId = null;
+	}
+};
+
+const animateSolution = () => {
+	const step = () => {
+		const speedFactor = Math.max(1, MAZE.animationSpeed);
+		const visitedStep = Math.max(1, Math.ceil((MAZE.searchOrder.length * speedFactor) / 4000));
+		const pathStep = Math.max(1, Math.ceil((MAZE.solutionPath.length * speedFactor) / 2500));
+
+		if (MAZE.visitedProgress < MAZE.searchOrder.length) {
+			MAZE.visitedProgress = Math.min(MAZE.searchOrder.length, MAZE.visitedProgress + visitedStep);
+		} else if (MAZE.pathProgress < MAZE.solutionPath.length) {
+			MAZE.pathProgress = Math.min(MAZE.solutionPath.length, MAZE.pathProgress + pathStep);
+		}
+
+		render(MAZE.visitedProgress, MAZE.pathProgress);
+
+		if (MAZE.visitedProgress < MAZE.searchOrder.length || MAZE.pathProgress < MAZE.solutionPath.length) {
+			MAZE.animationId = requestAnimationFrame(step);
+			return;
+		}
+
+		MAZE.animationId = null;
+	};
+
+	MAZE.visitedProgress = 0;
+	MAZE.pathProgress = 0;
+	MAZE.animationId = requestAnimationFrame(step);
+};
+
+const recalculateSolution = () => {
+	if (!MAZE.bitmap) {
 		return;
 	}
 
-	window.requestAnimationFrame(step);
-}
+	MAZE.startPoint = findOpening(MAZE.bitmap, "top");
+	MAZE.endPoint = findOpening(MAZE.bitmap, "bottom");
+
+	if (!MAZE.startPoint || !MAZE.endPoint) {
+		MAZE.searchOrder = [];
+		MAZE.solutionPath = [];
+		render();
+		return;
+	}
+
+	const { searchOrder, path } = solveMaze(MAZE.bitmap, MAZE.startPoint, MAZE.endPoint, MAZE.searchStrategy);
+	MAZE.searchOrder = searchOrder;
+	MAZE.solutionPath = path;
+	render();
+};
+
+const loadMaze = () => {
+	cancelAnimation();
+	MAZE.image.src = selectedMaze.value;
+};
+
+MAZE.image.onload = () => {
+	MAZE.bitmap = getBitmapData(MAZE.image);
+	MAZE.scale = parseInt(mazeScale.value, 10);
+	resizeCanvas();
+	recalculateSolution();
+};
+
+selectedMaze.onchange = () => {
+	loadMaze();
+};
+
+mazeScale.onchange = () => {
+	MAZE.scale = parseInt(mazeScale.value, 10);
+	resizeCanvas();
+	render();
+};
+
+searchStrategy.onchange = () => {
+	cancelAnimation();
+	MAZE.searchStrategy = searchStrategy.value;
+	recalculateSolution();
+};
+
+animationSpeed.oninput = () => {
+	MAZE.animationSpeed = parseInt(animationSpeed.value, 10);
+	animationSpeedValue.value = animationSpeed.value;
+};
+
+playAnimation.onclick = () => {
+	cancelAnimation();
+	recalculateSolution();
+
+	if (MAZE.solutionPath.length === 0) {
+		console.warn("No solution found for the selected maze.");
+		return;
+	}
+
+	animateSolution();
+};
+
+MAZE.animationSpeed = parseInt(animationSpeed.value, 10);
+animationSpeedValue.value = animationSpeed.value;
+MAZE.searchStrategy = searchStrategy.value;
+
+loadMaze();

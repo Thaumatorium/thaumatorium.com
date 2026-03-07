@@ -2,13 +2,12 @@
 title: "Maze Solver"
 description: "Canvas-based maze solver inspired by JonPizza's recursive solver."
 publishDate: 2020-06-18T20:07:58+02:00
-lastmod: 2020-08-04T04:27:23+02:00
+lastmod: 2026-03-07T21:13:00+01:00
 ---
 <section>
 	<link rel="stylesheet" href="maze.css">
 	<h2>Maze solver</h2>
-	<p>Based on <a http="https://github.com/JonPizza/recursive-maze-solver">JonPizza's maze solver</a>, but translated to Nim</p>
-	<p>I also have a version made in <a http="https://github.com/NostraDavid/MazeSolver-Nim">Nim</a> </p>
+	<p>Based on <a href="https://github.com/JonPizza/recursive-maze-solver">JonPizza's maze solver</a>, but translated to JS</p>
 	<p>
 		<select id=selected-maze type=select-one>
 			<option value="mazes/maze.png" selected>maze.png</option>
@@ -31,6 +30,15 @@ lastmod: 2020-08-04T04:27:23+02:00
 			<option value=9>9</option>
 			<option value=10 selected>10</option>
 		</select>
+		<select id=search-strategy type=select-one>
+			<option value="bfs" selected>Breadth-first search</option>
+			<option value="dfs">Depth-first search</option>
+		</select>
+		<label for=animation-speed>
+			Speed
+			<input id=animation-speed type=range min=1 max=100 value=35>
+			<output id=animation-speed-value for=animation-speed>35</output>
+		</label>
 
 		<button id=play-animation>Play animation</button>
 	</p>
