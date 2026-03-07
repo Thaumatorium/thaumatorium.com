@@ -10,7 +10,7 @@ shell:
     devenv shell
 
 serve *args:
-    hugo server --buildDrafts --port 1313 --noHTTPCache --disableFastRender {{args}}
+    hugo server --buildDrafts --port 1313 --baseURL http://thaum.localhost:1313/ --noHTTPCache --disableFastRender {{args}}
 
 fmt-public:
     prettier --ignore-path .prettierignore --write "public/**/*"
