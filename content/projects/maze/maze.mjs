@@ -1,3 +1,5 @@
+import { generatorMap, generators } from "./generators/index.js";
+
 const COLOUR = {
 	BACKGROUND: "#ffffff",
 	UNTOUCHED: "#000000",
@@ -17,6 +19,7 @@ const MAZE = {
 	width: 40,
 	height: 40,
 	cellSize: 30,
+	generationAlgorithm: "origin-shift",
 	generationCoverage: 95,
 	generationTimeLimitMs: 5000,
 	animationSpeed: 35,
@@ -40,6 +43,7 @@ const MAZE = {
 const widthInput = document.getElementById("maze-width");
 const heightInput = document.getElementById("maze-height");
 const cellSizeInput = document.getElementById("cell-size");
+const generationAlgorithmInput = document.getElementById("generation-algorithm");
 const generationCoverageInput = document.getElementById("generation-coverage");
 const generationTimeLimitInput = document.getElementById("generation-time-limit");
 const searchStrategyInput = document.getElementById("search-strategy");
@@ -74,6 +78,13 @@ const getGenerationSummary = () => (
 	`${MAZE.generationCoverage}% coverage or ${getEffectiveGenerationTimeLimitMs()} ms at current speed`
 );
 
+const populateGeneratorOptions = () => {
+	generationAlgorithmInput.innerHTML = generators
+		.map((entry) => `<option value="${entry.id}">${entry.name}</option>`)
+		.join("");
+	generationAlgorithmInput.value = MAZE.generationAlgorithm;
+};
+
 const getCornerCrawlerStarts = (width, height) => {
 	const corners = [
 		indexOf({ width }, 0, 0),
@@ -106,7 +117,9 @@ const createInitialGrid = (width, height) => {
 	return {
 		width,
 		height,
+		topology: "square",
 		parent,
+		links: Array.from({ length: size }, () => new Set()),
 		origin: crawlers[0],
 		crawlers,
 		shiftCount: 0,
@@ -128,6 +141,17 @@ const getNeighbourIndices = (grid, index) => {
 	return neighbours;
 };
 
+const refreshLinksFromParent = (grid) => {
+	grid.links = Array.from({ length: grid.parent.length }, () => new Set());
+	for (let index = 0; index < grid.parent.length; index++) {
+		const parent = grid.parent[index];
+		if (parent >= 0) {
+			grid.links[index].add(parent);
+			grid.links[parent].add(index);
+		}
+	}
+};
+
 const shiftOrigin = (grid) => {
 	const neighbours = getNeighbourIndices(grid, grid.origin);
 	const nextOrigin = neighbours[randomInt(neighbours.length)];
@@ -137,6 +161,7 @@ const shiftOrigin = (grid) => {
 	grid.origin = nextOrigin;
 	grid.shiftCount += 1;
 	grid.visitedByOrigin.add(nextOrigin);
+	refreshLinksFromParent(grid);
 };
 
 const rerootAt = (grid, newRoot) => {
@@ -164,15 +189,62 @@ const shiftCrawler = (grid, crawlerIndex) => {
 	grid.crawlers[crawlerIndex] = grid.origin;
 };
 
-const areConnected = (grid, first, second) => (
-	grid.parent[first] === second || grid.parent[second] === first
-);
+const areConnected = (grid, first, second) => grid.links[first]?.has(second) ?? false;
 
 const getConnectedNeighbours = (grid, index) => (
-	shuffle(getNeighbourIndices(grid, index).filter((neighbour) => areConnected(grid, index, neighbour)))
+	shuffle([...(grid.links[index] ?? [])])
 );
 
+const isHexGrid = () => MAZE.grid?.topology === "hex";
+
+const getHexCenter = (index) => {
+	const { x, y } = coordsOf(MAZE.grid, index);
+	const size = MAZE.cellSize;
+	const hexWidth = Math.sqrt(3) * size;
+	return {
+		x: hexWidth * (x + 0.5 * (y % 2)) + size,
+		y: size * (1.5 * y + 1),
+	};
+};
+
+const getHexVertices = (index, inset = 0) => {
+	const center = getHexCenter(index);
+	const radius = Math.max(2, MAZE.cellSize - inset);
+	const angles = [-90, -30, 30, 90, 150, 210];
+	return angles.map((degrees) => {
+		const radians = (degrees * Math.PI) / 180;
+		return {
+			x: center.x + Math.cos(radians) * radius,
+			y: center.y + Math.sin(radians) * radius,
+		};
+	});
+};
+
+const getHexNeighbours = (index) => {
+	const { x, y } = coordsOf(MAZE.grid, index);
+	const evenRow = y % 2 === 0;
+	const deltas = evenRow
+		? [[1, 0], [-1, 0], [0, -1], [-1, -1], [0, 1], [-1, 1]]
+		: [[1, 0], [-1, 0], [1, -1], [0, -1], [1, 1], [0, 1]];
+	return deltas.map(([dx, dy]) => {
+		const nx = x + dx;
+		const ny = y + dy;
+		if (nx < 0 || ny < 0 || nx >= MAZE.grid.width || ny >= MAZE.grid.height) {
+			return -1;
+		}
+		return indexOf(MAZE.grid, nx, ny);
+	});
+};
+
 const resizeCanvas = () => {
+	if (isHexGrid()) {
+		const size = MAZE.cellSize;
+		const hexWidth = Math.sqrt(3) * size;
+		MAZE.canvas.width = Math.ceil(hexWidth * (MAZE.width + 0.5) + size);
+		MAZE.canvas.height = Math.ceil(size * (1.5 * (MAZE.height - 1) + 2) + size);
+		return;
+	}
+
 	const width = MAZE.width * MAZE.cellSize + 1;
 	const height = MAZE.height * MAZE.cellSize + 1;
 
@@ -181,6 +253,19 @@ const resizeCanvas = () => {
 };
 
 const fillCell = (index, fillStyle, inset = 0) => {
+	if (isHexGrid()) {
+		const vertices = getHexVertices(index, inset);
+		MAZE.ctx.fillStyle = fillStyle;
+		MAZE.ctx.beginPath();
+		MAZE.ctx.moveTo(vertices[0].x, vertices[0].y);
+		for (let i = 1; i < vertices.length; i++) {
+			MAZE.ctx.lineTo(vertices[i].x, vertices[i].y);
+		}
+		MAZE.ctx.closePath();
+		MAZE.ctx.fill();
+		return;
+	}
+
 	const { x, y } = coordsOf(MAZE.grid, index);
 	const cellSize = MAZE.cellSize;
 
@@ -211,6 +296,11 @@ const getWallColour = (current, neighbour) => {
 };
 
 const drawWalls = () => {
+	if (isHexGrid()) {
+		drawHexWalls();
+		return;
+	}
+
 	const { ctx, cellSize, grid } = MAZE;
 	ctx.lineWidth = 2;
 
@@ -262,6 +352,39 @@ const drawWalls = () => {
 	}
 };
 
+const drawHexWalls = () => {
+	const { ctx, grid } = MAZE;
+	ctx.lineWidth = 2;
+
+	for (let index = 0; index < grid.size; index++) {
+		if (grid.blocked?.has(index)) {
+			continue;
+		}
+
+		const vertices = getHexVertices(index);
+		const neighbours = getHexNeighbours(index);
+		const edges = [
+			[vertices[0], vertices[1], neighbours[2]],
+			[vertices[1], vertices[2], neighbours[0]],
+			[vertices[2], vertices[3], neighbours[4]],
+			[vertices[3], vertices[4], neighbours[5]],
+			[vertices[4], vertices[5], neighbours[1]],
+			[vertices[5], vertices[0], neighbours[3]],
+		];
+
+		for (const [from, to, neighbour] of edges) {
+			if (neighbour >= 0 && areConnected(grid, index, neighbour)) {
+				continue;
+			}
+			ctx.strokeStyle = getWallColour(index, neighbour);
+			ctx.beginPath();
+			ctx.moveTo(from.x, from.y);
+			ctx.lineTo(to.x, to.y);
+			ctx.stroke();
+		}
+	}
+};
+
 const render = () => {
 	if (!MAZE.grid) {
 		return;
@@ -270,8 +393,14 @@ const render = () => {
 	MAZE.ctx.fillStyle = COLOUR.BACKGROUND;
 	MAZE.ctx.fillRect(0, 0, MAZE.canvas.width, MAZE.canvas.height);
 
+	if (MAZE.grid.blocked) {
+		for (const blocked of MAZE.grid.blocked) {
+			fillCell(blocked, COLOUR.WALL);
+		}
+	}
+
 	if (MAZE.showUntouchedCells && MAZE.grid.visitedByOrigin) {
-		for (let index = 0; index < MAZE.grid.parent.length; index++) {
+		for (let index = 0; index < (MAZE.grid.parent?.length ?? MAZE.grid.size ?? 0); index++) {
 			if (!MAZE.grid.visitedByOrigin.has(index)) {
 				fillCell(index, COLOUR.UNTOUCHED);
 			}
@@ -319,6 +448,7 @@ const runGeneration = () => {
 	MAZE.showUntouchedCells = true;
 	MAZE.showCrawlers = true;
 	MAZE.grid = createInitialGrid(MAZE.width, MAZE.height);
+	refreshLinksFromParent(MAZE.grid);
 	resizeCanvas();
 	render();
 
@@ -558,6 +688,7 @@ const applySettings = () => {
 	MAZE.width = clamp(parseInt(widthInput.value, 10) || 20, 4, 80);
 	MAZE.height = clamp(parseInt(heightInput.value, 10) || 20, 4, 80);
 	MAZE.cellSize = clamp(parseInt(cellSizeInput.value, 10) || 18, 8, 40);
+	MAZE.generationAlgorithm = generationAlgorithmInput.value || "origin-shift";
 	MAZE.generationCoverage = clamp(parseInt(generationCoverageInput.value, 10) || 95, 1, 100);
 	MAZE.generationTimeLimitMs = clamp(parseInt(generationTimeLimitInput.value, 10) || 5000, 50, 10000);
 	MAZE.searchStrategy = searchStrategyInput.value;
@@ -565,6 +696,7 @@ const applySettings = () => {
 	widthInput.value = MAZE.width;
 	heightInput.value = MAZE.height;
 	cellSizeInput.value = MAZE.cellSize;
+	generationAlgorithmInput.value = MAZE.generationAlgorithm;
 	generationCoverageInput.value = MAZE.generationCoverage;
 	generationTimeLimitInput.value = MAZE.generationTimeLimitMs;
 };
@@ -598,7 +730,29 @@ cellSizeInput.onchange = () => {
 
 generateButton.onclick = () => {
 	applySettings();
-	runGeneration();
+	if (MAZE.generationAlgorithm === "origin-shift") {
+		runGeneration();
+		return;
+	}
+
+	cancelAnimation();
+	MAZE.showUntouchedCells = false;
+	MAZE.showCrawlers = false;
+	MAZE.searchOrder = [];
+	MAZE.deadEndOrder = [];
+	MAZE.solutionPath = [];
+	MAZE.visitedProgress = 0;
+	MAZE.deadEndProgress = 0;
+	MAZE.pathProgress = 0;
+	MAZE.grid = generatorMap.get(MAZE.generationAlgorithm).generate({
+		width: MAZE.width,
+		height: MAZE.height,
+		generationCoverage: MAZE.generationCoverage,
+		generationTimeLimitMs: MAZE.generationTimeLimitMs,
+	});
+	resizeCanvas();
+	render();
+	setStatus(`Generated ${generatorMap.get(MAZE.generationAlgorithm).name}.`);
 };
 
 solveButton.onclick = () => {
@@ -609,6 +763,7 @@ solveButton.onclick = () => {
 MAZE.animationSpeed = 100;
 animationSpeedInput.value = "100";
 animationSpeedValue.value = "100";
+populateGeneratorOptions();
 applySettings();
 setStatus(`Ready to generate a ${MAZE.width} x ${MAZE.height} maze with ${getGenerationSummary()}.`);
 runGeneration();
