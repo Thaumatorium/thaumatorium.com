@@ -1,3 +1,75 @@
-section canvas {
-  box-shadow: 1px 1px 2px black;
+.maze-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.maze-page h2 {
+  margin-bottom: 0;
+}
+
+.maze-intro {
+  margin: 0;
+  max-width: 70ch;
+}
+
+.maze-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.75rem 1rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f7f7f7;
+}
+
+.maze-controls label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: inherit;
+}
+
+.maze-controls select,
+.maze-controls input,
+.maze-controls button,
+.maze-controls output {
+  font: inherit;
+}
+
+.maze-controls select,
+.maze-controls input[type="range"] {
+  min-width: 11rem;
+}
+
+.maze-controls output {
+  font-variant-numeric: tabular-nums;
+}
+
+.maze-controls button {
+  border: 1px solid #999;
+  border-radius: 4px;
+  padding: 0.7rem 1rem;
+  background: #fff;
+  color: inherit;
+  cursor: pointer;
+}
+
+.maze-controls button:hover {
+  background: #f0f0f0;
+}
+
+.maze-stage {
+  overflow: auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.maze-stage canvas {
+  display: block;
+  max-width: 100%;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }

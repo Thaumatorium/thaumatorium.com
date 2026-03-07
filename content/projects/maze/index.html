@@ -2,14 +2,16 @@
 title: "Maze Solver"
 description: "Canvas-based maze solver inspired by JonPizza's recursive solver."
 publishDate: 2020-06-18T20:07:58+02:00
-lastmod: 2026-03-07T21:13:00+01:00
+lastmod: 2026-03-07T21:22:00+01:00
 ---
-<section>
+<section class="maze-page">
 	<link rel="stylesheet" href="maze.css">
 	<h2>Maze solver</h2>
-	<p>Based on <a href="https://github.com/JonPizza/recursive-maze-solver">JonPizza's maze solver</a>, but translated to JS</p>
-	<p>
-		<select id=selected-maze type=select-one>
+	<p class="maze-intro">Based on <a href="https://github.com/JonPizza/recursive-maze-solver">JonPizza's maze solver</a>, but translated to JS.</p>
+	<div class="maze-controls">
+		<label>
+			Maze
+			<select id=selected-maze type=select-one>
 			<option value="mazes/maze.png" selected>maze.png</option>
 			<option value="mazes/maze2.png">maze2.png</option>
 			<option value="mazes/3232maze_original.png">3232maze_original.png</option>
@@ -17,8 +19,11 @@ lastmod: 2026-03-07T21:13:00+01:00
 			<option value="mazes/3232maze_longer.png">3232maze_longer.png</option>
 			<option value="mazes/3232maze_longest.png">3232maze_longest.png</option>
 			<option value="mazes/3232maze_longer_bigger.png">3232maze_longer_bigger.png</option>
-		</select>
-		<select id=maze-scale type=select-one>
+			</select>
+		</label>
+		<label>
+			Scale
+			<select id=maze-scale type=select-one>
 			<option value=1>1</option>
 			<option value=2>2</option>
 			<option value=3>3</option>
@@ -29,11 +34,15 @@ lastmod: 2026-03-07T21:13:00+01:00
 			<option value=8>8</option>
 			<option value=9>9</option>
 			<option value=10 selected>10</option>
-		</select>
-		<select id=search-strategy type=select-one>
+			</select>
+		</label>
+		<label>
+			Strategy
+			<select id=search-strategy type=select-one>
 			<option value="bfs" selected>Breadth-first search</option>
 			<option value="dfs">Depth-first search</option>
-		</select>
+			</select>
+		</label>
 		<label for=animation-speed>
 			Speed
 			<input id=animation-speed type=range min=1 max=100 value=35>
@@ -41,7 +50,9 @@ lastmod: 2026-03-07T21:13:00+01:00
 		</label>
 
 		<button id=play-animation>Play animation</button>
-	</p>
-	<canvas id=maze></canvas>
+	</div>
+	<div class="maze-stage">
+		<canvas id=maze></canvas>
+	</div>
 	<script type=module src="maze.mjs"></script>
 </section>
