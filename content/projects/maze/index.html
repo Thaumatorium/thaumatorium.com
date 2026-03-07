@@ -2,39 +2,32 @@
 title: "Maze Solver"
 description: "Canvas-based maze solver inspired by JonPizza's recursive solver."
 publishDate: 2020-06-18T20:07:58+02:00
-lastmod: 2026-03-07T21:22:00+01:00
+lastmod: 2026-03-07T22:37:00+01:00
 ---
 <section class="maze-page">
 	<link rel="stylesheet" href="maze.css">
 	<h2>Maze solver</h2>
-	<p class="maze-intro">Based on <a href="https://github.com/JonPizza/recursive-maze-solver">JonPizza's maze solver</a>, but translated to JS.</p>
+	<p class="maze-intro">Generate a maze with Captain Luma's Origin Shift algorithm, then solve it with either breadth-first or depth-first search.</p>
 	<div class="maze-controls">
 		<label>
-			Maze
-			<select id=selected-maze type=select-one>
-			<option value="mazes/maze.png" selected>maze.png</option>
-			<option value="mazes/maze2.png">maze2.png</option>
-			<option value="mazes/3232maze_original.png">3232maze_original.png</option>
-			<option value="mazes/3232maze_long.png">3232maze_long.png</option>
-			<option value="mazes/3232maze_longer.png">3232maze_longer.png</option>
-			<option value="mazes/3232maze_longest.png">3232maze_longest.png</option>
-			<option value="mazes/3232maze_longer_bigger.png">3232maze_longer_bigger.png</option>
-			</select>
+			Width
+			<input id=maze-width type=number min=4 max=80 value=40>
 		</label>
 		<label>
-			Scale
-			<select id=maze-scale type=select-one>
-			<option value=1>1</option>
-			<option value=2>2</option>
-			<option value=3>3</option>
-			<option value=4>4</option>
-			<option value=5>5</option>
-			<option value=6>6</option>
-			<option value=7>7</option>
-			<option value=8>8</option>
-			<option value=9>9</option>
-			<option value=10 selected>10</option>
-			</select>
+			Height
+			<input id=maze-height type=number min=4 max=80 value=40>
+		</label>
+		<label>
+			Cell size
+			<input id=cell-size type=number min=8 max=40 value=30>
+		</label>
+		<label>
+			Initial coverage
+			<input id=generation-coverage type=number min=1 max=100 value=95>
+		</label>
+		<label>
+			Time limit (ms)
+			<input id=generation-time-limit type=number min=50 max=10000 step=50 value=5000>
 		</label>
 		<label>
 			Strategy
@@ -44,13 +37,15 @@ lastmod: 2026-03-07T21:22:00+01:00
 			</select>
 		</label>
 		<label for=animation-speed>
-			Speed
+			Animation speed
 			<input id=animation-speed type=range min=1 max=100 value=35>
 			<output id=animation-speed-value for=animation-speed>35</output>
 		</label>
 
-		<button id=play-animation>Play animation</button>
+		<button id=generate-maze>Generate maze</button>
+		<button id=solve-maze>Solve maze</button>
 	</div>
+	<p id=maze-status class="maze-status">Ready to generate a 40 x 40 maze until 95% coverage or 5000 ms.</p>
 	<div class="maze-stage">
 		<canvas id=maze></canvas>
 	</div>

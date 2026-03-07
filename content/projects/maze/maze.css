@@ -12,6 +12,10 @@
   max-width: 70ch;
 }
 
+.maze-status {
+  margin: 0;
+}
+
 .maze-controls {
   display: flex;
   flex-wrap: wrap;
@@ -39,8 +43,9 @@
 }
 
 .maze-controls select,
+.maze-controls input[type="number"],
 .maze-controls input[type="range"] {
-  min-width: 11rem;
+  min-width: 9rem;
 }
 
 .maze-controls output {
