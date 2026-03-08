@@ -1,285 +1,250 @@
 ---
 title: "Queueing Simulation"
-description: "Simulating Computer Systems: Interactive M/G/2/K Queueing Model Simulation"
+description: "Interactive M/G/2/K queue simulation with warm-up, measurement windows, and live history."
 publishDate: 2025-11-01T21:47:42+01:00
-lastmod: 2026-02-10T23:16:52+01:00
+lastmod: 2026-03-08T23:20:00+01:00
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>M/G/2/K Queueing Simulation</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<section class="queue-sim-page">
   <style>
-    :root {
-      color-scheme: dark;
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --bg: #0f172a;
-      --panel: rgba(15, 23, 42, 0.8);
-      --accent: #38bdf8;
-      --accent-muted: rgba(56, 189, 248, 0.28);
-      --text: #e2e8f0;
-      --grid-gap: 1.5rem;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: radial-gradient(circle at 20% 20%, #1e293b 0%, var(--bg) 55%, #020617 100%);
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 32px clamp(16px, 4vw, 48px);
-      box-sizing: border-box;
-    }
-
-    .app {
-      width: min(1200px, 100%);
+    .queue-sim-page {
+      --bg: #f4efe5;
+      --panel: rgba(255, 251, 244, 0.92);
+      --panel-strong: #fffdf9;
+      --ink: #20150d;
+      --muted: #5c4636;
+      --border: #d6c3af;
+      --accent: #0f766e;
+      --accent-soft: rgba(15, 118, 110, 0.16);
+      --warn: #d97706;
+      --danger: #dc2626;
       display: grid;
-      grid-template-columns: 280px 1fr;
-      grid-auto-rows: auto;
-      gap: var(--grid-gap);
+      gap: 1rem;
+      margin-left: calc(50% - 50vw + 1rem);
+      margin-right: calc(50% - 50vw + 1rem);
+      padding: 0 0 1rem;
+      color: var(--ink);
     }
 
-    h1 {
-      grid-column: 1 / -1;
-      margin: 0;
-      font-size: clamp(1.6rem, 2.4vw, 2.4rem);
-      font-weight: 700;
-      letter-spacing: 0.02em;
+    .queue-sim-shell,
+    .queue-sim-panel {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: linear-gradient(180deg, var(--panel-strong), var(--panel));
+      box-shadow: 0 18px 36px rgba(58, 36, 18, 0.1);
     }
 
-    .subtitle {
-      grid-column: 1 / -1;
-      margin: -0.75rem 0 0;
-      font-size: 0.85rem;
-      color: rgba(226, 232, 240, 0.55);
-      letter-spacing: 0.06em;
-    }
-
-    h2 {
-      margin: 0 0 0.75rem;
-      font-size: 1rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: rgba(226, 232, 240, 0.8);
-    }
-
-    .panel {
-      background: var(--panel);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(226, 232, 240, 0.12);
-      border-radius: 18px;
-      padding: clamp(16px, 2vw, 24px);
-      box-shadow: 0 24px 40px -28px rgba(15, 23, 42, 0.9);
-    }
-
-    .controls, .metrics {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    label {
+    .queue-sim-shell {
       display: grid;
-      grid-template-columns: 1fr minmax(80px, 120px);
-      gap: 10px;
-      align-items: center;
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: rgba(226, 232, 240, 0.72);
+      grid-template-columns: 320px 1fr;
+      gap: 1rem;
+      padding: 1rem;
     }
 
-    input[type="number"] {
-      appearance: textfield;
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(148, 163, 184, 0.25);
+    .queue-sim-controls,
+    .queue-sim-sidebar {
+      display: grid;
+      gap: 1rem;
+      align-content: start;
+    }
+
+    .queue-sim-panel {
+      padding: 1rem;
+    }
+
+    .queue-sim-shell h2,
+    .queue-sim-shell h3,
+    .queue-sim-shell p {
+      margin: 0;
+      padding: 0;
+    }
+
+    .queue-sim-kicker {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .queue-sim-title {
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .queue-sim-subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.45;
+      max-width: 72ch;
+    }
+
+    .queue-sim-form {
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .queue-sim-form label,
+    .queue-sim-range {
+      display: grid;
+      gap: 0.35rem;
+      color: var(--muted);
+      font-size: 0.83rem;
+    }
+
+    .queue-sim-form input,
+    .queue-sim-form select {
+      border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 6px 10px;
-      color: inherit;
-      font-size: 0.9rem;
-      transition: border 0.2s ease, box-shadow 0.2s ease;
+      padding: 0.6rem 0.7rem;
+      background: #fffdfa;
+      color: var(--ink);
+      font: inherit;
     }
 
-    input[type="number"]:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px var(--accent-muted);
-    }
-
-    input[type="range"] {
-      width: 100%;
+    .queue-sim-form input[type="range"] {
+      padding: 0;
       accent-color: var(--accent);
     }
 
-    .range-row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .range-label {
-      min-width: 80px;
-      text-align: right;
-      font-size: 0.85rem;
-      color: rgba(226, 232, 240, 0.6);
-    }
-
-    .button-group {
-      display: flex;
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    button {
-      flex: 1;
-      border: 0;
-      border-radius: 999px;
-      padding: 10px 16px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      cursor: pointer;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-      color: #0f172a;
-      background: linear-gradient(135deg, #38bdf8, #818cf8);
-      box-shadow: 0 16px 32px -20px rgba(56, 189, 248, 0.8);
-    }
-
-    button.secondary {
-      background: rgba(148, 163, 184, 0.15);
-      color: rgba(226, 232, 240, 0.85);
-      box-shadow: none;
-      border: 1px solid rgba(148, 163, 184, 0.25);
-    }
-
-    button:hover {
-      transform: translateY(-1px);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    #speedValue {
-      font-variant-numeric: tabular-nums;
-    }
-
-    .visual {
-      grid-column: 2 / -1;
+    .queue-sim-inline {
       display: grid;
-      grid-template-rows: auto 1fr;
-      gap: 16px;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 0.75rem;
     }
 
-    .canvas {
+    .queue-sim-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .queue-sim-note {
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+
+    .queue-sim-stage {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .queue-sim-canvas {
       position: relative;
-      background: rgba(15, 23, 42, 0.55);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      border-radius: 18px;
-      padding: 24px 32px;
       overflow: hidden;
+      min-height: 24rem;
+      padding: 1.2rem 1.4rem;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.09), transparent 32%),
+        linear-gradient(180deg, #fffcf7, #f5eee2);
     }
 
-    .flow {
+    .queue-sim-flow {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 1.2rem;
+      min-height: 18rem;
     }
 
-    .cloud, .exit {
-      font-size: 1.1rem;
-      font-weight: 600;
+    .queue-sim-cloud,
+    .queue-sim-exit {
+      display: grid;
+      justify-items: center;
+      gap: 0.55rem;
+      color: var(--muted);
+      font-size: 0.8rem;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: rgba(226, 232, 240, 0.75);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
+      letter-spacing: 0.08em;
     }
 
-    .cloud::before {
+    .queue-sim-cloud::before {
       content: "";
-      width: 70px;
-      height: 46px;
-      border-radius: 35px;
-      border: 2px dashed rgba(226, 232, 240, 0.45);
-      position: relative;
-      box-shadow: inset 0 0 0 2px rgba(56, 189, 248, 0.2);
+      width: 72px;
+      height: 44px;
+      border-radius: 999px;
+      border: 2px dashed #b8a48f;
+      background: rgba(255, 255, 255, 0.7);
     }
 
-    .exit::before {
+    .queue-sim-exit::before {
       content: "";
-      width: 10px;
-      height: 10px;
+      width: 14px;
+      height: 14px;
       border-radius: 999px;
       background: var(--accent);
-      box-shadow: 0 0 14px rgba(56, 189, 248, 0.8);
+      box-shadow: 0 0 16px rgba(15, 118, 110, 0.35);
+    }
+
+    .queue-sim-arrow {
+      width: 38px;
+      height: 4px;
+      background: #b5a08c;
+      position: relative;
+    }
+
+    .queue-sim-arrow::after {
+      content: "";
+      position: absolute;
+      right: -2px;
+      top: -5px;
+      border-left: 9px solid #8d7661;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+    }
+
+    .queue-sim-pipe {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(240px, 1fr) minmax(260px, 320px);
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .queue-sim-queue,
+    .queue-sim-server {
+      min-height: 10rem;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 0.85rem;
+      position: relative;
+    }
+
+    .queue-sim-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .queue-area {
+      position: relative;
+      min-height: 8rem;
+    }
+
+    .queue-sim-server-bank {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .queue-sim-server .slot {
+      min-height: 3rem;
+      margin-top: 0.8rem;
+      border: 1px dashed #baa894;
+      border-radius: 12px;
+      background: rgba(244, 239, 229, 0.8);
+    }
+
+    .queue-sim-server.busy .slot {
+      border-color: var(--accent);
+      box-shadow: inset 0 0 0 2px var(--accent-soft);
     }
 
     .customer-layer {
       position: absolute;
       inset: 0;
       pointer-events: none;
-      z-index: 2;
-    }
-
-    .pipe {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-
-    .arrow {
-      width: 32px;
-      height: 4px;
-      background: rgba(148, 163, 184, 0.45);
-      position: relative;
-    }
-
-    .arrow::after {
-      content: "";
-      position: absolute;
-      top: -5px;
-      right: -2px;
-      width: 0;
-      height: 0;
-      border-left: 9px solid rgba(148, 163, 184, 0.6);
-      border-top: 7px solid transparent;
-      border-bottom: 7px solid transparent;
-    }
-
-    .queue-container {
-      flex: 1;
-      border: 2px solid rgba(148, 163, 184, 0.35);
-      background: rgba(15, 23, 42, 0.65);
-      border-radius: 14px;
-      padding: 14px;
-      min-height: 160px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-    }
-
-    .queue-title {
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-size: 0.8rem;
-      color: rgba(226, 232, 240, 0.7);
-    }
-
-    .queue-area {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-height: 80px;
-      flex-wrap: wrap;
     }
 
     .customer {
@@ -287,928 +252,267 @@ lastmod: 2026-02-10T23:16:52+01:00
       width: 36px;
       height: 36px;
       border-radius: 12px;
-      background: linear-gradient(135deg, #38bdf8, #6366f1);
+      background: linear-gradient(135deg, #22c55e, #0ea5e9);
+      color: #0b1414;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #0f172a;
       font-size: 0.7rem;
       font-weight: 700;
-      letter-spacing: 0.04em;
-      box-shadow: 0 12px 16px -14px rgba(99, 102, 241, 0.8);
-      transition: transform 0.65s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.35s ease, filter 0.35s ease;
       opacity: 0;
-      transform: translate3d(0, 0, 0);
+      transition: transform 0.65s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.35s ease;
+      box-shadow: 0 14px 18px rgba(15, 23, 42, 0.12);
     }
 
     .customer.visible {
       opacity: 1;
     }
 
-    .customer[data-state="queue"] {
-      filter: saturate(0.9);
-    }
-
-    .customer[data-state="server"] {
-      filter: saturate(1.2);
-      box-shadow: 0 20px 26px -20px rgba(56, 189, 248, 0.9);
-    }
-
-    .customer[data-state="exit"] {
-      filter: saturate(0.7);
-    }
-
-    .customer[data-state="dropped"] {
-      filter: saturate(1.1);
-    }
-
     .customer.rejected {
-      background: linear-gradient(135deg, #f97316, #fb7185);
-      box-shadow: 0 12px 24px -16px rgba(248, 113, 113, 0.65);
+      background: linear-gradient(135deg, #fb923c, #f43f5e);
     }
 
-    .server-bank {
+    .queue-sim-strip {
       display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .server {
-      flex: 1;
-      min-width: 120px;
-      border-radius: 18px;
-      border: 2px solid rgba(148, 163, 184, 0.35);
-      background: rgba(15, 23, 42, 0.65);
-      padding: 16px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .server-title {
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-size: 0.78rem;
-      color: rgba(226, 232, 240, 0.7);
-    }
-
-    .server .slot {
-      height: 46px;
-      border-radius: 12px;
-      border: 1px dashed rgba(148, 163, 184, 0.26);
-      background: rgba(15, 23, 42, 0.45);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .server.busy .slot {
-      border-color: var(--accent);
-      box-shadow: inset 0 0 0 2px rgba(56, 189, 248, 0.28);
-    }
-
-    .timeline {
-      display: flex;
-      gap: 18px;
       flex-wrap: wrap;
-      font-size: 0.82rem;
-      letter-spacing: 0.04em;
-      color: rgba(226, 232, 240, 0.75);
+      gap: 0.75rem;
+      font-size: 0.84rem;
+      color: var(--muted);
     }
 
-    .timeline span {
+    .queue-sim-strip span {
+      padding: 0.45rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.65);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .queue-sim-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .queue-sim-stat {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.65);
+      display: grid;
+      gap: 0.25rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .queue-sim-stat small {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.68rem;
+    }
+
+    .queue-sim-stat strong {
+      font-size: 1rem;
+    }
+
+    .queue-sim-chart-shell {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .queue-sim-chart {
+      width: 100%;
+      height: 220px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background:
+        linear-gradient(180deg, rgba(15, 118, 110, 0.05), rgba(255,255,255,0.55)),
+        repeating-linear-gradient(to top, rgba(92, 70, 54, 0.08), rgba(92, 70, 54, 0.08) 1px, transparent 1px, transparent 44px);
+    }
+
+    .queue-sim-chart-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .queue-sim-chart-key {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
+      gap: 0.45rem;
+    }
+
+    .queue-sim-chart-swatch {
+      width: 1.4rem;
+      height: 0.2rem;
       border-radius: 999px;
-      background: rgba(56, 189, 248, 0.14);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      font-variant-numeric: tabular-nums;
     }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .stat {
-      background: rgba(15, 23, 42, 0.52);
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      border-radius: 12px;
-      padding: 10px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .stat-label {
-      font-size: 0.68rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(226, 232, 240, 0.6);
-    }
-
-    .stat-value {
-      font-size: 1rem;
-      font-weight: 600;
-      color: rgba(226, 232, 240, 0.92);
-    }
-
-    @media (max-width: 960px) {
-      .app {
+    @media (max-width: 980px) {
+      .queue-sim-shell {
         grid-template-columns: 1fr;
       }
 
-      .visual {
-        grid-column: 1 / -1;
+      .queue-sim-page {
+        margin-left: 0;
+        margin-right: 0;
       }
 
-      .server-bank {
+      .queue-sim-pipe {
+        grid-template-columns: 1fr;
+      }
+
+      .queue-sim-flow {
         flex-direction: column;
+      }
+
+      .queue-sim-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
   </style>
-</head>
-<body>
-  <main class="app">
-    <h1>M/G/2/K Queue Simulation</h1>
-    <p class="subtitle">Poisson arrivals · General service times · 2 servers · Finite capacity K</p>
 
-    <section class="panel controls">
-      <h2>Controls</h2>
+  <section class="queue-sim-shell">
+    <aside class="queue-sim-controls">
+      <section class="queue-sim-panel queue-sim-title">
+        <h2>M/G/2/K Queue Simulation</h2>
+        <p class="queue-sim-subtitle">Poisson arrivals, two servers, finite total system capacity <code>K</code>, and configurable service-time distribution.</p>
+      </section>
 
-      <label>
-        Arrival rate λ (customers/sec)
-        <input type="number" id="arrivalRate" min="0.1" step="0.1" value="1.2">
-      </label>
-
-      <label>
-        Mean service time μ (sec)
-        <input type="number" id="meanService" min="0.1" step="0.1" value="0.7">
-      </label>
-
-      <div class="range-row">
-        <div>
-          <div class="range-label">Service variability (CV)</div>
-          <input type="range" id="serviceCv" min="0" max="2" value="0.8" step="0.1">
-        </div>
-        <span id="cvValue">0.8</span>
-      </div>
-
-      <label>
-        System capacity K
-        <input type="number" id="capacity" min="2" max="40" step="1" value="10">
-      </label>
-
-      <div class="range-row">
-        <div>
-          <div class="range-label">Simulation speed</div>
-          <input type="range" id="speed" min="1" max="50" step="1" value="10">
-        </div>
-        <span id="speedValue">10×</span>
-      </div>
-
-      <div class="button-group">
-        <button id="startBtn">Start</button>
-        <button id="pauseBtn" class="secondary">Pause</button>
-        <button id="resetBtn" class="secondary">Reset</button>
-      </div>
-    </section>
-
-    <section class="visual">
-      <div class="canvas panel">
-        <div class="flow">
-          <div class="cloud">
-            <span>Customers</span>
-            <div class="arrow"></div>
-          </div>
-
-          <div class="pipe">
-            <div class="queue-container">
-              <span class="queue-title">Queue</span>
-              <div class="queue-area" id="queueArea"></div>
+      <section class="queue-sim-panel">
+        <h3>Controls</h3>
+        <div class="queue-sim-form">
+          <label>
+            Arrival rate λ (customers/sec)
+            <input type="number" id="arrivalRate" min="0.05" step="0.05" value="1.2">
+          </label>
+          <label>
+            Mean service time E[S] (sec)
+            <input type="number" id="meanService" min="0.05" step="0.05" value="0.7">
+          </label>
+          <label>
+            Service distribution
+            <select id="serviceDistribution">
+              <option value="gamma" selected>Gamma (general)</option>
+              <option value="exponential">Exponential</option>
+              <option value="deterministic">Deterministic</option>
+            </select>
+          </label>
+          <div class="queue-sim-range">
+            <div class="queue-sim-inline">
+              <span>Service variability (CV)</span>
+              <strong id="cvValue">0.8</strong>
             </div>
+            <input type="range" id="serviceCv" min="0" max="2" step="0.1" value="0.8">
+          </div>
+          <label>
+            System capacity K
+            <input type="number" id="capacity" min="2" max="60" step="1" value="10">
+          </label>
+          <label>
+            Warm-up time (sec)
+            <input type="number" id="warmupTime" min="0" max="10000" step="5" value="60">
+          </label>
+          <label>
+            Measurement window (sec)
+            <input type="number" id="measurementTime" min="10" max="10000" step="10" value="300">
+          </label>
+          <div class="queue-sim-range">
+            <div class="queue-sim-inline">
+              <span>Simulation speed</span>
+              <strong id="speedValue">10×</strong>
+            </div>
+            <input type="range" id="speed" min="1" max="80" step="1" value="10">
+          </div>
+        </div>
+        <div class="queue-sim-actions">
+          <button class="button" id="startBtn" type="button">Start</button>
+          <button class="button" id="pauseBtn" type="button">Pause</button>
+          <button class="button" id="resetBtn" type="button">Reset</button>
+        </div>
+      </section>
 
-            <div class="server-bank">
-              <div class="server" data-server="0">
-                <span class="server-title">Server 1</span>
-                <div class="slot" data-slot="0"></div>
+      <section class="queue-sim-panel">
+        <h3>Model Notes</h3>
+        <p class="queue-sim-note"><code>K</code> is total system capacity, including the 2 customers in service. If the system already has <code>K</code> customers, a new arrival is dropped.</p>
+        <p class="queue-sim-note">The reported averages are based only on the measurement window after warm-up. Wait/system times are conditional on served customers, not dropped arrivals.</p>
+      </section>
+    </aside>
+
+    <section class="queue-sim-sidebar">
+      <section class="queue-sim-panel queue-sim-stage">
+        <div class="queue-sim-canvas">
+          <div class="queue-sim-flow">
+            <div class="queue-sim-cloud">
+              <span>Arrivals</span>
+              <div class="queue-sim-arrow"></div>
+            </div>
+            <div class="queue-sim-pipe">
+              <div class="queue-sim-queue">
+                <span class="queue-sim-label">Queue</span>
+                <div class="queue-area" id="queueArea"></div>
               </div>
-              <div class="server" data-server="1">
-                <span class="server-title">Server 2</span>
-                <div class="slot" data-slot="1"></div>
+              <div class="queue-sim-server-bank">
+                <div class="queue-sim-server" data-server="0">
+                  <span class="queue-sim-label">Server 1</span>
+                  <div class="slot" data-slot="0"></div>
+                </div>
+                <div class="queue-sim-server" data-server="1">
+                  <span class="queue-sim-label">Server 2</span>
+                  <div class="slot" data-slot="1"></div>
+                </div>
               </div>
             </div>
+            <div class="queue-sim-exit">
+              <div class="queue-sim-arrow"></div>
+              <span>Departures</span>
+            </div>
           </div>
-
-          <div class="exit">
-            <div class="arrow"></div>
-            <span>Departures</span>
-          </div>
+          <div class="customer-layer" id="customerLayer"></div>
         </div>
-        <div class="customer-layer" id="customerLayer"></div>
-      </div>
 
-      <div class="panel timeline">
-        <span>Sim time: <strong id="simTime">0.0s</strong></span>
-        <span>In system: <strong id="inSystem">0</strong></span>
-        <span>In queue: <strong id="inQueue">0</strong></span>
-        <span>Busy servers: <strong id="busyServers">0</strong></span>
-        <span title="Traffic intensity: λμ/c  —  ≥1 means overloaded">ρ: <strong id="rho">0.00</strong></span>
-      </div>
+        <div class="queue-sim-strip">
+          <span>Sim time: <strong id="simTime">0.0s</strong></span>
+          <span>Phase: <strong id="simPhase">Warm-up</strong></span>
+          <span>Measured time: <strong id="measuredTime">0.0s</strong></span>
+          <span>In system: <strong id="inSystem">0</strong></span>
+          <span>In queue: <strong id="inQueue">0</strong></span>
+          <span>Busy servers: <strong id="busyServers">0</strong></span>
+          <span title="Traffic intensity lambda * E[S] / c">ρ: <strong id="rho">0.00</strong></span>
+        </div>
+      </section>
+
+      <section class="queue-sim-panel">
+        <h3>Measured Metrics</h3>
+        <div class="queue-sim-stats">
+          <div class="queue-sim-stat"><small>Measured arrivals</small><strong id="arrivals">0</strong></div>
+          <div class="queue-sim-stat"><small>Served</small><strong id="served">0</strong></div>
+          <div class="queue-sim-stat"><small>Dropped</small><strong id="dropped">0</strong></div>
+          <div class="queue-sim-stat"><small>Throughput</small><strong id="throughput">0.00/s</strong></div>
+          <div class="queue-sim-stat"><small>Avg wait</small><strong id="avgWait">0.00s</strong></div>
+          <div class="queue-sim-stat"><small>Avg system</small><strong id="avgSystem">0.00s</strong></div>
+          <div class="queue-sim-stat"><small>Util S1</small><strong id="util1">0%</strong></div>
+          <div class="queue-sim-stat"><small>Util S2</small><strong id="util2">0%</strong></div>
+          <div class="queue-sim-stat"><small>Avg queue len</small><strong id="avgQueueLen">0.00</strong></div>
+          <div class="queue-sim-stat"><small>Avg system len</small><strong id="avgSystemLen">0.00</strong></div>
+          <div class="queue-sim-stat"><small>Drop rate</small><strong id="dropRate">0.0%</strong></div>
+          <div class="queue-sim-stat"><small>Distribution</small><strong id="distributionLabel">Gamma</strong></div>
+        </div>
+      </section>
+
+      <section class="queue-sim-panel queue-sim-chart-shell">
+        <h3>History</h3>
+        <svg class="queue-sim-chart" id="historyChart" viewBox="0 0 800 220" preserveAspectRatio="none" aria-label="Queue history chart"></svg>
+        <div class="queue-sim-chart-legend">
+          <span class="queue-sim-chart-key"><span class="queue-sim-chart-swatch" style="background:#0f766e"></span>Queue length</span>
+          <span class="queue-sim-chart-key"><span class="queue-sim-chart-swatch" style="background:#2563eb"></span>System size</span>
+          <span class="queue-sim-chart-key"><span class="queue-sim-chart-swatch" style="background:#dc2626"></span>Drops</span>
+        </div>
+      </section>
     </section>
+  </section>
 
-    <section class="panel metrics">
-      <h2>Performance Metrics</h2>
-      <div class="stats-grid">
-        <div class="stat">
-          <span class="stat-label">Arrivals</span>
-          <span class="stat-value" id="arrivals">0</span>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Served</span>
-          <span class="stat-value" id="served">0</span>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Dropped</span>
-          <span class="stat-value" id="dropped">0</span>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Throughput</span>
-          <span class="stat-value" id="throughput">0.00/s</span>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Avg wait</span>
-          <span class="stat-value" id="avgWait">0.00s</span>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Avg system</span>
-          <span class="stat-value" id="avgSystem">0.00s</span>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Util S1</span>
-          <span class="stat-value" id="util1">0%</span>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Util S2</span>
-          <span class="stat-value" id="util2">0%</span>
-        </div>
-        <div class="stat">
-          <span class="stat-label" title="Time-averaged number of customers waiting in queue (L_q)">Avg Queue Len</span>
-          <span class="stat-value" id="avgQueueLen">0.00</span>
-        </div>
-        <div class="stat">
-          <span class="stat-label" title="Percentage of arrivals rejected due to full system">Drop Rate</span>
-          <span class="stat-value" id="dropRate">0.0%</span>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <script>
-    const randomExponential = rate => -Math.log(1 - Math.random()) / rate;
-
-    // Marsaglia and Tsang method for Gamma(k, theta). Handles k >= 1; uses augmentation for k < 1.
-    function randomGamma(shape, scale) {
-      if (shape === 1) {
-        return randomExponential(1 / scale);
-      }
-      if (shape < 1) {
-        const u = Math.random();
-        return randomGamma(shape + 1, scale) * Math.pow(u, 1 / shape);
-      }
-      const d = shape - 1 / 3;
-      const c = 1 / Math.sqrt(9 * d);
-      while (true) {
-        let x, v;
-        do {
-          x = normalRandom();
-          v = 1 + c * x;
-        } while (v <= 0);
-        v = v * v * v;
-        const u = Math.random();
-        if (u < 1 - 0.0331 * x * x * x * x) {
-          return scale * d * v;
-        }
-        if (Math.log(u) < 0.5 * x * x + d * (1 - v + Math.log(v))) {
-          return scale * d * v;
-        }
-      }
-    }
-
-    // Box-Muller transform for standard normal variates.
-    let spareNormal = null;
-    function normalRandom() {
-      if (spareNormal !== null) {
-        const value = spareNormal;
-        spareNormal = null;
-        return value;
-      }
-      let u, v, s;
-      do {
-        u = Math.random() * 2 - 1;
-        v = Math.random() * 2 - 1;
-        s = u * u + v * v;
-      } while (s === 0 || s >= 1);
-      const mul = Math.sqrt(-2 * Math.log(s) / s);
-      spareNormal = v * mul;
-      return u * mul;
-    }
-
-    function formatNumber(value, digits = 2) {
-      return Number.isFinite(value) ? value.toFixed(digits) : "0.00";
-    }
-
-    class QueueSimulation {
-      constructor() {
-        this.config = {
-          servers: 2,
-          capacity: 10,
-          arrivalRate: 1.2,
-          meanService: 0.7,
-          serviceCv: 0.8,
-          speed: 10
-        };
-
-        this.elements = {
-          queue: document.getElementById("queueArea"),
-          serverSlots: Array.from(document.querySelectorAll(".slot")),
-          serverPanels: Array.from(document.querySelectorAll(".server")),
-          simTime: document.getElementById("simTime"),
-          inSystem: document.getElementById("inSystem"),
-          inQueue: document.getElementById("inQueue"),
-          busyServers: document.getElementById("busyServers"),
-          arrivals: document.getElementById("arrivals"),
-          served: document.getElementById("served"),
-          dropped: document.getElementById("dropped"),
-          throughput: document.getElementById("throughput"),
-          avgWait: document.getElementById("avgWait"),
-          avgSystem: document.getElementById("avgSystem"),
-          util1: document.getElementById("util1"),
-          util2: document.getElementById("util2"),
-          rho: document.getElementById("rho"),
-          avgQueueLen: document.getElementById("avgQueueLen"),
-          dropRate: document.getElementById("dropRate"),
-        };
-
-        this.canvas = document.querySelector(".canvas");
-        this.layer = document.getElementById("customerLayer");
-        this.entryAnchor = document.querySelector(".cloud .arrow");
-        this.exitAnchor = document.querySelector(".exit .arrow");
-
-        this.customerElements = new Map();
-        this.customerSize = 36;
-        this.queueSpacing = 44;
-        this.queueRowHeight = 44;
-
-        this.running = false;
-
-        this._resizeTimer = null;
-        this.handleResize = this.handleResize.bind(this);
-        window.addEventListener("resize", this.handleResize);
-
-        this.refreshLayout();
-        this.reset();
-      }
-
-      refreshLayout() {
-        if (!this.canvas) return;
-        this.canvasRect = this.canvas.getBoundingClientRect();
-        this.queueRect = this.elements.queue.getBoundingClientRect();
-        this.serverRects = this.elements.serverSlots.map(slot => slot.getBoundingClientRect());
-        this.entryRect = this.entryAnchor.getBoundingClientRect();
-        this.exitRect = this.exitAnchor.getBoundingClientRect();
-      }
-
-      handleResize() {
-        clearTimeout(this._resizeTimer);
-        this._resizeTimer = setTimeout(() => {
-          this.refreshLayout();
-          this.updateAllPositions(true);
-        }, 100);
-      }
-
-      reset() {
-        this.simTime = 0;
-        this.lastRealTime = null;
-        this.queue = [];
-        this.systemCount = 0;
-        this.customerId = 1;
-
-        this.customerElements.forEach(el => el.remove());
-        this.customerElements.clear();
-        if (this.layer) {
-          this.layer.innerHTML = "";
-        }
-
-        this.nextArrival = {
-          time: randomExponential(this.config.arrivalRate)
-        };
-
-        this.servers = Array.from({ length: this.config.servers }, () => ({
-          busy: false,
-          customer: null,
-          nextDeparture: Infinity,
-          busyTime: 0
-        }));
-
-        this.metrics = {
-          arrivals: 0,
-          served: 0,
-          dropped: 0,
-          waitTimeSum: 0,
-          systemTimeSum: 0,
-          lastUpdate: 0,
-          queueArea: 0,
-          systemArea: 0,
-          lastQueueLen: 0,
-          lastSystemLen: 0
-        };
-
-        this.updateAllPositions(true);
-        this.render();
-      }
-
-      updateConfig(newConfig) {
-        Object.assign(this.config, newConfig);
-        this.reset();
-      }
-
-      start() {
-        if (this.running) return;
-        this.running = true;
-        this.lastRealTime = performance.now();
-        this.animationFrame = requestAnimationFrame(() => this.tick());
-      }
-
-      pause() {
-        if (!this.running) return;
-        this.running = false;
-        cancelAnimationFrame(this.animationFrame);
-        this.animationFrame = null;
-      }
-
-      tick() {
-        if (!this.running) return;
-        const now = performance.now();
-        const realDelta = (now - this.lastRealTime) / 1000;
-        this.lastRealTime = now;
-        const targetSimTime = this.simTime + realDelta * this.config.speed;
-
-        this.advanceTo(targetSimTime);
-        this.render();
-
-        this.animationFrame = requestAnimationFrame(() => this.tick());
-      }
-
-      advanceTo(targetTime) {
-        while (true) {
-          const nextEvent = this.nextEventTime();
-          if (nextEvent > targetTime) break;
-          this.advanceClock(nextEvent);
-          if (nextEvent === this.nextArrival.time) {
-            this.handleArrival();
-          } else {
-            const serverIndex = this.servers.findIndex(s => s.nextDeparture === nextEvent);
-            if (serverIndex >= 0) {
-              this.handleDeparture(serverIndex);
-            } else {
-              break;
-            }
-          }
-        }
-        this.advanceClock(targetTime);
-      }
-
-      nextEventTime() {
-        let minTime = this.nextArrival.time;
-        for (const server of this.servers) {
-          if (server.nextDeparture < minTime) {
-            minTime = server.nextDeparture;
-          }
-        }
-        return minTime;
-      }
-
-      advanceClock(newTime) {
-        const dt = newTime - this.simTime;
-        if (dt <= 0) {
-          this.simTime = newTime;
-          return;
-        }
-
-        const queueLen = Math.max(this.systemCount - this.busyServerCount(), 0);
-        this.metrics.queueArea += queueLen * dt;
-        this.metrics.systemArea += this.systemCount * dt;
-        for (const server of this.servers) {
-          if (server.busy) {
-            server.busyTime += dt;
-          }
-        }
-        this.simTime = newTime;
-      }
-
-      handleArrival() {
-        this.metrics.arrivals += 1;
-        const id = this.customerId++;
-        const customer = {
-          id,
-          arrivalTime: this.simTime,
-          serviceStart: null,
-          departureTime: null
-        };
-
-        this.createCustomerElement(customer);
-
-        if (this.systemCount >= this.config.capacity) {
-          this.metrics.dropped += 1;
-          this.rejectCustomer(customer);
-        } else {
-          this.systemCount += 1;
-          const freeServerIndex = this.servers.findIndex(s => !s.busy);
-          if (freeServerIndex >= 0 && this.queue.length === 0) {
-            this.startService(freeServerIndex, customer, true);
-          } else {
-            this.queue.push(customer);
-            this.updateQueuePositions();
-            if (freeServerIndex >= 0) {
-              const nextCustomer = this.queue.shift();
-              this.startService(freeServerIndex, nextCustomer);
-              this.updateQueuePositions();
-            }
-          }
-        }
-
-        this.nextArrival.time = this.simTime + randomExponential(this.config.arrivalRate);
-      }
-
-      startService(serverIndex, customer, directFromArrival = false) {
-        const server = this.servers[serverIndex];
-        server.busy = true;
-        server.customer = customer;
-        customer.serviceStart = this.simTime;
-
-        const serviceTime = this.generateServiceTime();
-        server.nextDeparture = this.simTime + serviceTime;
-        if (directFromArrival) {
-          this.animateDirectService(customer, serverIndex);
-        } else {
-          this.moveCustomerToServer(customer, serverIndex);
-        }
-        this.renderServers();
-      }
-
-      animateDirectService(customer, serverIndex) {
-        const element = this.createCustomerElement(customer);
-        element.dataset.state = "queue";
-        const queueFront = this.getQueuePosition(0);
-        this.setElementPosition(element, queueFront);
-        const cid = customer.id;
-        setTimeout(() => {
-          if (this.customerElements.has(cid)) {
-            this.moveCustomerToServer(customer, serverIndex);
-          }
-        }, 220);
-      }
-
-      handleDeparture(serverIndex) {
-        const server = this.servers[serverIndex];
-        const customer = server.customer;
-        if (!customer) return;
-        customer.departureTime = this.simTime;
-        this.metrics.served += 1;
-        this.metrics.waitTimeSum += (customer.serviceStart - customer.arrivalTime);
-        this.metrics.systemTimeSum += (customer.departureTime - customer.arrivalTime);
-
-        this.systemCount -= 1;
-        this.sendCustomerToExit(customer.id);
-        if (this.queue.length > 0) {
-          const nextCustomer = this.queue.shift();
-          this.startService(serverIndex, nextCustomer);
-          this.updateQueuePositions();
-        } else {
-          server.busy = false;
-          server.customer = null;
-          server.nextDeparture = Infinity;
-        }
-        this.renderServers();
-      }
-
-      busyServerCount() {
-        return this.servers.filter(s => s.busy).length;
-      }
-
-      generateServiceTime() {
-        const mean = this.config.meanService;
-        const cv = this.config.serviceCv;
-        if (cv === 0) {
-          return mean;
-        }
-        const shape = 1 / (cv * cv);
-        const scale = mean / shape;
-        return Math.max(1e-4, randomGamma(shape, scale));
-      }
-
-      createCustomerElement(customer) {
-        let element = this.customerElements.get(customer.id);
-        if (element) {
-          return element;
-        }
-        this.refreshLayout();
-        element = document.createElement("div");
-        element.className = "customer";
-        element.dataset.id = customer.id;
-        element.textContent = customer.id;
-
-        const spawn = this.getEntryPosition();
-        const jitterX = (Math.random() * 12) - 6;
-        const jitterY = (Math.random() * 10) - 5;
-        this.setElementPosition(element, { x: spawn.x + jitterX, y: spawn.y + jitterY }, true);
-        this.layer.appendChild(element);
-        requestAnimationFrame(() => element.classList.add("visible"));
-        this.customerElements.set(customer.id, element);
-        return element;
-      }
-
-      moveCustomerToQueue(customer, index, immediate = false) {
-        const element = this.createCustomerElement(customer);
-        element.dataset.state = "queue";
-        const position = this.getQueuePosition(index);
-        this.setElementPosition(element, position, immediate);
-      }
-
-      moveCustomerToServer(customer, serverIndex, immediate = false) {
-        const server = this.servers[serverIndex];
-        if (!server || server.customer !== customer) {
-          return;
-        }
-        const element = this.createCustomerElement(customer);
-        element.dataset.state = "server";
-        const position = this.getServerPosition(serverIndex);
-        this.setElementPosition(element, position, immediate);
-      }
-
-      sendCustomerToExit(customerId) {
-        const element = this.customerElements.get(customerId);
-        if (!element) return;
-        element.dataset.state = "exit";
-        const target = this.getExitPosition();
-        this.setElementPosition(element, target);
-        requestAnimationFrame(() => {
-          element.style.opacity = "0";
-        });
-        setTimeout(() => this.removeCustomerElement(customerId), 700);
-      }
-
-      rejectCustomer(customer) {
-        const element = this.createCustomerElement(customer);
-        element.classList.add("rejected");
-        element.dataset.state = "dropped";
-        const entry = this.getEntryPosition();
-        this.setElementPosition(element, { x: entry.x + 28, y: entry.y - 52 });
-        requestAnimationFrame(() => {
-          element.style.opacity = "0";
-        });
-        setTimeout(() => this.removeCustomerElement(customer.id), 520);
-      }
-
-      removeCustomerElement(customerId) {
-        const element = this.customerElements.get(customerId);
-        if (element) {
-          element.remove();
-          this.customerElements.delete(customerId);
-        }
-      }
-
-      updateQueuePositions(options = {}) {
-        this.refreshLayout();
-        if (!this.queue.length) return;
-        const immediate = !!options.immediate;
-        this.queue.forEach((customer, index) => {
-          this.moveCustomerToQueue(customer, index, immediate);
-        });
-      }
-
-      updateAllPositions(immediate = false) {
-        this.refreshLayout();
-        this.queue.forEach((customer, index) => {
-          this.moveCustomerToQueue(customer, index, immediate);
-        });
-        this.servers.forEach((server, index) => {
-          if (server.busy && server.customer) {
-            this.moveCustomerToServer(server.customer, index, immediate);
-          }
-        });
-      }
-
-      getEntryPosition() {
-        return {
-          x: this.entryRect.left - this.canvasRect.left - this.customerSize * 1.4,
-          y: this.entryRect.top - this.canvasRect.top + this.entryRect.height / 2 - this.customerSize / 2
-        };
-      }
-
-      getQueuePosition(index) {
-        const padding = 12;
-        const availableWidth = Math.max(this.queueRect.width - padding * 2, this.queueSpacing);
-        const perRow = Math.max(Math.floor(availableWidth / this.queueSpacing), 1);
-        const col = index % perRow;
-        const row = Math.floor(index / perRow);
-        const startX = this.queueRect.left - this.canvasRect.left + this.queueRect.width - padding - this.customerSize;
-        const minX = this.queueRect.left - this.canvasRect.left + padding;
-        const x = Math.max(minX, startX - col * this.queueSpacing);
-        return {
-          x: x,
-          y: this.queueRect.top - this.canvasRect.top + padding + row * this.queueRowHeight
-        };
-      }
-
-      getServerPosition(index) {
-        const rect = this.serverRects[index];
-        if (!rect) {
-          return this.getQueuePosition(0);
-        }
-        return {
-          x: rect.left - this.canvasRect.left + rect.width / 2 - this.customerSize / 2,
-          y: rect.top - this.canvasRect.top + rect.height / 2 - this.customerSize / 2
-        };
-      }
-
-      getExitPosition() {
-        return {
-          x: this.exitRect.left - this.canvasRect.left + this.exitRect.width + 36,
-          y: this.exitRect.top - this.canvasRect.top + this.exitRect.height / 2 - this.customerSize / 2
-        };
-      }
-
-      setElementPosition(element, position, immediate = false) {
-        if (immediate) {
-          element.style.transition = "none";
-          element.style.transform = `translate3d(${position.x}px, ${position.y}px, 0)`;
-          element.offsetHeight;
-          element.style.transition = "";
-        } else {
-          element.style.transform = `translate3d(${position.x}px, ${position.y}px, 0)`;
-        }
-      }
-
-      render() {
-        this.renderServers();
-        this.renderStats();
-      }
-
-      renderServers() {
-        this.servers.forEach((server, index) => {
-          const panel = this.elements.serverPanels[index];
-          panel.classList.toggle("busy", server.busy);
-        });
-      }
-
-      renderStats() {
-        const { arrivals, served, dropped, waitTimeSum, systemTimeSum } = this.metrics;
-        const simSeconds = Math.max(this.simTime, 1e-9);
-        const throughput = served / simSeconds;
-        const avgWait = served > 0 ? waitTimeSum / served : 0;
-        const avgSystem = served > 0 ? systemTimeSum / served : 0;
-        const util1 = (this.servers[0].busyTime / simSeconds) * 100;
-        const util2 = (this.servers[1].busyTime / simSeconds) * 100;
-        const queueLen = this.queue.length;
-
-        this.elements.simTime.textContent = `${formatNumber(this.simTime, 1)}s`;
-        this.elements.inSystem.textContent = this.systemCount;
-        this.elements.inQueue.textContent = queueLen;
-        this.elements.busyServers.textContent = this.busyServerCount();
-        this.elements.arrivals.textContent = arrivals;
-        this.elements.served.textContent = served;
-        this.elements.dropped.textContent = dropped;
-        this.elements.throughput.textContent = `${formatNumber(throughput, 2)}/s`;
-        this.elements.avgWait.textContent = `${formatNumber(avgWait, 2)}s`;
-        this.elements.avgSystem.textContent = `${formatNumber(avgSystem, 2)}s`;
-        this.elements.util1.textContent = `${formatNumber(util1, 1)}%`;
-        this.elements.util2.textContent = `${formatNumber(util2, 1)}%`;
-
-        const avgQueueLen = this.metrics.queueArea / simSeconds;
-        const dropRatePct = arrivals > 0 ? (dropped / arrivals) * 100 : 0;
-        this.elements.avgQueueLen.textContent = formatNumber(avgQueueLen);
-        this.elements.dropRate.textContent = `${formatNumber(dropRatePct, 1)}%`;
-
-        const rho = (this.config.arrivalRate * this.config.meanService) / this.config.servers;
-        this.elements.rho.textContent = formatNumber(rho);
-        const rhoSpan = this.elements.rho.closest("span");
-        if (rhoSpan) {
-          rhoSpan.style.borderColor = rho >= 1 ? "rgba(248, 113, 113, 0.5)" : "";
-          rhoSpan.style.background = rho >= 1 ? "rgba(248, 113, 113, 0.18)" : "";
-        }
-      }
-    }
-
-    const simulation = new QueueSimulation();
-
-    const arrivalRateInput = document.getElementById("arrivalRate");
-    const meanServiceInput = document.getElementById("meanService");
-    const serviceCvInput = document.getElementById("serviceCv");
-    const capacityInput = document.getElementById("capacity");
-    const speedInput = document.getElementById("speed");
-    const cvValue = document.getElementById("cvValue");
-    const speedValue = document.getElementById("speedValue");
-    const startBtn = document.getElementById("startBtn");
-    const pauseBtn = document.getElementById("pauseBtn");
-    const resetBtn = document.getElementById("resetBtn");
-
-    function clampNumber(value, min, max, fallback) {
-      const num = Number(value);
-      if (!Number.isFinite(num)) return fallback;
-      return Math.min(Math.max(num, min), max);
-    }
-
-    function applyFormConfig() {
-      const arrivalRate = clampNumber(arrivalRateInput.value, 0.05, 8, 1.2);
-      const meanService = clampNumber(meanServiceInput.value, 0.05, 5, 0.7);
-      const capacity = Math.round(clampNumber(capacityInput.value, 2, 60, 10));
-      const serviceCv = clampNumber(serviceCvInput.value, 0, 2, 0.8);
-      const speed = Math.round(clampNumber(speedInput.value, 1, 50, 10));
-      arrivalRateInput.value = arrivalRate;
-      meanServiceInput.value = meanService;
-      capacityInput.value = capacity;
-      serviceCvInput.value = serviceCv;
-      speedInput.value = speed;
-      cvValue.textContent = serviceCv.toFixed(1);
-      speedValue.textContent = `${speed}×`;
-
-      simulation.updateConfig({
-        arrivalRate,
-        meanService,
-        capacity,
-        serviceCv,
-        speed
-      });
-    }
-
-    arrivalRateInput.addEventListener("change", applyFormConfig);
-    meanServiceInput.addEventListener("change", applyFormConfig);
-    capacityInput.addEventListener("change", applyFormConfig);
-    serviceCvInput.addEventListener("input", () => {
-      cvValue.textContent = Number(serviceCvInput.value).toFixed(1);
-    });
-    serviceCvInput.addEventListener("change", applyFormConfig);
-    speedInput.addEventListener("input", () => {
-      speedValue.textContent = `${speedInput.value}×`;
-      simulation.config.speed = Number(speedInput.value);
-    });
-
-    startBtn.addEventListener("click", () => {
-      simulation.start();
-    });
-
-    pauseBtn.addEventListener("click", () => {
-      if (simulation.running) {
-        simulation.pause();
-        pauseBtn.textContent = "Resume";
-      } else {
-        simulation.start();
-        pauseBtn.textContent = "Pause";
-      }
-    });
-
-    resetBtn.addEventListener("click", () => {
-      simulation.pause();
-      simulation.reset();
-      pauseBtn.textContent = "Pause";
-    });
-
-    applyFormConfig();
-
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden && simulation.running) {
-        simulation.pause();
-        pauseBtn.textContent = "Resume";
-        simulation._pausedByVisibility = true;
-      } else if (!document.hidden && simulation._pausedByVisibility) {
-        simulation._pausedByVisibility = false;
-        simulation.start();
-        pauseBtn.textContent = "Pause";
-      }
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.target.tagName === "INPUT") return;
-      if (e.code === "Space") {
-        e.preventDefault();
-        if (simulation.running) {
-          simulation.pause();
-          pauseBtn.textContent = "Resume";
-        } else {
-          simulation.start();
-          pauseBtn.textContent = "Pause";
-        }
-      }
-    });
-  </script>
-</body>
-</html>
+  <script type="module" src="/projects/queueing-simulation/queueing-simulation.mjs"></script>
+</section>
