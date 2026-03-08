@@ -1,429 +1,324 @@
 ---
 title: "Epoch Time Converter"
-description: "Convert epoch seconds/milliseconds/nanoseconds to RFC3339 and ISO8601 timestamps"
+description: "Convert epoch seconds, milliseconds, and nanoseconds to RFC3339 and ISO8601 timestamps."
 publishDate: 2025-08-10T14:11:55.585+01:00
-lastmod: 2025-08-10T14:11:55+01:00
+lastmod: 2026-03-08T22:15:00+01:00
 aliases:
   - /epoch/
 ---
 
-<style>
-	body main {
-		max-width: 100%;
-		margin: 0 auto;
-	}
-	.epoch-converter {
-		max-width: none;
-		width: 100%;
-		margin: 0;
-		padding: 20px;
-		font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-	}
-
-	.input-group {
-		margin-bottom: 20px;
-		padding: 15px;
-		border: 1px solid #ddd;
-		border-radius: 8px;
-		background-color: #f8f9fa;
-	}
-
-	.input-group label {
-		display: block;
-		margin-bottom: 8px;
-		font-weight: bold;
-		color: #333;
-	}
-
-	.input-group input {
-		width: 100%;
-		padding: 10px;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		font-size: 14px;
-		font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-		box-sizing: border-box;
-	}
-
-	.input-group input:focus {
-		outline: none;
-		border-color: #007bff;
-		box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-	}
-
-	.output-group {
-		margin-bottom: 15px;
-		padding: 10px;
-		background-color: #e9ecef;
-		border-radius: 4px;
-		border-left: 4px solid #007bff;
-	}
-
-	.output-group label {
-		display: block;
-		font-weight: bold;
-		color: #495057;
-		margin-bottom: 5px;
-	}
-
-	.output-value {
-		font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-		font-size: 14px;
-		padding: 8px;
-		background-color: white;
-		border: 1px solid #ced4da;
-		border-radius: 3px;
-		cursor: pointer;
-		transition: background-color 0.2s;
-	}
-
-	.output-value:hover {
-		background-color: #f8f9fa;
-	}
-
-	.button-group {
-		text-align: center;
-		margin: 20px 0;
-	}
-
-	.btn {
-		padding: 10px 20px;
-		margin: 0 5px;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-		font-size: 14px;
-		transition: background-color 0.2s;
-	}
-
-	.btn-primary {
-		background-color: #007bff;
-		color: white;
-	}
-
-	.btn-primary:hover {
-		background-color: #0056b3;
-	}
-
-	.btn-secondary {
-		background-color: #6c757d;
-		color: white;
-	}
-
-	.btn-secondary:hover {
-		background-color: #545b62;
-	}
-
-	.current-time {
-		text-align: center;
-		margin: 20px 0;
-		padding: 15px;
-		background-color: #d4edda;
-		border-radius: 8px;
-		border: 1px solid #c3e6cb;
-	}
-
-	.examples {
-		margin-top: 30px;
-		padding: 20px;
-		background-color: #fff3cd;
-		border-radius: 8px;
-		border: 1px solid #ffeaa7;
-	}
-
-	.examples h3 {
-		margin-top: 0;
-		color: #856404;
-	}
-
-	.example-item {
-		margin: 10px 0;
-		padding: 8px;
-		background-color: white;
-		border-radius: 4px;
-		cursor: pointer;
-		transition: background-color 0.2s;
-	}
-
-	.example-item:hover {
-		background-color: #f8f9fa;
-	}
-
-	.error {
-		color: #dc3545;
-		font-style: italic;
-	}
-
-	/* Batch converter styles */
-	.input-group textarea {
-		width: 100%;
-		padding: 10px;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		font-size: 14px;
-		font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-		box-sizing: border-box;
-		resize: vertical;
-	}
-
-	.table-container {
-		overflow-x: auto;
-		border: 1px solid #ddd;
-		border-radius: 8px;
-		background: #fff;
-	}
-
-	.batch-results table {
-		width: 100%;
-		border-collapse: collapse;
-		min-width: 720px;
-	}
-
-	.batch-results th, .batch-results td {
-		border: 1px solid #dee2e6;
-		padding: 8px 10px;
-		text-align: left;
-		vertical-align: top;
-		font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-		font-size: 13px;
-	}
-
-	.batch-results thead th {
-		background: #f1f3f5;
-		position: sticky;
-		top: 0;
-		z-index: 1;
-	}
-
-	.batch-results tbody tr:hover {
-		background: #f8f9fa;
-	}
-
-	td.copyable { cursor: pointer; }
-
-	@media (max-width: 768px) {
-		.epoch-converter {
-			padding: 10px;
+<section class="epoch-page">
+	<style>
+		body > main {
+			max-width: 100%;
 		}
 
-		.input-group,
-		.output-group {
-			padding: 10px;
+		.epoch-page {
+			display: grid;
+			gap: 1rem;
+			padding: 1rem 0;
+			font-family: Consolas, Monaco, "Courier New", monospace;
 		}
-	}
-</style>
 
-<div class="epoch-converter">
-	<div class="current-time">
-		<h3>Current Time</h3>
-		<div id="currentTime"></div>
-	</div>
-
-	<!-- Removed single-value converter -->
-
-	<!-- Batch Converter -->
-	<div class="input-group">
-		<label for="batchInput">Batch Epoch Timestamps:</label>
-		<textarea id="batchInput" rows="8" placeholder="Enter one timestamp per line or separate by spaces/commas"></textarea>
-		<small>Tip: Non-numeric tokens are ignored. Click table cells to copy values.</small>
-		<div class="button-group">
-			<button class="btn btn-primary" onclick="convertBatch()">Convert List</button>
-			<button class="btn btn-secondary" onclick="clearBatch()">Clear</button>
-			<button class="btn btn-secondary" onclick="downloadBatchCSV()">Download CSV</button>
-		</div>
-	</div>
-
-	<div id="batchResults" class="batch-results" style="display:none;">
-		<h3>Batch Results</h3>
-		<div class="table-container">
-			<table>
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Input</th>
-						<th>Detected</th>
-						<th>RFC3339 (UTC)</th>
-						<th>ISO8601 (Local)</th>
-						<th>Unix s</th>
-						<th>Unix ms</th>
-						<th>Unix ns</th>
-						<th>Error</th>
-					</tr>
-				</thead>
-				<tbody id="batchTbody"></tbody>
-			</table>
-		</div>
-	</div>
-</div>
-
-<script>
-	function updateCurrentTime() {
-		const now = new Date();
-		const currentTimeDiv = document.getElementById('currentTime');
-
-		// Compute ISO8601 local with timezone offset
-		const localISOString = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString();
-		const timezoneOffset = -now.getTimezoneOffset();
-		const offsetHours = Math.floor(Math.abs(timezoneOffset) / 60).toString().padStart(2, '0');
-		const offsetMinutes = (Math.abs(timezoneOffset) % 60).toString().padStart(2, '0');
-		const offsetSign = timezoneOffset >= 0 ? '+' : '-';
-		const isoLocal = localISOString.slice(0, -1) + offsetSign + offsetHours + ':' + offsetMinutes;
-
-		currentTimeDiv.innerHTML = `
-        <strong>RFC3339:</strong> ${now.toISOString()}<br>
-        <strong>Local ISO8601:</strong> ${isoLocal}<br>
-        <strong>Local Human:</strong> ${now.toString()}<br>
-        <strong>Unix Seconds:</strong> ${Math.floor(now.getTime() / 1000)}<br>
-        <strong>Unix Milliseconds:</strong> ${now.getTime()}<br>
-        <strong>Unix Nanoseconds:</strong> ${now.getTime() * 1000000}
-    `;
-	}
-
-	function detectEpochFormat(timestamp) {
-		const num = Math.abs(parseInt(timestamp));
-		const str = num.toString();
-		if (str.length <= 10) return 'seconds';
-		if (str.length <= 13) return 'milliseconds';
-		if (str.length <= 19) return 'nanoseconds';
-		return 'unknown';
-	}
-
-	function copyToClipboard(element) {
-		const text = element.textContent;
-		navigator.clipboard.writeText(text).then(function () {
-			const originalText = element.textContent;
-			element.textContent = 'Copied!';
-			element.style.backgroundColor = '#d4edda';
-			setTimeout(function () {
-				element.textContent = originalText;
-				element.style.backgroundColor = '';
-			}, 1000);
-		}).catch(function (err) {
-			console.error('Could not copy text: ', err);
-			const textArea = document.createElement('textarea');
-			textArea.value = text;
-			document.body.appendChild(textArea);
-			textArea.select();
-			try { document.execCommand('copy'); } catch (err) { console.error('Fallback copy failed: ', err); }
-			document.body.removeChild(textArea);
-		});
-	}
-
-	// Batch conversion helpers
-	function convertSingle(raw) {
-		const str = String(raw).trim();
-		if (!/^[-+]?\d+$/.test(str)) {
-			throw new Error('Not a number');
+		.epoch-panel {
+			display: grid;
+			gap: 0.9rem;
+			padding: 1rem;
+			border: 1px solid #cda9a9;
+			border-radius: 8px;
+			background: #fffaf9;
+			box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.08);
 		}
-		const unit = detectEpochFormat(str);
-		let ms;
-		switch (unit) {
-			case 'seconds': ms = Number(str) * 1000; break;
-			case 'milliseconds': ms = Number(str); break;
-			case 'nanoseconds':
-				try { ms = Number(BigInt(str) / 1000000n); }
-				catch (e) { ms = Number(str) / 1_000_000; }
-				break;
-			default: throw new Error('Unknown unit');
-		}
-		const date = new Date(ms);
-		if (isNaN(date.getTime())) throw new Error('Invalid timestamp');
-		const isoUTC = date.toISOString();
-		const tzOffset = -date.getTimezoneOffset();
-		const oh = String(Math.floor(Math.abs(tzOffset) / 60)).padStart(2, '0');
-		const om = String(Math.abs(tzOffset) % 60).toString().padStart(2, '0');
-		const os = tzOffset >= 0 ? '+' : '-';
-		const isoLocal = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, -1) + os + oh + ':' + om;
-		const unixS = Math.floor(ms / 1000);
-		const unixMs = ms;
-		let unixNs;
-		try { unixNs = (BigInt(Math.trunc(ms)) * 1000000n).toString(); } catch (e) { unixNs = String(ms * 1_000_000); }
-		return { unit, isoUTC, isoLocal, unixS: String(unixS), unixMs: String(unixMs), unixNs };
-	}
 
-	function convertBatch() {
-		const input = document.getElementById('batchInput').value;
-		const tbody = document.getElementById('batchTbody');
-		const container = document.getElementById('batchResults');
-		const tokens = (input.match(/[-+]?\d+/g) || []).slice(0, 5000);
-		if (tokens.length === 0) {
-			alert('Enter one or more integer epoch timestamps');
-			return;
+		.epoch-toc {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.6rem;
+			align-items: center;
 		}
-		let rows = '';
-		tokens.forEach((tok, idx) => {
-			try {
-				const r = convertSingle(tok);
-				rows += `<tr>` +
-					`<td>${idx + 1}</td>` +
-					`<td>${tok}</td>` +
-					`<td>${r.unit}</td>` +
-					`<td class="copyable" onclick="copyToClipboard(this)">${r.isoUTC}</td>` +
-					`<td class="copyable" onclick="copyToClipboard(this)">${r.isoLocal}</td>` +
-					`<td class="copyable" onclick="copyToClipboard(this)">${r.unixS}</td>` +
-					`<td class="copyable" onclick="copyToClipboard(this)">${r.unixMs}</td>` +
-					`<td class="copyable" onclick="copyToClipboard(this)">${r.unixNs}</td>` +
-					`<td></td>` +
-					`</tr>`;
-			} catch (err) {
-				rows += `<tr>` +
-					`<td>${idx + 1}</td>` +
-					`<td>${tok}</td>` +
-					`<td></td>` +
-					`<td></td>` +
-					`<td></td>` +
-					`<td></td>` +
-					`<td></td>` +
-					`<td></td>` +
-					`<td class="error">${err.message}</td>` +
-					`</tr>`;
+
+		.epoch-toc-label {
+			font-weight: 700;
+		}
+
+		.epoch-toc a {
+			display: inline-block;
+			padding: 0.2rem 0.55rem;
+			border: 1px solid #d8b3b3;
+			border-radius: 999px;
+			background: #fff;
+			text-decoration: none;
+		}
+
+		.epoch-toc a:hover {
+			text-decoration: underline;
+		}
+
+		.epoch-current {
+			background: #edf8ee;
+			border-color: #bdd8c1;
+		}
+
+		.epoch-current-lines,
+		.epoch-output-grid,
+		.epoch-batch-results {
+			display: grid;
+			gap: 0.55rem;
+		}
+
+		.epoch-toolbar,
+		.epoch-inline-fields,
+		.epoch-actions {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.75rem;
+			align-items: end;
+		}
+
+		.epoch-field {
+			display: grid;
+			gap: 0.35rem;
+			min-width: 10rem;
+		}
+
+		.epoch-field.grow {
+			flex: 1 1 24rem;
+		}
+
+		.epoch-field label {
+			font-weight: 700;
+		}
+
+		.epoch-input,
+		.epoch-textarea,
+		.epoch-select {
+			border: 1px solid #b98f8f;
+			border-radius: 4px;
+			padding: 0.65rem 0.8rem;
+			font: inherit;
+			background: #fff;
+			box-sizing: border-box;
+		}
+
+		.epoch-textarea {
+			min-height: 12rem;
+			resize: vertical;
+		}
+
+		.epoch-output {
+			padding: 0.75rem 0.85rem;
+			border: 1px solid #d8d8d8;
+			border-left: 4px solid #007bff;
+			border-radius: 6px;
+			background: #f7f9fb;
+		}
+
+		.epoch-output-label,
+		.epoch-copy-label {
+			display: block;
+			font-weight: 700;
+			margin-bottom: 0.25rem;
+		}
+
+		.epoch-output-value,
+		.epoch-current-value {
+			margin: 0;
+			padding: 0.55rem 0.65rem;
+			border: 1px solid #ced4da;
+			border-radius: 4px;
+			background: #fff;
+			cursor: pointer;
+			word-break: break-word;
+		}
+
+		.epoch-output-value:hover,
+		.epoch-current-value:hover {
+			background: #f8f9fa;
+		}
+
+		.epoch-status {
+			margin: 0;
+			min-height: 1.25rem;
+			color: #6e0000;
+		}
+
+		.epoch-status[data-tone="error"] {
+			color: #a31717;
+		}
+
+		.epoch-hint {
+			margin: 0;
+			font-size: 0.92rem;
+			color: #555;
+		}
+
+		.epoch-batch-results[hidden] {
+			display: none;
+		}
+
+		.epoch-table-wrap {
+			overflow-x: auto;
+			border: 1px solid #ddd;
+			border-radius: 8px;
+			background: #fff;
+		}
+
+		.epoch-table {
+			width: 100%;
+			min-width: 820px;
+			border-collapse: collapse;
+			font-size: 0.9rem;
+		}
+
+		.epoch-table th,
+		.epoch-table td {
+			border: 1px solid #dee2e6;
+			padding: 0.55rem 0.7rem;
+			text-align: left;
+			vertical-align: top;
+		}
+
+		.epoch-table thead th {
+			position: sticky;
+			top: 0;
+			background: #f1f3f5;
+			z-index: 1;
+		}
+
+		.epoch-table td.copyable {
+			cursor: pointer;
+		}
+
+		.epoch-table td.copyable:hover {
+			background: #f8f9fa;
+		}
+
+		@media (max-width: 768px) {
+			.epoch-page {
+				padding: 0.25rem 0;
 			}
-		});
-		tbody.innerHTML = rows;
-		container.style.display = 'block';
-	}
 
-	function clearBatch() {
-		document.getElementById('batchInput').value = '';
-		document.getElementById('batchTbody').innerHTML = '';
-		document.getElementById('batchResults').style.display = 'none';
-	}
-
-	function downloadBatchCSV() {
-		const table = document.querySelector('#batchResults table');
-		if (!table || table.style.display === 'none') {
-			alert('No batch results to export');
-			return;
+			.epoch-panel {
+				padding: 0.85rem;
+			}
 		}
-		const rows = Array.from(table.querySelectorAll('tr'));
-		const csv = rows.map(tr => Array.from(tr.querySelectorAll('th,td')).map(td => {
-			const text = td.textContent.replaceAll('"', '""');
-			return '"' + text + '"';
-		}).join(',')).join('\n');
-		const blob = new Blob([csv + '\n'], { type: 'text/csv;charset=utf-8;' });
-		const url = URL.createObjectURL(blob);
-		const a = document.createElement('a');
-		a.href = url;
-		a.download = 'epoch_batch_' + new Date().toISOString().replace(/[:.]/g, '-') + '.csv';
-		document.body.appendChild(a);
-		a.click();
-		document.body.removeChild(a);
-		URL.revokeObjectURL(url);
-	}
+	</style>
 
-	// Quick paste-to-convert for batch input
-	document.getElementById('batchInput').addEventListener('paste', () => {
-		setTimeout(() => { if (document.getElementById('batchInput').value.trim()) convertBatch(); }, 0);
-	});
+	<section class="epoch-panel epoch-current">
+		<nav class="epoch-toc" aria-label="Page contents">
+			<span class="epoch-toc-label">On this page:</span>
+			<a href="#current-time">Current Time</a>
+			<a href="#single-converter">Single Converter</a>
+			<a href="#batch-converter">Batch Converter</a>
+		</nav>
+	</section>
 
-	// Initialize current time ticker
-	updateCurrentTime();
-	setInterval(updateCurrentTime, 1000);
+	<section class="epoch-panel epoch-current" id="current-time">
+		<h2>Current Time</h2>
+		<div class="epoch-current-lines" id="currentTime"></div>
+		<p class="epoch-hint">Click any value to copy it.</p>
+	</section>
 
-	// Example helper for batch
-	function addExampleToBatch(ts) {
-		const ta = document.getElementById('batchInput');
-		ta.value = (ta.value ? ta.value + '\n' : '') + ts;
-		convertBatch();
-	}
-</script>
+	<section class="epoch-panel" id="single-converter">
+		<h2>Single Converter</h2>
+		<div class="epoch-toolbar">
+			<div class="epoch-field grow">
+				<label for="singleInput">Epoch timestamp</label>
+				<input class="epoch-input" id="singleInput" type="text" placeholder="e.g. 1754841115 or 1754841115585">
+			</div>
+			<div class="epoch-field">
+				<label for="singleUnit">Interpret as</label>
+				<select class="epoch-select" id="singleUnit">
+					<option value="auto">Auto-detect</option>
+					<option value="seconds">Seconds</option>
+					<option value="milliseconds">Milliseconds</option>
+					<option value="nanoseconds">Nanoseconds</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="epoch-actions">
+			<button class="button" id="convertSingleBtn" type="button">Convert</button>
+			<button class="button" id="useNowBtn" type="button">Use current time</button>
+			<button class="button" id="clearSingleBtn" type="button">Clear</button>
+		</div>
+
+		<p class="epoch-status" id="singleStatus" aria-live="polite"></p>
+
+		<div class="epoch-output-grid">
+			<div class="epoch-output">
+				<span class="epoch-output-label">Detected unit</span>
+				<div class="epoch-output-value" id="singleDetected">-</div>
+			</div>
+			<div class="epoch-output">
+				<span class="epoch-output-label">RFC3339 (UTC)</span>
+				<div class="epoch-output-value" id="singleUtc">-</div>
+			</div>
+			<div class="epoch-output">
+				<span class="epoch-output-label">ISO8601 (Local)</span>
+				<div class="epoch-output-value" id="singleLocal">-</div>
+			</div>
+			<div class="epoch-output">
+				<span class="epoch-output-label">Unix seconds</span>
+				<div class="epoch-output-value" id="singleSeconds">-</div>
+			</div>
+			<div class="epoch-output">
+				<span class="epoch-output-label">Unix milliseconds</span>
+				<div class="epoch-output-value" id="singleMilliseconds">-</div>
+			</div>
+			<div class="epoch-output">
+				<span class="epoch-output-label">Unix nanoseconds</span>
+				<div class="epoch-output-value" id="singleNanoseconds">-</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="epoch-panel" id="batch-converter">
+		<h2>Batch Converter</h2>
+		<div class="epoch-inline-fields">
+			<div class="epoch-field">
+				<label for="batchUnit">Interpret batch as</label>
+				<select class="epoch-select" id="batchUnit">
+					<option value="auto">Auto-detect</option>
+					<option value="seconds">Seconds</option>
+					<option value="milliseconds">Milliseconds</option>
+					<option value="nanoseconds">Nanoseconds</option>
+				</select>
+			</div>
+		</div>
+		<div class="epoch-field">
+			<label for="batchInput">One timestamp per line</label>
+			<textarea class="epoch-textarea" id="batchInput" placeholder="1754841115&#10;1754841115585&#10;1754841115585000000"></textarea>
+		</div>
+		<p class="epoch-hint">Batch parsing is line-based now. Empty lines are ignored. Click table cells to copy them.</p>
+		<div class="epoch-actions">
+			<button class="button" id="convertBatchBtn" type="button">Convert list</button>
+			<button class="button" id="clearBatchBtn" type="button">Clear</button>
+			<button class="button" id="downloadBatchBtn" type="button">Download CSV</button>
+		</div>
+		<p class="epoch-status" id="batchStatus" aria-live="polite"></p>
+
+		<div class="epoch-batch-results" id="batchResults" hidden>
+			<div class="epoch-table-wrap">
+				<table class="epoch-table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Input</th>
+							<th>Detected</th>
+							<th>RFC3339 (UTC)</th>
+							<th>ISO8601 (Local)</th>
+							<th>Unix s</th>
+							<th>Unix ms</th>
+							<th>Unix ns</th>
+							<th>Error</th>
+						</tr>
+					</thead>
+					<tbody id="batchTbody"></tbody>
+				</table>
+			</div>
+		</div>
+	</section>
+
+	<script type="module" src="/projects/epoch/epoch.mjs"></script>
+</section>
