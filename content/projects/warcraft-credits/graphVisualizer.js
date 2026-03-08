@@ -6,7 +6,7 @@ const INITIAL_SIMULATION_LINK_DISTANCE = 50;
 const INITIAL_SIMULATION_LINK_STRENGTH = 0.8;
 const INITIAL_COLLISION_PADDING = 2;
 const INITIAL_COLLISION_STRENGTH = 0.7;
-const INITIAL_ROLE_POSITIONING_FORCE_STRENGTH = 0.1;
+const INITIAL_ROLE_POSITIONING_FORCE_STRENGTH = 0.16;
 
 const EXAMPLE_GAME_NODE_RADIUS = 25;
 const EXAMPLE_PERSON_NODE_RADIUS = 7;
@@ -26,6 +26,29 @@ function hashString(value) {
 function deterministicOffset(id, axis, magnitude) {
 	const hash = hashString(`${id}:${axis}`);
 	return ((hash / 0xffffffff) - 0.5) * magnitude;
+}
+
+function getZoneX(category, width, isSingleGameView) {
+	if (isSingleGameView) return width * 0.5;
+
+	switch (category) {
+		case CATEGORY_GAME1_ONLY:
+		case CATEGORY_SINGLE_GAME:
+			return width * 0.22;
+		case CATEGORY_BOTH:
+			return width * 0.5;
+		case CATEGORY_GAME2_ONLY:
+			return width * 0.78;
+		default:
+			return width * 0.5;
+	}
+}
+
+function getRoleLaneY(role, normalizedRolePositions, defaultRolePositionNorm, height) {
+	const roleTargetPosNorm = normalizedRolePositions.get(role) || defaultRolePositionNorm;
+	const laneTop = height * 0.24;
+	const laneHeight = height * 0.64;
+	return laneTop + roleTargetPosNorm.normY * laneHeight;
 }
 
 /**
@@ -139,13 +162,10 @@ export function visualizeGraphD3(
 	const defaultRolePositionNorm = { normX: 0.5, normY: 0.5 };
 	let game1InitialPos = { x: width / 2, y: height / 2 };
 	let game2InitialPos = { x: width / 2, y: height / 2 };
-	const interpolationWeight = 0.2;
-	const bothInterpolationWeight = 0.1;
 	graphData.nodes.forEach((d) => {
 		if (d.type === NODE_TYPE_GAME) {
-			const xOffset = !isSingleGameView ? (d.gameIndex === 1 ? -width * 0.15 : width * 0.15) : 0;
-			d.x = width / 2 + xOffset;
-			d.y = height / 2 - height * 0.25;
+			d.x = isSingleGameView ? width * 0.5 : (d.gameIndex === 1 ? width * 0.18 : width * 0.82);
+			d.y = height * 0.1;
 			if (d.gameIndex === 1) game1InitialPos = { x: d.x, y: d.y };
 			if (d.gameIndex === 2 && !isSingleGameView) game2InitialPos = { x: d.x, y: d.y };
 			else if (d.gameIndex === 2 && isSingleGameView) game2InitialPos = game1InitialPos;
@@ -157,42 +177,16 @@ export function visualizeGraphD3(
 		const preservedPosition = preservedPositions?.get(d.id);
 		if (d.type === NODE_TYPE_PERSON) {
 			const role = d.primaryRole || DEFAULT_ROLE;
-			const roleTargetPosNorm = normalizedRolePositions.get(role) || defaultRolePositionNorm;
-			const roleTargetX = roleTargetPosNorm.normX * width;
-			const roleTargetY = roleTargetPosNorm.normY * height;
+			const targetX = getZoneX(d.category, width, isSingleGameView);
+			const targetY = getRoleLaneY(role, normalizedRolePositions, defaultRolePositionNorm, height);
 
-			let targetX = roleTargetX;
-			let targetY = roleTargetY;
-			switch (d.category) {
-				case CATEGORY_SINGLE_GAME:
-				case CATEGORY_GAME1_ONLY:
-					targetX = roleTargetX * (1 - interpolationWeight) + game1InitialPos.x * interpolationWeight;
-					targetY = roleTargetY * (1 - interpolationWeight) + game1InitialPos.y * interpolationWeight;
-					break;
-				case CATEGORY_GAME2_ONLY:
-					if (!isSingleGameView) {
-						targetX = roleTargetX * (1 - interpolationWeight) + game2InitialPos.x * interpolationWeight;
-						targetY = roleTargetY * (1 - interpolationWeight) + game2InitialPos.y * interpolationWeight;
-					}
-					break;
-				case CATEGORY_BOTH:
-					if (!isSingleGameView) {
-						const midGameX = (game1InitialPos.x + game2InitialPos.x) / 2;
-						const midGameY = (game1InitialPos.y + game2InitialPos.y) / 2;
-						targetX = roleTargetX * (1 - bothInterpolationWeight) + midGameX * bothInterpolationWeight;
-						targetY = roleTargetY * (1 - bothInterpolationWeight) + midGameY * bothInterpolationWeight;
-					}
-					break;
-				// Default case removed, initial roleTargetX/Y handles other cases
-			}
-
-			if (preservedPosition && previousSize?.width > 0 && previousSize?.height > 0) {
-				d.x = (preservedPosition.x / previousSize.width) * width;
-				d.y = (preservedPosition.y / previousSize.height) * height;
-			} else {
-				d.x = targetX + deterministicOffset(d.id, "x", 2);
-				d.y = targetY + deterministicOffset(d.id, "y", 2);
-			}
+				if (preservedPosition && previousSize?.width > 0 && previousSize?.height > 0) {
+					d.x = (preservedPosition.x / previousSize.width) * width;
+					d.y = (preservedPosition.y / previousSize.height) * height;
+				} else {
+					d.x = targetX + deterministicOffset(d.id, "x", width * 0.05);
+					d.y = targetY + deterministicOffset(d.id, "y", 18);
+				}
 		} else if (d.type !== NODE_TYPE_GAME) {
 			if (preservedPosition && previousSize?.width > 0 && previousSize?.height > 0) {
 				d.x = (preservedPosition.x / previousSize.width) * width;
@@ -225,26 +219,23 @@ export function visualizeGraphD3(
 	const centerForce = d3.forceCenter(width / 2, height / 2).strength(0.05);
 	const forceX = d3
 		.forceX()
-		.strength((d) => (d.type === NODE_TYPE_PERSON ? INITIAL_ROLE_POSITIONING_FORCE_STRENGTH : 0.01))
+		.strength((d) => (d.type === NODE_TYPE_PERSON ? INITIAL_ROLE_POSITIONING_FORCE_STRENGTH : 0.18))
 		.x((d) => {
 			if (d.type === NODE_TYPE_PERSON) {
-				const role = d.primaryRole || DEFAULT_ROLE;
-				const normX = (normalizedRolePositions.get(role) || defaultRolePositionNorm).normX;
-				return normX * width;
+				return getZoneX(d.category, width, isSingleGameView);
 			}
-			return width / 2;
+			return d.gameIndex === 1 || isSingleGameView ? game1InitialPos.x : game2InitialPos.x;
 		});
 
 	const forceY = d3
 		.forceY()
-		.strength((d) => (d.type === NODE_TYPE_PERSON ? INITIAL_ROLE_POSITIONING_FORCE_STRENGTH : 0.01))
+		.strength((d) => (d.type === NODE_TYPE_PERSON ? INITIAL_ROLE_POSITIONING_FORCE_STRENGTH : 0.12))
 		.y((d) => {
 			if (d.type === NODE_TYPE_PERSON) {
 				const role = d.primaryRole || DEFAULT_ROLE;
-				const normY = (normalizedRolePositions.get(role) || defaultRolePositionNorm).normY;
-				return normY * height;
+				return getRoleLaneY(role, normalizedRolePositions, defaultRolePositionNorm, height);
 			}
-			return height / 2;
+			return game1InitialPos.y;
 		});
 	const simulation = d3.forceSimulation(graphData.nodes).force("link", linkForce).force("charge", chargeForce).force("center", centerForce).force("collision", collisionForce).force("x", forceX).force("y", forceY).alpha(1).alphaDecay(0.0228).alphaMin(0.001).on("tick", ticked);
 

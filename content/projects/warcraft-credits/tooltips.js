@@ -58,7 +58,7 @@ export function setupD3Tooltips(nodeSelection, tooltipElement, personRolesMap, s
 		const clientY = event.clientY;
 
 		let htmlContent = `<div class="tooltip-card"><div class="tooltip-header"><strong>${escapeHtml(d.name || "Unknown Node")}</strong>`;
-		if (d.type) {
+		if (d.type && d.type !== NODE_TYPE_PERSON) {
 			htmlContent += `<span class="tooltip-kind">${escapeHtml(d.type.charAt(0).toUpperCase() + d.type.slice(1))}</span>`;
 		}
 		htmlContent += "</div>";

@@ -90,6 +90,57 @@ function collectAllRoles(jsonData, filename) {
 	return roles;
 }
 
+const ROLE_FAMILY_ORDER = [
+	"leadership",
+	"design",
+	"engineering",
+	"art",
+	"audio_voice",
+	"qa",
+	"localization",
+	"production",
+	"marketing_support",
+	"other",
+];
+
+function classifyRoleFamily(role) {
+	const normalizedRole = role.toLowerCase().trim();
+
+	if (/voice|voices|audio|sound|music|casting/.test(normalizedRole)) return "audio_voice";
+	if (/locali|translation|translated|german|italian|korean|french|spanish|russian|polish|portuguese|chinese/.test(normalizedRole)) return "localization";
+	if (/designer|design|quest|narrative|writer/.test(normalizedRole)) return "design";
+	if (/programmer|engineer|developer|technical/.test(normalizedRole)) return "engineering";
+	if (/artist|art |art$|animator|cinematic|illustration/.test(normalizedRole)) return "art";
+	if (/qa|quality assurance|tester|test /.test(normalizedRole)) return "qa";
+	if (/producer|project lead|production/.test(normalizedRole)) return "production";
+	if (/director|president|vice president|ceo|lead /.test(normalizedRole)) return "leadership";
+	if (/marketing|sales|support|community|web designer|public relations/.test(normalizedRole)) return "marketing_support";
+
+	return "other";
+}
+
+function getRoleLaneKey(role) {
+	const normalizedRole = role.toLowerCase().trim();
+
+	if (/^voice over cast\b/.test(normalizedRole)) return "voice_over_cast";
+	if (/^character voices?\b/.test(normalizedRole) || /^voices?\b/.test(normalizedRole)) return "voices";
+	if (/monster voice effects/.test(normalizedRole)) return "monster_voice_effects";
+	if (/voice direction|voice director|casting/.test(normalizedRole)) return "voice_direction";
+	if (/audio/.test(normalizedRole) && /voice/.test(normalizedRole)) return "audio_voice";
+	if (/locali|translation|translated/.test(normalizedRole)) return "localization";
+
+	return normalizedRole;
+}
+
+function compareLaneKeysForLayout(a, b) {
+	const familyA = classifyRoleFamily(a);
+	const familyB = classifyRoleFamily(b);
+	const familyIndexA = ROLE_FAMILY_ORDER.indexOf(familyA);
+	const familyIndexB = ROLE_FAMILY_ORDER.indexOf(familyB);
+	if (familyIndexA !== familyIndexB) return familyIndexA - familyIndexB;
+	return a.localeCompare(b);
+}
+
 self.onmessage = async (event) => {
 	const {
 		filename1: shortFilename1,
@@ -197,17 +248,17 @@ self.onmessage = async (event) => {
 			allDatasetRoles.add(DEFAULT_ROLE);
 		}
 
-		// Use all roles from the selected datasets so filters do not reorder the role wheel.
-		const sortedRoles = Array.from(allDatasetRoles).sort();
-		const count = sortedRoles.length || 1;
-		const angleStep = (2 * Math.PI) / count;
-		const radius = 0.4;
+		// Map exact roles onto shared lane keys so variants like localized voice-over casts collapse together.
+		const laneKeys = Array.from(new Set(Array.from(allDatasetRoles).map((role) => getRoleLaneKey(role)))).sort(compareLaneKeysForLayout);
+		const count = laneKeys.length || 1;
+		const laneIndexByKey = new Map(laneKeys.map((laneKey, index) => [laneKey, index]));
 		workerNormalizedRolePositions.clear();
-		sortedRoles.forEach((role, i) => {
-			const angle = i * angleStep - Math.PI / 2;
+		Array.from(allDatasetRoles).forEach((role) => {
+			const laneKey = getRoleLaneKey(role);
+			const laneIndex = laneIndexByKey.get(laneKey) ?? 0;
 			workerNormalizedRolePositions.set(role, {
-				normX: 0.5 + radius * Math.cos(angle),
-				normY: 0.5 + radius * Math.sin(angle),
+				normX: 0.5,
+				normY: count === 1 ? 0.5 : laneIndex / (count - 1),
 			});
 		});
 		// Ensure DEFAULT_ROLE has a center fallback if not already positioned
