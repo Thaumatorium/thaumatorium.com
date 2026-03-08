@@ -38,7 +38,7 @@
   </section>
   {{ end }}
 </section>
-{{ else }}
+{{ else if not (strings.TrimSpace (.Content | plainify | htmlUnescape)) }}
 <p>No projects available yet. Check back soon!</p>
 {{ end }}
 

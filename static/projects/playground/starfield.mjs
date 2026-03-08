@@ -1,14 +1,15 @@
-window.starfield.style = "background:black;"
-const context = window.starfield.getContext("2d");
-// width and height are overwritten when resizing the window, which is why they're not const
-let height = document.documentElement.clientHeight;
-let width = document.documentElement.clientWidth;
-const depth = 1000 * (height / width);
+const canvas = document.getElementById("starfield");
+canvas.style.background = "black";
+const context = canvas.getContext("2d");
+// width and height are overwritten when resizing the canvas, which is why they're not const
+let width = 0;
+let height = 0;
+let depth = 0;
 const stars = [];
 let max_depth = width;
 const star_count = 50;
-const star_max_size = 2
-const star_max_halo = 15
+const star_max_size = 2;
+const star_max_halo = 15;
 const star_color_range = [
 	{ r: 21, g: 117, b: 254 },
 	{ r: 183, g: 231, b: 253 },
@@ -23,6 +24,18 @@ const speed = 0.3;
 
 // generate a random double between min and max
 const rand = (min, max) => Math.random() * (+max - +min) + +min;
+
+const resizeCanvas = () => {
+	const rect = canvas.getBoundingClientRect();
+	width = Math.max(1, Math.floor(rect.width));
+	height = Math.max(1, Math.floor(rect.height));
+	depth = 1000 * (height / width);
+	max_depth = width;
+	context.canvas.width = width;
+	context.canvas.height = height;
+};
+
+resizeCanvas();
 
 // Create stars
 for (let i = 0; i < star_count; i++) {
@@ -46,20 +59,14 @@ for (let i = 0; i < star_count; i++) {
 }
 
 // Animation loop
-const step = (timestamp) => {
-	// Not sure what to do with `timestamp`
-	height = document.documentElement.clientHeight;
-	width = document.documentElement.clientWidth;
-	max_depth = width;
-	// Resize canvas when the window is resized
-	context.canvas.height = height;
-	context.canvas.width = width;
+const step = () => {
+	resizeCanvas();
 
 	// create the black background
-	// context.fillRect(0, 0, width, height);
+	context.clearRect(0, 0, width, height);
 
 	for (let i = stars.length - 1; i > -1; i--) {
-		let star = stars[i];
+		const star = stars[i];
 
 		// move the stars to the left, depending on their size and general speed control
 		star.x -= (star.size * speed);
