@@ -4,6 +4,7 @@ import { populateDropdown, setDefaultSelections } from "./ui.js";
 
 const MAX_NODES_FOR_LINKS = 20000;
 const FILTER_DEBOUNCE_MS = 250;
+const RESIZE_DEBOUNCE_MS = 150;
 
 function debounce(func, wait) {
 	let timeout;
@@ -73,6 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		isSimulationStoppedByUser: false,
 		stats1: null,
 		stats2: null,
+		currentGraphData: null,
 		currentFilters: {
 			name: { text: "", mode: "contains" }, // Text might contain commas now
 			role: { text: "", mode: "contains" }, // Text might contain commas now
@@ -84,6 +86,42 @@ document.addEventListener("DOMContentLoaded", () => {
 			state.isSimulationStoppedByUser = false;
 			setSimulationButtonState(true);
 		}
+	};
+	const rerenderGraph = () => {
+		if (!state.currentGraphData?.nodes?.length) return;
+
+		if (state.d3Simulation) {
+			state.d3Simulation.stop();
+			state.d3Simulation = null;
+		}
+
+		const visualizerDomElements = {
+			svgContainer: elements.svgContainer,
+			tooltipElement: elements.tooltip,
+			errorMessageElement: elements.errorMessage,
+		};
+		state.d3Simulation = visualizeGraphD3(
+			state.currentGraphData,
+			visualizerDomElements,
+			state.personRolesMap,
+			state.normalizedRolePositions,
+			handleDragRestart
+		);
+
+		if (!state.d3Simulation) {
+			setSimulationButtonState(false);
+			return;
+		}
+
+		if (state.isShiftPressed) {
+			elements.svgContainer.classList.add("show-all-labels");
+		}
+		if (state.isSimulationStoppedByUser) {
+			state.d3Simulation.stop();
+			setSimulationButtonState(false);
+			return;
+		}
+		setSimulationButtonState(true);
 	};
 	const updateStatsUI = (stats1, stats2, els) => {
 		const placeholder = "--";
@@ -180,6 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				}
 
 				if (status === "success" && graphData?.nodes) {
+					state.currentGraphData = graphData;
 
 					state.personRolesMap = new Map();
 					if (Array.isArray(personRolesMapData)) {
@@ -237,6 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				} else {
 					const errorMsg = message || (status === "error" ? "Worker reported an error." : "Worker returned invalid data or no nodes passed filters.");
 					console.error("Main: D3 Worker reported error or invalid data:", errorMsg, event.data);
+					state.currentGraphData = null;
 					showMessage(`Error processing data: ${errorMsg}`, "error");
 					setSimulationButtonState(false);
 				}
@@ -281,6 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			updateStatsUI(null, null, elements);
 			state.lastFile1 = null;
 			state.lastFile2 = null;
+			state.currentGraphData = null;
 			state.currentFilters = { name: { text: "", mode: "contains" }, role: { text: "", mode: "contains" } };
 			// Reset UI filters on major error
 			elements.nameFilterInput.value = "";
@@ -335,6 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			state.lastFile2 = null;
 			state.stats1 = null;
 			state.stats2 = null;
+			state.currentGraphData = null;
 			if (elements.fileSelect1.options.length > 0) elements.fileSelect1.options[0].disabled = !!selectedFile1;
 			if (elements.fileSelect2.options.length > 0) elements.fileSelect2.options[0].disabled = !!selectedFile2;
 			return;
@@ -358,6 +400,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Debounced version specifically for text inputs
 	const debouncedTriggerLoadForFilters = debounce(() => triggerLoad(false), FILTER_DEBOUNCE_MS);
+	const debouncedRerender = debounce(rerenderGraph, RESIZE_DEBOUNCE_MS);
 
 	try {
 		populateDropdown(elements.fileSelect1, gameTitleMap);
@@ -424,4 +467,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			elements.svgContainer.classList.remove("show-all-labels");
 		}
 	});
+	const resizeObserver = new ResizeObserver(() => {
+		debouncedRerender();
+	});
+	resizeObserver.observe(elements.svgContainer);
 });

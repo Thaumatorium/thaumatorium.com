@@ -14,6 +14,20 @@ const EXAMPLE_PERSON_NODE_RADIUS = 7;
 const dynamicRoleColors = new Map();
 const colorScale = d3.scaleOrdinal(d3.schemeTableau10);
 
+function hashString(value) {
+	let hash = 2166136261;
+	for (let i = 0; i < value.length; i++) {
+		hash ^= value.charCodeAt(i);
+		hash = Math.imul(hash, 16777619);
+	}
+	return hash >>> 0;
+}
+
+function deterministicOffset(id, axis, magnitude) {
+	const hash = hashString(`${id}:${axis}`);
+	return ((hash / 0xffffffff) - 0.5) * magnitude;
+}
+
 /**
  * Determines the fill color for a node.
  * @param {object} d - The node data object.
@@ -68,7 +82,7 @@ export function visualizeGraphD3(
 	domElements,
 	personRolesMap,
 	normalizedRolePositions,
-	onDragRestartNeeded // <-- Add callback parameter
+	onDragRestartNeeded
 ) {
 	const { svgContainer, tooltipElement, errorMessageElement } = domElements;
 	const baseErrorMessage = "No common contributors or relevant data found for the selected combination.";
@@ -107,8 +121,7 @@ export function visualizeGraphD3(
 
 	const svg = d3.select(svgContainer);
 	svg.selectAll("*").remove();
-	const width = parseInt(svg.style("width"), 10);
-	const height = parseInt(svg.style("height"), 10);
+	const { width, height } = svgContainer.getBoundingClientRect();
 	if (isNaN(width) || isNaN(height) || width <= 0 || height <= 0) {
 		if (!errorMessageElement.textContent || !errorMessageElement.textContent.includes("hidden")) {
 			errorMessageElement.textContent = "SVG container has invalid dimensions.";
@@ -116,7 +129,7 @@ export function visualizeGraphD3(
 			errorMessageElement.classList.add("error-message");
 			errorMessageElement.classList.remove("warning-message");
 		}
-		console.error("SVG container dimensions error:", svg.style("width"), svg.style("height"));
+		console.error("SVG container dimensions error:", width, height);
 		return null;
 	}
 	dynamicRoleColors.clear();
@@ -169,11 +182,11 @@ export function visualizeGraphD3(
 				// Default case removed, initial roleTargetX/Y handles other cases
 			}
 
-			d.x = targetX + (Math.random() - 0.5) * 2;
-			d.y = targetY + (Math.random() - 0.5) * 2;
+			d.x = targetX + deterministicOffset(d.id, "x", 2);
+			d.y = targetY + deterministicOffset(d.id, "y", 2);
 		} else if (d.type !== NODE_TYPE_GAME) {
-			d.x = d.x || width / 2 + (Math.random() - 0.5) * 50;
-			d.y = d.y || height / 2 + (Math.random() - 0.5) * 50;
+			d.x = d.x || width / 2 + deterministicOffset(d.id, "x", 50);
+			d.y = d.y || height / 2 + deterministicOffset(d.id, "y", 50);
 		}
 		d.fx = null;
 		d.fy = null;
@@ -229,8 +242,7 @@ export function visualizeGraphD3(
 		.join("g")
 		.attr("class", (d) => `node ${d.type} ${d.category || ""}`)
 		.attr("transform", (d) => `translate(${d.x},${d.y})`)
-		// --- Pass the callback to setupDrag ---
-		.call(setupDrag(simulation, onDragRestartNeeded)); // <-- Pass callback here
+		.call(setupDrag(simulation, onDragRestartNeeded));
 
 	nodeSelection
 		.filter((d) => d.type === NODE_TYPE_PERSON)
@@ -270,41 +282,30 @@ export function visualizeGraphD3(
 		nodeSelection.attr("transform", (d) => `translate(${d.x},${d.y})`);
 	}
 
-	// --- Modify setupDrag to accept and use the callback ---
 	function setupDrag(sim, dragRestartCallback) {
-		// <-- Add callback param
 		function dragstarted(event, d) {
-			// Check if simulation is not active (i.e., alpha is low/zero)
 			if (!event.active) {
-				// Determine if the simulation needs restarting *and* if the callback should be triggered
-				const needsRestart = sim.alpha() < sim.alphaMin(); // More robust check
+				const needsRestart = sim.alpha() < sim.alphaMin();
 
 				if (needsRestart && dragRestartCallback) {
-					// Call the callback *before* restarting simulation state is updated
 					dragRestartCallback();
 				}
 
-				// Always try to restart/heat up the simulation on drag start if it's not active
 				sim.alphaTarget(0.3).restart();
 			}
-			// Fix the node's position during drag
 			d.fx = event.x;
 			d.fy = event.y;
 		}
 
 		function dragged(event, d) {
-			// Update the fixed position as the node is dragged
 			d.fx = event.x;
 			d.fy = event.y;
 		}
 
 		function dragended(event, d) {
-			// If the simulation wasn't activated by other means during the drag,
-			// set the alphaTarget to 0 to let it cool down naturally.
 			if (!event.active) {
 				sim.alphaTarget(0);
 			}
-			// Release the node's fixed position so the simulation can move it again.
 			d.fx = null;
 			d.fy = null;
 		}

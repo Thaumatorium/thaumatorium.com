@@ -7,12 +7,36 @@ import { gameTitleMap, NODE_TYPE_PERSON, NODE_TYPE_GAME, LINK_TYPE_WORKED_ON, CA
  * @returns {string} A generated ID string (e.g., "game_warcraft_1_orcs_vs_humans").
  */
 function generateGameId(gameName) {
-	if (!gameName || typeof gameName !== "string") return `game_invalid_${Date.now()}`;
-	return `game_${gameName
+	if (!gameName || typeof gameName !== "string" || gameName.trim() === "") {
+		return "game_invalid_unknown";
+	}
+	const sanitizedName = gameName
 		.toLowerCase()
 		.replace(/[^a-z0-9_]+/g, "_")
 		.replace(/[ _]+/g, "_")
-		.replace(/^_+|_+$/g, "")}`;
+		.replace(/^_+|_+$/g, "");
+	return sanitizedName ? `game_${sanitizedName}` : "game_invalid_unknown";
+}
+
+function collectRoles(personObj) {
+	const roles = new Set((Array.isArray(personObj?.roles) ? personObj.roles : []).map((role) => String(role).trim()).filter(Boolean));
+	if (roles.size === 0) roles.add(DEFAULT_ROLE);
+	return roles;
+}
+
+function addPersonToMap(peopleMap, allPeopleNames, personObj) {
+	const name = personObj?.name?.trim();
+	if (!name) return;
+
+	allPeopleNames.add(name);
+	const roles = collectRoles(personObj);
+	const existing = peopleMap.get(name);
+	if (existing) {
+		roles.forEach((role) => existing.roles.add(role));
+		return;
+	}
+
+	peopleMap.set(name, { roles });
 }
 
 /**
@@ -148,18 +172,17 @@ export function processDataForD3(jsonData1, jsonData2, filename1, filename2, isS
 			gameId1 = generateGameId(gameName1);
 			const peopleArray1 = jsonData1[gameName1];
 			if (Array.isArray(peopleArray1)) {
-				peopleArray1.forEach((personObj) => {
-					const name = personObj?.name?.trim();
-					if (name) {
-						allPeopleNames.add(name);
-						const roles = new Set((Array.isArray(personObj.roles) ? personObj.roles : []).map((r) => String(r).trim()).filter(Boolean));
-						if (roles.size === 0) roles.add(DEFAULT_ROLE);
-						peopleMap1.set(name, { roles });
-					}
-				});
-			} else console.warn(`Game 1 data for '${gameName1}' is not an array in ${filename1}`);
-		} else console.error(`Could not determine identity for Game 1 from ${filename1}.`);
-	} else console.error(`Could not load data for Game 1 (${filename1}).`);
+				peopleArray1.forEach((personObj) => addPersonToMap(peopleMap1, allPeopleNames, personObj));
+			} else {
+				console.warn(`Game 1 data for '${gameName1}' is not an array in ${filename1}`);
+			}
+		} else {
+			console.error(`Could not determine identity for Game 1 from ${filename1}.`);
+		}
+	} else {
+		console.error(`Could not load data for Game 1 (${filename1}).`);
+	}
+
 	// Process Game 2
 	if (!isSameGame && jsonData2) {
 		gameName2 = getGameNameFromData(jsonData2, filename2) || gameTitleMap[filename2];
@@ -178,21 +201,10 @@ export function processDataForD3(jsonData1, jsonData2, filename1, filename2, isS
 			} else {
 				const peopleArray2 = jsonData2[gameName2];
 				if (Array.isArray(peopleArray2)) {
-					peopleArray2.forEach((personObj) => {
-						const name = personObj?.name?.trim();
-						if (name) {
-							allPeopleNames.add(name);
-							const roles = new Set((Array.isArray(personObj.roles) ? personObj.roles : []).map((r) => String(r).trim()).filter(Boolean));
-							if (roles.size === 0) roles.add(DEFAULT_ROLE);
-							// Only add to map2 if name not already in map1 to avoid overwriting
-							// OR always add/overwrite if distinct people can exist with same name?
-							// Let's assume names are unique identifiers for now, so only add if not in map1.
-							// This needs clarification based on data structure. If needed, merge roles later.
-							// Sticking with the simple approach: overwrite/update roles in peopleMap2.
-							peopleMap2.set(name, { roles });
-						}
-					});
-				} else console.warn(`Game 2 data for '${gameName2}' is not an array in ${filename2}`);
+					peopleArray2.forEach((personObj) => addPersonToMap(peopleMap2, allPeopleNames, personObj));
+				} else {
+					console.warn(`Game 2 data for '${gameName2}' is not an array in ${filename2}`);
+				}
 			}
 		} else {
 			console.error(`Could not determine identity for Game 2 from ${filename2}.`);
