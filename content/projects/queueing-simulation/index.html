@@ -1,6 +1,6 @@
 ---
-title: "Queueing Simulation"
-description: "Interactive M/G/2/K queue simulation with warm-up, measurement windows, and live history."
+title: "Queueing System Simulation"
+description: "Interactive finite-capacity queue simulation with configurable servers, warm-up, measurement windows, and live history."
 publishDate: 2025-11-01T21:47:42+01:00
 lastmod: 2026-03-08T23:20:00+01:00
 ---
@@ -115,6 +115,13 @@ lastmod: 2026-03-08T23:20:00+01:00
       display: flex;
       flex-wrap: wrap;
       gap: 0.75rem;
+    }
+
+    .queue-sim-repl-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.75rem;
+      align-items: end;
     }
 
     .queue-sim-note {
@@ -377,8 +384,8 @@ lastmod: 2026-03-08T23:20:00+01:00
   <section class="queue-sim-shell">
     <aside class="queue-sim-controls">
       <section class="queue-sim-panel queue-sim-title">
-        <h2>M/G/2/K Queue Simulation</h2>
-        <p class="queue-sim-subtitle">Poisson arrivals, two servers, finite total system capacity <code>K</code>, and configurable service-time distribution.</p>
+        <h2>Queueing System Simulation</h2>
+        <p class="queue-sim-subtitle">Poisson arrivals, configurable server pool <code>c</code>, finite total system capacity <code>K</code>, and switchable service-time distributions.</p>
       </section>
 
       <section class="queue-sim-panel">
@@ -412,6 +419,10 @@ lastmod: 2026-03-08T23:20:00+01:00
             <input type="number" id="capacity" min="2" max="60" step="1" value="10">
           </label>
           <label>
+            Servers c
+            <input type="number" id="servers" min="1" max="8" step="1" value="2">
+          </label>
+          <label>
             Warm-up time (sec)
             <input type="number" id="warmupTime" min="0" max="10000" step="5" value="60">
           </label>
@@ -439,6 +450,24 @@ lastmod: 2026-03-08T23:20:00+01:00
         <p class="queue-sim-note"><code>K</code> is total system capacity, including the 2 customers in service. If the system already has <code>K</code> customers, a new arrival is dropped.</p>
         <p class="queue-sim-note">The reported averages are based only on the measurement window after warm-up. Wait/system times are conditional on served customers, not dropped arrivals.</p>
       </section>
+
+      <section class="queue-sim-panel">
+        <h3>Replications</h3>
+        <div class="queue-sim-form">
+          <label>
+            Base seed
+            <input type="number" id="baseSeed" step="1" value="12345">
+          </label>
+          <div class="queue-sim-repl-grid">
+            <label>
+              Runs
+              <input type="number" id="replications" min="2" max="500" step="1" value="50">
+            </label>
+            <button class="button" id="runReplicationsBtn" type="button">Run batch</button>
+          </div>
+        </div>
+        <p class="queue-sim-note">Batch mode re-runs the same scenario with deterministic seeds <code>seed, seed+1, ...</code> and reports 95% confidence intervals.</p>
+      </section>
     </aside>
 
     <section class="queue-sim-sidebar">
@@ -454,16 +483,7 @@ lastmod: 2026-03-08T23:20:00+01:00
                 <span class="queue-sim-label">Queue</span>
                 <div class="queue-area" id="queueArea"></div>
               </div>
-              <div class="queue-sim-server-bank">
-                <div class="queue-sim-server" data-server="0">
-                  <span class="queue-sim-label">Server 1</span>
-                  <div class="slot" data-slot="0"></div>
-                </div>
-                <div class="queue-sim-server" data-server="1">
-                  <span class="queue-sim-label">Server 2</span>
-                  <div class="slot" data-slot="1"></div>
-                </div>
-              </div>
+              <div class="queue-sim-server-bank" id="serverBank"></div>
             </div>
             <div class="queue-sim-exit">
               <div class="queue-sim-arrow"></div>
@@ -493,12 +513,43 @@ lastmod: 2026-03-08T23:20:00+01:00
           <div class="queue-sim-stat"><small>Throughput</small><strong id="throughput">0.00/s</strong></div>
           <div class="queue-sim-stat"><small>Avg wait</small><strong id="avgWait">0.00s</strong></div>
           <div class="queue-sim-stat"><small>Avg system</small><strong id="avgSystem">0.00s</strong></div>
-          <div class="queue-sim-stat"><small>Util S1</small><strong id="util1">0%</strong></div>
-          <div class="queue-sim-stat"><small>Util S2</small><strong id="util2">0%</strong></div>
+          <div class="queue-sim-stat"><small>Mean util</small><strong id="meanUtil">0%</strong></div>
+          <div class="queue-sim-stat"><small>Server utilizations</small><strong id="utilBreakdown">-</strong></div>
           <div class="queue-sim-stat"><small>Avg queue len</small><strong id="avgQueueLen">0.00</strong></div>
           <div class="queue-sim-stat"><small>Avg system len</small><strong id="avgSystemLen">0.00</strong></div>
           <div class="queue-sim-stat"><small>Drop rate</small><strong id="dropRate">0.0%</strong></div>
           <div class="queue-sim-stat"><small>Distribution</small><strong id="distributionLabel">Gamma</strong></div>
+        </div>
+      </section>
+
+      <section class="queue-sim-panel">
+        <h3>Theoretical Reference</h3>
+        <p class="queue-sim-note">Only available for exponential service, i.e. <code>M/M/c/K</code>.</p>
+        <div class="queue-sim-stats">
+          <div class="queue-sim-stat"><small>Model</small><strong id="theoryModel">n/a</strong></div>
+          <div class="queue-sim-stat"><small>Blocking probability</small><strong id="theoryBlocking">-</strong></div>
+          <div class="queue-sim-stat"><small>Expected system size E[N]</small><strong id="theorySystem">-</strong></div>
+          <div class="queue-sim-stat"><small>Expected queue size E[Nq]</small><strong id="theoryQueue">-</strong></div>
+          <div class="queue-sim-stat"><small>Effective arrival rate</small><strong id="theoryLambdaEff">-</strong></div>
+          <div class="queue-sim-stat"><small>Expected sojourn E[T]</small><strong id="theorySystemTime">-</strong></div>
+        </div>
+      </section>
+
+      <section class="queue-sim-panel">
+        <h3>Replication Summary</h3>
+        <div class="queue-sim-stats">
+          <div class="queue-sim-stat"><small>Runs</small><strong id="batchRuns">0</strong></div>
+          <div class="queue-sim-stat"><small>Seed range</small><strong id="batchSeedRange">-</strong></div>
+          <div class="queue-sim-stat"><small>Mean throughput</small><strong id="batchThroughput">-</strong></div>
+          <div class="queue-sim-stat"><small>95% CI throughput</small><strong id="batchThroughputCi">-</strong></div>
+          <div class="queue-sim-stat"><small>Mean avg wait</small><strong id="batchAvgWait">-</strong></div>
+          <div class="queue-sim-stat"><small>95% CI avg wait</small><strong id="batchAvgWaitCi">-</strong></div>
+          <div class="queue-sim-stat"><small>Mean drop rate</small><strong id="batchDropRate">-</strong></div>
+          <div class="queue-sim-stat"><small>95% CI drop rate</small><strong id="batchDropRateCi">-</strong></div>
+          <div class="queue-sim-stat"><small>Mean avg queue len</small><strong id="batchAvgQueueLen">-</strong></div>
+          <div class="queue-sim-stat"><small>95% CI avg queue len</small><strong id="batchAvgQueueLenCi">-</strong></div>
+          <div class="queue-sim-stat"><small>Little's Law gap</small><strong id="batchLittlesGap">-</strong></div>
+          <div class="queue-sim-stat"><small>Mean util</small><strong id="batchMeanUtil">-</strong></div>
         </div>
       </section>
 
