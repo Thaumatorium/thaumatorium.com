@@ -43,7 +43,14 @@ export function getGameNameFromData(jsonData, filename) {
 	return null;
 }
 
-let invalidIdCounter = 0;
+function hashString(value) {
+	let hash = 2166136261;
+	for (let i = 0; i < value.length; i++) {
+		hash ^= value.charCodeAt(i);
+		hash = Math.imul(hash, 16777619);
+	}
+	return (hash >>> 0).toString(36);
+}
 
 /**
  * Generates a consistent, sanitized ID for a person node based on their name.
@@ -56,8 +63,7 @@ let invalidIdCounter = 0;
  */
 export function generatePersonId(name) {
 	if (!name || typeof name !== "string" || name.trim() === "") {
-		invalidIdCounter++;
-		return `person_invalid_${invalidIdCounter}`;
+		return "person_invalid_empty";
 	}
 
 	const sanitizedName = name
@@ -67,10 +73,8 @@ export function generatePersonId(name) {
 		.replace(/^_+|_+$/g, "");
 
 	if (sanitizedName === "") {
-		invalidIdCounter++;
-		const originalSimplified = name.trim().replace(/[^a-zA-Z0-9]/g, "") || `original_empty_${invalidIdCounter}`;
-		const fallbackId = `person_${originalSimplified}_sanitized_empty_${invalidIdCounter}`;
-		return fallbackId.substring(0, 60);
+		const hashed = hashString(name.trim());
+		return `person_hashed_${hashed}`.substring(0, 60);
 	}
 
 	return `person_${sanitizedName}`.substring(0, 100);

@@ -3,7 +3,7 @@ import { visualizeGraphD3 } from "./graphVisualizer.js";
 import { populateDropdown, setDefaultSelections } from "./ui.js";
 
 const MAX_NODES_FOR_LINKS = 20000;
-const FILTER_DEBOUNCE_MS = 750;
+const FILTER_DEBOUNCE_MS = 250;
 
 function debounce(func, wait) {
 	let timeout;
@@ -251,6 +251,18 @@ document.addEventListener("DOMContentLoaded", () => {
 				if (worker !== state.activeWorker) return;
 				console.error("Main: D3 Worker onerror event:", error);
 				showMessage(`D3 Worker failed unexpectedly. (${error.message || "Unknown error"}) Check console.`, "error");
+				setSimulationButtonState(false);
+				elements.loadingMessage.style.display = "none";
+				updateStatsUI(null, null, elements);
+				if (state.activeWorker === worker) {
+					worker.terminate();
+					state.activeWorker = null;
+				}
+			};
+
+			worker.onmessageerror = () => {
+				if (worker !== state.activeWorker) return;
+				showMessage("Worker returned a malformed message. Check console.", "error");
 				setSimulationButtonState(false);
 				elements.loadingMessage.style.display = "none";
 				updateStatsUI(null, null, elements);

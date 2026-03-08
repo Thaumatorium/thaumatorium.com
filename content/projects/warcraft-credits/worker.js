@@ -1,6 +1,6 @@
 import { fetchJsonFile, generatePersonId, getGameNameFromData } from "./dataUtils.js";
-import { processDataForD3 } from "./graphProcessor.js"; // Will be modified
-import { DEFAULT_ROLE, gameTitleMap } from "./config.js";
+import { processDataForD3 } from "./graphProcessor.js";
+import { DEFAULT_ROLE } from "./config.js";
 
 /**
  * Transforms the short filename from the dropdown into the expected data path.
@@ -60,6 +60,36 @@ function calculateRawStats(jsonData, filename) {
 	};
 }
 
+function collectAllRoles(jsonData, filename) {
+	if (!jsonData) return new Set();
+
+	const gameName = getGameNameFromData(jsonData, filename);
+	let peopleArray = null;
+
+	if (gameName && Array.isArray(jsonData[gameName])) {
+		peopleArray = jsonData[gameName];
+	} else {
+		for (const key of Object.keys(jsonData)) {
+			if (Array.isArray(jsonData[key])) {
+				peopleArray = jsonData[key];
+				break;
+			}
+		}
+	}
+
+	const roles = new Set();
+	for (const person of peopleArray ?? []) {
+		if (person && Array.isArray(person.roles)) {
+			for (const role of person.roles) {
+				const trimmedRole = typeof role === "string" ? role.trim() : "";
+				if (trimmedRole) roles.add(trimmedRole);
+			}
+		}
+	}
+
+	return roles;
+}
+
 self.onmessage = async (event) => {
 	const {
 		filename1: shortFilename1,
@@ -97,6 +127,7 @@ self.onmessage = async (event) => {
 	let jsonData2 = null;
 	let rawStats1 = null;
 	let rawStats2 = null;
+	const allDatasetRoles = new Set();
 
 	try {
 		const isSameGame = actualPath1 === actualPath2;
@@ -108,6 +139,7 @@ self.onmessage = async (event) => {
 				if (jsonData1) {
 					rawStats1 = calculateRawStats(jsonData1, shortFilename1);
 					rawStats2 = rawStats1;
+					collectAllRoles(jsonData1, shortFilename1).forEach((role) => allDatasetRoles.add(role));
 				}
 			} else {
 				const results = await Promise.allSettled([fetchJsonFile(actualPath1), fetchJsonFile(actualPath2)]);
@@ -117,9 +149,11 @@ self.onmessage = async (event) => {
 
 				if (jsonData1) {
 					rawStats1 = calculateRawStats(jsonData1, shortFilename1);
+					collectAllRoles(jsonData1, shortFilename1).forEach((role) => allDatasetRoles.add(role));
 				}
 				if (jsonData2) {
 					rawStats2 = calculateRawStats(jsonData2, shortFilename2);
+					collectAllRoles(jsonData2, shortFilename2).forEach((role) => allDatasetRoles.add(role));
 				}
 			}
 		} catch (fetchError) {
@@ -148,18 +182,13 @@ self.onmessage = async (event) => {
 
 		const personRolesMapData = Array.from(workerPersonRolesMap.entries()).map(([key, valueSet]) => [key, Array.from(valueSet)]);
 
-		// Collect all unique roles from the filtered person-roles map
-		const allFilteredRoles = new Set();
-		for (const rolesSet of workerPersonRolesMap.values()) {
-			for (const role of rolesSet) allFilteredRoles.add(role);
-		}
 		const hasPersonNodes = d3GraphData.nodes.some((n) => n.type === "person");
-		if (allFilteredRoles.size === 0 && hasPersonNodes) {
-			allFilteredRoles.add(DEFAULT_ROLE);
+		if (allDatasetRoles.size === 0 && hasPersonNodes) {
+			allDatasetRoles.add(DEFAULT_ROLE);
 		}
 
-		// Distribute roles evenly around a circle for spatial positioning
-		const sortedRoles = Array.from(allFilteredRoles).sort();
+		// Use all roles from the selected datasets so filters do not reorder the role wheel.
+		const sortedRoles = Array.from(allDatasetRoles).sort();
 		const count = sortedRoles.length || 1;
 		const angleStep = (2 * Math.PI) / count;
 		const radius = 0.4;

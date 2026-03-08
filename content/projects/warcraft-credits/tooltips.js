@@ -17,6 +17,13 @@ import { NODE_TYPE_PERSON, NODE_TYPE_GAME, CATEGORY_GAME1_ONLY, CATEGORY_GAME2_O
 export function setupD3Tooltips(nodeSelection, tooltipElement, personRolesMap, svgNode, game1Name, game2Name, isSingleGameView) {
 	if (!nodeSelection || !tooltipElement || !personRolesMap || !svgNode) return;
 
+	const escapeHtml = (value) => String(value)
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/"/g, "&quot;")
+		.replace(/'/g, "&#39;");
+
 	// Get the closest positioned ancestor (or null if none)
 	// We assume the SVG or its container is the intended context
 	const positioningContextElement = tooltipElement.offsetParent || document.body;
@@ -45,9 +52,9 @@ export function setupD3Tooltips(nodeSelection, tooltipElement, personRolesMap, s
 		const clientX = event.clientX;
 		const clientY = event.clientY;
 
-		let htmlContent = `<strong>${d.name || "Unknown Node"}</strong>`;
+		let htmlContent = `<strong>${escapeHtml(d.name || "Unknown Node")}</strong>`;
 		if (d.type) {
-			htmlContent += ` (${d.type.charAt(0).toUpperCase() + d.type.slice(1)})`;
+			htmlContent += ` (${escapeHtml(d.type.charAt(0).toUpperCase() + d.type.slice(1))})`;
 		}
 		if (d.type === NODE_TYPE_PERSON) {
 			let contributionText = "";
@@ -69,16 +76,16 @@ export function setupD3Tooltips(nodeSelection, tooltipElement, personRolesMap, s
 						break;
 				}
 			}
-			if (contributionText) htmlContent += `<br><span class="tooltip-info">${contributionText}</span>`;
+			if (contributionText) htmlContent += `<br><span class="tooltip-info">${escapeHtml(contributionText)}</span>`;
 			const roles = personRolesMap.get(d.id);
 			if (roles && roles.size > 0) {
-				htmlContent += `<br><span class="tooltip-info">Role(s): ${[...roles].sort().join(", ")}</span>`;
+				htmlContent += `<br><span class="tooltip-info">Role(s): ${escapeHtml([...roles].sort().join(", "))}</span>`;
 			} else if (d.primaryRole) {
-				htmlContent += `<br><span class="tooltip-info">Primary Role: ${d.primaryRole}</span>`;
+				htmlContent += `<br><span class="tooltip-info">Primary Role: ${escapeHtml(d.primaryRole)}</span>`;
 			}
 		} else if (d.type === NODE_TYPE_GAME) {
 			const contributorCount = d.degree || 0;
-			htmlContent += `<br><span class="tooltip-info">Contributors shown: ${contributorCount}</span>`;
+			htmlContent += `<br><span class="tooltip-info">Contributors shown: ${escapeHtml(contributorCount)}</span>`;
 		}
 
 		tooltipElement.innerHTML = htmlContent;
