@@ -1,4 +1,4 @@
-import { firstAvailableHeading, getDirectionalMap, turnBack, turnLeft, turnRight } from "./helpers.js";
+import { buildSolveResult, firstAvailableHeading, getDirectionalMap, turnBack, turnLeft, turnRight } from "./helpers.js";
 
 const solveWallFollower = (grid, handedness) => {
 	const path = [grid.start];
@@ -21,7 +21,7 @@ const solveWallFollower = (grid, handedness) => {
 		searchOrder.push(current);
 	}
 
-	return { searchOrder, path, deadEndOrder };
+	return buildSolveResult({ searchOrder, path, deadEndOrder, steps: searchOrder.length });
 };
 
 export const strategy = {

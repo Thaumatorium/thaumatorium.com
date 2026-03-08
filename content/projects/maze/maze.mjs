@@ -23,6 +23,7 @@ const MAZE = {
 	generationAlgorithm: "origin-shift",
 	generationCoverage: 95,
 	generationTimeLimitMs: 5000,
+	benchmarkRuns: 5,
 	animationSpeed: 35,
 	searchStrategy: "bfs",
 	grid: null,
@@ -37,6 +38,8 @@ const MAZE = {
 	showCrawlers: false,
 	status: document.getElementById("maze-status"),
 	hasDoneInitialGeneration: false,
+	benchmarkResults: [],
+	benchmarkRunning: false,
 };
 
 const widthInput = document.getElementById("maze-width");
@@ -45,11 +48,20 @@ const cellSizeInput = document.getElementById("cell-size");
 const generationAlgorithmInput = document.getElementById("generation-algorithm");
 const generationCoverageInput = document.getElementById("generation-coverage");
 const generationTimeLimitInput = document.getElementById("generation-time-limit");
+const benchmarkRunsInput = document.getElementById("benchmark-runs");
 const searchStrategyInput = document.getElementById("search-strategy");
 const animationSpeedInput = document.getElementById("animation-speed");
 const animationSpeedValue = document.getElementById("animation-speed-value");
 const generateButton = document.getElementById("generate-maze");
 const solveButton = document.getElementById("solve-maze");
+const benchmarkButton = document.getElementById("benchmark-maze");
+const benchmarkResults = document.getElementById("benchmark-results");
+
+const HEX_UNSUPPORTED_STRATEGY_IDS = new Set([
+	"wall-follower-left",
+	"wall-follower-right",
+	"pledge",
+]);
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const randomInt = (max) => Math.floor(Math.random() * max);
@@ -73,9 +85,304 @@ const setStatus = (message) => {
 	MAZE.status.textContent = message;
 };
 
+const setBusyState = (isBusy) => {
+	generateButton.disabled = isBusy;
+	solveButton.disabled = isBusy;
+	benchmarkButton.disabled = isBusy;
+	MAZE.benchmarkRunning = isBusy;
+};
+
 const getGenerationSummary = () => (
 	`${MAZE.generationCoverage}% coverage or ${getEffectiveGenerationTimeLimitMs()} ms at current speed`
 );
+
+const cloneGrid = (grid) => ({
+	...grid,
+	parent: grid.parent ? [...grid.parent] : undefined,
+	links: grid.links.map((linked) => new Set(linked)),
+	blocked: grid.blocked ? new Set(grid.blocked) : undefined,
+	crawlers: grid.crawlers ? [...grid.crawlers] : undefined,
+	visitedByOrigin: grid.visitedByOrigin ? new Set(grid.visitedByOrigin) : undefined,
+});
+
+const formatBenchmarkValue = (value) => {
+	if (value === null) {
+		return "n/a";
+	}
+	if (!Number.isFinite(value)) {
+		return "fail";
+	}
+	return value.toLocaleString("en-US");
+};
+
+const formatBenchmarkDecimal = (value) => {
+	if (!Number.isFinite(value)) {
+		return "n/a";
+	}
+	return value.toFixed(value >= 10 ? 1 : 2);
+};
+
+const mean = (values) => (
+	values.length > 0
+		? values.reduce((sum, value) => sum + value, 0) / values.length
+		: Infinity
+);
+
+const median = (values) => {
+	if (values.length === 0) {
+		return Infinity;
+	}
+
+	const sorted = [...values].sort((a, b) => a - b);
+	const middle = Math.floor(sorted.length / 2);
+
+	if (sorted.length % 2 === 0) {
+		return (sorted[middle - 1] + sorted[middle]) / 2;
+	}
+
+	return sorted[middle];
+};
+
+const getBenchmarkCellColour = (value, min, max) => {
+	if (value === null) {
+		return "#e5e7eb";
+	}
+	if (!Number.isFinite(value)) {
+		return "#fecaca";
+	}
+	if (min === max) {
+		return "#bbf7d0";
+	}
+
+	const ratio = (value - min) / (max - min);
+	const hue = 120 - (ratio * 120);
+	return `hsl(${hue} 72% 84%)`;
+};
+
+const strategySupportsGrid = (strategy, grid) => (
+	grid.topology !== "hex" || !HEX_UNSUPPORTED_STRATEGY_IDS.has(strategy.id)
+);
+
+const getBenchmarkSummaryByStrategy = (results) => {
+	return strategies.map((strategy) => {
+		const values = [];
+		const relativeValues = [];
+		let supportedRuns = 0;
+		let failedRuns = 0;
+		let unsupportedRuns = 0;
+
+		for (const row of results) {
+			const entry = row.results.find((result) => result.strategyId === strategy.id);
+			if (!entry) {
+				continue;
+			}
+
+			supportedRuns += entry.supportedRuns ?? 0;
+			failedRuns += entry.failedRuns ?? 0;
+			unsupportedRuns += entry.unsupportedRuns ?? 0;
+
+			if (!Number.isFinite(entry.steps)) {
+				continue;
+			}
+
+			values.push(entry.steps);
+
+			const finiteRowValues = row.results
+				.map((result) => result.steps)
+				.filter((steps) => Number.isFinite(steps));
+			if (finiteRowValues.length > 0) {
+				const best = Math.min(...finiteRowValues);
+				if (best > 0) {
+					relativeValues.push(entry.steps / best);
+				}
+			}
+		}
+
+		const arithmeticMean = values.length > 0
+			? mean(values)
+			: Infinity;
+		const geometricRelativeMean = relativeValues.length > 0
+			? Math.exp(relativeValues.reduce((sum, value) => sum + Math.log(value), 0) / relativeValues.length)
+			: Infinity;
+		const medianRelative = median(relativeValues);
+		const failureRate = supportedRuns > 0 ? failedRuns / supportedRuns : Infinity;
+		const unsupportedRate = (supportedRuns + unsupportedRuns) > 0
+			? unsupportedRuns / (supportedRuns + unsupportedRuns)
+			: Infinity;
+
+		return {
+			strategy,
+			arithmeticMean,
+			geometricRelativeMean,
+			medianRelative,
+			failureRate,
+			unsupportedRate,
+			supportedRuns,
+			failedRuns,
+			unsupportedRuns,
+			sampleSize: values.length,
+		};
+	});
+};
+
+const buildBenchmarkTable = (results) => {
+	if (results.length === 0) {
+		const empty = document.createElement("p");
+		empty.className = "maze-benchmark-empty";
+		empty.textContent = "No benchmark yet.";
+		return empty;
+	}
+
+	const table = document.createElement("table");
+	table.className = "maze-benchmark-table";
+	const strategySummary = getBenchmarkSummaryByStrategy(results)
+		.sort((a, b) => (
+			a.failureRate - b.failureRate ||
+			a.failedRuns - b.failedRuns ||
+			a.unsupportedRate - b.unsupportedRate ||
+			a.unsupportedRuns - b.unsupportedRuns ||
+			a.geometricRelativeMean - b.geometricRelativeMean ||
+			a.medianRelative - b.medianRelative ||
+			a.arithmeticMean - b.arithmeticMean
+		));
+
+	const thead = document.createElement("thead");
+	const headerRow = document.createElement("tr");
+	const generatorHeader = document.createElement("th");
+	generatorHeader.textContent = "Generator";
+	headerRow.append(generatorHeader);
+
+	for (const { strategy } of strategySummary) {
+		const th = document.createElement("th");
+		th.textContent = strategy.name;
+		headerRow.append(th);
+	}
+
+	thead.append(headerRow);
+	table.append(thead);
+
+	const tbody = document.createElement("tbody");
+
+	for (const row of results) {
+		const tr = document.createElement("tr");
+		const label = document.createElement("th");
+		label.textContent = row.generatorName;
+		tr.append(label);
+
+		const numericScores = row.results
+			.map((entry) => entry.steps)
+			.filter((value) => Number.isFinite(value));
+		const min = numericScores.length > 0 ? Math.min(...numericScores) : 0;
+		const max = numericScores.length > 0 ? Math.max(...numericScores) : 0;
+
+		for (const { strategy } of strategySummary) {
+			const entry = row.results.find((result) => result.strategyId === strategy.id);
+			const steps = entry?.steps ?? null;
+			const td = document.createElement("td");
+			td.textContent = formatBenchmarkValue(steps);
+			td.style.backgroundColor = getBenchmarkCellColour(steps, min, max);
+			td.title = entry?.note ?? "";
+			if (steps === null) {
+				td.dataset.state = "na";
+			} else if (!Number.isFinite(steps)) {
+				td.dataset.state = "fail";
+			}
+			tr.append(td);
+		}
+
+		tbody.append(tr);
+	}
+
+	const tfoot = document.createElement("tfoot");
+	const summaryColourValues = (values) => {
+		const finiteValues = values.filter((value) => Number.isFinite(value));
+		const min = finiteValues.length > 0 ? Math.min(...finiteValues) : 0;
+		const max = finiteValues.length > 0 ? Math.max(...finiteValues) : 0;
+		return { min, max };
+	};
+
+	const arithmeticRow = document.createElement("tr");
+	const arithmeticLabel = document.createElement("th");
+	arithmeticLabel.textContent = "Avg. steps";
+	arithmeticRow.append(arithmeticLabel);
+	const arithmeticScale = summaryColourValues(strategySummary.map((summary) => summary.arithmeticMean));
+	for (const summary of strategySummary) {
+		const td = document.createElement("td");
+		td.textContent = formatBenchmarkDecimal(summary.arithmeticMean);
+		td.title = `Arithmetic mean over ${summary.sampleSize} successful runs.`;
+		td.style.backgroundColor = getBenchmarkCellColour(summary.arithmeticMean, arithmeticScale.min, arithmeticScale.max);
+		arithmeticRow.append(td);
+	}
+	tfoot.append(arithmeticRow);
+
+	const reliabilityRow = document.createElement("tr");
+	const reliabilityLabel = document.createElement("th");
+	reliabilityLabel.textContent = "Fail rate";
+	reliabilityRow.append(reliabilityLabel);
+	const reliabilityScale = summaryColourValues(strategySummary.map((summary) => summary.failureRate));
+	for (const summary of strategySummary) {
+		const td = document.createElement("td");
+		td.textContent = Number.isFinite(summary.failureRate)
+			? `${(summary.failureRate * 100).toFixed(1)}%`
+			: "n/a";
+		td.title = `${summary.failedRuns} failed runs over ${summary.supportedRuns} supported runs. Lower is better.`;
+		td.style.backgroundColor = getBenchmarkCellColour(summary.failureRate, reliabilityScale.min, reliabilityScale.max);
+		reliabilityRow.append(td);
+	}
+	tfoot.append(reliabilityRow);
+
+	const coverageRow = document.createElement("tr");
+	const coverageLabel = document.createElement("th");
+	coverageLabel.textContent = "Unsupported";
+	coverageRow.append(coverageLabel);
+	const coverageScale = summaryColourValues(strategySummary.map((summary) => summary.unsupportedRate));
+	for (const summary of strategySummary) {
+		const td = document.createElement("td");
+		td.textContent = Number.isFinite(summary.unsupportedRate)
+			? `${(summary.unsupportedRate * 100).toFixed(1)}%`
+			: "n/a";
+		td.title = `${summary.unsupportedRuns} unsupported runs. Lower is better.`;
+		td.style.backgroundColor = getBenchmarkCellColour(summary.unsupportedRate, coverageScale.min, coverageScale.max);
+		coverageRow.append(td);
+	}
+	tfoot.append(coverageRow);
+
+	const medianRow = document.createElement("tr");
+	const medianLabel = document.createElement("th");
+	medianLabel.textContent = "Median relative";
+	medianRow.append(medianLabel);
+	const medianScale = summaryColourValues(strategySummary.map((summary) => summary.medianRelative));
+	for (const summary of strategySummary) {
+		const td = document.createElement("td");
+		td.textContent = formatBenchmarkDecimal(summary.medianRelative);
+		td.title = `Median of steps relative to the best solver per generator. Lower is better.`;
+		td.style.backgroundColor = getBenchmarkCellColour(summary.medianRelative, medianScale.min, medianScale.max);
+		medianRow.append(td);
+	}
+	tfoot.append(medianRow);
+
+	const geometricRow = document.createElement("tr");
+	const geometricLabel = document.createElement("th");
+	geometricLabel.textContent = "Geo. relative";
+	geometricRow.append(geometricLabel);
+	const geometricScale = summaryColourValues(strategySummary.map((summary) => summary.geometricRelativeMean));
+	for (const summary of strategySummary) {
+		const td = document.createElement("td");
+		td.textContent = formatBenchmarkDecimal(summary.geometricRelativeMean);
+		td.title = `Geometric mean of steps relative to the best solver per generator. Lower is better; 1.00 is row-best on average.`;
+		td.style.backgroundColor = getBenchmarkCellColour(summary.geometricRelativeMean, geometricScale.min, geometricScale.max);
+		geometricRow.append(td);
+	}
+	tfoot.append(geometricRow);
+
+	table.append(tfoot);
+	table.append(tbody);
+	return table;
+};
+
+const renderBenchmarkResults = () => {
+	benchmarkResults.replaceChildren(buildBenchmarkTable(MAZE.benchmarkResults));
+};
 
 const populateGeneratorOptions = () => {
 	generationAlgorithmInput.innerHTML = generators
@@ -443,6 +750,10 @@ const cancelAnimation = () => {
 	}
 };
 
+const nextFrame = () => new Promise((resolve) => {
+	requestAnimationFrame(() => resolve());
+});
+
 const runGeneration = () => {
 	cancelAnimation();
 	MAZE.searchOrder = [];
@@ -526,7 +837,12 @@ const animateSolve = () => {
 
 	cancelAnimation();
 	const solver = strategyMap.get(MAZE.searchStrategy);
-	const { searchOrder, path, deadEndOrder = searchOrder.filter((index) => !path.includes(index)).reverse() } = solver.solve(MAZE.grid);
+	const {
+		searchOrder,
+		path,
+		steps = 0,
+		deadEndOrder = searchOrder.filter((index) => !path.includes(index)).reverse(),
+	} = solver.solve(MAZE.grid);
 	MAZE.searchOrder = searchOrder;
 	MAZE.deadEndOrder = deadEndOrder;
 	MAZE.solutionPath = path;
@@ -568,10 +884,144 @@ const animateSolve = () => {
 		}
 
 		MAZE.animationId = null;
-		setStatus(`${solver.name} visited ${MAZE.searchOrder.length} cells and found a path of length ${MAZE.solutionPath.length}.`);
+		setStatus(`${solver.name} took ${steps} steps and found a path of length ${MAZE.solutionPath.length}.`);
 	};
 
 	MAZE.animationId = requestAnimationFrame(step);
+};
+
+const runBenchmark = async () => {
+	applySettings();
+	cancelAnimation();
+	setBusyState(true);
+	setStatus(`Benchmarking ${generators.length} generators with ${MAZE.benchmarkRuns} runs each against ${strategies.length} strategies...`);
+
+	try {
+		const results = [];
+		let completedRuns = 0;
+		const totalRuns = generators.length * MAZE.benchmarkRuns * strategies.length;
+
+		for (const generator of generators) {
+			const strategyTotals = new Map(strategies.map((strategy) => [strategy.id, {
+				steps: [],
+				pathLengths: [],
+				elapsedMs: [],
+				failures: 0,
+				unsupported: 0,
+			}]));
+			const row = {
+				generatorId: generator.id,
+				generatorName: generator.name,
+				results: [],
+			};
+
+			for (let runIndex = 0; runIndex < MAZE.benchmarkRuns; runIndex++) {
+				let grid = null;
+
+				try {
+					grid = generator.generate({
+						width: MAZE.width,
+						height: MAZE.height,
+						generationCoverage: MAZE.generationCoverage,
+						generationTimeLimitMs: MAZE.generationTimeLimitMs,
+					});
+				} catch (error) {
+					for (const strategy of strategies) {
+						const totals = strategyTotals.get(strategy.id);
+						totals.failures += 1;
+						totals.elapsedMs.push(0);
+						completedRuns += 1;
+					}
+					setStatus(`Benchmarking ${generator.name} run ${runIndex + 1}/${MAZE.benchmarkRuns}... ${completedRuns}/${totalRuns} solver runs complete.`);
+					await nextFrame();
+					continue;
+				}
+
+				for (const strategy of strategies) {
+					const totals = strategyTotals.get(strategy.id);
+					if (!strategySupportsGrid(strategy, grid)) {
+						totals.unsupported += 1;
+						completedRuns += 1;
+						continue;
+					}
+
+					try {
+						const startedAt = performance.now();
+						const outcome = strategy.solve(cloneGrid(grid));
+						const elapsedMs = performance.now() - startedAt;
+						const solved = outcome.path.length > 0 && outcome.path[outcome.path.length - 1] === grid.end;
+
+						totals.elapsedMs.push(elapsedMs);
+						if (solved) {
+							totals.steps.push(outcome.steps ?? outcome.searchOrder.length);
+							totals.pathLengths.push(outcome.path.length);
+						} else {
+							totals.failures += 1;
+						}
+					} catch (error) {
+						totals.failures += 1;
+					}
+					completedRuns += 1;
+				}
+
+				setStatus(`Benchmarking ${generator.name} run ${runIndex + 1}/${MAZE.benchmarkRuns}... ${completedRuns}/${totalRuns} solver runs complete.`);
+				await nextFrame();
+			}
+
+			for (const strategy of strategies) {
+				const totals = strategyTotals.get(strategy.id);
+				const supportedRuns = MAZE.benchmarkRuns - totals.unsupported;
+				const averageSteps = mean(totals.steps);
+				const averagePathLength = mean(totals.pathLengths);
+				const averageElapsedMs = mean(totals.elapsedMs);
+				const noteParts = [];
+
+				if (totals.unsupported === MAZE.benchmarkRuns) {
+					row.results.push({
+						strategyId: strategy.id,
+						steps: null,
+						supportedRuns: 0,
+						failedRuns: 0,
+						unsupportedRuns: totals.unsupported,
+						note: `${strategy.name} is not supported on this generator's maze topology.`,
+					});
+					continue;
+				}
+
+				if (totals.steps.length > 0) {
+					noteParts.push(`avg ${formatBenchmarkDecimal(averageSteps)} steps`);
+					noteParts.push(`avg path ${formatBenchmarkDecimal(averagePathLength)}`);
+				}
+				if (Number.isFinite(averageElapsedMs)) {
+					noteParts.push(`avg ${averageElapsedMs.toFixed(1)} ms`);
+				}
+				if (totals.failures > 0) {
+					noteParts.push(`${totals.failures}/${supportedRuns} failed`);
+				}
+
+				row.results.push({
+					strategyId: strategy.id,
+					steps: totals.steps.length > 0 ? averageSteps : Infinity,
+					supportedRuns,
+					failedRuns: totals.failures,
+					unsupportedRuns: totals.unsupported,
+					note: noteParts.length > 0
+						? `${strategy.name}: ${noteParts.join(", ")}.`
+						: `${strategy.name} had no successful runs.`,
+				});
+			}
+
+			results.push(row);
+			MAZE.benchmarkResults = results;
+			renderBenchmarkResults();
+		}
+
+		MAZE.benchmarkResults = results;
+		renderBenchmarkResults();
+		setStatus(`Benchmark complete: ${generators.length} generators x ${MAZE.benchmarkRuns} runs x ${strategies.length} strategies.`);
+	} finally {
+		setBusyState(false);
+	}
 };
 
 const applySettings = () => {
@@ -581,6 +1031,7 @@ const applySettings = () => {
 	MAZE.generationAlgorithm = generationAlgorithmInput.value || "origin-shift";
 	MAZE.generationCoverage = clamp(parseInt(generationCoverageInput.value, 10) || 95, 1, 100);
 	MAZE.generationTimeLimitMs = clamp(parseInt(generationTimeLimitInput.value, 10) || 5000, 50, 10000);
+	MAZE.benchmarkRuns = clamp(parseInt(benchmarkRunsInput.value, 10) || 5, 1, 50);
 	MAZE.searchStrategy = searchStrategyInput.value;
 
 	widthInput.value = MAZE.width;
@@ -589,6 +1040,7 @@ const applySettings = () => {
 	generationAlgorithmInput.value = MAZE.generationAlgorithm;
 	generationCoverageInput.value = MAZE.generationCoverage;
 	generationTimeLimitInput.value = MAZE.generationTimeLimitMs;
+	benchmarkRunsInput.value = MAZE.benchmarkRuns;
 };
 
 animationSpeedInput.oninput = () => {
@@ -650,6 +1102,10 @@ solveButton.onclick = () => {
 	animateSolve();
 };
 
+benchmarkButton.onclick = () => {
+	runBenchmark();
+};
+
 MAZE.animationSpeed = 100;
 animationSpeedInput.value = "100";
 animationSpeedValue.value = "100";
@@ -658,3 +1114,4 @@ populateStrategyOptions();
 applySettings();
 setStatus(`Ready to generate a ${MAZE.width} x ${MAZE.height} maze with ${getGenerationSummary()}.`);
 runGeneration();
+renderBenchmarkResults();

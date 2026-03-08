@@ -1,4 +1,4 @@
-import { linkedNeighbours } from "./helpers.js";
+import { buildSolveResult, linkedNeighbours } from "./helpers.js";
 import { shuffle } from "../generators/helpers.js";
 
 const edgeKey = (a, b) => (a < b ? `${a}:${b}` : `${b}:${a}`);
@@ -33,6 +33,6 @@ export const strategy = {
 			searchOrder.push(current);
 		}
 
-		return { searchOrder, path, deadEndOrder };
+		return buildSolveResult({ searchOrder, path, deadEndOrder, steps: searchOrder.length });
 	},
 };

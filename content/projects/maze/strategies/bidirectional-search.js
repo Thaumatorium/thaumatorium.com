@@ -1,4 +1,4 @@
-import { linkedNeighbours, reconstructPath, defaultDeadEndOrder } from "./helpers.js";
+import { buildSolveResult, linkedNeighbours, reconstructPath } from "./helpers.js";
 
 const expand = (queue, visited, parent, otherVisited, searchOrder, appendPath) => {
 	const current = queue.shift();
@@ -36,7 +36,7 @@ export const strategy = {
 		}
 
 		if (meet === null) {
-			return { searchOrder, path: [], deadEndOrder: [] };
+			return buildSolveResult({ searchOrder, path: [], deadEndOrder: [] });
 		}
 
 		const forwardPath = reconstructPath(forwardParent, meet);
@@ -47,6 +47,6 @@ export const strategy = {
 			cursor = backwardParent.get(cursor);
 		}
 		const path = [...forwardPath, ...backwardPath];
-		return { searchOrder, path, deadEndOrder: defaultDeadEndOrder(searchOrder, path) };
+		return buildSolveResult({ searchOrder, path });
 	},
 };

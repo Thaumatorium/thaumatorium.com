@@ -35,6 +35,10 @@ lastmod: 2026-03-07T23:05:00+01:00
 			<input id=generation-time-limit type=number min=50 max=10000 step=50 value=5000>
 		</label>
 		<label>
+			Benchmark runs
+			<input id=benchmark-runs type=number min=1 max=50 value=5>
+		</label>
+		<label>
 			Strategy
 			<select id=search-strategy type=select-one>
 			<option value="bfs" selected>Breadth-first search</option>
@@ -49,10 +53,18 @@ lastmod: 2026-03-07T23:05:00+01:00
 
 		<button id=generate-maze>Generate maze</button>
 		<button id=solve-maze>Solve maze</button>
+		<button id=benchmark-maze>Benchmark all</button>
 	</div>
 	<p id=maze-status class="maze-status">Ready to generate a 40 x 40 maze until 95% coverage or 5000 ms.</p>
 	<div class="maze-stage">
 		<canvas id=maze></canvas>
 	</div>
+	<section class="maze-benchmark">
+		<h3>Generator vs strategy benchmark</h3>
+		<p class="maze-benchmark-intro">Each generator is run multiple times with fresh random mazes. Within each run, all strategies share the same maze; table values are averaged across runs. Lower step counts are better and shown greener.</p>
+		<div id=benchmark-results class="maze-benchmark-results">
+			<p class="maze-benchmark-empty">No benchmark yet.</p>
+		</div>
+	</section>
 	<script type=module src="maze.mjs"></script>
 </section>

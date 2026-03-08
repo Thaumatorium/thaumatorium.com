@@ -1,4 +1,4 @@
-import { getDirectionalMap, turnBack, turnLeft, turnRight } from "./helpers.js";
+import { buildSolveResult, getDirectionalMap, turnBack, turnLeft, turnRight } from "./helpers.js";
 
 const headingAngle = {
 	north: 0,
@@ -57,6 +57,6 @@ export const strategy = {
 			searchOrder.push(current);
 		}
 
-		return { searchOrder, path, deadEndOrder };
+		return buildSolveResult({ searchOrder, path, deadEndOrder, steps: searchOrder.length });
 	},
 };

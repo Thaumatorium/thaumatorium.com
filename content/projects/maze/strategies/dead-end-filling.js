@@ -1,4 +1,4 @@
-import { linkedNeighbours } from "./helpers.js";
+import { buildSolveResult, linkedNeighbours } from "./helpers.js";
 
 export const strategy = {
 	id: "dead-end-filling",
@@ -35,6 +35,12 @@ export const strategy = {
 			seen.add(current);
 			path.push(current);
 		}
-		return { searchOrder, path, deadEndOrder };
+		return buildSolveResult({
+			searchOrder,
+			path,
+			deadEndOrder,
+			// Pruning dead ends and then tracing the surviving corridor are both work.
+			steps: deadEndOrder.length + path.length,
+		});
 	},
 };

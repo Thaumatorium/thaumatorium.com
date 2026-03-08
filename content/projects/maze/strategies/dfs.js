@@ -1,4 +1,4 @@
-import { linkedNeighbours, reconstructPath } from "./helpers.js";
+import { buildSolveResult, linkedNeighbours, reconstructPath } from "./helpers.js";
 import { shuffle } from "../generators/helpers.js";
 
 export const strategy = {
@@ -16,7 +16,12 @@ export const strategy = {
 			const current = stack[stack.length - 1];
 			if (current === grid.end) {
 				const path = reconstructPath(parentByNode, current);
-				return { searchOrder, path, deadEndOrder };
+				return buildSolveResult({
+					searchOrder,
+					path,
+					deadEndOrder,
+					steps: searchOrder.length + deadEndOrder.length,
+				});
 			}
 			const next = shuffle(linkedNeighbours(grid, current)).find((neighbour) => !visited.has(neighbour));
 			if (next !== undefined) {
@@ -32,6 +37,11 @@ export const strategy = {
 			}
 		}
 
-		return { searchOrder, path: [], deadEndOrder };
+		return buildSolveResult({
+			searchOrder,
+			path: [],
+			deadEndOrder,
+			steps: searchOrder.length + deadEndOrder.length,
+		});
 	},
 };

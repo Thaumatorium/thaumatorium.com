@@ -1,4 +1,4 @@
-import { linkedNeighbours, manhattan, reconstructPath, defaultDeadEndOrder } from "./helpers.js";
+import { buildSolveResult, linkedNeighbours, reconstructPath } from "./helpers.js";
 
 export const strategy = {
 	id: "dijkstra",
@@ -16,7 +16,7 @@ export const strategy = {
 			const current = frontier.shift();
 			if (current === grid.end) {
 				const path = reconstructPath(parentByNode, current);
-				return { searchOrder, path, deadEndOrder: defaultDeadEndOrder(searchOrder, path) };
+				return buildSolveResult({ searchOrder, path });
 			}
 			for (const neighbour of linkedNeighbours(grid, current)) {
 				const tentative = distance.get(current) + 1;
@@ -32,6 +32,6 @@ export const strategy = {
 			}
 		}
 
-		return { searchOrder, path: [], deadEndOrder: [] };
+		return buildSolveResult({ searchOrder, path: [], deadEndOrder: [] });
 	},
 };

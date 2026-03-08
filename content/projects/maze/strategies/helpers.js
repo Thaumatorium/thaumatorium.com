@@ -17,6 +17,18 @@ export const defaultDeadEndOrder = (searchOrder, path) => {
 	return searchOrder.filter((index) => !pathSet.has(index)).reverse();
 };
 
+export const buildSolveResult = ({
+	searchOrder,
+	path,
+	deadEndOrder = defaultDeadEndOrder(searchOrder, path),
+	steps = searchOrder.length,
+}) => ({
+	searchOrder,
+	path,
+	deadEndOrder,
+	steps,
+});
+
 export const manhattan = (grid, a, b) => {
 	const ca = coordsOf(grid, a);
 	const cb = coordsOf(grid, b);
@@ -35,7 +47,7 @@ export const solveWithFrontier = (grid, { popFrontier, pushFrontier = (frontier,
 
 		if (current === grid.end) {
 			const path = reconstructPath(parentByNode, current);
-			return { searchOrder, path, deadEndOrder: defaultDeadEndOrder(searchOrder, path) };
+			return buildSolveResult({ searchOrder, path });
 		}
 
 		for (const neighbour of shuffle(linkedNeighbours(grid, current))) {
@@ -47,7 +59,7 @@ export const solveWithFrontier = (grid, { popFrontier, pushFrontier = (frontier,
 		}
 	}
 
-	return { searchOrder, path: [], deadEndOrder: [] };
+	return buildSolveResult({ searchOrder, path: [], deadEndOrder: [] });
 };
 
 export const getDirectionalMap = (grid, node) => {
