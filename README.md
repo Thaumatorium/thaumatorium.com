@@ -22,6 +22,20 @@ Project commands live in `just`:
 just
 ```
 
+Formatting now uses `oxfmt`:
+
+```bash
+just fmt
+just fmt-public
+```
+
+Git hooks use `prek` with `.pre-commit-config.yaml`:
+
+```bash
+just prek-install
+just prek-run --all-files
+```
+
 ## Add article
 
 ```bash
@@ -38,5 +52,5 @@ just serve
 
 These were used to create this Hugo version of the site:
 
-* [html-to-markdown](https://codebeautify.org/html-to-markdown)
-* [html-to-markdown](https://tableconvert.com/html-to-markdown)
+- [html-to-markdown](https://codebeautify.org/html-to-markdown)
+- [html-to-markdown](https://tableconvert.com/html-to-markdown)

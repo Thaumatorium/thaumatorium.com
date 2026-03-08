@@ -12,8 +12,20 @@ shell:
 serve *args:
     hugo server --buildDrafts --port 1313 --baseURL http://thaum.localhost:1313/ --noHTTPCache --disableFastRender {{args}}
 
+build *args:
+    hugo {{args}}
+
 fmt-public:
-    prettier --ignore-path .prettierignore --write "public/**/*"
+    oxfmt public
+
+fmt:
+    oxfmt .
+
+prek-install:
+    prek install
+
+prek-run *args:
+    prek run {{args}}
 
 new-article path:
     hugo new {{path}}
