@@ -39,6 +39,39 @@ function addPersonToMap(peopleMap, allPeopleNames, personObj) {
 	peopleMap.set(name, { roles });
 }
 
+function buildRoleDetails(personData1, personData2, isSameGame) {
+	const game1Roles = new Set(personData1?.roles ?? []);
+	const game2Roles = isSameGame ? new Set(personData1?.roles ?? []) : new Set(personData2?.roles ?? []);
+	const sharedRoles = new Set();
+	const game1OnlyRoles = new Set();
+	const game2OnlyRoles = new Set();
+	const allRoles = new Set();
+
+	game1Roles.forEach((role) => allRoles.add(role));
+	game2Roles.forEach((role) => allRoles.add(role));
+
+	if (isSameGame) {
+		game1Roles.forEach((role) => sharedRoles.add(role));
+	} else {
+		game1Roles.forEach((role) => {
+			if (game2Roles.has(role)) sharedRoles.add(role);
+			else game1OnlyRoles.add(role);
+		});
+		game2Roles.forEach((role) => {
+			if (!game1Roles.has(role)) game2OnlyRoles.add(role);
+		});
+	}
+
+	return {
+		allRoles,
+		game1Roles,
+		game2Roles,
+		sharedRoles,
+		game1OnlyRoles,
+		game2OnlyRoles,
+	};
+}
+
 /**
  * Extracts and normalizes the primary role for a person based on their roles array.
  * Takes the first valid role, otherwise returns DEFAULT_ROLE.
@@ -238,18 +271,16 @@ export function processDataForD3(jsonData1, jsonData2, filename1, filename2, isS
 		const inGame2 = !!personData2;
 
 		// Combine all unique roles across both games for this person for filtering check
-		const allRolesForPerson = new Set();
-		if (personData1) personData1.roles.forEach((role) => allRolesForPerson.add(role));
-		if (personData2 && !isSameGame) personData2.roles.forEach((role) => allRolesForPerson.add(role));
-		if (allRolesForPerson.size === 0 && (inGame1 || inGame2)) {
-			// Ensure default role is considered if person exists but has no listed roles
-			allRolesForPerson.add(DEFAULT_ROLE);
-		}
+			const roleDetails = buildRoleDetails(personData1, personData2, isSameGame);
+			if (roleDetails.allRoles.size === 0 && (inGame1 || inGame2)) {
+				// Ensure default role is considered if person exists but has no listed roles
+				roleDetails.allRoles.add(DEFAULT_ROLE);
+			}
 
-		// +++ Apply Filters (using the updated passesFilters) +++
-		if (!passesFilters(personName, allRolesForPerson, filters)) {
-			return; // Skip this person
-		}
+			// +++ Apply Filters (using the updated passesFilters) +++
+			if (!passesFilters(personName, roleDetails.allRoles, filters)) {
+				return; // Skip this person
+			}
 
 		// Person passed filters, proceed
 		let category = CATEGORY_OTHER;
@@ -314,9 +345,16 @@ export function processDataForD3(jsonData1, jsonData2, filename1, filename2, isS
 			}
 
 			// Populate the output personRolesMap with the roles used for node creation context
-			const rolesSetForOutput = new Set(rolesForNodeCreation);
-			if (rolesSetForOutput.size === 0) rolesSetForOutput.add(DEFAULT_ROLE);
-			personRolesMap.set(personId, rolesSetForOutput);
+				const rolesSetForOutput = new Set(rolesForNodeCreation);
+				if (rolesSetForOutput.size === 0) rolesSetForOutput.add(DEFAULT_ROLE);
+				personRolesMap.set(personId, {
+					allRoles: rolesSetForOutput,
+					game1Roles: roleDetails.game1Roles,
+					game2Roles: roleDetails.game2Roles,
+					sharedRoles: roleDetails.sharedRoles,
+					game1OnlyRoles: roleDetails.game1OnlyRoles,
+					game2OnlyRoles: roleDetails.game2OnlyRoles,
+				});
 
 			// Add links
 			if (inGame1 && gameId1) {

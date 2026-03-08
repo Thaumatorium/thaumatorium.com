@@ -62,6 +62,20 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (elements.stopButton) elements.stopButton.disabled = !isRunning;
 		if (elements.resumeButton) elements.resumeButton.disabled = isRunning;
 	};
+	const resetSharedStats = () => {
+		if (!elements.sharedStats || !elements.sharedCount) return;
+		elements.sharedCount.textContent = "0";
+		elements.sharedStats.style.display = "none";
+	};
+	const updateSharedStats = (sharedCount) => {
+		if (!elements.sharedStats || !elements.sharedCount) return;
+		if (typeof sharedCount === "number" && sharedCount > 0) {
+			elements.sharedCount.textContent = sharedCount.toLocaleString();
+			elements.sharedStats.style.display = "";
+			return;
+		}
+		resetSharedStats();
+	};
 
 	const state = {
 		d3Simulation: null,
@@ -80,6 +94,34 @@ document.addEventListener("DOMContentLoaded", () => {
 			role: { text: "", mode: "contains" }, // Text might contain commas now
 		},
 	};
+	const buildRenderState = () => {
+		if (!state.currentGraphData?.nodes?.length || !state.d3Simulation) return {};
+		const preservedPositions = new Map(
+			state.currentGraphData.nodes
+				.filter((node) => Number.isFinite(node.x) && Number.isFinite(node.y))
+				.map((node) => [node.id, { x: node.x, y: node.y }])
+		);
+		return {
+			preservedPositions,
+			previousSize: state.d3Simulation.renderSize ?? elements.svgContainer.getBoundingClientRect(),
+		};
+	};
+	const renderGraph = (graphData, renderState = {}) => {
+		const visualizerDomElements = {
+			svgContainer: elements.svgContainer,
+			tooltipElement: elements.tooltip,
+			errorMessageElement: elements.errorMessage,
+		};
+		state.d3Simulation = visualizeGraphD3(
+			graphData,
+			visualizerDomElements,
+			state.personRolesMap,
+			state.normalizedRolePositions,
+			handleDragRestart,
+			renderState
+		);
+		return state.d3Simulation;
+	};
 
 	const handleDragRestart = () => {
 		if (state.d3Simulation && state.d3Simulation.alpha() < state.d3Simulation.alphaMin()) {
@@ -89,24 +131,14 @@ document.addEventListener("DOMContentLoaded", () => {
 	};
 	const rerenderGraph = () => {
 		if (!state.currentGraphData?.nodes?.length) return;
+		const renderState = buildRenderState();
 
 		if (state.d3Simulation) {
 			state.d3Simulation.stop();
 			state.d3Simulation = null;
 		}
 
-		const visualizerDomElements = {
-			svgContainer: elements.svgContainer,
-			tooltipElement: elements.tooltip,
-			errorMessageElement: elements.errorMessage,
-		};
-		state.d3Simulation = visualizeGraphD3(
-			state.currentGraphData,
-			visualizerDomElements,
-			state.personRolesMap,
-			state.normalizedRolePositions,
-			handleDragRestart
-		);
+		state.d3Simulation = renderGraph(state.currentGraphData, renderState);
 
 		if (!state.d3Simulation) {
 			setSimulationButtonState(false);
@@ -205,30 +237,26 @@ document.addEventListener("DOMContentLoaded", () => {
 				state.stats1 = stats1;
 				state.stats2 = stats2;
 				updateStatsUI(state.stats1, state.stats2, elements);
-
-				// Update shared count display
-				const sharedCount = event.data.sharedCount;
-				if (elements.sharedStats && elements.sharedCount) {
-					if (typeof sharedCount === "number" && sharedCount > 0) {
-						elements.sharedCount.textContent = sharedCount.toLocaleString();
-						elements.sharedStats.style.display = "";
-					} else {
-						elements.sharedStats.style.display = "none";
-					}
-				}
+				updateSharedStats(event.data.sharedCount);
 
 				if (status === "success" && graphData?.nodes) {
 					state.currentGraphData = graphData;
 
-					state.personRolesMap = new Map();
-					if (Array.isArray(personRolesMapData)) {
-						personRolesMapData.forEach(([key, rolesArray]) => {
-							if (key && Array.isArray(rolesArray)) {
-								state.personRolesMap.set(key, new Set(rolesArray));
-							}
-						});
-					}
-
+						state.personRolesMap = new Map();
+						if (Array.isArray(personRolesMapData)) {
+							personRolesMapData.forEach(([key, roleDetails]) => {
+								if (key && roleDetails && typeof roleDetails === "object") {
+									state.personRolesMap.set(key, {
+										allRoles: new Set(roleDetails.allRoles ?? []),
+										game1Roles: new Set(roleDetails.game1Roles ?? []),
+										game2Roles: new Set(roleDetails.game2Roles ?? []),
+										sharedRoles: new Set(roleDetails.sharedRoles ?? []),
+										game1OnlyRoles: new Set(roleDetails.game1OnlyRoles ?? []),
+										game2OnlyRoles: new Set(roleDetails.game2OnlyRoles ?? []),
+									});
+								}
+							});
+						}
 
 					state.normalizedRolePositions = new Map();
 					if (Array.isArray(normalizedRolePositionsData)) {
@@ -239,7 +267,6 @@ document.addEventListener("DOMContentLoaded", () => {
 						});
 					}
 
-
 					let shouldHideLinks = false;
 					if (graphData.nodes.length > MAX_NODES_FOR_LINKS) {
 						shouldHideLinks = true;
@@ -248,12 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
 						showMessage();
 					}
 
-					const visualizerDomElements = {
-						svgContainer: elements.svgContainer,
-						tooltipElement: elements.tooltip,
-						errorMessageElement: elements.errorMessage,
-					};
-					state.d3Simulation = visualizeGraphD3(graphData, visualizerDomElements, state.personRolesMap, state.normalizedRolePositions, handleDragRestart);
+					state.d3Simulation = renderGraph(graphData);
 
 					if (!state.d3Simulation) {
 						const filterText = state.currentFilters.name.text || state.currentFilters.role.text ? " with current filters" : "";
@@ -277,6 +299,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					const errorMsg = message || (status === "error" ? "Worker reported an error." : "Worker returned invalid data or no nodes passed filters.");
 					console.error("Main: D3 Worker reported error or invalid data:", errorMsg, event.data);
 					state.currentGraphData = null;
+					resetSharedStats();
 					showMessage(`Error processing data: ${errorMsg}`, "error");
 					setSimulationButtonState(false);
 				}
@@ -294,6 +317,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				setSimulationButtonState(false);
 				elements.loadingMessage.style.display = "none";
 				updateStatsUI(null, null, elements);
+				resetSharedStats();
 				if (state.activeWorker === worker) {
 					worker.terminate();
 					state.activeWorker = null;
@@ -306,6 +330,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				setSimulationButtonState(false);
 				elements.loadingMessage.style.display = "none";
 				updateStatsUI(null, null, elements);
+				resetSharedStats();
 				if (state.activeWorker === worker) {
 					worker.terminate();
 					state.activeWorker = null;
@@ -319,6 +344,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			setSimulationButtonState(false);
 			elements.loadingMessage.style.display = "none";
 			updateStatsUI(null, null, elements);
+			resetSharedStats();
 			state.lastFile1 = null;
 			state.lastFile2 = null;
 			state.currentGraphData = null;
@@ -368,11 +394,11 @@ document.addEventListener("DOMContentLoaded", () => {
 				state.d3Simulation = null;
 				elements.svgContainer.innerHTML = "";
 			}
-			elements.tooltip.style.display = "none";
-			showMessage();
-			updateStatsUI(null, null, elements);
-			if (elements.sharedStats) elements.sharedStats.style.display = "none";
-			state.lastFile1 = null;
+				elements.tooltip.style.display = "none";
+				showMessage();
+				updateStatsUI(null, null, elements);
+				resetSharedStats();
+				state.lastFile1 = null;
 			state.lastFile2 = null;
 			state.stats1 = null;
 			state.stats2 = null;
@@ -405,6 +431,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	try {
 		populateDropdown(elements.fileSelect1, gameTitleMap);
 		populateDropdown(elements.fileSelect2, gameTitleMap);
+		resetSharedStats();
 
 		// Attach event listeners
 		elements.fileSelect1.addEventListener("change", () => triggerLoad(false));

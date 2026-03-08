@@ -180,7 +180,17 @@ self.onmessage = async (event) => {
 		);
 		const d3GraphData = { nodes, links };
 
-		const personRolesMapData = Array.from(workerPersonRolesMap.entries()).map(([key, valueSet]) => [key, Array.from(valueSet)]);
+		const personRolesMapData = Array.from(workerPersonRolesMap.entries()).map(([key, value]) => [
+			key,
+			{
+				allRoles: Array.from(value.allRoles ?? []),
+				game1Roles: Array.from(value.game1Roles ?? []),
+				game2Roles: Array.from(value.game2Roles ?? []),
+				sharedRoles: Array.from(value.sharedRoles ?? []),
+				game1OnlyRoles: Array.from(value.game1OnlyRoles ?? []),
+				game2OnlyRoles: Array.from(value.game2OnlyRoles ?? []),
+			},
+		]);
 
 		const hasPersonNodes = d3GraphData.nodes.some((n) => n.type === "person");
 		if (allDatasetRoles.size === 0 && hasPersonNodes) {

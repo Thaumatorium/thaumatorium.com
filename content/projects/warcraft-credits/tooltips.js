@@ -1,4 +1,4 @@
-import { NODE_TYPE_PERSON, NODE_TYPE_GAME, CATEGORY_GAME1_ONLY, CATEGORY_GAME2_ONLY, CATEGORY_BOTH, CATEGORY_SINGLE_GAME } from "./config.js";
+import { NODE_TYPE_PERSON, NODE_TYPE_GAME, CATEGORY_GAME1_ONLY, CATEGORY_GAME2_ONLY, CATEGORY_BOTH } from "./config.js";
 
 /**
  * Sets up event listeners on D3 nodes.
@@ -8,7 +8,7 @@ import { NODE_TYPE_PERSON, NODE_TYPE_GAME, CATEGORY_GAME1_ONLY, CATEGORY_GAME2_O
  *
  * @param {d3.Selection} nodeSelection - The D3 selection of node 'g' elements.
  * @param {HTMLElement} tooltipElement - The DOM element to use for the tooltip.
- * @param {Map<string, Set<string>>} personRolesMap - Map of person ID to their roles.
+ * @param {Map<string, object>} personRolesMap - Map of person ID to their role details.
  * @param {SVGSVGElement} svgNode - The root SVG DOM element (for coordinate calculations).
  * @param {string | null} game1Name - The name of the first game being displayed.
  * @param {string | null} game2Name - The name of the second game (might be same as game1Name).
@@ -23,11 +23,17 @@ export function setupD3Tooltips(nodeSelection, tooltipElement, personRolesMap, s
 		.replace(/>/g, "&gt;")
 		.replace(/"/g, "&quot;")
 		.replace(/'/g, "&#39;");
+	const formatListItems = (roles) => [...roles]
+		.sort()
+		.map((role) => `<li>${escapeHtml(role)}</li>`)
+		.join("");
+	const formatRoleSection = (label, roles, tone = "") => {
+		if (!roles || roles.size === 0) return "";
+		const toneClass = tone ? ` tooltip-section-${tone}` : "";
+		return `<section class="tooltip-section${toneClass}"><div class="tooltip-section-label">${escapeHtml(label)}</div><ul class="tooltip-list">${formatListItems(roles)}</ul></section>`;
+	};
 
-	// Get the closest positioned ancestor (or null if none)
-	// We assume the SVG or its container is the intended context
 	const positioningContextElement = tooltipElement.offsetParent || document.body;
-
 	const nodesGroup = d3.select(svgNode).select("g.nodes");
 	const zoomLayer = d3.select(svgNode).select("g.zoom-layer");
 
@@ -48,14 +54,15 @@ export function setupD3Tooltips(nodeSelection, tooltipElement, personRolesMap, s
 	};
 
 	const showTooltip = (d, event) => {
-		// Pass the whole event object
 		const clientX = event.clientX;
 		const clientY = event.clientY;
 
-		let htmlContent = `<strong>${escapeHtml(d.name || "Unknown Node")}</strong>`;
+		let htmlContent = `<div class="tooltip-card"><div class="tooltip-header"><strong>${escapeHtml(d.name || "Unknown Node")}</strong>`;
 		if (d.type) {
-			htmlContent += ` (${escapeHtml(d.type.charAt(0).toUpperCase() + d.type.slice(1))})`;
+			htmlContent += `<span class="tooltip-kind">${escapeHtml(d.type.charAt(0).toUpperCase() + d.type.slice(1))}</span>`;
 		}
+		htmlContent += "</div>";
+
 		if (d.type === NODE_TYPE_PERSON) {
 			let contributionText = "";
 			if (isSingleGameView) {
@@ -63,30 +70,44 @@ export function setupD3Tooltips(nodeSelection, tooltipElement, personRolesMap, s
 			} else {
 				switch (d.category) {
 					case CATEGORY_GAME1_ONLY:
-						contributionText = `Contributed to: ${game1Name} (only)`;
+						contributionText = `Contributed to: ${game1Name}`;
 						break;
 					case CATEGORY_GAME2_ONLY:
-						contributionText = `Contributed to: ${game2Name} (only)`;
+						contributionText = `Contributed to: ${game2Name}`;
 						break;
 					case CATEGORY_BOTH:
-						contributionText = `Contributed to: Both ${game1Name} & ${game2Name}`;
+						contributionText = "Contributed to: both";
 						break;
 					default:
 						contributionText = `Contribution status: ${d.category || "Unknown"}`;
 						break;
 				}
 			}
-			if (contributionText) htmlContent += `<br><span class="tooltip-info">${escapeHtml(contributionText)}</span>`;
-			const roles = personRolesMap.get(d.id);
-			if (roles && roles.size > 0) {
-				htmlContent += `<br><span class="tooltip-info">Role(s): ${escapeHtml([...roles].sort().join(", "))}</span>`;
+			if (contributionText) {
+				htmlContent += `<div class="tooltip-meta">${escapeHtml(contributionText)}</div>`;
+			}
+
+			const roleDetails = personRolesMap.get(d.id);
+			if (roleDetails?.allRoles?.size > 0) {
+				if (isSingleGameView) {
+					htmlContent += formatRoleSection("Roles", roleDetails.allRoles);
+				} else {
+					htmlContent += formatRoleSection(game1Name, roleDetails.game1OnlyRoles, "game1");
+					htmlContent += formatRoleSection("Shared", roleDetails.sharedRoles, "shared");
+					htmlContent += formatRoleSection(game2Name, roleDetails.game2OnlyRoles, "game2");
+					if (roleDetails.sharedRoles.size === 0 && roleDetails.game1OnlyRoles.size === 0 && roleDetails.game2OnlyRoles.size === 0) {
+						htmlContent += formatRoleSection("Roles", roleDetails.allRoles);
+					}
+				}
 			} else if (d.primaryRole) {
-				htmlContent += `<br><span class="tooltip-info">Primary Role: ${escapeHtml(d.primaryRole)}</span>`;
+				htmlContent += `<div class="tooltip-meta">Primary role: ${escapeHtml(d.primaryRole)}</div>`;
 			}
 		} else if (d.type === NODE_TYPE_GAME) {
 			const contributorCount = d.degree || 0;
-			htmlContent += `<br><span class="tooltip-info">Contributors shown: ${escapeHtml(contributorCount)}</span>`;
+			htmlContent += `<div class="tooltip-meta">Contributors shown: ${escapeHtml(contributorCount)}</div>`;
 		}
+
+		htmlContent += "</div>";
 
 		tooltipElement.innerHTML = htmlContent;
 		tooltipElement.style.display = "block";
@@ -96,39 +117,30 @@ export function setupD3Tooltips(nodeSelection, tooltipElement, personRolesMap, s
 		const tooltipRect = tooltipElement.getBoundingClientRect();
 		const tooltipWidth = tooltipRect.width;
 		const tooltipHeight = tooltipRect.height;
-		const tooltipPadding = 15; // Original padding
+		const tooltipPadding = 15;
 
-		// Get the positioning context element's bounding rect
 		const contextRect = positioningContextElement.getBoundingClientRect();
 		const mouseXRelative = clientX - contextRect.left;
 		const mouseYRelative = clientY - contextRect.top;
 
 		let targetContextLeft = mouseXRelative + tooltipPadding;
-		let targetContextTop = mouseYRelative - tooltipHeight - tooltipPadding; // Place T above cursor B
+		let targetContextTop = mouseYRelative - tooltipHeight - tooltipPadding;
 
 		const contextWidth = positioningContextElement.offsetWidth;
 		const contextHeight = positioningContextElement.offsetHeight;
-		const boundaryPadding = 10; // Min space from edge
+		const boundaryPadding = 10;
 
-		// Check Top Boundary: If too high, flip BELOW cursor
 		if (targetContextTop < boundaryPadding) {
 			targetContextTop = mouseYRelative + tooltipPadding;
 		}
-
-		// Check Right Boundary: If too far right, flip LEFT of cursor
 		if (targetContextLeft + tooltipWidth > contextWidth - boundaryPadding) {
 			targetContextLeft = mouseXRelative - tooltipWidth - tooltipPadding;
 		}
-
-		// Final Edge Adjustments (after potential flips)
-		// Check Left Boundary: If still too far left (e.g., after flipping left), adjust right
 		if (targetContextLeft < boundaryPadding) {
 			targetContextLeft = boundaryPadding;
 		}
-		// Check Bottom Boundary: If still too low (e.g., after flipping below), adjust up
 		if (targetContextTop + tooltipHeight > contextHeight - boundaryPadding) {
 			targetContextTop = contextHeight - tooltipHeight - boundaryPadding;
-			// Final safety check: if adjusting up pushed it above top, clamp to top
 			if (targetContextTop < boundaryPadding) {
 				targetContextTop = boundaryPadding;
 			}
@@ -143,44 +155,43 @@ export function setupD3Tooltips(nodeSelection, tooltipElement, personRolesMap, s
 		showTooltip(d, event);
 		currentTargetNode.classed("tooltip-active", true);
 	});
-	nodeSelection.on("mouseleave", (event, d) => {
+	nodeSelection.on("mouseleave", () => {
 		hideTooltipOnly();
 	});
 	nodeSelection.on("click", (event, d) => {
 		event.stopPropagation();
 
 		const isCtrlClick = event.ctrlKey || event.metaKey;
+		if (!isCtrlClick) return;
 
-		if (isCtrlClick) {
-			const currentTargetNode = d3.select(event.currentTarget);
-			hideTooltipOnly();
-			const wasAlreadyHighlighted = currentTargetNode.classed("highlighted-department");
-			const wasHighlightActive = nodesGroup ? nodesGroup.classed("department-highlight-active") : false;
+		const currentTargetNode = d3.select(event.currentTarget);
+		hideTooltipOnly();
+		const wasAlreadyHighlighted = currentTargetNode.classed("highlighted-department");
+		const wasHighlightActive = nodesGroup ? nodesGroup.classed("department-highlight-active") : false;
 
-			clearHighlights();
+		clearHighlights();
 
-			if (wasAlreadyHighlighted && wasHighlightActive) {
-				return;
-			}
-			if (d.type === NODE_TYPE_PERSON) {
-				const clickedRoles = personRolesMap.get(d.id);
-				currentTargetNode.classed("highlighted-department", true);
-				if (clickedRoles && clickedRoles.size > 0) {
-					let matchCount = 0;
-					nodeSelection
-						.filter((_d) => {
-							if (_d.type !== NODE_TYPE_PERSON || _d.id === d.id) return false;
-							const otherRoles = personRolesMap.get(_d.id);
-							if (!otherRoles || otherRoles.size === 0) return false;
-							return [...clickedRoles].some((role) => otherRoles.has(role));
-						})
-						.classed("highlighted-department", true)
-						.each(() => matchCount++);
-				}
-				if (nodesGroup) {
-					nodesGroup.classed("department-highlight-active", true);
-				}
-			}
+		if (wasAlreadyHighlighted && wasHighlightActive) {
+			return;
+		}
+		if (d.type !== NODE_TYPE_PERSON) {
+			return;
+		}
+
+		const clickedRoles = personRolesMap.get(d.id)?.allRoles;
+		currentTargetNode.classed("highlighted-department", true);
+		if (clickedRoles && clickedRoles.size > 0) {
+			nodeSelection
+				.filter((_d) => {
+					if (_d.type !== NODE_TYPE_PERSON || _d.id === d.id) return false;
+					const otherRoles = personRolesMap.get(_d.id)?.allRoles;
+					if (!otherRoles || otherRoles.size === 0) return false;
+					return [...clickedRoles].some((role) => otherRoles.has(role));
+				})
+				.classed("highlighted-department", true);
+		}
+		if (nodesGroup) {
+			nodesGroup.classed("department-highlight-active", true);
 		}
 	});
 	d3.select(svgNode).on("click", (event) => {

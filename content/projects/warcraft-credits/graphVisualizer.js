@@ -82,7 +82,8 @@ export function visualizeGraphD3(
 	domElements,
 	personRolesMap,
 	normalizedRolePositions,
-	onDragRestartNeeded
+	onDragRestartNeeded,
+	renderState = {}
 ) {
 	const { svgContainer, tooltipElement, errorMessageElement } = domElements;
 	const baseErrorMessage = "No common contributors or relevant data found for the selected combination.";
@@ -133,6 +134,8 @@ export function visualizeGraphD3(
 		return null;
 	}
 	dynamicRoleColors.clear();
+	const previousSize = renderState.previousSize ?? null;
+	const preservedPositions = renderState.preservedPositions ?? null;
 	const defaultRolePositionNorm = { normX: 0.5, normY: 0.5 };
 	let game1InitialPos = { x: width / 2, y: height / 2 };
 	let game2InitialPos = { x: width / 2, y: height / 2 };
@@ -151,6 +154,7 @@ export function visualizeGraphD3(
 		d.fy = null;
 	});
 	graphData.nodes.forEach((d) => {
+		const preservedPosition = preservedPositions?.get(d.id);
 		if (d.type === NODE_TYPE_PERSON) {
 			const role = d.primaryRole || DEFAULT_ROLE;
 			const roleTargetPosNorm = normalizedRolePositions.get(role) || defaultRolePositionNorm;
@@ -182,11 +186,21 @@ export function visualizeGraphD3(
 				// Default case removed, initial roleTargetX/Y handles other cases
 			}
 
-			d.x = targetX + deterministicOffset(d.id, "x", 2);
-			d.y = targetY + deterministicOffset(d.id, "y", 2);
+			if (preservedPosition && previousSize?.width > 0 && previousSize?.height > 0) {
+				d.x = (preservedPosition.x / previousSize.width) * width;
+				d.y = (preservedPosition.y / previousSize.height) * height;
+			} else {
+				d.x = targetX + deterministicOffset(d.id, "x", 2);
+				d.y = targetY + deterministicOffset(d.id, "y", 2);
+			}
 		} else if (d.type !== NODE_TYPE_GAME) {
-			d.x = d.x || width / 2 + deterministicOffset(d.id, "x", 50);
-			d.y = d.y || height / 2 + deterministicOffset(d.id, "y", 50);
+			if (preservedPosition && previousSize?.width > 0 && previousSize?.height > 0) {
+				d.x = (preservedPosition.x / previousSize.width) * width;
+				d.y = (preservedPosition.y / previousSize.height) * height;
+			} else {
+				d.x = d.x || width / 2 + deterministicOffset(d.id, "x", 50);
+				d.y = d.y || height / 2 + deterministicOffset(d.id, "y", 50);
+			}
 		}
 		d.fx = null;
 		d.fy = null;
@@ -328,5 +342,6 @@ export function visualizeGraphD3(
 
 	setupD3Tooltips(nodeSelection, tooltipElement, personRolesMap, svg.node(), game1Name, game2Name, isSingleGameView);
 
+	simulation.renderSize = { width, height };
 	return simulation;
 }
