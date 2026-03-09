@@ -16,6 +16,7 @@ build *args:
     hugo {{args}}
 
 fmt-public:
+    find public -type f -name '*.html' -print0 | while IFS= read -r -d '' file; do sed -i '/^[[:space:]]*$/d' "$file"; done
     oxfmt public
 
 fmt:
