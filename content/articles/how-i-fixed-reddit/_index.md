@@ -48,4 +48,5 @@ I know that my categories can be construed as a fragile white redditor not being
 Constantly being confronted with things _I can not change_ (mostly because I'm Dutch, so I basically have 0 political power in the USA) will only fuck up my mind, and for what? Because of some subreddit that _may_ shame my inaction (which I've blocked anyway, so I won't see it anyway)? Fuck no.
 
 PS: I'm aware that some people may use the subs I named to subscribe to them. More power to you! I unironically hope you'll enjoy those subreddits; I simply didn't.
+
 </del>
