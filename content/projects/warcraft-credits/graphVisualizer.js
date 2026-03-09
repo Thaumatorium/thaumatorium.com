@@ -11,7 +11,10 @@ const GAME_LABEL_CLEARANCE = 46;
 const personRoleColors = new Map();
 const gameNodeColors = new Map();
 const personColorScale = d3.scaleOrdinal(d3.schemeTableau10);
-const personRolePie = d3.pie().value(() => 1).sort(null);
+const personRolePie = d3
+	.pie()
+	.value(() => 1)
+	.sort(null);
 
 function hashString(value) {
 	let hash = 2166136261;
@@ -112,7 +115,9 @@ function getLinkedGamePositions(node, gameNodesById) {
 }
 
 function getAllGameCenter(gameNodesById, width, height) {
-	const positions = Array.from(gameNodesById.values()).map(getResolvedGamePosition).filter((position) => Number.isFinite(position.x) && Number.isFinite(position.y));
+	const positions = Array.from(gameNodesById.values())
+		.map(getResolvedGamePosition)
+		.filter((position) => Number.isFinite(position.x) && Number.isFinite(position.y));
 	if (positions.length === 0) {
 		return { x: width * 0.5, y: height * 0.5 };
 	}
@@ -224,13 +229,15 @@ function getNodeRoles(node, personRolesMap) {
 }
 
 function normalizeRoleName(role) {
-	return String(role || DEFAULT_ROLE).toLowerCase().trim();
+	return String(role || DEFAULT_ROLE)
+		.toLowerCase()
+		.trim();
 }
 
 function getGameColor(gameId) {
 	if (!gameNodeColors.has(gameId)) {
 		const hash = hashString(String(gameId || "game"));
-		const hue = ((hash * 137.508) % 360 + 360) % 360;
+		const hue = (((hash * 137.508) % 360) + 360) % 360;
 		const saturation = 0.58 + ((hash >> 8) % 7) * 0.025;
 		const lightness = 0.56 + ((hash >> 16) % 5) * 0.02;
 		gameNodeColors.set(gameId, d3.hsl(hue, Math.min(saturation, 0.78), Math.min(lightness, 0.68)).formatHex());
@@ -248,7 +255,13 @@ function getRoleColor(role) {
 }
 
 function getPersonRoleEntries(node, personRolesMap) {
-	const uniqueRoles = [...new Set(getNodeRoles(node, personRolesMap).map((role) => String(role || "").trim()).filter(Boolean))];
+	const uniqueRoles = [
+		...new Set(
+			getNodeRoles(node, personRolesMap)
+				.map((role) => String(role || "").trim())
+				.filter(Boolean)
+		),
+	];
 	const normalizedPrimaryRole = normalizeRoleName(node.primaryRole || DEFAULT_ROLE);
 
 	return uniqueRoles.sort((left, right) => {
@@ -365,10 +378,8 @@ function computeGameAnchors(graphData, gameNodes, preservedPositions, previousSi
 	gameNodes.forEach((node, index) => {
 		const preservedPosition = preservedPositions?.get(node.id);
 		const anchor = getGameAnchor(index, gameNodes.length, width, height, ringRadius);
-		const resolvedAnchorX =
-			preservedPosition && previousSize?.width > 0 ? (preservedPosition.x / previousSize.width) * width : (Number.isFinite(node.anchorX) ? node.anchorX : anchor.x);
-		const resolvedAnchorY =
-			preservedPosition && previousSize?.height > 0 ? (preservedPosition.y / previousSize.height) * height : (Number.isFinite(node.anchorY) ? node.anchorY : anchor.y);
+		const resolvedAnchorX = preservedPosition && previousSize?.width > 0 ? (preservedPosition.x / previousSize.width) * width : Number.isFinite(node.anchorX) ? node.anchorX : anchor.x;
+		const resolvedAnchorY = preservedPosition && previousSize?.height > 0 ? (preservedPosition.y / previousSize.height) * height : Number.isFinite(node.anchorY) ? node.anchorY : anchor.y;
 
 		node.anchorX = resolvedAnchorX;
 		node.anchorY = resolvedAnchorY;
@@ -393,7 +404,10 @@ function applyDeterministicLayout(graphData, gameNodesById, personRolesMap, norm
 
 	groups.forEach((clusterNodes, signatureKey) => {
 		const signatureGameIds = signatureKey ? signatureKey.split("|") : [];
-		const signatureGamePositions = signatureGameIds.map((gameId) => gameNodesById.get(gameId)).filter(Boolean).map(getResolvedGamePosition);
+		const signatureGamePositions = signatureGameIds
+			.map((gameId) => gameNodesById.get(gameId))
+			.filter(Boolean)
+			.map(getResolvedGamePosition);
 		const frame = getClusterFrame(signatureGamePositions, allGameCenter, width, height, signatureKey);
 		assignClusterPositions(clusterNodes, frame, personRolesMap, normalizedRolePositions, defaultRolePositionNorm, width, height);
 	});
