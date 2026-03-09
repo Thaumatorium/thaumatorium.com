@@ -90,18 +90,7 @@ function collectAllRoles(jsonData, filename) {
 	return roles;
 }
 
-const ROLE_FAMILY_ORDER = [
-	"leadership",
-	"design",
-	"engineering",
-	"art",
-	"audio_voice",
-	"qa",
-	"localization",
-	"production",
-	"marketing_support",
-	"other",
-];
+const ROLE_FAMILY_ORDER = ["leadership", "design", "engineering", "art", "audio_voice", "qa", "localization", "production", "marketing_support", "other"];
 
 function classifyRoleFamily(role) {
 	const normalizedRole = role.toLowerCase().trim();

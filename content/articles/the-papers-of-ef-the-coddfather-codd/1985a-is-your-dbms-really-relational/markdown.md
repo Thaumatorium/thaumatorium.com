@@ -2,10 +2,10 @@
 
 ### By E. F. Codd
 
-*The originator of the relational model for data base management presents basic
+_The originator of the relational model for data base management presents basic
 principles for determining how relational a DBMS product is — a question that
 faces many buyers today because almost every vendor claims its DBMS is
-relational. Some vendors may not realize how far from the mark they are.*
+relational. Some vendors may not realize how far from the mark they are._
 
 #### Part 1
 
@@ -109,9 +109,9 @@ date but are likely to become as important as eight and nine.
 These rules are based on a single foundation rule, which I shall call **Rule
 Zero**:
 
-*For any system that is advertised as, or claimed to be, a relational data base
+_For any system that is advertised as, or claimed to be, a relational data base
 management system, that system must be able to manage data bases entirely
-through its relational capabilities.*
+through its relational capabilities._
 
 This rule must hold whether or not the system supports any non-relational
 capabilities of managing data. Any DBMS that does not satisfy this rule is not
@@ -367,7 +367,7 @@ present released) fully support this rule.
 
 This has been demonstrated as follows: SQL programs have been written to operate
 on nondistributed data (using System R) run correctly on distributed versions of
-that data (using System R*, the IBM San Jose Research Laboratory prototype), and
+that data (using System R\*, the IBM San Jose Research Laboratory prototype), and
 the distributed Ingres project at the University of California at Berkeley has
 shown the same capability for the QUEL language of Ingres.
 

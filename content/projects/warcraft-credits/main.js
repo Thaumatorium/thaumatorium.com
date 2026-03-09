@@ -96,11 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	};
 	const buildRenderState = () => {
 		if (!state.currentGraphData?.nodes?.length || !state.d3Simulation) return {};
-		const preservedPositions = new Map(
-			state.currentGraphData.nodes
-				.filter((node) => Number.isFinite(node.x) && Number.isFinite(node.y))
-				.map((node) => [node.id, { x: node.x, y: node.y }])
-		);
+		const preservedPositions = new Map(state.currentGraphData.nodes.filter((node) => Number.isFinite(node.x) && Number.isFinite(node.y)).map((node) => [node.id, { x: node.x, y: node.y }]));
 		return {
 			preservedPositions,
 			previousSize: state.d3Simulation.renderSize ?? elements.svgContainer.getBoundingClientRect(),
@@ -112,14 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			tooltipElement: elements.tooltip,
 			errorMessageElement: elements.errorMessage,
 		};
-		state.d3Simulation = visualizeGraphD3(
-			graphData,
-			visualizerDomElements,
-			state.personRolesMap,
-			state.normalizedRolePositions,
-			handleDragRestart,
-			renderState
-		);
+		state.d3Simulation = visualizeGraphD3(graphData, visualizerDomElements, state.personRolesMap, state.normalizedRolePositions, handleDragRestart, renderState);
 		return state.d3Simulation;
 	};
 
@@ -242,21 +231,21 @@ document.addEventListener("DOMContentLoaded", () => {
 				if (status === "success" && graphData?.nodes) {
 					state.currentGraphData = graphData;
 
-						state.personRolesMap = new Map();
-						if (Array.isArray(personRolesMapData)) {
-							personRolesMapData.forEach(([key, roleDetails]) => {
-								if (key && roleDetails && typeof roleDetails === "object") {
-									state.personRolesMap.set(key, {
-										allRoles: new Set(roleDetails.allRoles ?? []),
-										game1Roles: new Set(roleDetails.game1Roles ?? []),
-										game2Roles: new Set(roleDetails.game2Roles ?? []),
-										sharedRoles: new Set(roleDetails.sharedRoles ?? []),
-										game1OnlyRoles: new Set(roleDetails.game1OnlyRoles ?? []),
-										game2OnlyRoles: new Set(roleDetails.game2OnlyRoles ?? []),
-									});
-								}
-							});
-						}
+					state.personRolesMap = new Map();
+					if (Array.isArray(personRolesMapData)) {
+						personRolesMapData.forEach(([key, roleDetails]) => {
+							if (key && roleDetails && typeof roleDetails === "object") {
+								state.personRolesMap.set(key, {
+									allRoles: new Set(roleDetails.allRoles ?? []),
+									game1Roles: new Set(roleDetails.game1Roles ?? []),
+									game2Roles: new Set(roleDetails.game2Roles ?? []),
+									sharedRoles: new Set(roleDetails.sharedRoles ?? []),
+									game1OnlyRoles: new Set(roleDetails.game1OnlyRoles ?? []),
+									game2OnlyRoles: new Set(roleDetails.game2OnlyRoles ?? []),
+								});
+							}
+						});
+					}
 
 					state.normalizedRolePositions = new Map();
 					if (Array.isArray(normalizedRolePositionsData)) {
@@ -394,11 +383,11 @@ document.addEventListener("DOMContentLoaded", () => {
 				state.d3Simulation = null;
 				elements.svgContainer.innerHTML = "";
 			}
-				elements.tooltip.style.display = "none";
-				showMessage();
-				updateStatsUI(null, null, elements);
-				resetSharedStats();
-				state.lastFile1 = null;
+			elements.tooltip.style.display = "none";
+			showMessage();
+			updateStatsUI(null, null, elements);
+			resetSharedStats();
+			state.lastFile1 = null;
 			state.lastFile2 = null;
 			state.stats1 = null;
 			state.stats2 = null;

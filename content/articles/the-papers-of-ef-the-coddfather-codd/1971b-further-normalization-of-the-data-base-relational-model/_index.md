@@ -261,11 +261,11 @@ Consider the relation T(S#, P#, SN, SC) where
 
 If we apply projection sparingly in converting to second normal form, we obtain collection C<sub>1</sub> say:
 
->Π<sub>S#, P#</sub>(T), Π<sub>S#, SN, SC</sub>(T).
+> Π<sub>S#, P#</sub>(T), Π<sub>S#, SN, SC</sub>(T).
 
 On the other hand, we could apply projection liberally and obtain collection C<sub>2</sub> say:
 
->Π<sub>S#, P#</sub>(T), Π<sub>S#, SN</sub>(T), Π<sub>S#, SC</sub>(T),
+> Π<sub>S#, P#</sub>(T), Π<sub>S#, SN</sub>(T), Π<sub>S#, SC</sub>(T),
 
 Both C<sub>1</sub> and C<sub>2</sub> are in second normal form and both retain all the essential information in the original relation T. However, collection C<sub>1</sub> contains the fewest possible relations, and is accordingly said to be in **optimal second normal form**. C<sub>2</sub> is in non-optimal second normal form.
 

@@ -11,7 +11,7 @@ Alternative titles:
 - "E.F. 'The Coddfather' Codd was right all along"
 
 > [How to pronounce "Quaternary"?](https://en.wiktionary.org/wiki/quaternary) (I prefer the "Audio (General Australian)"
-  version)
+> version)
 
 I've been programming since 2009, professionally since 2021, and I've written programs in Python (my current go-to due
 to professional reasons), C (my first language - can highly recommend as beginner language), C++, C#, Java, Haskell (my
@@ -19,7 +19,7 @@ first FP language - [can also highly recommend (Primeagen pls read)](https://lea
 Typescript (ew), Javascript (ew), PowerShell, Bash, and have dipped my toes in Rust, Go, Elm, Lisp, Visual Basic (ew),
 and last but not least Lua.
 
-I'm telling you this to explain that I have a very *broad* knowledge of programming, with a *deep* one in Python - I
+I'm telling you this to explain that I have a very _broad_ knowledge of programming, with a _deep_ one in Python - I
 won't claim to be an expert in any other language besides Python, and even in Python there's plenty I've barely touched
 due to a lack of necessity.
 
@@ -34,8 +34,8 @@ In 1990 The Coddfather released a book called "The Relational Model for Database
 this), where he introduced the idea of "Four-Valued Logic" - that is, a logic system with four truth values, instead of
 the typical two (True and False).
 
-This idea initially broke my brain, because *computers are binary, right?* *So how does having four truth values make
-sense?*
+This idea initially broke my brain, because _computers are binary, right?_ _So how does having four truth values make
+sense?_
 
 Well, through my experience I've noticed that we've been using quaternary logic all this time, without even realizing
 it!
@@ -48,17 +48,17 @@ value you as a programmer will have to handle.
 
 Again, now we have four possible return values that can be returned from a single function:
 
-* `True`
-* `False`
-* `None`
-* `Exception` (any kind).
+- `True`
+- `False`
+- `None`
+- `Exception` (any kind).
 
 This is a perfect example of quaternary logic in action in a super common programming language.
 
 So, how does this relate to SQL? Well, in [RM/V2](https://codeblab.com/wp-content/uploads/2009/12/rmdb-codd.pdf)
 (Relational Model, version 2 - yes, Codd numbered his models like a programming language) Codd introduces `TRUE` (`t`),
 `FALSE` (`f`), `MAYBE BUT APPLICABLE` (`a`), and `MAYBE BUT INAPPLICABLE` (`i`) - Everything is shouted, because all
-language did so back in the 1960s. Anyway, `t` and `f` are named *"values"*, and `i` and `a` are named *"markers"*.
+language did so back in the 1960s. Anyway, `t` and `f` are named _"values"_, and `i` and `a` are named _"markers"_.
 
 ### A code example
 

@@ -33,7 +33,7 @@ function setStatus(node, message, tone = "info") {
 }
 
 function formatLocalIso(date) {
-	const localISOString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString();
+	const localISOString = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString();
 	const timezoneOffset = -date.getTimezoneOffset();
 	const hours = String(Math.floor(Math.abs(timezoneOffset) / 60)).padStart(2, "0");
 	const minutes = String(Math.abs(timezoneOffset) % 60).padStart(2, "0");
@@ -90,8 +90,7 @@ async function copyText(text, node) {
 		setTimeout(() => {
 			node.textContent = original;
 		}, 900);
-	} catch {
-	}
+	} catch {}
 }
 
 function renderCurrentTime() {
@@ -104,18 +103,20 @@ function renderCurrentTime() {
 		["Unix Milliseconds", String(now.getTime())],
 		["Unix Nanoseconds", String(BigInt(now.getTime()) * 1000000n)],
 	];
-	currentTime.replaceChildren(...values.map(([label, value]) => {
-		const wrapper = document.createElement("div");
-		const title = document.createElement("span");
-		title.className = "epoch-copy-label";
-		title.textContent = label;
-		const output = document.createElement("div");
-		output.className = "epoch-current-value";
-		output.textContent = value;
-		output.addEventListener("click", () => copyText(value, output));
-		wrapper.append(title, output);
-		return wrapper;
-	}));
+	currentTime.replaceChildren(
+		...values.map(([label, value]) => {
+			const wrapper = document.createElement("div");
+			const title = document.createElement("span");
+			title.className = "epoch-copy-label";
+			title.textContent = label;
+			const output = document.createElement("div");
+			output.className = "epoch-current-value";
+			output.textContent = value;
+			output.addEventListener("click", () => copyText(value, output));
+			wrapper.append(title, output);
+			return wrapper;
+		})
+	);
 }
 
 function clearSingleOutputs() {
@@ -167,33 +168,25 @@ function handleBatchConvert() {
 		}
 	});
 
-	batchTbody.replaceChildren(...rows.map((row) => {
-		const tr = document.createElement("tr");
-		const cells = [
-			String(row.index + 1),
-			row.input,
-			row.unit,
-			row.isoUTC,
-			row.isoLocal,
-			row.unixS,
-			row.unixMs,
-			row.unixNs,
-			row.error,
-		];
-		cells.forEach((value, cellIndex) => {
-			const td = document.createElement("td");
-			td.textContent = value;
-			if (cellIndex >= 3 && cellIndex <= 7 && value) {
-				td.className = "copyable";
-				td.addEventListener("click", () => copyText(value, td));
-			}
-			if (cellIndex === 8 && value) {
-				td.style.color = "#a31717";
-			}
-			tr.appendChild(td);
-		});
-		return tr;
-	}));
+	batchTbody.replaceChildren(
+		...rows.map((row) => {
+			const tr = document.createElement("tr");
+			const cells = [String(row.index + 1), row.input, row.unit, row.isoUTC, row.isoLocal, row.unixS, row.unixMs, row.unixNs, row.error];
+			cells.forEach((value, cellIndex) => {
+				const td = document.createElement("td");
+				td.textContent = value;
+				if (cellIndex >= 3 && cellIndex <= 7 && value) {
+					td.className = "copyable";
+					td.addEventListener("click", () => copyText(value, td));
+				}
+				if (cellIndex === 8 && value) {
+					td.style.color = "#a31717";
+				}
+				tr.appendChild(td);
+			});
+			return tr;
+		})
+	);
 
 	batchResults.hidden = false;
 	setStatus(batchStatus, `Converted ${rows.length} row${rows.length === 1 ? "" : "s"}.`);

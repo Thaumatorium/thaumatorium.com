@@ -1,27 +1,26 @@
 <footer>
 	<div class="copyright">
-		©<a href="https://www.youtube.com/watch?v=czgOWmtGVGs" style="text-decoration: none; color: #800;">12019</a>
-		– <a id=target-year href="http://updateyourfooter.com/" style="text-decoration: none; color: #800;">1{{ now.Year }}</a>,
-		<abbr title="Copyright is implicit, almost anywhere in the world! If you want to know more, wikipedia 'Berne Convention'" style="text-decoration: none; color: #800;">Thaumatorium</abbr>
+		©<a href="https://www.youtube.com/watch?v=czgOWmtGVGs" style="text-decoration: none; color: #800">12019</a> – <a id="target-year" href="http://updateyourfooter.com/" style="text-decoration: none; color: #800">1{{ now.Year }}</a>,
+		<abbr title="Copyright is implicit, almost anywhere in the world! If you want to know more, wikipedia 'Berne Convention'" style="text-decoration: none; color: #800">Thaumatorium</abbr>
 		{{/* Note about that 2006 date: https://stackoverflow.com/a/42217483/12210524 - lets not add hours/minutes/seconds: 15:04:05 */}}
 		<p>
-			<sub>Last updated: <time id=updated>{{ .Lastmod.Format "2006-01-02" }}</time></sub>
+			<sub>Last updated: <time id="updated">{{ .Lastmod.Format "2006-01-02" }}</time></sub>
 		</p>
 	</div>
 	{{/* TODO check if these profiles can still be public */}}
 	<nav id="profiles">
-		{{/* <a href="https://twitter.com/NostraDavid2"><img loading=lazy src="/images/social-media/twitter.svg" alt="Twitter's logo" width=32 height=32></a><span> - </span>
-		<a href="https://www.twitch.tv/nostradavid"><img loading=lazy src="/images/social-media/twitch.svg" alt="Twitch's logo" width=32 height=32></a><span> - </span>
-		<a href="https://www.youtube.com/channel/UCkyJNAlG_at0jgflXPP4aKA"><img loading=lazy src="/images/social-media/youtube.svg" alt="Youtube's logo" width=32 height=32></a><span> - </span>
-		<a href="https://www.reddit.com/user/nostradavid"><img loading=lazy src="/images/social-media/reddit.svg" alt="Snoo, Reddit's logo" width=32 height=32></a><span> - </span>
-		<a href="https://github.com/NostraDavid"><img loading=lazy src="/images/social-media/github.svg" alt="Github's logo" width=32 height=32>(me)</a><span> - </span>
-		<a href="https://github.com/Thaumatorium"><img loading=lazy src="/images/social-media/github.svg" alt="Github's logo" width=32 height=32>(pro)</a><span> - </span> */}}
+		{{/* <a href="https://twitter.com/NostraDavid2"><img loading="lazy" src="/images/social-media/twitter.svg" alt="Twitter's logo" width="32" height="32" /></a><span> - </span>
+		<a href="https://www.twitch.tv/nostradavid"><img loading="lazy" src="/images/social-media/twitch.svg" alt="Twitch's logo" width="32" height="32" /></a><span> - </span>
+		<a href="https://www.youtube.com/channel/UCkyJNAlG_at0jgflXPP4aKA"><img loading="lazy" src="/images/social-media/youtube.svg" alt="Youtube's logo" width="32" height="32" /></a><span> - </span>
+		<a href="https://www.reddit.com/user/nostradavid"><img loading="lazy" src="/images/social-media/reddit.svg" alt="Snoo, Reddit's logo" width="32" height="32" /></a><span> - </span>
+		<a href="https://github.com/NostraDavid"><img loading="lazy" src="/images/social-media/github.svg" alt="Github's logo" width="32" height="32" />(me)</a><span> - </span>
+		<a href="https://github.com/Thaumatorium"><img loading="lazy" src="/images/social-media/github.svg" alt="Github's logo" width="32" height="32" />(pro)</a><span> - </span> */}}
 	</nav>
 	<!-- Sssh - don't tell anyone! -->
-	<a class="secret" onclick=specialGoto(event)>π</a>
+	<a class="secret" onclick="specialGoto(event)">π</a>
 	<script>
 		// Sssh - don't tell anyone!
-		const specialGoto = event => {
+		const specialGoto = (event) => {
 			if (event.ctrlKey && event.shiftKey) window.location.href = "/praetorianpi/";
 		};
 	</script>

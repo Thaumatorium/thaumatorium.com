@@ -6,6 +6,7 @@ lastmod: 2026-03-08T21:55:00+01:00
 aliases:
   - /articles/regex2fa/
 ---
+
 <section class="regex2fa-page">
 	<style>
 		.regex2fa-page {
@@ -195,7 +196,9 @@ aliases:
 	<header class="regex2fa-shell">
 		<h2>Regex to NFA/DFA Visualizer</h2>
 		<p class="regex2fa-lead">Parse a small regular-expression subset, build a Thompson NFA, and derive the DFA from it. The graph is deterministic per input, so the same regex always redraws the same way.</p>
-		<p class="regex2fa-help">Supported: concatenation, alternation, grouping, <code>*</code>, <code>+</code>, <code>?</code>, escaped literals, and simple character classes like <code>[abc]</code> or <code>[Gg]</code>. Unsupported: lookarounds, anchors, counted quantifiers, shorthand classes like <code>\d</code>, and advanced class syntax.</p>
+		<p class="regex2fa-help">
+			Supported: concatenation, alternation, grouping, <code>*</code>, <code>+</code>, <code>?</code>, escaped literals, and simple character classes like <code>[abc]</code> or <code>[Gg]</code>. Unsupported: lookarounds, anchors, counted quantifiers, shorthand classes like <code>\d</code>, and advanced class syntax.
+		</p>
 	</header>
 
 	<section class="regex2fa-shell">
@@ -221,10 +224,10 @@ aliases:
 			</label>
 			<label for="epsilonSymbol">
 				Epsilon symbol
-				<input class="regex2fa-epsilon" id="epsilonSymbol" type="text" value="ε" maxlength="3">
+				<input class="regex2fa-epsilon" id="epsilonSymbol" type="text" value="ε" maxlength="3" />
 			</label>
 			<label for="showInternals">
-				<input id="showInternals" type="checkbox">
+				<input id="showInternals" type="checkbox" />
 				Show internals
 			</label>
 		</div>

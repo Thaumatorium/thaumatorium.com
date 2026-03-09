@@ -55,15 +55,8 @@ export function addExplicitConcat(tokens) {
 		result.push(current);
 		if (index === tokens.length - 1) continue;
 		const next = tokens[index + 1];
-		const currentCanPrecede =
-			current === ")" ||
-			current === "*" ||
-			current === "+" ||
-			current === "?" ||
-			isOperand(current);
-		const nextCanFollow =
-			next === "(" ||
-			isOperand(next);
+		const currentCanPrecede = current === ")" || current === "*" || current === "+" || current === "?" || isOperand(current);
+		const nextCanFollow = next === "(" || isOperand(next);
 		if (currentCanPrecede && nextCanFollow) {
 			result.push(CONCAT_OPERATOR);
 		}
@@ -94,11 +87,7 @@ export function infixToPostfix(tokensWithConcat) {
 			operatorStack.pop();
 			continue;
 		}
-		while (
-			operatorStack.length &&
-			operatorStack[operatorStack.length - 1] !== "(" &&
-			precedence[operatorStack[operatorStack.length - 1]] >= precedence[token]
-		) {
+		while (operatorStack.length && operatorStack[operatorStack.length - 1] !== "(" && precedence[operatorStack[operatorStack.length - 1]] >= precedence[token]) {
 			output.push(operatorStack.pop());
 		}
 		operatorStack.push(token);
@@ -114,7 +103,5 @@ export function infixToPostfix(tokensWithConcat) {
 }
 
 export function isOperand(token) {
-	return (token.startsWith("[") && token.endsWith("]")) ||
-		(token.length === 2 && token[0] === "\\") ||
-		(!REGEX_OPERATORS.includes(token) && token !== CONCAT_OPERATOR);
+	return (token.startsWith("[") && token.endsWith("]")) || (token.length === 2 && token[0] === "\\") || (!REGEX_OPERATORS.includes(token) && token !== CONCAT_OPERATOR);
 }

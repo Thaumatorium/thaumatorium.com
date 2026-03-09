@@ -4,6 +4,7 @@ description: "Handy snippets that I use every now and then"
 publishDate: 2020-08-17T16:55:37+01:00
 lastmod: 2020-08-17T16:55:37+01:00
 ---
+
 <p>Javascript code snippets and regex, and the likes</p>
 <p>Note to self: <a href="https://gist.github.com/NostraDavid">GitHub Gist</a> exists…</p>
 <h2>Regular Expressions</h2>
@@ -11,26 +12,29 @@ lastmod: 2020-08-17T16:55:37+01:00
 <table>
 	<thead>
 		<tr>
-			<th>note </th>
-			<th>regex </th>
+			<th>note</th>
+			<th>regex</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td>Find the nth comma, via <a href="https://stackoverflow.com/a/9194889/1102369">stackoverflow</a>;<br> Edit the number in between {} to find the nth comma.</td>
-			<td><code class=lang-regex>,(?=(?:[^,]*,){3}[^,]*$)</code></td>
+			<td>
+				Find the nth comma, via <a href="https://stackoverflow.com/a/9194889/1102369">stackoverflow</a>;<br />
+				Edit the number in between {} to find the nth comma.
+			</td>
+			<td><code class="lang-regex">,(?=(?:[^,]*,){3}[^,]*$)</code></td>
 		</tr>
 		<tr>
-			<td>Every line that doesn't start with a <samp>.</samp> via regex;<br>I was trying to filter bootstrap.css from all non-classes</td>
-			<td><code class=lang-regex>^((?!^\.).)*$</code></td>
+			<td>Every line that doesn't start with a <samp>.</samp> via regex;<br />I was trying to filter bootstrap.css from all non-classes</td>
+			<td><code class="lang-regex">^((?!^\.).)*$</code></td>
 		</tr>
 		<tr>
 			<td>Filter everything from a : till the end of the line</td>
-			<td><code class=lang-regex>[:].*$</code></td>
+			<td><code class="lang-regex">[:].*$</code></td>
 		</tr>
 		<tr>
-			<td>Find non-ASCII letters in vscode;<br>Great for finding unicode characters in copied code, because Haskell can't handle Unicode in your comments...</td>
-			<td><code class=lang-regex>([^\x00-\x7F])</code></td>
+			<td>Find non-ASCII letters in vscode;<br />Great for finding unicode characters in copied code, because Haskell can't handle Unicode in your comments...</td>
+			<td><code class="lang-regex">([^\x00-\x7F])</code></td>
 		</tr>
 		<tr>
 			<td>hit him up when you pay for WoW</td>
@@ -42,11 +46,11 @@ lastmod: 2020-08-17T16:55:37+01:00
 		</tr>
 		<tr>
 			<td>Find main content of HTML page</td>
-			<td><code class=lang-regex>&lt;main&gt;\n\t+&lt;section&gt;((\n.*?)*)&lt;/section&gt;(\n\t+)&lt;/main&gt;</code></td>
+			<td><code class="lang-regex">&lt;main&gt;\n\t+&lt;section&gt;((\n.*?)*)&lt;/section&gt;(\n\t+)&lt;/main&gt;</code></td>
 		</tr>
 		<tr>
 			<td>find paragraph tags that aren't closed</td>
-			<td><code class=lang-regex>\t+&lt;p&gt;.*(?&lt;!&lt;/p&gt;)$</code></td>
+			<td><code class="lang-regex">\t+&lt;p&gt;.*(?&lt;!&lt;/p&gt;)$</code></td>
 		</tr>
 		<tr>
 			<td>find all lines that do not contain <q>hede</q></td>
@@ -65,7 +69,9 @@ lastmod: 2020-08-17T16:55:37+01:00
 	<tbody>
 		<tr>
 			<td><a href="https://jakearchibald.github.io/svgomg/">SVGOMG!</a></td>
-			<td>"<a href="https://github.com/svg/svgo"><b>SVG O</b>ptimizer</a>'s <b>M</b>issing <b>G</b>UI", an online SVG optimizer </td>
+			<td>
+				"<a href="https://github.com/svg/svgo"><b>SVG O</b>ptimizer</a>'s <b>M</b>issing <b>G</b>UI", an online SVG optimizer
+			</td>
 		</tr>
 		<tr>
 			<td><a href="https://boxy-svg.com/app/">Boxy SVG editor</a></td>
@@ -102,11 +108,11 @@ lastmod: 2020-08-17T16:55:37+01:00
 			</td>
 		</tr>
 		<tr>
-			<td>Manipulating Unicode strings per code point, not per byte. <code class=lang-javascript>"".split()</code> gives you bytes, not codepoints</td>
-			<td><code class=lang-javascript>Array.from("𝔱𝔢𝔰𝔱𝔦𝔫𝔤 𝔗𝔈𝔖𝔗 #@$%#^$% 𝔱𝔢𝔰𝔱𝔦𝔫𝔤 𝔗𝔈𝔖𝔗");</code></td>
+			<td>Manipulating Unicode strings per code point, not per byte. <code class="lang-javascript">"".split()</code> gives you bytes, not codepoints</td>
+			<td><code class="lang-javascript">Array.from("𝔱𝔢𝔰𝔱𝔦𝔫𝔤 𝔗𝔈𝔖𝔗 #@$%#^$% 𝔱𝔢𝔰𝔱𝔦𝔫𝔤 𝔗𝔈𝔖𝔗");</code></td>
 		</tr>
 		<tr>
-			<td>Remove all <code class=lang-css>.bighead</code> classed elements (no Array.from() needed, which is what I used before, so I could use map() instead of a for loop)</td>
+			<td>Remove all <code class="lang-css">.bighead</code> classed elements (no Array.from() needed, which is what I used before, so I could use map() instead of a for loop)</td>
 			<td>
 				<pre><code class=lang-javascript>document.querySelectorAll(".bighead")
 		.forEach(el => {
@@ -156,7 +162,7 @@ clearInterval(id);</code></pre>
 			</td>
 		</tr>
 		<tr>
-			<td> Remove all comments from a specific subreddit (TheLastOfUs2, in this case)</td>
+			<td>Remove all comments from a specific subreddit (TheLastOfUs2, in this case)</td>
 			<td>
 				<pre><code class=lang-javascript>Array.from(document.getElementsByClassName("subreddit hover"))
 							 .filter(el => el.innerHTML == "TheLastOfUs2")

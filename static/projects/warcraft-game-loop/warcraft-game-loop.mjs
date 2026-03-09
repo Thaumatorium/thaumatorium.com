@@ -74,7 +74,8 @@ if (!chart || !tooltip || !legend || !edgeLegend || !presets || !fitButton || !r
 	throw new Error("Warcraft game chain: required DOM nodes are missing.");
 }
 
-const color = d3.scaleOrdinal()
+const color = d3
+	.scaleOrdinal()
 	.domain(Object.keys(groupMeta))
 	.range(Object.values(groupMeta).map((entry) => entry.color));
 
@@ -91,17 +92,7 @@ const root = svg.append("g");
 const defs = svg.append("defs");
 const NODE_RADIUS = 22;
 
-defs.append("marker")
-	.attr("id", "warcraft-loop-arrow")
-	.attr("viewBox", "0 -5 10 10")
-	.attr("refX", 8)
-	.attr("refY", 0)
-	.attr("markerWidth", 6)
-	.attr("markerHeight", 6)
-	.attr("orient", "auto")
-	.append("path")
-	.attr("d", "M0,-5L10,0L0,5")
-	.attr("fill", "#111");
+defs.append("marker").attr("id", "warcraft-loop-arrow").attr("viewBox", "0 -5 10 10").attr("refX", 8).attr("refY", 0).attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto").append("path").attr("d", "M0,-5L10,0L0,5").attr("fill", "#111");
 
 const linkLayer = root.append("g");
 const nodeLayer = root.append("g");
@@ -122,68 +113,75 @@ let width = 0;
 let height = 0;
 let simulation = null;
 
-const zoom = d3.zoom()
+const zoom = d3
+	.zoom()
 	.scaleExtent([0.55, 2.5])
 	.on("zoom", (event) => root.attr("transform", event.transform));
 svg.call(zoom);
 
 function renderLegend() {
-	legend.replaceChildren(...Object.entries(groupMeta).map(([group, meta]) => {
-		const button = document.createElement("button");
-		button.type = "button";
-		button.className = "warcraft-loop-chip";
-		if (activeGroup === group) button.classList.add("is-active");
-		if (activeGroup && activeGroup !== group) button.classList.add("is-dimmed");
-		button.innerHTML = `<span class="warcraft-loop-dot" style="background:${meta.color}"></span>${meta.label}`;
-		button.addEventListener("click", () => {
-			activePreset = null;
-			activeNodeId = null;
-			activeReachableNodes = null;
-			activeReachableLinks = null;
-			activeGroup = activeGroup === group ? null : group;
-			updateHighlighting();
-			renderLegend();
-			renderPresets();
-		});
-		return button;
-	}));
+	legend.replaceChildren(
+		...Object.entries(groupMeta).map(([group, meta]) => {
+			const button = document.createElement("button");
+			button.type = "button";
+			button.className = "warcraft-loop-chip";
+			if (activeGroup === group) button.classList.add("is-active");
+			if (activeGroup && activeGroup !== group) button.classList.add("is-dimmed");
+			button.innerHTML = `<span class="warcraft-loop-dot" style="background:${meta.color}"></span>${meta.label}`;
+			button.addEventListener("click", () => {
+				activePreset = null;
+				activeNodeId = null;
+				activeReachableNodes = null;
+				activeReachableLinks = null;
+				activeGroup = activeGroup === group ? null : group;
+				updateHighlighting();
+				renderLegend();
+				renderPresets();
+			});
+			return button;
+		})
+	);
 }
 
 function renderPresets() {
-	presets.replaceChildren(...Object.entries(presetMeta).map(([presetId, meta]) => {
-		const button = document.createElement("button");
-		button.type = "button";
-		button.className = "warcraft-loop-chip";
-		if (activePreset === presetId) button.classList.add("is-active");
-		if (activePreset && activePreset !== presetId) button.classList.add("is-dimmed");
-		button.textContent = meta.label;
-		button.addEventListener("click", () => {
-			activeGroup = null;
-			activeNodeId = null;
-			activeReachableNodes = null;
-			activeReachableLinks = null;
-			activePreset = activePreset === presetId ? null : presetId;
-			updateHighlighting();
-			renderLegend();
-			renderPresets();
-		});
-		return button;
-	}));
+	presets.replaceChildren(
+		...Object.entries(presetMeta).map(([presetId, meta]) => {
+			const button = document.createElement("button");
+			button.type = "button";
+			button.className = "warcraft-loop-chip";
+			if (activePreset === presetId) button.classList.add("is-active");
+			if (activePreset && activePreset !== presetId) button.classList.add("is-dimmed");
+			button.textContent = meta.label;
+			button.addEventListener("click", () => {
+				activeGroup = null;
+				activeNodeId = null;
+				activeReachableNodes = null;
+				activeReachableLinks = null;
+				activePreset = activePreset === presetId ? null : presetId;
+				updateHighlighting();
+				renderLegend();
+				renderPresets();
+			});
+			return button;
+		})
+	);
 }
 
 function renderEdgeLegend() {
-	edgeLegend.replaceChildren(...edgeLegendMeta.map((entry) => {
-		const item = document.createElement("div");
-		item.className = "warcraft-loop-edge-key";
-		item.innerHTML = `
+	edgeLegend.replaceChildren(
+		...edgeLegendMeta.map((entry) => {
+			const item = document.createElement("div");
+			item.className = "warcraft-loop-edge-key";
+			item.innerHTML = `
 			<svg class="warcraft-loop-edge-swatch" viewBox="0 0 44 12" aria-hidden="true">
 				<path d="M1,6 Q20,1 35,6" fill="none" stroke="${entry.color}" stroke-width="${entry.width}" stroke-dasharray="${entry.dasharray}"></path>
 				<path d="M34,3 L42,6 L34,9" fill="none" stroke="${entry.color}" stroke-width="${entry.width}" stroke-linecap="round" stroke-linejoin="round"></path>
 			</svg>
 			<span>${entry.label}</span>
 		`;
-		return item;
-	}));
+			return item;
+		})
+	);
 }
 
 function showTooltip(html, x, y) {
@@ -216,10 +214,7 @@ function drag(sim) {
 		if (!event.active) sim.alphaTarget(0);
 	}
 
-	return d3.drag()
-		.on("start", dragstarted)
-		.on("drag", dragged)
-		.on("end", dragended);
+	return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
 }
 
 function computeOutgoingReachability(startId) {
@@ -272,7 +267,7 @@ function updateHighlighting() {
 			if (activeNodeId && isLinkHighlighted(datum)) return "#111";
 			return datum.type === "primary" ? "#222" : datum.type === "intra-phase" ? "#6d8b7f" : "#807261";
 		})
-		.attr("stroke-width", (datum) => datum.type === "primary" ? 2.8 : datum.type === "intra-phase" ? 2.2 : 2)
+		.attr("stroke-width", (datum) => (datum.type === "primary" ? 2.8 : datum.type === "intra-phase" ? 2.2 : 2))
 		.attr("stroke-dasharray", (datum) => {
 			if (datum.type === "cost") return "8 6";
 			if (datum.type === "friction") return "3 6";
@@ -300,7 +295,7 @@ function linkPath(datum) {
 	const target = datum.target;
 	const dx = target.x - source.x;
 	const dy = target.y - source.y;
-	const direction = source.phase === target.phase ? (source.id < target.id ? 1 : -1) : (source.phase < target.phase ? 1 : -1);
+	const direction = source.phase === target.phase ? (source.id < target.id ? 1 : -1) : source.phase < target.phase ? 1 : -1;
 	const strength = datum.type === "primary" ? 0.08 : datum.type === "intra-phase" ? 0.2 : datum.type === "support" ? 0.16 : 0.22;
 	const controlX = (source.x + target.x) / 2;
 	const controlY = (source.y + target.y) / 2 + dx * strength * direction;
@@ -346,34 +341,27 @@ function resize() {
 	setTimeout(fitGraph, 250);
 }
 
-const linkSelection = linkLayer
-	.selectAll("path")
-	.data(linkData)
-	.join("path")
-	.attr("fill", "none")
-	.attr("stroke-linecap", "round")
-	.attr("marker-end", "url(#warcraft-loop-arrow)");
+const linkSelection = linkLayer.selectAll("path").data(linkData).join("path").attr("fill", "none").attr("stroke-linecap", "round").attr("marker-end", "url(#warcraft-loop-arrow)");
 
-const nodeSelection = nodeLayer
-	.selectAll("g")
-	.data(nodeData)
-	.join("g")
-	.attr("class", "warcraft-loop-node");
+const nodeSelection = nodeLayer.selectAll("g").data(nodeData).join("g").attr("class", "warcraft-loop-node");
 
-nodeSelection.append("circle")
+nodeSelection
+	.append("circle")
 	.attr("r", NODE_RADIUS)
 	.attr("fill", (datum) => color(datum.group))
 	.attr("stroke", "#f5ede1")
 	.attr("stroke-width", 2.4);
 
-nodeSelection.append("text")
+nodeSelection
+	.append("text")
 	.attr("fill", "#1b120a")
 	.attr("font-size", 12)
 	.attr("text-anchor", "middle")
 	.attr("dy", ".35em")
 	.text((datum) => datum.id);
 
-nodeSelection.append("text")
+nodeSelection
+	.append("text")
 	.attr("fill", "#4d3a2a")
 	.attr("font-size", 10)
 	.attr("text-anchor", "middle")
@@ -411,27 +399,40 @@ linkSelection
 
 function restartSimulation() {
 	if (simulation) simulation.stop();
-	simulation = d3.forceSimulation(nodeData)
-		.force("link", d3.forceLink(linkData).id((datum) => datum.id).distance((datum) => {
-			if (datum.type === "primary") return 180;
-			if (datum.type === "intra-phase") return 120;
-			return 210;
-		}).strength((datum) => datum.type === "primary" ? 0.8 : datum.type === "intra-phase" ? 0.55 : 0.35))
+	simulation = d3
+		.forceSimulation(nodeData)
+		.force(
+			"link",
+			d3
+				.forceLink(linkData)
+				.id((datum) => datum.id)
+				.distance((datum) => {
+					if (datum.type === "primary") return 180;
+					if (datum.type === "intra-phase") return 120;
+					return 210;
+				})
+				.strength((datum) => (datum.type === "primary" ? 0.8 : datum.type === "intra-phase" ? 0.55 : 0.35))
+		)
 		.force("charge", d3.forceManyBody().strength(-650))
 		.force("center", d3.forceCenter(width / 2, height / 2))
 		.force("phaseX", d3.forceX((datum) => width * phaseMeta[datum.phase].x).strength(0.14))
-		.force("phaseY", d3.forceY((datum) => {
-			const rowTargets = {
-				early: [0.26, 0.5, 0.74],
-				mid: [0.32, 0.56, 0.8],
-				late: [0.4, 0.68],
-				endgame: [0.52],
-			};
-			const siblings = nodeSelection.data().filter((nodeDatum) => nodeDatum.phase === datum.phase);
-			const index = siblings.findIndex((nodeDatum) => nodeDatum.id === datum.id);
-			const targetY = rowTargets[datum.phase][Math.min(index, rowTargets[datum.phase].length - 1)];
-			return height * targetY;
-		}).strength(0.11))
+		.force(
+			"phaseY",
+			d3
+				.forceY((datum) => {
+					const rowTargets = {
+						early: [0.26, 0.5, 0.74],
+						mid: [0.32, 0.56, 0.8],
+						late: [0.4, 0.68],
+						endgame: [0.52],
+					};
+					const siblings = nodeSelection.data().filter((nodeDatum) => nodeDatum.phase === datum.phase);
+					const index = siblings.findIndex((nodeDatum) => nodeDatum.id === datum.id);
+					const targetY = rowTargets[datum.phase][Math.min(index, rowTargets[datum.phase].length - 1)];
+					return height * targetY;
+				})
+				.strength(0.11)
+		)
 		.force("collision", d3.forceCollide().radius(46))
 		.on("tick", () => {
 			linkSelection.attr("d", linkPath);

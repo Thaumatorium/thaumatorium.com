@@ -1,24 +1,23 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>HTMX Image Board</title>
+		<link rel="stylesheet" href="style.css" />
+		<!-- Include HTMX -->
+		<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+	</head>
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>HTMX Image Board</title>
-	<link rel="stylesheet" href="style.css">
-	<!-- Include HTMX -->
-	<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
-</head>
-
-<body>
-	<header>
-		<h1>My HTMX Image Board</h1>
-	</header>
-	<main>
-		<!-- Upload Form -->
-		<section id="upload-section">
-			<h2>Upload New Image</h2>
-			<!--
+	<body>
+		<header>
+			<h1>My HTMX Image Board</h1>
+		</header>
+		<main>
+			<!-- Upload Form -->
+			<section id="upload-section">
+				<h2>Upload New Image</h2>
+				<!--
                 hx-post:        Sends form data via POST to /upload
                 hx-target:      Places the server response into the #image-grid element
                 hx-swap:        Prepends the response to the target's content (newest first)
@@ -26,50 +25,50 @@
                 hx-indicator:   Shows the #upload-indicator while request is in flight
                 hx-on::after-request: Resets the form after a successful upload
             -->
-			<form hx-post="/upload" hx-target="#image-grid" hx-swap="afterbegin" hx-encoding="multipart/form-data" hx-indicator="#upload-indicator" hx-on::after-request="if(event.detail.successful) this.reset()" class="upload-form">
-				<div>
-					<label for="imagefile">Choose Image:</label>
-					<input type="file" id="imagefile" name="imagefile" accept="image/*" required>
-				</div>
-				<div>
-					<label for="caption">Caption (optional):</label>
-					<input type="text" id="caption" name="caption" maxlength="100">
-				</div>
-				<button type="submit">Upload</button>
-				<span id="upload-indicator" class="htmx-indicator"> Uploading...</span>
-			</form>
-			<hr>
-		</section>
-		<!-- Image Display Area -->
-		<section id="gallery">
-			<h2>Gallery</h2>
-			<!--
+				<form hx-post="/upload" hx-target="#image-grid" hx-swap="afterbegin" hx-encoding="multipart/form-data" hx-indicator="#upload-indicator" hx-on::after-request="if(event.detail.successful) this.reset()" class="upload-form">
+					<div>
+						<label for="imagefile">Choose Image:</label>
+						<input type="file" id="imagefile" name="imagefile" accept="image/*" required />
+					</div>
+					<div>
+						<label for="caption">Caption (optional):</label>
+						<input type="text" id="caption" name="caption" maxlength="100" />
+					</div>
+					<button type="submit">Upload</button>
+					<span id="upload-indicator" class="htmx-indicator"> Uploading...</span>
+				</form>
+				<hr />
+			</section>
+			<!-- Image Display Area -->
+			<section id="gallery">
+				<h2>Gallery</h2>
+				<!--
                 The initial content of this grid will be rendered by the server
                 OR potentially loaded via an initial hx-get trigger on this div itself.
                 We'll assume initial server render for this example.
             -->
-			<div id="image-grid" class="image-grid">
-				<!--
+				<div id="image-grid" class="image-grid">
+					<!--
                     SERVER-SIDE NOTE:
                     Your server should initially render the first page of images here.
                     Example of what the server might render initially:
                 -->
-				<!-- <div class="image-card">
+					<!-- <div class="image-card">
                     <img src="/path/to/image1.jpg" alt="Description 1">
                     <p>Description 1</p>
                 </div>
                 <div class="image-card">
                     <img src="/path/to/image2.png" alt="Description 2">
                 </div> -->
-				<!-- End of Server-Rendered Initial Images -->
-				<!-- Placeholder for server-rendered images -->
-				<p>Loading initial images...</p>
-				<!-- Add hx-trigger="load" to fetch initial images if not server-rendered -->
-				<!-- <div hx-get="/images?page=1" hx-trigger="load" hx-target="#image-grid" hx-swap="innerHTML"></div> -->
-			</div>
-			<!-- Load More Button Container -->
-			<div id="load-more-container" class="load-more">
-				<!--
+					<!-- End of Server-Rendered Initial Images -->
+					<!-- Placeholder for server-rendered images -->
+					<p>Loading initial images...</p>
+					<!-- Add hx-trigger="load" to fetch initial images if not server-rendered -->
+					<!-- <div hx-get="/images?page=1" hx-trigger="load" hx-target="#image-grid" hx-swap="innerHTML"></div> -->
+				</div>
+				<!-- Load More Button Container -->
+				<div id="load-more-container" class="load-more">
+					<!--
                     hx-get:        Fetches the next page of images from /images
                     hx-target:     Targets this container itself
                     hx-swap:       Replaces this container with the response from the server
@@ -82,16 +81,13 @@
                        If there are no more images, it should return an empty response or
                        a message indicating "No more images".
                 -->
-				<button hx-get="/images?page=2" hx-target="#load-more-container" hx-swap="outerHTML" hx-indicator="#loading-indicator">
-					Load More
-				</button>
-				<span id="loading-indicator" class="htmx-indicator"> Loading...</span>
-			</div>
-		</section>
-	</main>
-	<footer>
-		<p>© 2023 Your Image Board</p>
-	</footer>
-</body>
-
+					<button hx-get="/images?page=2" hx-target="#load-more-container" hx-swap="outerHTML" hx-indicator="#loading-indicator">Load More</button>
+					<span id="loading-indicator" class="htmx-indicator"> Loading...</span>
+				</div>
+			</section>
+		</main>
+		<footer>
+			<p>© 2023 Your Image Board</p>
+		</footer>
+	</body>
 </html>

@@ -271,16 +271,16 @@ export function processDataForD3(jsonData1, jsonData2, filename1, filename2, isS
 		const inGame2 = !!personData2;
 
 		// Combine all unique roles across both games for this person for filtering check
-			const roleDetails = buildRoleDetails(personData1, personData2, isSameGame);
-			if (roleDetails.allRoles.size === 0 && (inGame1 || inGame2)) {
-				// Ensure default role is considered if person exists but has no listed roles
-				roleDetails.allRoles.add(DEFAULT_ROLE);
-			}
+		const roleDetails = buildRoleDetails(personData1, personData2, isSameGame);
+		if (roleDetails.allRoles.size === 0 && (inGame1 || inGame2)) {
+			// Ensure default role is considered if person exists but has no listed roles
+			roleDetails.allRoles.add(DEFAULT_ROLE);
+		}
 
-			// +++ Apply Filters (using the updated passesFilters) +++
-			if (!passesFilters(personName, roleDetails.allRoles, filters)) {
-				return; // Skip this person
-			}
+		// +++ Apply Filters (using the updated passesFilters) +++
+		if (!passesFilters(personName, roleDetails.allRoles, filters)) {
+			return; // Skip this person
+		}
 
 		// Person passed filters, proceed
 		let category = CATEGORY_OTHER;
@@ -345,16 +345,16 @@ export function processDataForD3(jsonData1, jsonData2, filename1, filename2, isS
 			}
 
 			// Populate the output personRolesMap with the roles used for node creation context
-				const rolesSetForOutput = new Set(rolesForNodeCreation);
-				if (rolesSetForOutput.size === 0) rolesSetForOutput.add(DEFAULT_ROLE);
-				personRolesMap.set(personId, {
-					allRoles: rolesSetForOutput,
-					game1Roles: roleDetails.game1Roles,
-					game2Roles: roleDetails.game2Roles,
-					sharedRoles: roleDetails.sharedRoles,
-					game1OnlyRoles: roleDetails.game1OnlyRoles,
-					game2OnlyRoles: roleDetails.game2OnlyRoles,
-				});
+			const rolesSetForOutput = new Set(rolesForNodeCreation);
+			if (rolesSetForOutput.size === 0) rolesSetForOutput.add(DEFAULT_ROLE);
+			personRolesMap.set(personId, {
+				allRoles: rolesSetForOutput,
+				game1Roles: roleDetails.game1Roles,
+				game2Roles: roleDetails.game2Roles,
+				sharedRoles: roleDetails.sharedRoles,
+				game1OnlyRoles: roleDetails.game1OnlyRoles,
+				game2OnlyRoles: roleDetails.game2OnlyRoles,
+			});
 
 			// Add links
 			if (inGame1 && gameId1) {
@@ -411,7 +411,7 @@ export function processDataForD3(jsonData1, jsonData2, filename1, filename2, isS
 		? {
 				personCount: filteredPeopleGame1.size,
 				uniqueRoleCount: filteredUniqueRolesGame1.size,
-		  }
+			}
 		: null;
 
 	const filteredStats2 = game2DataNode
@@ -419,7 +419,7 @@ export function processDataForD3(jsonData1, jsonData2, filename1, filename2, isS
 				// Use game 1 sets if same game, otherwise game 2 sets
 				personCount: isSameGame ? filteredPeopleGame1.size : filteredPeopleGame2.size,
 				uniqueRoleCount: isSameGame ? filteredUniqueRolesGame1.size : filteredUniqueRolesGame2.size,
-		  }
+			}
 		: null;
 
 	// Calculate shared count (people who worked on both games)

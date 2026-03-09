@@ -5,8 +5,22 @@ const hexNeighbours = (grid, index) => {
 	const y = Math.floor(index / grid.width);
 	const evenRow = y % 2 === 0;
 	const deltas = evenRow
-		? [[1, 0], [-1, 0], [0, -1], [-1, -1], [0, 1], [-1, 1]]
-		: [[1, 0], [-1, 0], [1, -1], [0, -1], [1, 1], [0, 1]];
+		? [
+				[1, 0],
+				[-1, 0],
+				[0, -1],
+				[-1, -1],
+				[0, 1],
+				[-1, 1],
+			]
+		: [
+				[1, 0],
+				[-1, 0],
+				[1, -1],
+				[0, -1],
+				[1, 1],
+				[0, 1],
+			];
 
 	return deltas
 		.map(([dx, dy]) => [x + dx, y + dy])

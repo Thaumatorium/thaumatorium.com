@@ -1,11 +1,11 @@
 {
 	"printWidth": 320,
-	"useTabs": false,
-	"tabWidth": 4,
+	"useTabs": true,
+	"tabWidth": 2,
 	"semi": true,
 	"singleQuote": false,
 	"trailingComma": "es5",
 	"endOfLine": "lf",
 	"bracketSpacing": true,
-	"ignorePatterns": ["**/highlight.pack.js", "**/d3.js", "**/wow_credits.json"]
+	"ignorePatterns": ["**/highlight.pack.js", "**/d3.js", "**/wow_credits.json", "**/crypto-subreddits/**", "**/docs/html-spec/**", "**/layouts/_default/**", "**/layouts/articles/**", "**/layouts/projects/**"]
 }

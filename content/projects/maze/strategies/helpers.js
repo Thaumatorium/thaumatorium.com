@@ -17,12 +17,7 @@ export const defaultDeadEndOrder = (searchOrder, path) => {
 	return searchOrder.filter((index) => !pathSet.has(index)).reverse();
 };
 
-export const buildSolveResult = ({
-	searchOrder,
-	path,
-	deadEndOrder = defaultDeadEndOrder(searchOrder, path),
-	steps = searchOrder.length,
-}) => ({
+export const buildSolveResult = ({ searchOrder, path, deadEndOrder = defaultDeadEndOrder(searchOrder, path), steps = searchOrder.length }) => ({
 	searchOrder,
 	path,
 	deadEndOrder,

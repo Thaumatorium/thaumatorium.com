@@ -25,7 +25,7 @@ function hashString(value) {
 
 function deterministicOffset(id, axis, magnitude) {
 	const hash = hashString(`${id}:${axis}`);
-	return ((hash / 0xffffffff) - 0.5) * magnitude;
+	return (hash / 0xffffffff - 0.5) * magnitude;
 }
 
 function getZoneX(category, width, isSingleGameView) {
@@ -100,14 +100,7 @@ function nodeRadius(d) {
  * @param {Function} [onDragRestartNeeded] - Optional callback function executed when a drag restarts a user-stopped simulation.
  * @returns {d3.Simulation | null} The initialized D3 simulation instance, or null on failure.
  */
-export function visualizeGraphD3(
-	graphData,
-	domElements,
-	personRolesMap,
-	normalizedRolePositions,
-	onDragRestartNeeded,
-	renderState = {}
-) {
+export function visualizeGraphD3(graphData, domElements, personRolesMap, normalizedRolePositions, onDragRestartNeeded, renderState = {}) {
 	const { svgContainer, tooltipElement, errorMessageElement } = domElements;
 	const baseErrorMessage = "No common contributors or relevant data found for the selected combination.";
 	if (!graphData || !graphData.nodes || graphData.nodes.length === 0) {
@@ -164,7 +157,7 @@ export function visualizeGraphD3(
 	let game2InitialPos = { x: width / 2, y: height / 2 };
 	graphData.nodes.forEach((d) => {
 		if (d.type === NODE_TYPE_GAME) {
-			d.x = isSingleGameView ? width * 0.5 : (d.gameIndex === 1 ? width * 0.18 : width * 0.82);
+			d.x = isSingleGameView ? width * 0.5 : d.gameIndex === 1 ? width * 0.18 : width * 0.82;
 			d.y = height * 0.1;
 			if (d.gameIndex === 1) game1InitialPos = { x: d.x, y: d.y };
 			if (d.gameIndex === 2 && !isSingleGameView) game2InitialPos = { x: d.x, y: d.y };
@@ -180,13 +173,13 @@ export function visualizeGraphD3(
 			const targetX = getZoneX(d.category, width, isSingleGameView);
 			const targetY = getRoleLaneY(role, normalizedRolePositions, defaultRolePositionNorm, height);
 
-				if (preservedPosition && previousSize?.width > 0 && previousSize?.height > 0) {
-					d.x = (preservedPosition.x / previousSize.width) * width;
-					d.y = (preservedPosition.y / previousSize.height) * height;
-				} else {
-					d.x = targetX + deterministicOffset(d.id, "x", width * 0.05);
-					d.y = targetY + deterministicOffset(d.id, "y", 18);
-				}
+			if (preservedPosition && previousSize?.width > 0 && previousSize?.height > 0) {
+				d.x = (preservedPosition.x / previousSize.width) * width;
+				d.y = (preservedPosition.y / previousSize.height) * height;
+			} else {
+				d.x = targetX + deterministicOffset(d.id, "x", width * 0.05);
+				d.y = targetY + deterministicOffset(d.id, "y", 18);
+			}
 		} else if (d.type !== NODE_TYPE_GAME) {
 			if (preservedPosition && previousSize?.width > 0 && previousSize?.height > 0) {
 				d.x = (preservedPosition.x / previousSize.width) * width;
@@ -279,7 +272,8 @@ export function visualizeGraphD3(
 		.attr("text-anchor", "middle");
 
 	function ticked() {
-		link.attr("x1", (d) => d.source.x)
+		link
+			.attr("x1", (d) => d.source.x)
 			.attr("y1", (d) => d.source.y)
 			.attr("x2", (d) => d.target.x)
 			.attr("y2", (d) => d.target.y);

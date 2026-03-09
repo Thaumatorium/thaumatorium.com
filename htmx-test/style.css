@@ -1,156 +1,154 @@
 body {
-    font-family: sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
+	font-family: sans-serif;
+	line-height: 1.6;
+	margin: 0;
+	padding: 0;
+	background-color: #f4f4f4;
 }
 
 header {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem 0;
-    text-align: center;
+	background-color: #333;
+	color: #fff;
+	padding: 1rem 0;
+	text-align: center;
 }
 
 main {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	max-width: 1200px;
+	margin: 2rem auto;
+	padding: 1rem;
+	background-color: #fff;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1,
 h2 {
-    color: #333;
+	color: #333;
 }
 
 hr {
-    margin: 2rem 0;
-    border: 0;
-    border-top: 1px solid #eee;
+	margin: 2rem 0;
+	border: 0;
+	border-top: 1px solid #eee;
 }
 
 /* Upload Form */
 .upload-form div {
-    margin-bottom: 1rem;
+	margin-bottom: 1rem;
 }
 
 .upload-form label {
-    display: block;
-    margin-bottom: 0.3rem;
-    font-weight: bold;
+	display: block;
+	margin-bottom: 0.3rem;
+	font-weight: bold;
 }
 
 .upload-form input[type="text"],
 .upload-form input[type="file"] {
-    width: 95%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+	width: 95%;
+	padding: 0.5rem;
+	border: 1px solid #ccc;
+	border-radius: 4px;
 }
 
 .upload-form button {
-    padding: 0.7rem 1.5rem;
-    background-color: #5cb85c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
+	padding: 0.7rem 1.5rem;
+	background-color: #5cb85c;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 1rem;
 }
 
 .upload-form button:hover {
-    background-color: #4cae4c;
+	background-color: #4cae4c;
 }
-
 
 /* Image Grid */
 .image-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    /* Responsive grid */
-    gap: 1rem;
-    margin-bottom: 2rem;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	/* Responsive grid */
+	gap: 1rem;
+	margin-bottom: 2rem;
 }
 
 .image-card {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    overflow: hidden;
-    /* Ensures image stays within bounds */
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    padding: 0.5rem;
-    text-align: center;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	overflow: hidden;
+	/* Ensures image stays within bounds */
+	background-color: #fff;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+	padding: 0.5rem;
+	text-align: center;
 }
 
 .image-card img {
-    max-width: 100%;
-    height: auto;
-    /* Maintain aspect ratio */
-    display: block;
-    /* Remove extra space below image */
-    margin-bottom: 0.5rem;
+	max-width: 100%;
+	height: auto;
+	/* Maintain aspect ratio */
+	display: block;
+	/* Remove extra space below image */
+	margin-bottom: 0.5rem;
 }
 
 .image-card p {
-    font-size: 0.9em;
-    color: #555;
-    margin: 0;
-    padding: 0 0.5rem 0.5rem;
-    /* Padding for caption */
-    word-wrap: break-word;
-    /* Prevent long captions from overflowing */
+	font-size: 0.9em;
+	color: #555;
+	margin: 0;
+	padding: 0 0.5rem 0.5rem;
+	/* Padding for caption */
+	word-wrap: break-word;
+	/* Prevent long captions from overflowing */
 }
 
 /* Load More Button */
 .load-more {
-    text-align: center;
-    margin-top: 2rem;
+	text-align: center;
+	margin-top: 2rem;
 }
 
 .load-more button {
-    padding: 0.8rem 2rem;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
+	padding: 0.8rem 2rem;
+	background-color: #3498db;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 1rem;
 }
 
 .load-more button:hover {
-    background-color: #2980b9;
+	background-color: #2980b9;
 }
 
 /* HTMX Indicator Styling */
 .htmx-indicator {
-    display: none;
-    /* Hidden by default */
-    margin-left: 10px;
-    color: #555;
-    font-style: italic;
+	display: none;
+	/* Hidden by default */
+	margin-left: 10px;
+	color: #555;
+	font-style: italic;
 }
 
 /* HTMX adds 'htmx-request' class to the element triggering the request */
 /* We show the indicator when the corresponding element has this class */
 .htmx-request .htmx-indicator {
-    display: inline;
-    /* Show when request is active */
+	display: inline;
+	/* Show when request is active */
 }
 
 .htmx-request.htmx-indicator {
-    display: inline;
-    /* Show indicator itself if it's the triggering element */
+	display: inline;
+	/* Show indicator itself if it's the triggering element */
 }
 
-
 footer {
-    text-align: center;
-    margin-top: 2rem;
-    padding: 1rem;
-    color: #777;
-    font-size: 0.9em;
+	text-align: center;
+	margin-top: 2rem;
+	padding: 1rem;
+	color: #777;
+	font-size: 0.9em;
 }

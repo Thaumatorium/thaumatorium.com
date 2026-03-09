@@ -82,9 +82,7 @@ export const generator = {
 
 		while (stack.length > 0) {
 			const current = stack[stack.length - 1];
-			const nextOptions = shuffle(
-				orthogonalNeighbours(grid, current).filter((next) => !visited.has(next))
-			);
+			const nextOptions = shuffle(orthogonalNeighbours(grid, current).filter((next) => !visited.has(next)));
 
 			if (nextOptions.length === 0) {
 				stack.pop();

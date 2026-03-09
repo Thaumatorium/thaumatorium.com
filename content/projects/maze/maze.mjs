@@ -57,11 +57,7 @@ const solveButton = document.getElementById("solve-maze");
 const benchmarkButton = document.getElementById("benchmark-maze");
 const benchmarkResults = document.getElementById("benchmark-results");
 
-const HEX_UNSUPPORTED_STRATEGY_IDS = new Set([
-	"wall-follower-left",
-	"wall-follower-right",
-	"pledge",
-]);
+const HEX_UNSUPPORTED_STRATEGY_IDS = new Set(["wall-follower-left", "wall-follower-right", "pledge"]);
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const randomInt = (max) => Math.floor(Math.random() * max);
@@ -69,9 +65,7 @@ const indexOf = (grid, x, y) => y * grid.width + x;
 const coordsOf = (grid, index) => ({ x: index % grid.width, y: Math.floor(index / grid.width) });
 const toKey = ({ x, y }) => `${x},${y}`;
 const getSpeedFactor = () => Math.max(0.02, (MAZE.animationSpeed / 100) ** 2 * 12);
-const getEffectiveGenerationTimeLimitMs = () => (
-	Math.max(50, Math.round(MAZE.generationTimeLimitMs / getSpeedFactor()))
-);
+const getEffectiveGenerationTimeLimitMs = () => Math.max(50, Math.round(MAZE.generationTimeLimitMs / getSpeedFactor()));
 const shuffle = (items) => {
 	const result = [...items];
 	for (let i = result.length - 1; i > 0; i--) {
@@ -92,9 +86,7 @@ const setBusyState = (isBusy) => {
 	MAZE.benchmarkRunning = isBusy;
 };
 
-const getGenerationSummary = () => (
-	`${MAZE.generationCoverage}% coverage or ${getEffectiveGenerationTimeLimitMs()} ms at current speed`
-);
+const getGenerationSummary = () => `${MAZE.generationCoverage}% coverage or ${getEffectiveGenerationTimeLimitMs()} ms at current speed`;
 
 const cloneGrid = (grid) => ({
 	...grid,
@@ -122,11 +114,7 @@ const formatBenchmarkDecimal = (value) => {
 	return value.toFixed(value >= 10 ? 1 : 2);
 };
 
-const mean = (values) => (
-	values.length > 0
-		? values.reduce((sum, value) => sum + value, 0) / values.length
-		: Infinity
-);
+const mean = (values) => (values.length > 0 ? values.reduce((sum, value) => sum + value, 0) / values.length : Infinity);
 
 const median = (values) => {
 	if (values.length === 0) {
@@ -155,13 +143,11 @@ const getBenchmarkCellColour = (value, min, max) => {
 	}
 
 	const ratio = (value - min) / (max - min);
-	const hue = 120 - (ratio * 120);
+	const hue = 120 - ratio * 120;
 	return `hsl(${hue} 72% 84%)`;
 };
 
-const strategySupportsGrid = (strategy, grid) => (
-	grid.topology !== "hex" || !HEX_UNSUPPORTED_STRATEGY_IDS.has(strategy.id)
-);
+const strategySupportsGrid = (strategy, grid) => grid.topology !== "hex" || !HEX_UNSUPPORTED_STRATEGY_IDS.has(strategy.id);
 
 const getBenchmarkSummaryByStrategy = (results) => {
 	return strategies.map((strategy) => {
@@ -187,9 +173,7 @@ const getBenchmarkSummaryByStrategy = (results) => {
 
 			values.push(entry.steps);
 
-			const finiteRowValues = row.results
-				.map((result) => result.steps)
-				.filter((steps) => Number.isFinite(steps));
+			const finiteRowValues = row.results.map((result) => result.steps).filter((steps) => Number.isFinite(steps));
 			if (finiteRowValues.length > 0) {
 				const best = Math.min(...finiteRowValues);
 				if (best > 0) {
@@ -198,17 +182,11 @@ const getBenchmarkSummaryByStrategy = (results) => {
 			}
 		}
 
-		const arithmeticMean = values.length > 0
-			? mean(values)
-			: Infinity;
-		const geometricRelativeMean = relativeValues.length > 0
-			? Math.exp(relativeValues.reduce((sum, value) => sum + Math.log(value), 0) / relativeValues.length)
-			: Infinity;
+		const arithmeticMean = values.length > 0 ? mean(values) : Infinity;
+		const geometricRelativeMean = relativeValues.length > 0 ? Math.exp(relativeValues.reduce((sum, value) => sum + Math.log(value), 0) / relativeValues.length) : Infinity;
 		const medianRelative = median(relativeValues);
 		const failureRate = supportedRuns > 0 ? failedRuns / supportedRuns : Infinity;
-		const unsupportedRate = (supportedRuns + unsupportedRuns) > 0
-			? unsupportedRuns / (supportedRuns + unsupportedRuns)
-			: Infinity;
+		const unsupportedRate = supportedRuns + unsupportedRuns > 0 ? unsupportedRuns / (supportedRuns + unsupportedRuns) : Infinity;
 
 		return {
 			strategy,
@@ -235,16 +213,9 @@ const buildBenchmarkTable = (results) => {
 
 	const table = document.createElement("table");
 	table.className = "maze-benchmark-table";
-	const strategySummary = getBenchmarkSummaryByStrategy(results)
-		.sort((a, b) => (
-			a.failureRate - b.failureRate ||
-			a.failedRuns - b.failedRuns ||
-			a.unsupportedRate - b.unsupportedRate ||
-			a.unsupportedRuns - b.unsupportedRuns ||
-			a.geometricRelativeMean - b.geometricRelativeMean ||
-			a.medianRelative - b.medianRelative ||
-			a.arithmeticMean - b.arithmeticMean
-		));
+	const strategySummary = getBenchmarkSummaryByStrategy(results).sort(
+		(a, b) => a.failureRate - b.failureRate || a.failedRuns - b.failedRuns || a.unsupportedRate - b.unsupportedRate || a.unsupportedRuns - b.unsupportedRuns || a.geometricRelativeMean - b.geometricRelativeMean || a.medianRelative - b.medianRelative || a.arithmeticMean - b.arithmeticMean
+	);
 
 	const thead = document.createElement("thead");
 	const headerRow = document.createElement("tr");
@@ -269,9 +240,7 @@ const buildBenchmarkTable = (results) => {
 		label.textContent = row.generatorName;
 		tr.append(label);
 
-		const numericScores = row.results
-			.map((entry) => entry.steps)
-			.filter((value) => Number.isFinite(value));
+		const numericScores = row.results.map((entry) => entry.steps).filter((value) => Number.isFinite(value));
 		const min = numericScores.length > 0 ? Math.min(...numericScores) : 0;
 		const max = numericScores.length > 0 ? Math.max(...numericScores) : 0;
 
@@ -322,9 +291,7 @@ const buildBenchmarkTable = (results) => {
 	const reliabilityScale = summaryColourValues(strategySummary.map((summary) => summary.failureRate));
 	for (const summary of strategySummary) {
 		const td = document.createElement("td");
-		td.textContent = Number.isFinite(summary.failureRate)
-			? `${(summary.failureRate * 100).toFixed(1)}%`
-			: "n/a";
+		td.textContent = Number.isFinite(summary.failureRate) ? `${(summary.failureRate * 100).toFixed(1)}%` : "n/a";
 		td.title = `${summary.failedRuns} failed runs over ${summary.supportedRuns} supported runs. Lower is better.`;
 		td.style.backgroundColor = getBenchmarkCellColour(summary.failureRate, reliabilityScale.min, reliabilityScale.max);
 		reliabilityRow.append(td);
@@ -338,9 +305,7 @@ const buildBenchmarkTable = (results) => {
 	const coverageScale = summaryColourValues(strategySummary.map((summary) => summary.unsupportedRate));
 	for (const summary of strategySummary) {
 		const td = document.createElement("td");
-		td.textContent = Number.isFinite(summary.unsupportedRate)
-			? `${(summary.unsupportedRate * 100).toFixed(1)}%`
-			: "n/a";
+		td.textContent = Number.isFinite(summary.unsupportedRate) ? `${(summary.unsupportedRate * 100).toFixed(1)}%` : "n/a";
 		td.title = `${summary.unsupportedRuns} unsupported runs. Lower is better.`;
 		td.style.backgroundColor = getBenchmarkCellColour(summary.unsupportedRate, coverageScale.min, coverageScale.max);
 		coverageRow.append(td);
@@ -385,16 +350,12 @@ const renderBenchmarkResults = () => {
 };
 
 const populateGeneratorOptions = () => {
-	generationAlgorithmInput.innerHTML = generators
-		.map((entry) => `<option value="${entry.id}">${entry.name}</option>`)
-		.join("");
+	generationAlgorithmInput.innerHTML = generators.map((entry) => `<option value="${entry.id}">${entry.name}</option>`).join("");
 	generationAlgorithmInput.value = MAZE.generationAlgorithm;
 };
 
 const populateStrategyOptions = () => {
-	searchStrategyInput.innerHTML = strategies
-		.map((entry) => `<option value="${entry.id}">${entry.name}</option>`)
-		.join("");
+	searchStrategyInput.innerHTML = strategies.map((entry) => `<option value="${entry.id}">${entry.name}</option>`).join("");
 	searchStrategyInput.value = MAZE.searchStrategy;
 };
 
@@ -537,8 +498,22 @@ const getHexNeighbours = (index) => {
 	const { x, y } = coordsOf(MAZE.grid, index);
 	const evenRow = y % 2 === 0;
 	const deltas = evenRow
-		? [[1, 0], [-1, 0], [0, -1], [-1, -1], [0, 1], [-1, 1]]
-		: [[1, 0], [-1, 0], [1, -1], [0, -1], [1, 1], [0, 1]];
+		? [
+				[1, 0],
+				[-1, 0],
+				[0, -1],
+				[-1, -1],
+				[0, 1],
+				[-1, 1],
+			]
+		: [
+				[1, 0],
+				[-1, 0],
+				[1, -1],
+				[0, -1],
+				[1, 1],
+				[0, 1],
+			];
 	return deltas.map(([dx, dy]) => {
 		const nx = x + dx;
 		const ny = y + dy;
@@ -583,19 +558,10 @@ const fillCell = (index, fillStyle, inset = 0) => {
 	const cellSize = MAZE.cellSize;
 
 	MAZE.ctx.fillStyle = fillStyle;
-	MAZE.ctx.fillRect(
-		x * cellSize + inset,
-		y * cellSize + inset,
-		Math.max(1, cellSize - inset * 2 + 1),
-		Math.max(1, cellSize - inset * 2 + 1),
-	);
+	MAZE.ctx.fillRect(x * cellSize + inset, y * cellSize + inset, Math.max(1, cellSize - inset * 2 + 1), Math.max(1, cellSize - inset * 2 + 1));
 };
 
-const isUntouched = (index) => (
-	MAZE.showUntouchedCells &&
-	MAZE.grid.visitedByOrigin &&
-	!MAZE.grid.visitedByOrigin.has(index)
-);
+const isUntouched = (index) => MAZE.showUntouchedCells && MAZE.grid.visitedByOrigin && !MAZE.grid.visitedByOrigin.has(index);
 
 const getWallColour = (current, neighbour) => {
 	const currentUntouched = isUntouched(current);
@@ -750,9 +716,10 @@ const cancelAnimation = () => {
 	}
 };
 
-const nextFrame = () => new Promise((resolve) => {
-	requestAnimationFrame(() => resolve());
-});
+const nextFrame = () =>
+	new Promise((resolve) => {
+		requestAnimationFrame(() => resolve());
+	});
 
 const runGeneration = () => {
 	cancelAnimation();
@@ -783,10 +750,7 @@ const runGeneration = () => {
 		const frameDelta = now - lastFrameTime;
 		lastFrameTime = now;
 		const effectiveTimeLimitMs = getEffectiveGenerationTimeLimitMs();
-		const generationDone = (
-			MAZE.grid.visitedByOrigin.size >= targetVisitedCells ||
-			elapsedMs >= effectiveTimeLimitMs
-		);
+		const generationDone = MAZE.grid.visitedByOrigin.size >= targetVisitedCells || elapsedMs >= effectiveTimeLimitMs;
 		const remainingCells = targetVisitedCells - MAZE.grid.visitedByOrigin.size;
 		generationBudget += ((Math.max(remainingCells, 1) * speedFactor) / 12) * (frameDelta / 16.67);
 
@@ -794,20 +758,14 @@ const runGeneration = () => {
 			generationBudget -= 1;
 			const crawlerIndex = randomInt(MAZE.grid.crawlers.length);
 			shiftCrawler(MAZE.grid, crawlerIndex);
-			if (
-				MAZE.grid.visitedByOrigin.size >= targetVisitedCells ||
-				performance.now() - generationStartTime >= effectiveTimeLimitMs
-			) {
+			if (MAZE.grid.visitedByOrigin.size >= targetVisitedCells || performance.now() - generationStartTime >= effectiveTimeLimitMs) {
 				break;
 			}
 		}
 
 		render();
 
-		const doneNow = (
-			MAZE.grid.visitedByOrigin.size >= targetVisitedCells ||
-			performance.now() - generationStartTime >= effectiveTimeLimitMs
-		);
+		const doneNow = MAZE.grid.visitedByOrigin.size >= targetVisitedCells || performance.now() - generationStartTime >= effectiveTimeLimitMs;
 
 		if (!doneNow) {
 			MAZE.animationId = requestAnimationFrame(step);
@@ -837,12 +795,7 @@ const animateSolve = () => {
 
 	cancelAnimation();
 	const solver = strategyMap.get(MAZE.searchStrategy);
-	const {
-		searchOrder,
-		path,
-		steps = 0,
-		deadEndOrder = searchOrder.filter((index) => !path.includes(index)).reverse(),
-	} = solver.solve(MAZE.grid);
+	const { searchOrder, path, steps = 0, deadEndOrder = searchOrder.filter((index) => !path.includes(index)).reverse() } = solver.solve(MAZE.grid);
 	MAZE.searchOrder = searchOrder;
 	MAZE.deadEndOrder = deadEndOrder;
 	MAZE.solutionPath = path;
@@ -874,11 +827,7 @@ const animateSolve = () => {
 
 		render();
 
-		if (
-			MAZE.visitedProgress < MAZE.searchOrder.length ||
-			MAZE.deadEndProgress < MAZE.deadEndOrder.length ||
-			MAZE.pathProgress < MAZE.solutionPath.length
-		) {
+		if (MAZE.visitedProgress < MAZE.searchOrder.length || MAZE.deadEndProgress < MAZE.deadEndOrder.length || MAZE.pathProgress < MAZE.solutionPath.length) {
 			MAZE.animationId = requestAnimationFrame(step);
 			return;
 		}
@@ -902,13 +851,18 @@ const runBenchmark = async () => {
 		const totalRuns = generators.length * MAZE.benchmarkRuns * strategies.length;
 
 		for (const generator of generators) {
-			const strategyTotals = new Map(strategies.map((strategy) => [strategy.id, {
-				steps: [],
-				pathLengths: [],
-				elapsedMs: [],
-				failures: 0,
-				unsupported: 0,
-			}]));
+			const strategyTotals = new Map(
+				strategies.map((strategy) => [
+					strategy.id,
+					{
+						steps: [],
+						pathLengths: [],
+						elapsedMs: [],
+						failures: 0,
+						unsupported: 0,
+					},
+				])
+			);
 			const row = {
 				generatorId: generator.id,
 				generatorName: generator.name,
@@ -1005,9 +959,7 @@ const runBenchmark = async () => {
 					supportedRuns,
 					failedRuns: totals.failures,
 					unsupportedRuns: totals.unsupported,
-					note: noteParts.length > 0
-						? `${strategy.name}: ${noteParts.join(", ")}.`
-						: `${strategy.name} had no successful runs.`,
+					note: noteParts.length > 0 ? `${strategy.name}: ${noteParts.join(", ")}.` : `${strategy.name} had no successful runs.`,
 				});
 			}
 

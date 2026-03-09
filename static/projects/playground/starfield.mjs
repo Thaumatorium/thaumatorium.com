@@ -40,7 +40,7 @@ resizeCanvas();
 // Create stars
 for (let i = 0; i < star_count; i++) {
 	const size = Math.random() * star_max_size;
-	const brightness = rand((1 / 3), 1);
+	const brightness = rand(1 / 3, 1);
 	const temp = Math.floor(rand(0, star_color_range.length));
 	const rand_color = star_color_range[temp];
 	stars[i] = {
@@ -69,7 +69,7 @@ const step = () => {
 		const star = stars[i];
 
 		// move the stars to the left, depending on their size and general speed control
-		star.x -= (star.size * speed);
+		star.x -= star.size * speed;
 
 		// move the star back to the right once it reaches the screen
 		if (star.x < 0) {

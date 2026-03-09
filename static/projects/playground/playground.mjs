@@ -149,9 +149,7 @@ const transliterateLatinToRunes = (value) => {
 	return result;
 };
 
-const transliterateRunesToLatin = (value) => (
-	[...value].map((char) => runeToLatin.get(char) ?? char).join("")
-);
+const transliterateRunesToLatin = (value) => [...value].map((char) => runeToLatin.get(char) ?? char).join("");
 
 const setupFetchTool = () => {
 	const input = byId("fetch-input");
@@ -257,22 +255,24 @@ setupTextTool({
 	inputId: "rot13-in",
 	outputId: "rot13-out",
 	statusId: "rot13-status",
-	transform: (value) => value.replace(/[a-z]/gi, (char) => {
-		const base = char <= "Z" ? 65 : 97;
-		return String.fromCharCode((((char.charCodeAt(0) - base) + 13) % 26) + base);
-	}),
+	transform: (value) =>
+		value.replace(/[a-z]/gi, (char) => {
+			const base = char <= "Z" ? 65 : 97;
+			return String.fromCharCode(((char.charCodeAt(0) - base + 13) % 26) + base);
+		}),
 });
 
 setupTextTool({
 	inputId: "slugify-in",
 	outputId: "slugify-out",
 	statusId: "slugify-status",
-	transform: (value) => value
-		.normalize("NFKD")
-		.replace(/[\u0300-\u036f]/g, "")
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, "-")
-		.replace(/^-+|-+$/g, ""),
+	transform: (value) =>
+		value
+			.normalize("NFKD")
+			.replace(/[\u0300-\u036f]/g, "")
+			.toLowerCase()
+			.replace(/[^a-z0-9]+/g, "-")
+			.replace(/^-+|-+$/g, ""),
 });
 
 setupTextTool({

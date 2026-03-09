@@ -9,7 +9,9 @@ body > header {
 
 body > header div {
 	color: #fff;
-	font: xxx-large Times, serif;
+	font:
+		xxx-large Times,
+		serif;
 	text-transform: uppercase;
 }
 

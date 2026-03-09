@@ -4,67 +4,68 @@ description: "Canvas-based maze solver inspired by JonPizza's recursive solver."
 publishDate: 2020-06-18T20:07:58+02:00
 lastmod: 2026-03-07T23:05:00+01:00
 ---
+
 <section class="maze-page">
-	<link rel="stylesheet" href="maze.css">
+	<link rel="stylesheet" href="maze.css" />
 	<h2>Maze solver 2.0</h2>
 	<p class="maze-intro">Generate a maze with a range of algorithms, then solve it with full-map or local-navigation strategies.</p>
 	<p>1.0 used static mazes and barely worked. 2.0 generates its own mazes, and has a whole cabinet of generators and solvers.</p>
 	<div class="maze-controls">
 		<label>
 			Width
-			<input id=maze-width type=number min=4 max=80 value=40>
+			<input id="maze-width" type="number" min="4" max="80" value="40" />
 		</label>
 		<label>
 			Height
-			<input id=maze-height type=number min=4 max=80 value=40>
+			<input id="maze-height" type="number" min="4" max="80" value="40" />
 		</label>
 		<label>
 			Cell size
-			<input id=cell-size type=number min=8 max=40 value=30>
+			<input id="cell-size" type="number" min="8" max="40" value="30" />
 		</label>
 		<label>
 			Generator
-			<select id=generation-algorithm></select>
+			<select id="generation-algorithm"></select>
 		</label>
 		<label>
 			Initial coverage
-			<input id=generation-coverage type=number min=1 max=100 value=95>
+			<input id="generation-coverage" type="number" min="1" max="100" value="95" />
 		</label>
 		<label>
 			Time limit (ms)
-			<input id=generation-time-limit type=number min=50 max=10000 step=50 value=5000>
+			<input id="generation-time-limit" type="number" min="50" max="10000" step="50" value="5000" />
 		</label>
 		<label>
 			Benchmark runs
-			<input id=benchmark-runs type=number min=1 max=50 value=5>
+			<input id="benchmark-runs" type="number" min="1" max="50" value="5" />
 		</label>
 		<label>
 			Strategy
-			<select id=search-strategy type=select-one>
-			<option value="bfs" selected>Breadth-first search</option>
-			<option value="dfs">Depth-first search</option>
+			<select id="search-strategy" type="select-one">
+				<option value="bfs" selected>Breadth-first search</option>
+				<option value="dfs">Depth-first search</option>
 			</select>
 		</label>
-		<label for=animation-speed>
+		<label for="animation-speed">
 			Animation speed
-			<input id=animation-speed type=range min=1 max=100 value=35>
-			<output id=animation-speed-value for=animation-speed>35</output>
+			<input id="animation-speed" type="range" min="1" max="100" value="35" />
+			<output id="animation-speed-value" for="animation-speed">35</output>
 		</label>
 
-		<button id=generate-maze>Generate maze</button>
-		<button id=solve-maze>Solve maze</button>
-		<button id=benchmark-maze>Benchmark all</button>
+		<button id="generate-maze">Generate maze</button>
+		<button id="solve-maze">Solve maze</button>
+		<button id="benchmark-maze">Benchmark all</button>
 	</div>
-	<p id=maze-status class="maze-status">Ready to generate a 40 x 40 maze until 95% coverage or 5000 ms.</p>
+	<p id="maze-status" class="maze-status">Ready to generate a 40 x 40 maze until 95% coverage or 5000 ms.</p>
 	<div class="maze-stage">
-		<canvas id=maze></canvas>
+		<canvas id="maze"></canvas>
 	</div>
 	<section class="maze-benchmark">
 		<h3>Generator vs strategy benchmark</h3>
 		<p class="maze-benchmark-intro">Each generator is run multiple times with fresh random mazes. Within each run, all strategies share the same maze; table values are averaged across runs. Lower step counts are better and shown greener.</p>
-		<div id=benchmark-results class="maze-benchmark-results">
+		<div id="benchmark-results" class="maze-benchmark-results">
 			<p class="maze-benchmark-empty">No benchmark yet.</p>
 		</div>
 	</section>
-	<script type=module src="maze.mjs"></script>
+	<script type="module" src="maze.mjs"></script>
 </section>

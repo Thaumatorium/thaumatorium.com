@@ -20,28 +20,6 @@ import { generator as voronoiBased } from "./voronoi-based.js";
 import { generator as weave } from "./weave.js";
 import { generator as wilson } from "./wilson.js";
 
-export const generators = [
-	originShift,
-	aldousBroder,
-	bfsBased,
-	binaryTree,
-	braid,
-	cellularAutomata,
-	dfs,
-	eller,
-	fractalRecursiveSubdivision,
-	growingTree,
-	hexGrid,
-	huntAndKill,
-	randomizedKruskal,
-	randomizedPrim,
-	recursiveBacktracker,
-	recursiveDivision,
-	sidewinder,
-	unionFindSpanningTree,
-	voronoiBased,
-	weave,
-	wilson,
-];
+export const generators = [originShift, aldousBroder, bfsBased, binaryTree, braid, cellularAutomata, dfs, eller, fractalRecursiveSubdivision, growingTree, hexGrid, huntAndKill, randomizedKruskal, randomizedPrim, recursiveBacktracker, recursiveDivision, sidewinder, unionFindSpanningTree, voronoiBased, weave, wilson];
 
 export const generatorMap = new Map(generators.map((entry) => [entry.id, entry]));

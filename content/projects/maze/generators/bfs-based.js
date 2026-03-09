@@ -22,9 +22,7 @@ export const generator = {
 
 					// Pick a random already-visited neighbor to keep the BFS layering
 					// while avoiding a too-regular "wavefront" tree.
-					const candidateParents = shuffle(
-						orthogonalNeighbours(grid, next).filter((cell) => visited.has(cell))
-					);
+					const candidateParents = shuffle(orthogonalNeighbours(grid, next).filter((cell) => visited.has(cell)));
 					link(grid, next, candidateParents[0]);
 					nextFrontier.push(next);
 				}

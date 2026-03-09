@@ -11,19 +11,6 @@ import { strategy as tremaux } from "./tremaux.js";
 import { strategy as wallFollowerLeft } from "./wall-follower-left.js";
 import { strategy as wallFollowerRight } from "./wall-follower-right.js";
 
-export const strategies = [
-	dfs,
-	bfs,
-	dijkstra,
-	aStar,
-	bidirectionalSearch,
-	deadEndFilling,
-	floodFill,
-	leeAlgorithm,
-	wallFollowerLeft,
-	wallFollowerRight,
-	tremaux,
-	pledge,
-];
+export const strategies = [dfs, bfs, dijkstra, aStar, bidirectionalSearch, deadEndFilling, floodFill, leeAlgorithm, wallFollowerLeft, wallFollowerRight, tremaux, pledge];
 
 export const strategyMap = new Map(strategies.map((entry) => [entry.id, entry]));

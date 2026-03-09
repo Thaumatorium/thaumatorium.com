@@ -23,12 +23,7 @@ export const generator = {
 			if (x > 0) return index - 1;
 			return index - width;
 		});
-		const crawlers = [
-			indexOf({ width }, 0, 0),
-			indexOf({ width }, width - 1, 0),
-			indexOf({ width }, 0, height - 1),
-			indexOf({ width }, width - 1, height - 1),
-		];
+		const crawlers = [indexOf({ width }, 0, 0), indexOf({ width }, width - 1, 0), indexOf({ width }, 0, height - 1), indexOf({ width }, width - 1, height - 1)];
 		const visited = new Set(crawlers);
 		const target = Math.max(1, Math.ceil((size * generationCoverage) / 100));
 

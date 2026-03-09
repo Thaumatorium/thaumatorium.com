@@ -16,9 +16,7 @@ export const strategy = {
 		const maxSteps = grid.size * 30;
 
 		for (let step = 0; step < maxSteps && current !== grid.end; step++) {
-			const options = shuffle(linkedNeighbours(grid, current)).sort((a, b) => (
-				(marks.get(edgeKey(current, a)) ?? 0) - (marks.get(edgeKey(current, b)) ?? 0)
-			));
+			const options = shuffle(linkedNeighbours(grid, current)).sort((a, b) => (marks.get(edgeKey(current, a)) ?? 0) - (marks.get(edgeKey(current, b)) ?? 0));
 			const next = options[0];
 			if (next === undefined) break;
 			const key = edgeKey(current, next);

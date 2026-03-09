@@ -12,7 +12,7 @@ export const strategy = {
 		const searchOrder = [grid.start];
 
 		while (frontier.length > 0) {
-			frontier.sort((a, b) => (gScore.get(a) + manhattan(grid, a, grid.end)) - (gScore.get(b) + manhattan(grid, b, grid.end)));
+			frontier.sort((a, b) => gScore.get(a) + manhattan(grid, a, grid.end) - (gScore.get(b) + manhattan(grid, b, grid.end)));
 			const current = frontier.shift();
 			if (current === grid.end) {
 				const path = reconstructPath(parentByNode, current);

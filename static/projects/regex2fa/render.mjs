@@ -37,11 +37,13 @@ function buildLevels(automaton) {
 function layoutStates(automaton, canvas) {
 	const levels = buildLevels(automaton);
 	const buckets = new Map();
-	[...automaton.states.keys()].sort((a, b) => a - b).forEach((stateId) => {
-		const level = levels.get(stateId) ?? 0;
-		if (!buckets.has(level)) buckets.set(level, []);
-		buckets.get(level).push(stateId);
-	});
+	[...automaton.states.keys()]
+		.sort((a, b) => a - b)
+		.forEach((stateId) => {
+			const level = levels.get(stateId) ?? 0;
+			if (!buckets.has(level)) buckets.set(level, []);
+			buckets.get(level).push(stateId);
+		});
 	const maxLevel = Math.max(...buckets.keys(), 0);
 	const usableWidth = canvas.width - 120;
 	const usableHeight = canvas.height - 100;
@@ -61,14 +63,8 @@ function layoutStates(automaton, canvas) {
 function drawArrowhead(ctx, x, y, angle) {
 	ctx.beginPath();
 	ctx.moveTo(x, y);
-	ctx.lineTo(
-		x - ARROW_SIZE * Math.cos(angle - Math.PI / 6),
-		y - ARROW_SIZE * Math.sin(angle - Math.PI / 6),
-	);
-	ctx.lineTo(
-		x - ARROW_SIZE * Math.cos(angle + Math.PI / 6),
-		y - ARROW_SIZE * Math.sin(angle + Math.PI / 6),
-	);
+	ctx.lineTo(x - ARROW_SIZE * Math.cos(angle - Math.PI / 6), y - ARROW_SIZE * Math.sin(angle - Math.PI / 6));
+	ctx.lineTo(x - ARROW_SIZE * Math.cos(angle + Math.PI / 6), y - ARROW_SIZE * Math.sin(angle + Math.PI / 6));
 	ctx.closePath();
 	ctx.fill();
 }
@@ -120,12 +116,7 @@ function drawTransition(ctx, p1, p2, label, isSelfLoop, bendDirection = 1) {
 		ctx.arc(centerX, centerY, loopRadius, startAngle, endAngle);
 		ctx.stroke();
 		const arrowAngle = Math.PI * 0.28;
-		drawArrowhead(
-			ctx,
-			centerX + loopRadius * Math.cos(arrowAngle),
-			centerY + loopRadius * Math.sin(arrowAngle),
-			arrowAngle + Math.PI / 2,
-		);
+		drawArrowhead(ctx, centerX + loopRadius * Math.cos(arrowAngle), centerY + loopRadius * Math.sin(arrowAngle), arrowAngle + Math.PI / 2);
 		ctx.textAlign = "center";
 		ctx.textBaseline = "bottom";
 		ctx.fillText(label, centerX, centerY - loopRadius - 6);
@@ -195,11 +186,13 @@ export function createRenderer(canvas) {
 			});
 		});
 
-		[...automaton.states.keys()].sort((a, b) => a - b).forEach((stateId) => {
-			const state = automaton.states.get(stateId);
-			const point = coords.get(stateId);
-			drawState(ctx, point.x, point.y, String(stateId), state.isAccepting, stateId === automaton.startStateId);
-		});
+		[...automaton.states.keys()]
+			.sort((a, b) => a - b)
+			.forEach((stateId) => {
+				const state = automaton.states.get(stateId);
+				const point = coords.get(stateId);
+				drawState(ctx, point.x, point.y, String(stateId), state.isAccepting, stateId === automaton.startStateId);
+			});
 	}
 
 	function redraw() {

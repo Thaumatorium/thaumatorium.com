@@ -17,16 +17,12 @@ import { NODE_TYPE_PERSON, NODE_TYPE_GAME, CATEGORY_GAME1_ONLY, CATEGORY_GAME2_O
 export function setupD3Tooltips(nodeSelection, tooltipElement, personRolesMap, svgNode, game1Name, game2Name, isSingleGameView) {
 	if (!nodeSelection || !tooltipElement || !personRolesMap || !svgNode) return;
 
-	const escapeHtml = (value) => String(value)
-		.replace(/&/g, "&amp;")
-		.replace(/</g, "&lt;")
-		.replace(/>/g, "&gt;")
-		.replace(/"/g, "&quot;")
-		.replace(/'/g, "&#39;");
-	const formatListItems = (roles) => [...roles]
-		.sort()
-		.map((role) => `<li>${escapeHtml(role)}</li>`)
-		.join("");
+	const escapeHtml = (value) => String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+	const formatListItems = (roles) =>
+		[...roles]
+			.sort()
+			.map((role) => `<li>${escapeHtml(role)}</li>`)
+			.join("");
 	const formatRoleSection = (label, roles, tone = "") => {
 		if (!roles || roles.size === 0) return "";
 		const toneClass = tone ? ` tooltip-section-${tone}` : "";

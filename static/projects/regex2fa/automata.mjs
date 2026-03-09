@@ -263,11 +263,13 @@ export function minimizeDfa(dfa, epsilonSymbol) {
 		for (const partition of partitions) {
 			const buckets = new Map();
 			for (const stateId of partition) {
-				const signature = alphabet.map((symbol) => {
-					const target = [...(dfa.states.get(stateId)?.transitions.get(symbol) ?? [])][0];
-					const targetPartition = partitions.findIndex((group) => group.includes(target));
-					return `${symbol}:${targetPartition}`;
-				}).join("|");
+				const signature = alphabet
+					.map((symbol) => {
+						const target = [...(dfa.states.get(stateId)?.transitions.get(symbol) ?? [])][0];
+						const targetPartition = partitions.findIndex((group) => group.includes(target));
+						return `${symbol}:${targetPartition}`;
+					})
+					.join("|");
 				if (!buckets.has(signature)) buckets.set(signature, []);
 				buckets.get(signature).push(stateId);
 			}

@@ -31,9 +31,9 @@ I filter a sub if the sub is _targeting_ bullshit that is going to cause bullshi
 
 ### Categories:
 
-**political bullshit**, usually the American variety, but that's only because the USA is a giant focal point of this site. Examples: ABoringDystopia, Bad\_Cop\_No\_Donut, donaldtrump, InfowarriorRides, SelfAwarewolves, SandersForPresident, TopMindsOfReddit, LeopardsAteMyFace
+**political bullshit**, usually the American variety, but that's only because the USA is a giant focal point of this site. Examples: ABoringDystopia, Bad_Cop_No_Donut, donaldtrump, InfowarriorRides, SelfAwarewolves, SandersForPresident, TopMindsOfReddit, LeopardsAteMyFace
 
-**LGBT**. A person's sexuality is simply not interesting about a person. I don't hate you, I just think your subs are uninteresting. Examples: lgbt, me\_irlgbt, lgballt, gay\_irl, gaybros, bi\_irl, bisexual
+**LGBT**. A person's sexuality is simply not interesting about a person. I don't hate you, I just think your subs are uninteresting. Examples: lgbt, me_irlgbt, lgballt, gay_irl, gaybros, bi_irl, bisexual
 
 **Sports**. I just don't care about sports in general. Examples: nba, formula1, golf, baseball, reddevils
 

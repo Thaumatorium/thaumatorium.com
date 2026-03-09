@@ -4,8 +4,9 @@ description: "I hope you enjoy the videos!"
 publishDate: 2020-08-03T22:31:44+01:00
 lastmod: 2020-08-03T22:31:44+01:00
 ---
-<p id=comment>...</p>
-<iframe id=ytvid width=100% onload="this.height=this.clientWidth*(9/16)" src="https://www.youtube-nocookie.com/embed/ZXVhOPiM4mk" frameborder=0 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<p id="comment">...</p>
+<iframe id="ytvid" width="100%" onload="this.height = this.clientWidth * (9 / 16)" src="https://www.youtube-nocookie.com/embed/ZXVhOPiM4mk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <script>
 	let videoIDs = [
 		{ url: "ZXVhOPiM4mk", comment: "Hotdog, the song" },
@@ -24,7 +25,11 @@ lastmod: 2020-08-03T22:31:44+01:00
 		{ url: "EsZbWAqU8xY", comment: "Tik Tok meme song, Japanese edition" },
 		{ url: "1s27A6oyEZA", comment: "This is actually made by a Polish dude called Lain Volta Trzaska known as 'shemusic'. He hires different vocalists for each song IIRC. EXCELLENT WEEB SHIT" },
 		{ url: "q4WzVSkr9yQ", comment: "This is actually made by a Polish dude called Lain Volta Trzaska known as 'shemusic'. He hires different vocalists for each song IIRC. EXCELLENT WEEB SHIT" },
-		{ url: "AAIgYbqFkro", comment: "One of the best DOS/Arcade games ever made, with great music by Alexander Brandon who also did music for Jazz Jackrabbit, Unreal, Unreal Tournament, Vigilante 8, Deus Ex, Thief: Deadly Shadows, Neverwinter Nights 2, Dust: An Elysian Tail, among many others. If you think he's shit, don't fucking talk to me." },
+		{
+			url: "AAIgYbqFkro",
+			comment:
+				"One of the best DOS/Arcade games ever made, with great music by Alexander Brandon who also did music for Jazz Jackrabbit, Unreal, Unreal Tournament, Vigilante 8, Deus Ex, Thief: Deadly Shadows, Neverwinter Nights 2, Dust: An Elysian Tail, among many others. If you think he's shit, don't fucking talk to me.",
+		},
 		{ url: "2yDVM77lGlM", comment: "Deus Ex: Best Immersive Sim ever made" },
 		{ url: "IwunnFgfbtU", comment: "Little Big Adventure 2: Best thing to come out of France, right after 'overthrowing your incompetent kings/rulers'." },
 		{ url: "3JQkW6BgUYU", comment: "LukHash really improved Jeroen Tel's 'Supremacy', IMO" },
@@ -40,9 +45,9 @@ lastmod: 2020-08-03T22:31:44+01:00
 		// { url: "HgEUbSzOTZ8", comment: `"We Are Trained Marxists" - Patrisse Cullors, Co-Founder, #BlackLivesMatter` },
 	];
 
-	const choice = Math.floor(Math.random() * videoIDs.length)
+	const choice = Math.floor(Math.random() * videoIDs.length);
 	let vid = document.getElementById("ytvid");
-	vid.src = `https://www.youtube-nocookie.com/embed/${videoIDs[choice].url}`
+	vid.src = `https://www.youtube-nocookie.com/embed/${videoIDs[choice].url}`;
 	let comment = document.getElementById("comment");
 	comment.innerHTML = videoIDs[choice].comment;
 </script>

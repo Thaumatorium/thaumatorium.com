@@ -5,6 +5,7 @@ publishDate: 2019-05-01T00:00:00+01:00
 lastmod: 2024-07-24T18:35:00+02:00
 layout: article
 ---
+
 Protip: Use [https://repl.it/](https://repl.it/) to run your own little test
 programs. Yes, they support other languages than Haskell as well.
 
@@ -24,8 +25,8 @@ foldr f z (x:xs) = f x (foldr f z xs)
 
 There are two cases:
 
-* The base case (where the input list is empty)
-* The general case (where the input list is not empty), one item gets reduced,
+- The base case (where the input list is empty)
+- The general case (where the input list is not empty), one item gets reduced,
   and the function is recursively called on the rest of the list.
 
 Now let's run foldr:
@@ -45,12 +46,12 @@ if you put any other value in, you'll get that value back out: `x + 0 = x`.
 
 Other operators may have different identity values:
 
-* Subtraction (`-`) has `0` (`x - 0 = x`) as identity.
-* Multiplication (`*`) has `1` (multiplying by `0` would always give you `0`,
+- Subtraction (`-`) has `0` (`x - 0 = x`) as identity.
+- Multiplication (`*`) has `1` (multiplying by `0` would always give you `0`,
   which is unwanted behavior) as identity.
-* Division (`/`) has `1` as identity.
-* Exponentiation (`^`) (aka "the power operator") also has `1` as identity.
-* `f()` where `f` outputs a list has the empty list (`[]`) as identity.
+- Division (`/`) has `1` as identity.
+- Exponentiation (`^`) (aka "the power operator") also has `1` as identity.
+- `f()` where `f` outputs a list has the empty list (`[]`) as identity.
 
 But how is `10` calculated? Since the function is called fold **right**, we know two things: all grouped parentheses are on the right, and the identity value will be the last value inserted.
 

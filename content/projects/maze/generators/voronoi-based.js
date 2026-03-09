@@ -22,9 +22,7 @@ export const generator = {
 			}
 		}
 
-		const regions = Array.from({ length: grid.size }, (_, cell) => (
-			seeds.reduce((best, seed) => manhattan(cell, seed, width) < manhattan(cell, best, width) ? seed : best, seeds[0])
-		));
+		const regions = Array.from({ length: grid.size }, (_, cell) => seeds.reduce((best, seed) => (manhattan(cell, seed, width) < manhattan(cell, best, width) ? seed : best), seeds[0]));
 
 		const spanning = new Set([seeds[0]]);
 		while (spanning.size < seeds.length) {

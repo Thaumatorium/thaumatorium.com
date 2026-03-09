@@ -1,8 +1,8 @@
 # Does your DBMS run by the rules?
 
-*To be "mid-80s" fully relational, a DBMS must support all 12 basic rules plus
+_To be "mid-80s" fully relational, a DBMS must support all 12 basic rules plus
 nine structural, 18 manipulative and all three integrity rules. There will be
-more requirements by the 1990s.*
+more requirements by the 1990s._
 
 By E. F. Codd
 
@@ -75,7 +75,7 @@ In general, controversy still surrounds the problem of missing and inapplicable
 information in data bases. It seems to me that those who who complain loudly
 about the complexities of manipulating nulls are overlooking the fact that
 handling missing and inapplicable information is inherently complicated. Going
-back to programmer-specified default values does not solve the problem. 
+back to programmer-specified default values does not solve the problem.
 
 Rule 5, the comprehensive data sublanguage rule, is important for several
 reasons. First, it allows programmers to debug their data base statements
@@ -270,7 +270,6 @@ systems, and both fail to support the nonsubversion rule for integrity.
 | 12  | Nonsubversion rule                          | Yes     | No      | No         |
 |     | Score (1 for yes, 0 otherwise)              | 7       | 0       | 0          |
 
-
 ## Features of the model
 
 For a more detailed evaluation of DBMS, users can compare a system to the nine
@@ -373,8 +372,7 @@ total score to obtain a percentage fidelity rating for the system.
 
 If a DBMS were to achieve a total score of 42 out of 42 (and I believe no such
 DBMS presently exists), add 8 points to that score before doubling it—as a
-reward for true fidelity. Thus its fidelity percentage would be calculated to be
-100.
+reward for true fidelity. Thus its fidelity percentage would be calculated to be 100.
 
 The resulting fidelity percentage is not highly accurate. In fact, if it falls
 between 10% and 90%, I would recommend rounding it to the nearest multiple of
@@ -466,7 +464,7 @@ impossible or even difficult in the future.
 | Theta join                           | Yes     | Partial | No         |
 | Outer theta join                     | No      | No      | No         |
 | Union                                | Yes     | No      | No         |
-| Outer union                                | No      | No      | No         |
+| Outer union                          | No      | No      | No         |
 | Intersection                         | Yes     | No      | No         |
 | Set difference                       | Yes     | No      | No         |
 | Division                             | Yes     | No      | No         |
@@ -498,7 +496,7 @@ three factors heavily.
 
 The first factor is the buyer's performance requirements, often expressed in
 terms of the number of transactions that must be executed per second. The
-average complexity of each transaction is also an important consideration.  Only if the performance requirements are extremely severe should buyers rule out present relational DBMS products on this basis. Even then buyers should
+average complexity of each transaction is also an important consideration. Only if the performance requirements are extremely severe should buyers rule out present relational DBMS products on this basis. Even then buyers should
 design performance tests of their own, rather than rely on vendor-designed tests
 or vendor-declared strategies.
 

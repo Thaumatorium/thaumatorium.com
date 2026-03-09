@@ -34,7 +34,7 @@ serious errors were omitted altogether.
 My position on these three flaws is as follows:
 
 - duplicate rows within relations ought to be prohibited, as Teradata has done
-with its version of SQL;
+  with its version of SQL;
 - even though I am not totally opposed to nesting, it requires precise
   definition and extensive investigation prior to being included in a relational
   language; and
@@ -615,5 +615,4 @@ inadequate theoretical investigation.
    Available from ACM, New York.
 2. E.F. Codd, “Missing Information (Applicable and Inapplicable) in Relational
    Databases,” ACM SIGMOD Record, December 1986; and E.F. Codd, “More Commentary
-   on Missing Information in Relational Databases,” ACM SIGMOD Record, March
-   1987.
+   on Missing Information in Relational Databases,” ACM SIGMOD Record, March 1987.

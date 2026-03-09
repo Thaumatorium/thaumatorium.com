@@ -37,12 +37,7 @@ export const strategy = {
 			if (turnBalance === 0 && map.has(preferred)) {
 				nextHeading = preferred;
 			} else {
-				const wallFollowOrder = [
-					turnRight(heading),
-					heading,
-					turnLeft(heading),
-					turnBack(heading),
-				];
+				const wallFollowOrder = [turnRight(heading), heading, turnLeft(heading), turnBack(heading)];
 				nextHeading = wallFollowOrder.find((candidate) => map.has(candidate)) ?? null;
 			}
 

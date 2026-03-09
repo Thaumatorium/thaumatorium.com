@@ -17,7 +17,7 @@ export const generator = {
 					link(grid, left, right);
 					const from = rowSets[x + 1];
 					const to = rowSets[x];
-					rowSets = rowSets.map((setId) => setId === from ? to : setId);
+					rowSets = rowSets.map((setId) => (setId === from ? to : setId));
 				}
 			}
 

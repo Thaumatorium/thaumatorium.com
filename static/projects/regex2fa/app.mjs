@@ -26,7 +26,31 @@ const stepNfa = document.getElementById("step-nfa");
 const stepDfa = document.getElementById("step-dfa");
 const stepMinDfa = document.getElementById("step-min-dfa");
 
-if (!regexInput || !renderButton || !loadExampleButton || !clearButton || !viewMode || !epsilonInput || !showInternalsInput || !internals || !rawTokensDebug || !concatTokensDebug || !postfixDebug || !status || !canvas || !stepRegexBody || !stepPostfixBody || !stepNfaBody || !stepDfaBody || !stepMinDfaBody || !stepRegex || !stepPostfix || !stepNfa || !stepDfa || !stepMinDfa) {
+if (
+	!regexInput ||
+	!renderButton ||
+	!loadExampleButton ||
+	!clearButton ||
+	!viewMode ||
+	!epsilonInput ||
+	!showInternalsInput ||
+	!internals ||
+	!rawTokensDebug ||
+	!concatTokensDebug ||
+	!postfixDebug ||
+	!status ||
+	!canvas ||
+	!stepRegexBody ||
+	!stepPostfixBody ||
+	!stepNfaBody ||
+	!stepDfaBody ||
+	!stepMinDfaBody ||
+	!stepRegex ||
+	!stepPostfix ||
+	!stepNfa ||
+	!stepDfa ||
+	!stepMinDfa
+) {
 	throw new Error("Regex2FA: required DOM nodes are missing.");
 }
 
@@ -51,21 +75,11 @@ function clearInternals() {
 }
 
 function updateSteps(data) {
-	stepRegexBody.textContent = data.regex
-		? `Input: ${data.regex}\nRaw tokens: ${JSON.stringify(data.rawTokens)}`
-		: "Enter a regex to begin.";
-	stepPostfixBody.textContent = data.regex
-		? `With concat: ${data.concatTokens.join(" ")}\nPostfix: ${data.postfixTokens.join(" ")}`
-		: "Nothing parsed yet.";
-	stepNfaBody.textContent = data.nfa
-		? `${data.nfa.states.size} states, start q${data.nfa.startStateId}, accept {${[...data.nfa.acceptStateIds].join(", ")}}`
-		: "No NFA built yet.";
-	stepDfaBody.textContent = data.dfa
-		? `${data.dfa.states.size} states, start q${data.dfa.startStateId}, accept {${[...data.dfa.acceptStateIds].join(", ")}}`
-		: "No DFA built yet.";
-	stepMinDfaBody.textContent = data.minDfa
-		? `${data.minDfa.states.size} states, start q${data.minDfa.startStateId}, accept {${[...data.minDfa.acceptStateIds].join(", ")}}`
-		: "No minimized DFA built yet.";
+	stepRegexBody.textContent = data.regex ? `Input: ${data.regex}\nRaw tokens: ${JSON.stringify(data.rawTokens)}` : "Enter a regex to begin.";
+	stepPostfixBody.textContent = data.regex ? `With concat: ${data.concatTokens.join(" ")}\nPostfix: ${data.postfixTokens.join(" ")}` : "Nothing parsed yet.";
+	stepNfaBody.textContent = data.nfa ? `${data.nfa.states.size} states, start q${data.nfa.startStateId}, accept {${[...data.nfa.acceptStateIds].join(", ")}}` : "No NFA built yet.";
+	stepDfaBody.textContent = data.dfa ? `${data.dfa.states.size} states, start q${data.dfa.startStateId}, accept {${[...data.dfa.acceptStateIds].join(", ")}}` : "No DFA built yet.";
+	stepMinDfaBody.textContent = data.minDfa ? `${data.minDfa.states.size} states, start q${data.minDfa.startStateId}, accept {${[...data.minDfa.acceptStateIds].join(", ")}}` : "No minimized DFA built yet.";
 }
 
 function setActiveStep() {
@@ -83,18 +97,10 @@ function setActiveStep() {
 
 function renderCurrentView() {
 	if (!currentModels) return;
-	const automaton = viewMode.value === "min-dfa"
-		? currentModels.minDfa
-		: viewMode.value === "dfa"
-			? currentModels.dfa
-			: currentModels.nfa;
+	const automaton = viewMode.value === "min-dfa" ? currentModels.minDfa : viewMode.value === "dfa" ? currentModels.dfa : currentModels.nfa;
 	renderer.draw(automaton);
 	setActiveStep();
-	const noun = viewMode.value === "min-dfa"
-		? "minimized DFA"
-		: viewMode.value === "dfa"
-			? "DFA"
-			: "NFA";
+	const noun = viewMode.value === "min-dfa" ? "minimized DFA" : viewMode.value === "dfa" ? "DFA" : "NFA";
 	setStatus(`Rendered ${noun} with ${automaton.states.size} state${automaton.states.size === 1 ? "" : "s"}.`);
 }
 
