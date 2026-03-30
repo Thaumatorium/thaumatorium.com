@@ -1,0 +1,69 @@
+---
+title: "Inventing on Principle Notebook"
+description: "A live visual notebook inspired by Bret Victor: edit code, drag numeric literals, pick hex colors, and inspect the link between code and drawing."
+publishDate: 2025-11-02T12:00:00+01:00
+lastmod: 2025-11-02T12:00:00+01:00
+aliases:
+  - "/projects/live-visual-notebook/"
+---
+
+<section class="iop-page">
+	<link rel="stylesheet" href="notebook.css" />
+
+	<header class="iop-hero">
+		<p class="iop-eyebrow">Live visual notebook</p>
+		<h1>Inventing on Principle Notebook</h1>
+		<p class="iop-intro">
+			A code-and-canvas notebook in the spirit of Bret Victor: the scene redraws live while you type, numeric literals can be dragged with <kbd>Ctrl</kbd>, hex colors pop a picker with <kbd>Ctrl</kbd>, and <kbd>Alt</kbd> turns the notebook into an inspector that links code lines to visible shapes.
+		</p>
+		<div class="iop-shortcuts" aria-label="Keyboard shortcuts">
+			<span><kbd>Ctrl</kbd> hover a number for a slider</span>
+			<span><kbd>Ctrl</kbd> hover a hex color for a picker</span>
+			<span><kbd>Alt</kbd> inspect code to visual output</span>
+			<span>Hover the preview to spotlight its source line</span>
+		</div>
+	</header>
+
+	<div class="iop-book" id="iop-book">
+		<section class="iop-preview-page" id="iop-preview-page" aria-labelledby="iop-preview-title">
+			<div class="iop-page-header">
+				<p class="iop-page-label" id="iop-preview-title">Preview</p>
+				<p class="iop-page-meta" id="iop-preview-meta">Live SVG scene</p>
+			</div>
+			<div class="iop-preview-stage" id="iop-preview-stage">
+				<svg id="iop-scene" viewBox="0 0 760 920" aria-label="Live notebook scene"></svg>
+				<div class="iop-preview-overlay">
+					<p id="iop-scene-caption">Hover branches or blossoms to reveal their code.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="iop-code-page" id="iop-code-page" aria-labelledby="iop-code-title">
+			<div class="iop-page-header">
+				<p class="iop-page-label" id="iop-code-title">Code</p>
+				<p class="iop-page-meta" id="iop-code-meta">JavaScript notebook API</p>
+			</div>
+			<div class="iop-editor-shell">
+				<div class="iop-editor-loading" id="iop-editor-loading">Loading editor...</div>
+				<div class="iop-editor" id="iop-editor" aria-label="Notebook editor"></div>
+				<div class="iop-widget iop-slider-widget" id="iop-slider-widget" hidden>
+					<input id="iop-slider-input" type="range" aria-label="Adjust numeric literal" />
+				</div>
+				<div class="iop-widget iop-color-widget" id="iop-color-widget" hidden>
+					<input id="iop-color-input" type="color" aria-label="Adjust color literal" />
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<footer class="iop-statusbar">
+		<p id="iop-status">Preparing the notebook...</p>
+		<p id="iop-error" role="status" aria-live="polite"></p>
+	</footer>
+
+	<noscript>
+		<p>This notebook needs JavaScript enabled.</p>
+	</noscript>
+
+	<script type="module" src="notebook.mjs"></script>
+</section>
