@@ -4,7 +4,7 @@
 
 	<body>
 		{{ partial "header.html" . }}
-		<main class="{{ .Section }}">{{ block "main" . }}{{ end }}</main>
+		<main{{ with .Section }} class="{{ . }}"{{ end }}>{{ block "main" . }}{{ end }}</main>
 		{{ partial "footer.html" . }}
 	</body>
 </html>
