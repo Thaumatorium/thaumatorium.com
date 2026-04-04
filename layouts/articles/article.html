@@ -1,5 +1,12 @@
 {{ define "main" }}
 
+{{ $changelog := slice }}
+{{ with .File }}
+  {{ with index site.Data.page_changelogs .Path }}
+    {{ $changelog = . }}
+  {{ end }}
+{{ end }}
+
 <article class="article-page">
   <h1>{{ .Title }}</h1>
 
@@ -16,6 +23,21 @@
   </p>
 
   {{ .Content }}
+
+  {{ if $changelog }}
+  <section class="article-page-changelog" aria-labelledby="recent-changes-title">
+    <h2 id="recent-changes-title">Recent changes</h2>
+    <ol>
+      {{ range first 5 $changelog }}
+      <li>
+        <time datetime="{{ .date }}">{{ .date }}</time>
+        <code>{{ .hash }}</code>
+        <span>{{ .subject }}</span>
+      </li>
+      {{ end }}
+    </ol>
+  </section>
+  {{ end }}
 </article>
 
 <style>
@@ -25,6 +47,34 @@
     font-size: 0.88em;
     margin-top: -0.5em;
     margin-bottom: 1.5em;
+  }
+
+  .article-page-changelog {
+    border-top: 1px solid #b48c8c;
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+  }
+
+  .article-page-changelog h2 {
+    color: #6e0000;
+    font-family: Tahoma, sans-serif;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .article-page-changelog ol {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+  .article-page-changelog li {
+    margin-bottom: 0.5rem;
+  }
+
+  .article-page-changelog code {
+    background: #f4e8e8;
+    border-radius: 0.2rem;
+    padding: 0.05rem 0.25rem;
   }
 </style>
 

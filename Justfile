@@ -10,10 +10,16 @@ shell:
     devenv shell
 
 serve *args:
+    bash ./cmd/generate-page-changelogs.sh
     hugo server --buildDrafts --port 1313 --baseURL http://thaum.localhost:1313/ --noHTTPCache --disableFastRender {{args}}
 
 build *args:
-    hugo {{args}}
+    bash ./cmd/generate-page-changelogs.sh
+    hugo --buildDrafts {{args}}
+    just fmt-public
+
+changelog:
+    bash ./cmd/generate-page-changelogs.sh
 
 fmt-public:
     find public -type f -name '*.html' -print0 | while IFS= read -r -d '' file; do sed -i '/^[[:space:]]*$/d' "$file"; done

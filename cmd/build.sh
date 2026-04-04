@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
+bash ./cmd/generate-page-changelogs.sh
+
 # Build drafts using Hugo
 hugo --buildDrafts
 
@@ -13,4 +17,8 @@ for file in $htmlfiles; do
 done
 
 # Format files using Prettier, respecting .prettierignore
-prettier --ignore-path .prettierignore --write "public/**/*"
+if command -v prettier >/dev/null 2>&1; then
+    prettier --ignore-path .prettierignore --write "public/**/*"
+else
+    echo "Skipping Prettier: command not found"
+fi

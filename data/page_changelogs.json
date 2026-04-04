@@ -1,0 +1,552 @@
+{
+	"articles/4chans-programming-projects-for-noobs/_index.html": [
+		{
+			"date": "2026-03-09",
+			"hash": "7c80a18",
+			"subject": "format all files with oxfmt (quite the restructure lmao"
+		},
+		{
+			"date": "2022-11-23",
+			"hash": "5d8c365",
+			"subject": "add improved titles and descriptions"
+		},
+		{
+			"date": "2022-11-22",
+			"hash": "c04a46f",
+			"subject": "initial commit"
+		}
+	],
+	"articles/_index.html": [
+		{
+			"date": "2025-04-13",
+			"hash": "4bd6236",
+			"subject": "pretty massive cleanup; added Warcraft Credits"
+		},
+		{
+			"date": "2024-07-24",
+			"hash": "6838560",
+			"subject": "improve Articles article"
+		},
+		{
+			"date": "2024-07-24",
+			"hash": "229f44a",
+			"subject": "remove On Computable Numbers, since it's not mine"
+		},
+		{
+			"date": "2024-07-23",
+			"hash": "eb01d52",
+			"subject": "improve the papers-od-Codd page quite a bit"
+		},
+		{
+			"date": "2024-06-22",
+			"hash": "807f9aa",
+			"subject": "add it to /articles"
+		}
+	],
+	"articles/big-o-beginners-guide/index.md": [
+		{
+			"date": "2026-04-04",
+			"hash": "fdbda6b",
+			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
+		},
+		{
+			"date": "2026-03-07",
+			"hash": "3590dd7",
+			"subject": "improve \"Big O Beginner's Guide\", as well as rewrite it to markdown"
+		}
+	],
+	"articles/configuring-jmeter-for-neo4j/_index.html": [
+		{
+			"date": "2026-03-09",
+			"hash": "7c80a18",
+			"subject": "format all files with oxfmt (quite the restructure lmao"
+		},
+		{
+			"date": "2024-07-24",
+			"hash": "2e1bb7c",
+			"subject": "improve the JMeter article"
+		},
+		{
+			"date": "2022-11-23",
+			"hash": "5d8c365",
+			"subject": "add improved titles and descriptions"
+		},
+		{
+			"date": "2022-11-22",
+			"hash": "c04a46f",
+			"subject": "initial commit"
+		}
+	],
+	"articles/dutch-murder-2017-2021/index.md": [
+		{
+			"date": "2026-04-04",
+			"hash": "fdbda6b",
+			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
+		},
+		{
+			"date": "2026-03-09",
+			"hash": "7c80a18",
+			"subject": "format all files with oxfmt (quite the restructure lmao"
+		},
+		{
+			"date": "2025-08-21",
+			"hash": "24fba08",
+			"subject": "fix murder article publishDate"
+		},
+		{
+			"date": "2025-08-21",
+			"hash": "fad2272",
+			"subject": "add murder article"
+		}
+	],
+	"articles/haskells-fold-functions-explained/index.md": [
+		{
+			"date": "2026-04-04",
+			"hash": "fdbda6b",
+			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
+		},
+		{
+			"date": "2026-03-09",
+			"hash": "7c80a18",
+			"subject": "format all files with oxfmt (quite the restructure lmao"
+		},
+		{
+			"date": "2024-07-24",
+			"hash": "fdd7ee7",
+			"subject": "improve Haskell Functions article"
+		},
+		{
+			"date": "2022-11-23",
+			"hash": "5d8c365",
+			"subject": "add improved titles and descriptions"
+		},
+		{
+			"date": "2022-11-22",
+			"hash": "c04a46f",
+			"subject": "initial commit"
+		}
+	],
+	"articles/how-i-fixed-reddit/index.md": [
+		{
+			"date": "2026-04-04",
+			"hash": "fdbda6b",
+			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
+		},
+		{
+			"date": "2026-03-09",
+			"hash": "66515df",
+			"subject": "fix formatting"
+		},
+		{
+			"date": "2026-03-09",
+			"hash": "7c80a18",
+			"subject": "format all files with oxfmt (quite the restructure lmao"
+		},
+		{
+			"date": "2024-07-24",
+			"hash": "7611f01",
+			"subject": "improve the How I fixed Reddit article"
+		},
+		{
+			"date": "2022-11-23",
+			"hash": "5d8c365",
+			"subject": "add improved titles and descriptions"
+		}
+	],
+	"articles/mit-courses/_index.md": [
+		{
+			"date": "2024-07-24",
+			"hash": "6f1eca7",
+			"subject": "improve MIT Courses article"
+		},
+		{
+			"date": "2023-06-09",
+			"hash": "6e7741b",
+			"subject": "polish the MIT Courses page"
+		},
+		{
+			"date": "2023-06-09",
+			"hash": "060125e",
+			"subject": "add MIT courses (not yet re-released)"
+		}
+	],
+	"articles/mit-courses/courses/_index.md": [
+		{
+			"date": "2026-04-04",
+			"hash": "fdbda6b",
+			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
+		},
+		{
+			"date": "2023-06-09",
+			"hash": "6e7741b",
+			"subject": "polish the MIT Courses page"
+		},
+		{
+			"date": "2023-06-09",
+			"hash": "060125e",
+			"subject": "add MIT courses (not yet re-released)"
+		}
+	],
+	"articles/mit-courses/courses/index.md": [
+		{
+			"date": "2026-04-04",
+			"hash": "fdbda6b",
+			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
+		},
+		{
+			"date": "2023-06-09",
+			"hash": "6e7741b",
+			"subject": "polish the MIT Courses page"
+		},
+		{
+			"date": "2023-06-09",
+			"hash": "060125e",
+			"subject": "add MIT courses (not yet re-released)"
+		}
+	],
+	"articles/programming-logic-is-quaternary-not-binary/_index.md": [
+		{
+			"date": "2026-04-04",
+			"hash": "fdbda6b",
+			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
+		},
+		{
+			"date": "2026-03-09",
+			"hash": "7c80a18",
+			"subject": "format all files with oxfmt (quite the restructure lmao"
+		},
+		{
+			"date": "2025-08-25",
+			"hash": "dd6c2f3",
+			"subject": "manual polish"
+		},
+		{
+			"date": "2025-08-25",
+			"hash": "7f13cc3",
+			"subject": "add \"Programming Logic Is Quaternary Not Binary\" article"
+		}
+	],
+	"articles/programming-logic-is-quaternary-not-binary/index.md": [
+		{
+			"date": "2026-04-04",
+			"hash": "fdbda6b",
+			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
+		},
+		{
+			"date": "2026-03-09",
+			"hash": "7c80a18",
+			"subject": "format all files with oxfmt (quite the restructure lmao"
+		},
+		{
+			"date": "2025-08-25",
+			"hash": "dd6c2f3",
+			"subject": "manual polish"
+		},
+		{
+			"date": "2025-08-25",
+			"hash": "7f13cc3",
+			"subject": "add \"Programming Logic Is Quaternary Not Binary\" article"
+		}
+	],
+	"articles/real-ascii-table/_index.md": [
+		{
+			"date": "2026-04-04",
+			"hash": "fdbda6b",
+			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
+		},
+		{
+			"date": "2026-03-08",
+			"hash": "e75f648",
+			"subject": "fix backtick"
+		},
+		{
+			"date": "2026-03-08",
+			"hash": "d51f1df",
+			"subject": "Add ASCII table article: introduce structured ASCII representation and useful shortcuts"
+		}
+	],
+	"articles/real-ascii-table/index.md": [
+		{
+			"date": "2026-04-04",
+			"hash": "fdbda6b",
+			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
+		},
+		{
+			"date": "2026-03-08",
+			"hash": "e75f648",
+			"subject": "fix backtick"
+		},
+		{
+			"date": "2026-03-08",
+			"hash": "d51f1df",
+			"subject": "Add ASCII table article: introduce structured ASCII representation and useful shortcuts"
+		}
+	],
+	"articles/reddits-t-values/_index.html": [
+		{
+			"date": "2026-03-09",
+			"hash": "7c80a18",
+			"subject": "format all files with oxfmt (quite the restructure lmao"
+		},
+		{
+			"date": "2024-07-24",
+			"hash": "bdee796",
+			"subject": "improve Reddit's T Values article"
+		},
+		{
+			"date": "2022-11-23",
+			"hash": "5d8c365",
+			"subject": "add improved titles and descriptions"
+		},
+		{
+			"date": "2022-11-22",
+			"hash": "c04a46f",
+			"subject": "initial commit"
+		}
+	],
+	"articles/relational-algebra-operators-in-database-management/_index.html": [
+		{
+			"date": "2026-03-09",
+			"hash": "7c80a18",
+			"subject": "format all files with oxfmt (quite the restructure lmao"
+		},
+		{
+			"date": "2024-07-24",
+			"hash": "63f7c52",
+			"subject": "improve the Relational Algebra Operators"
+		},
+		{
+			"date": "2024-06-22",
+			"hash": "1bf92cd",
+			"subject": "update Relational Algebra Operators in Database Management"
+		},
+		{
+			"date": "2024-06-22",
+			"hash": "21f1ea0",
+			"subject": "add article on relational algebra operators"
+		}
+	],
+	"articles/spark-files-and-keeping-track-of-your-ideas-concepts-thoughts/index.md": [
+		{
+			"date": "2026-04-04",
+			"hash": "fdbda6b",
+			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
+		},
+		{
+			"date": "2024-07-24",
+			"hash": "8f33f32",
+			"subject": "remove \"retarded\" since that's going to backfire on day, because some people are retarded in their development."
+		},
+		{
+			"date": "2024-07-24",
+			"hash": "824e79f",
+			"subject": "improve Spark Files article"
+		}
+	],
+	"articles/splitting-js-css-into-2-or-3-files/index.md": [
+		{
+			"date": "2026-04-04",
+			"hash": "fdbda6b",
+			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
+		},
+		{
+			"date": "2026-03-07",
+			"hash": "535cd4d",
+			"subject": "refactor article title and introduction for clarity on JS/CSS optimization layers"
+		},
+		{
+			"date": "2024-07-24",
+			"hash": "13c902b",
+			"subject": "improve the Splitting JS article"
+		},
+		{
+			"date": "2022-11-23",
+			"hash": "5d8c365",
+			"subject": "add improved titles and descriptions"
+		},
+		{
+			"date": "2022-11-22",
+			"hash": "c04a46f",
+			"subject": "initial commit"
+		}
+	],
+	"articles/the-different-types-of-functions-in-functional-programming/index.md": [
+		{
+			"date": "2026-04-04",
+			"hash": "fdbda6b",
+			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
+		},
+		{
+			"date": "2026-03-07",
+			"hash": "6af3a1d",
+			"subject": "renamed \"The Different Types of Functions in Functional Programming\" to \"Function Kinds and Function Patterns in Functional Programming\", and extended the article with more functions and information"
+		},
+		{
+			"date": "2026-03-07",
+			"hash": "df44aee",
+			"subject": "rewrite \"The Different Types of Functions in Functional Programming\" to markdown"
+		}
+	],
+	"articles/the-papers-of-ef-the-coddfather-codd/1969-derivability-redundancy-and-consistency-of-relations-stored-in-large-data-banks/index.html": [
+		{
+			"date": "2026-03-09",
+			"hash": "7c80a18",
+			"subject": "format all files with oxfmt (quite the restructure lmao"
+		},
+		{
+			"date": "2024-09-02",
+			"hash": "384066e",
+			"subject": "add some double-quotes, and update some descriptions"
+		},
+		{
+			"date": "2024-07-24",
+			"hash": "ef11c5c",
+			"subject": "fix some single-page HTML pages"
+		},
+		{
+			"date": "2024-07-23",
+			"hash": "c0d3cba",
+			"subject": "fix Codd's papers"
+		},
+		{
+			"date": "2024-07-23",
+			"hash": "eb01d52",
+			"subject": "improve the papers-od-Codd page quite a bit"
+		}
+	],
+	"articles/the-papers-of-ef-the-coddfather-codd/1971b-further-normalization-of-the-data-base-relational-model/index.md": [
+		{
+			"date": "2026-04-04",
+			"hash": "fdbda6b",
+			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
+		},
+		{
+			"date": "2026-03-09",
+			"hash": "7c80a18",
+			"subject": "format all files with oxfmt (quite the restructure lmao"
+		},
+		{
+			"date": "2024-09-02",
+			"hash": "384066e",
+			"subject": "add some double-quotes, and update some descriptions"
+		},
+		{
+			"date": "2024-07-24",
+			"hash": "ef11c5c",
+			"subject": "fix some single-page HTML pages"
+		},
+		{
+			"date": "2024-07-23",
+			"hash": "c0d3cba",
+			"subject": "fix Codd's papers"
+		}
+	],
+	"articles/the-papers-of-ef-the-coddfather-codd/1985a-is-your-dbms-really-relational/index.html": [
+		{
+			"date": "2026-03-09",
+			"hash": "7c80a18",
+			"subject": "format all files with oxfmt (quite the restructure lmao"
+		},
+		{
+			"date": "2024-09-02",
+			"hash": "384066e",
+			"subject": "add some double-quotes, and update some descriptions"
+		},
+		{
+			"date": "2024-07-24",
+			"hash": "ef11c5c",
+			"subject": "fix some single-page HTML pages"
+		},
+		{
+			"date": "2024-07-23",
+			"hash": "c0d3cba",
+			"subject": "fix Codd's papers"
+		},
+		{
+			"date": "2024-07-23",
+			"hash": "eb01d52",
+			"subject": "improve the papers-od-Codd page quite a bit"
+		}
+	],
+	"articles/the-papers-of-ef-the-coddfather-codd/1985b-does-your-dmbs-run-by-the-rules/index.html": [
+		{
+			"date": "2026-03-09",
+			"hash": "7c80a18",
+			"subject": "format all files with oxfmt (quite the restructure lmao"
+		},
+		{
+			"date": "2024-09-02",
+			"hash": "384066e",
+			"subject": "add some double-quotes, and update some descriptions"
+		},
+		{
+			"date": "2024-07-24",
+			"hash": "ef11c5c",
+			"subject": "fix some single-page HTML pages"
+		},
+		{
+			"date": "2024-07-23",
+			"hash": "c0d3cba",
+			"subject": "fix Codd's papers"
+		},
+		{
+			"date": "2024-07-23",
+			"hash": "eb01d52",
+			"subject": "improve the papers-od-Codd page quite a bit"
+		}
+	],
+	"articles/the-papers-of-ef-the-coddfather-codd/1988-fatal-flaws-in-sql/index.html": [
+		{
+			"date": "2026-03-09",
+			"hash": "7c80a18",
+			"subject": "format all files with oxfmt (quite the restructure lmao"
+		},
+		{
+			"date": "2024-09-02",
+			"hash": "384066e",
+			"subject": "add some double-quotes, and update some descriptions"
+		},
+		{
+			"date": "2024-07-24",
+			"hash": "ef11c5c",
+			"subject": "fix some single-page HTML pages"
+		},
+		{
+			"date": "2024-07-23",
+			"hash": "c0d3cba",
+			"subject": "fix Codd's papers"
+		},
+		{
+			"date": "2024-07-23",
+			"hash": "eb01d52",
+			"subject": "improve the papers-od-Codd page quite a bit"
+		}
+	],
+	"articles/the-papers-of-ef-the-coddfather-codd/_index.md": [
+		{
+			"date": "2026-04-04",
+			"hash": "fdbda6b",
+			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
+		},
+		{
+			"date": "2026-03-09",
+			"hash": "7c80a18",
+			"subject": "format all files with oxfmt (quite the restructure lmao"
+		},
+		{
+			"date": "2024-09-02",
+			"hash": "98f77ee",
+			"subject": "turn the BONUS list into an actual list"
+		},
+		{
+			"date": "2024-07-23",
+			"hash": "c0d3cba",
+			"subject": "fix Codd's papers"
+		},
+		{
+			"date": "2024-07-23",
+			"hash": "eaa1062",
+			"subject": "update lastmod for \"The Papers of E.F. \\\"The Coddfather\\\" Codd\""
+		}
+	]
+}

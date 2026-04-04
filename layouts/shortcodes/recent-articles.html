@@ -1,15 +1,10 @@
-{{- $count := .Get "count" | default 2 | int -}}
-{{- $articles := where .Site.Pages "Section" "articles" -}}
-{{- $articles = where $articles "Params.layout" "article" -}}
-{{- $articles = $articles.ByPublishDate.Reverse | first $count -}}
-
-{{- if $articles -}}
+{{- $count := .Get "count" | default 2 | int -}} {{- $articles := where .Site.Pages "Section" "articles" -}} {{- $articles = where $articles "Params.layout" "article" -}} {{- $articles = $articles.ByPublishDate.Reverse | first $count -}} {{- if $articles -}}
 <ul>
-  {{- range $articles }}
-  <li>
-    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-    <small>({{ .PublishDate.Format "2006-01-02" }})</small>
-  </li>
-  {{- end }}
+	{{- range $articles }}
+	<li>
+		<a href="{{ .RelPermalink }}">{{ .Title }}</a>
+		<small>({{ .PublishDate.Format "2006-01-02" }})</small>
+	</li>
+	{{- end }}
 </ul>
 {{- end -}}

@@ -165,22 +165,22 @@ declare function clamp(value: number, min: number, max: number): number;
 const SNIPPETS = [
 	{
 		label: "gradientRect",
-		insertText: "gradientRect(${1:0}, ${2:0}, ${3:width}, ${4:height}, [[0, ${5:\"#bdeefd\"}], [1, ${6:\"#edf8ff\"}]])",
+		insertText: 'gradientRect(${1:0}, ${2:0}, ${3:width}, ${4:height}, [[0, ${5:"#bdeefd"}], [1, ${6:"#edf8ff"}]])',
 		documentation: "Draw a gradient-filled rectangle.",
 	},
 	{
 		label: "polygon",
-		insertText: "polygon([[${1:0}, ${2:0}], [${3:120}, ${4:40}], [${5:0}, ${6:140}]], { fill: ${7:\"#ff9eb5\"} })",
+		insertText: 'polygon([[${1:0}, ${2:0}], [${3:120}, ${4:40}], [${5:0}, ${6:140}]], { fill: ${7:"#ff9eb5"} })',
 		documentation: "Draw a filled polygon from points.",
 	},
 	{
 		label: "circle",
-		insertText: "circle(${1:width / 2}, ${2:height / 2}, ${3:42}, { fill: ${4:\"#f8c7dd\"}, opacity: ${5:0.7} })",
+		insertText: 'circle(${1:width / 2}, ${2:height / 2}, ${3:42}, { fill: ${4:"#f8c7dd"}, opacity: ${5:0.7} })',
 		documentation: "Draw a circle.",
 	},
 	{
 		label: "branch",
-		insertText: "branch(${1:220}, ${2:780}, ${3:320}, ${4:620}, ${5:28}, { fill: ${6:\"#120706\"}, taper: ${7:0.24} })",
+		insertText: 'branch(${1:220}, ${2:780}, ${3:320}, ${4:620}, ${5:28}, { fill: ${6:"#120706"}, taper: ${7:0.24} })',
 		documentation: "Draw a tapered branch segment.",
 	},
 	{
@@ -319,7 +319,7 @@ importScripts("${MONACO_BASE_URL}/base/worker/workerMain.js");
 		window.require(
 			["vs/editor/editor.main"],
 			() => resolve(window.monaco),
-			(error) => reject(error instanceof Error ? error : new Error(String(error))),
+			(error) => reject(error instanceof Error ? error : new Error(String(error)))
 		);
 	});
 }
@@ -712,14 +712,7 @@ function syncHighlights() {
 	}
 
 	const activeLine = state.hoveredPreviewLine ?? (state.ctrlDown ? state.hoveredEditorLine : null);
-	const literalRange = state.activeLiteral
-		? new state.monaco.Range(
-				state.activeLiteral.lineNumber,
-				state.activeLiteral.startColumn,
-				state.activeLiteral.lineNumber,
-				state.activeLiteral.endColumn,
-			)
-		: null;
+	const literalRange = state.activeLiteral ? new state.monaco.Range(state.activeLiteral.lineNumber, state.activeLiteral.startColumn, state.activeLiteral.lineNumber, state.activeLiteral.endColumn) : null;
 
 	state.lineDecorations = state.editor.deltaDecorations(
 		state.lineDecorations,
@@ -734,7 +727,7 @@ function syncHighlights() {
 						},
 					},
 				]
-			: [],
+			: []
 	);
 
 	state.literalDecorations = state.editor.deltaDecorations(
@@ -746,7 +739,7 @@ function syncHighlights() {
 						options: { inlineClassName: "iop-code-token-decoration" },
 					},
 				]
-			: [],
+			: []
 	);
 
 	const shapeNodes = dom.scene.querySelectorAll(".scene-shape");
@@ -758,9 +751,7 @@ function syncHighlights() {
 	});
 
 	if (activeLine) {
-		dom.status.textContent = state.ctrlDown
-			? `Inspecting line ${activeLine}${state.hoveredPreviewKind ? ` via ${state.hoveredPreviewKind}` : ""}.`
-			: `Preview linked to line ${activeLine}.`;
+		dom.status.textContent = state.ctrlDown ? `Inspecting line ${activeLine}${state.hoveredPreviewKind ? ` via ${state.hoveredPreviewKind}` : ""}.` : `Preview linked to line ${activeLine}.`;
 	}
 }
 
@@ -798,12 +789,7 @@ function findLiteralNearPosition(position, options = {}) {
 	}
 
 	if (options.preferredLiteral) {
-		const preferredMatch = literals.find(
-			(literal) =>
-				literal.type === options.preferredLiteral.type &&
-				literal.startColumn === options.preferredLiteral.startColumn &&
-				literal.endColumn === options.preferredLiteral.endColumn,
-		);
+		const preferredMatch = literals.find((literal) => literal.type === options.preferredLiteral.type && literal.startColumn === options.preferredLiteral.startColumn && literal.endColumn === options.preferredLiteral.endColumn);
 
 		if (preferredMatch && literalColumnDistance(preferredMatch, columnIndex) <= proximity) {
 			return preferredMatch;
@@ -932,7 +918,10 @@ function formatNumericLiteral(value, raw) {
 	}
 
 	const decimals = raw.includes(".") ? raw.split(".")[1].length : 2;
-	return Number(value).toFixed(Math.min(Math.max(decimals, 2), 4)).replace(/0+$/, "").replace(/\.$/, "");
+	return Number(value)
+		.toFixed(Math.min(Math.max(decimals, 2), 4))
+		.replace(/0+$/, "")
+		.replace(/\.$/, "");
 }
 
 function scanColorLiterals(lineText, lineNumber) {

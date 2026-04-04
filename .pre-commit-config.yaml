@@ -1,0 +1,8 @@
+repos:
+  - repo: local
+    hooks:
+      - id: oxfmt
+        name: oxfmt
+        entry: oxfmt .
+        language: system
+        pass_filenames: false

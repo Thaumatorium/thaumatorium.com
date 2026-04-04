@@ -1,3 +1,7 @@
+$ErrorActionPreference = "Stop"
+
+& .\cmd\generate-page-changelogs.ps1
+
 hugo --buildDrafts
 $htmlfiles = Get-ChildItem .\public\ -Filter *.html -Recurse
 foreach ($file in $htmlfiles) {
@@ -6,5 +10,8 @@ foreach ($file in $htmlfiles) {
     Where-Object { $_.trim() -ne "" } |
     Set-Content $file.PSPath
 }
-
-prettier --ignore-path .prettierignore --write "public/**/*"
+if (Get-Command prettier -ErrorAction SilentlyContinue) {
+    prettier --ignore-path .prettierignore --write "public/**/*"
+} else {
+    Write-Host "Skipping Prettier: command not found"
+}

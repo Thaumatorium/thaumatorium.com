@@ -29,7 +29,7 @@ just fmt
 just fmt-public
 ```
 
-Git hooks use `prek` with `.pre-commit-config.yaml`:
+Git hooks use `prek` with a local `oxfmt` hook:
 
 ```bash
 just prek-install
