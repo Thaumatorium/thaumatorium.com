@@ -1,6 +1,6 @@
 const USER_SOURCE_ID = "inventing-on-principle-user-code.js";
 const USER_SOURCE_LINE_OFFSET = 1;
-const MONACO_BASE_URL = "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs";
+const MONACO_BASE_URL = "https://cdn.jsdelivr.net/npm/monaco-editor@0.55.1/min/vs";
 const SCENE_WIDTH = 760;
 const SCENE_HEIGHT = 920;
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -203,8 +203,6 @@ const dom = {
 	error: document.getElementById("iop-error"),
 	sliderWidget: document.getElementById("iop-slider-widget"),
 	sliderInput: document.getElementById("iop-slider-input"),
-	colorWidget: document.getElementById("iop-color-widget"),
-	colorInput: document.getElementById("iop-color-input"),
 };
 
 const state = {
@@ -213,13 +211,12 @@ const state = {
 	model: null,
 	renderHandle: 0,
 	ctrlDown: false,
-	altDown: false,
 	hoveredEditorLine: null,
 	hoveredPreviewLine: null,
 	hoveredPreviewKind: "",
 	activeLiteral: null,
 	sliderHover: false,
-	colorHover: false,
+	hideTimer: 0,
 	lastScene: [],
 	lineDecorations: [],
 	literalDecorations: [],
@@ -248,11 +245,6 @@ function bindGlobalEvents() {
 		if (event.key === "Control") {
 			state.ctrlDown = true;
 			updateModifierClasses();
-		}
-
-		if (event.key === "Alt") {
-			state.altDown = true;
-			updateModifierClasses();
 			syncHighlights();
 		}
 	});
@@ -260,12 +252,6 @@ function bindGlobalEvents() {
 	window.addEventListener("keyup", (event) => {
 		if (event.key === "Control") {
 			state.ctrlDown = false;
-			updateModifierClasses();
-			queueLiteralWidgetHide();
-		}
-
-		if (event.key === "Alt") {
-			state.altDown = false;
 			state.hoveredEditorLine = null;
 			updateModifierClasses();
 			syncHighlights();
@@ -274,7 +260,6 @@ function bindGlobalEvents() {
 
 	window.addEventListener("blur", () => {
 		state.ctrlDown = false;
-		state.altDown = false;
 		state.hoveredEditorLine = null;
 		updateModifierClasses();
 		hideLiteralWidgets();
@@ -287,15 +272,6 @@ function bindGlobalEvents() {
 
 	dom.sliderWidget.addEventListener("mouseleave", () => {
 		state.sliderHover = false;
-		queueLiteralWidgetHide();
-	});
-
-	dom.colorWidget.addEventListener("mouseenter", () => {
-		state.colorHover = true;
-	});
-
-	dom.colorWidget.addEventListener("mouseleave", () => {
-		state.colorHover = false;
 		queueLiteralWidgetHide();
 	});
 
@@ -316,18 +292,6 @@ function bindGlobalEvents() {
 			dom.sliderInput.value = replacement;
 		}
 	});
-
-	dom.colorInput.addEventListener("input", () => {
-		if (!state.activeLiteral || state.activeLiteral.type !== "color") {
-			return;
-		}
-
-		replaceLiteral(state.activeLiteral, dom.colorInput.value.toLowerCase());
-		const updatedLiteral = findLiteralByRange(state.activeLiteral.lineNumber, state.activeLiteral.startColumn, dom.colorInput.value.length);
-		if (updatedLiteral) {
-			state.activeLiteral = updatedLiteral;
-		}
-	});
 }
 
 async function loadMonaco() {
@@ -339,13 +303,14 @@ async function loadMonaco() {
 		await loadScript(`${MONACO_BASE_URL}/loader.min.js`);
 	}
 
+	const monacoBaseDir = MONACO_BASE_URL.replace(/\/vs\/?$/, "/");
 	window.MonacoEnvironment = {
 		getWorkerUrl() {
 			const body = `
-self.MonacoEnvironment = { baseUrl: "${MONACO_BASE_URL}/" };
+self.MonacoEnvironment = { baseUrl: "${monacoBaseDir}" };
 importScripts("${MONACO_BASE_URL}/base/worker/workerMain.js");
 `;
-			return `data:text/javascript;charset=utf-8,${encodeURIComponent(body)}`;
+			return URL.createObjectURL(new Blob([body], { type: "text/javascript" }));
 		},
 	};
 
@@ -457,18 +422,16 @@ function setupEditor(monaco) {
 			return;
 		}
 
-		if (state.altDown) {
+		if (state.ctrlDown) {
 			state.hoveredEditorLine = position.lineNumber;
 			syncHighlights();
 		}
 
-		if (state.ctrlDown) {
-			const literal = findHoverLiteral(position);
-			if (literal) {
-				showLiteralWidget(literal);
-			} else {
-				queueLiteralWidgetHide();
-			}
+		const literal = findHoverLiteral(position);
+		if (literal && literal.type === "number") {
+			showLiteralWidget(literal);
+		} else {
+			queueLiteralWidgetHide();
 		}
 	});
 
@@ -748,7 +711,7 @@ function syncHighlights() {
 		return;
 	}
 
-	const activeLine = state.hoveredPreviewLine ?? (state.altDown ? state.hoveredEditorLine : null);
+	const activeLine = state.hoveredPreviewLine ?? (state.ctrlDown ? state.hoveredEditorLine : null);
 	const literalRange = state.activeLiteral
 		? new state.monaco.Range(
 				state.activeLiteral.lineNumber,
@@ -791,11 +754,11 @@ function syncHighlights() {
 		const line = Number(node.dataset.line || 0);
 		const linked = Boolean(activeLine) && line === activeLine;
 		node.classList.toggle("is-linked", linked);
-		node.classList.toggle("is-inspected", linked && state.altDown);
+		node.classList.toggle("is-inspected", linked && state.ctrlDown);
 	});
 
 	if (activeLine) {
-		dom.status.textContent = state.altDown
+		dom.status.textContent = state.ctrlDown
 			? `Inspecting line ${activeLine}${state.hoveredPreviewKind ? ` via ${state.hoveredPreviewKind}` : ""}.`
 			: `Preview linked to line ${activeLine}.`;
 	}
@@ -872,6 +835,11 @@ function literalColumnDistance(literal, columnIndex) {
 }
 
 function showLiteralWidget(literal) {
+	if (state.hideTimer) {
+		window.clearTimeout(state.hideTimer);
+		state.hideTimer = 0;
+	}
+
 	state.activeLiteral = literal;
 	syncHighlights();
 
@@ -883,40 +851,28 @@ function showLiteralWidget(literal) {
 		dom.sliderInput.value = literal.raw;
 		positionWidget(dom.sliderWidget, literal);
 		dom.sliderWidget.hidden = false;
-		dom.colorWidget.hidden = true;
-		return;
-	}
-
-	if (literal.type === "color") {
-		dom.colorInput.value = normaliseColor(literal.raw);
-		positionWidget(dom.colorWidget, literal);
-		dom.colorWidget.hidden = false;
-		dom.sliderWidget.hidden = true;
 	}
 }
 
 function hideLiteralWidgets() {
 	state.activeLiteral = null;
 	dom.sliderWidget.hidden = true;
-	dom.colorWidget.hidden = true;
 	syncHighlights();
 }
 
 function queueLiteralWidgetHide() {
-	window.setTimeout(() => {
-		if (state.ctrlDown && (state.sliderHover || state.colorHover)) {
+	if (state.hideTimer) {
+		window.clearTimeout(state.hideTimer);
+	}
+
+	state.hideTimer = window.setTimeout(() => {
+		state.hideTimer = 0;
+		if (state.sliderHover) {
 			return;
 		}
 
-		if (!state.ctrlDown) {
-			hideLiteralWidgets();
-			return;
-		}
-
-		if (!state.sliderHover && !state.colorHover) {
-			hideLiteralWidgets();
-		}
-	}, 20);
+		hideLiteralWidgets();
+	}, 400);
 }
 
 function positionWidget(widget, literal) {
@@ -933,7 +889,8 @@ function positionWidget(widget, literal) {
 	const editorRect = dom.editor.getBoundingClientRect();
 	const widgetRect = widget.getBoundingClientRect();
 	const left = editorRect.left - codeRect.left + editorPosition.left;
-	const top = editorRect.top - codeRect.top + editorPosition.top + editorPosition.height + 14;
+	const widgetHeight = Math.max(widgetRect.height, 40);
+	const top = editorRect.top - codeRect.top + editorPosition.top - widgetHeight - 6;
 	const maxLeft = dom.codePage.clientWidth - Math.max(widgetRect.width, 220) - 24;
 
 	widget.style.left = `${Math.max(16, Math.min(left, maxLeft))}px`;
@@ -958,8 +915,9 @@ function findLiteralByRange(lineNumber, startColumn, replacementLength) {
 function numericBounds(value, raw) {
 	const integer = /^-?\d+$/.test(raw);
 	const decimals = raw.includes(".") ? raw.split(".")[1].length : 0;
-	const magnitude = Math.max(Math.abs(value), integer ? 8 : 1);
-	const span = integer ? Math.max(12, magnitude * 2.4) : Math.max(1, magnitude * 1.8);
+	const absVal = Math.abs(value);
+	const magnitude = absVal < 1e-9 ? 1 : 10 ** (Math.floor(Math.log10(absVal)) + 1);
+	const span = magnitude * 1.5;
 	const step = integer ? 1 : 10 ** -Math.min(Math.max(decimals, 2), 4);
 	return {
 		min: roundTo(value - span, step),
@@ -1071,7 +1029,7 @@ function formatError(error) {
 }
 
 function updateModifierClasses() {
-	dom.page.classList.toggle("is-inspecting", state.altDown);
+	dom.page.classList.toggle("is-inspecting", state.ctrlDown);
 }
 
 function stringifyPoints(points) {

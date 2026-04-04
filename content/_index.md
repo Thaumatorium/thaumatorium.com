@@ -16,15 +16,10 @@ functions as host repo, using Github Pages or whatever it's called.
 
 If you want more details about this site, check out the [About](/about) page.
 
-## Top articles
+## 10 newest articles
 
-- [The Papers of E.F. "The Coddfather" Codd](/articles/the-papers-of-ef-the-coddfather-codd)
-- [Haskell's fold functions explained](/articles/haskells-fold-functions-explained)
-- [Spark files and keeping track of your ideas, concepts &
-  thoughts](/articles/spark-files-and-keeping-track-of-your-ideas-concepts-thoughts)
-- [The different types of functions in Functional
-  Programming](/articles/the-different-types-of-functions-in-functional-programming)
+{{< recent-articles count="10" >}}
 
-## Top projects
+## 10 newest projects
 
-- [Warcraft Credits](/projects/warcraft-credits)
+{{< recent-projects count="10" >}}

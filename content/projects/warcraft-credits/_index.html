@@ -1,5 +1,5 @@
 ---
-title: "NostraDavid's Warcraft's Credit Visualizer"
+title: "NostraDavid's Warcraft Credit Visualizer"
 description: "Compare the credits of two Warcraft games and see who worked on both, which roles they held, and how those overlaps connect."
 publishDate: 2021-11-08T21:37:49+01:00
 lastmod: 2026-03-08T22:55:00+01:00
@@ -8,11 +8,12 @@ aliases:
 ---
 
 <style>
+	/* ── Instructions collapsible ── */
 	.instructions-collapsible {
-		border: 1px solid #ccc;
+		border: 1px solid #cda9a9;
 		border-radius: 4px;
-		margin: 15px;
-		background-color: #f9f9f9;
+		margin: 15px 0;
+		background-color: #fffaf9;
 		overflow: hidden;
 		flex-shrink: 0;
 	}
@@ -21,31 +22,32 @@ aliases:
 		padding: 10px 15px;
 		font-weight: bold;
 		cursor: pointer;
-		background-color: #f0f0f0;
+		background-color: #fffaf9;
 		outline: none;
 		transition: background-color 0.2s ease;
-		border-bottom: 1px solid #ccc;
+		border-bottom: 1px solid #cda9a9;
 		list-style-position: inside;
 		position: relative;
+		color: #800;
 	}
 
 	.instructions-collapsible summary::marker,
 	.instructions-collapsible summary::-webkit-details-marker {
-		color: #555;
+		color: #800;
 	}
 
 	.instructions-collapsible summary:hover {
-		background-color: #e8e8e8;
+		background-color: #fff0f0;
 	}
 
 	.instructions-collapsible summary:focus-visible {
-		box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+		box-shadow: 0 0 0 2px rgba(136, 0, 0, 0.4);
 		border-radius: 3px;
 	}
 
 	.instructions-collapsible[open] summary {
-		background-color: #e5e5e5;
-		border-bottom: 1px solid #ccc;
+		background-color: #fff0f0;
+		border-bottom: 1px solid #cda9a9;
 	}
 
 	.instructions-collapsible .instructions-content {
@@ -71,11 +73,13 @@ aliases:
 		color: #333;
 	}
 
+	/* ── Controls panel ── */
 	.controls {
 		padding: 15px;
-		border-bottom: 1px solid #ccc;
-		background-color: #fff;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+		border: 1px solid #cda9a9;
+		border-radius: 4px;
+		background-color: #fffaf9;
+		box-shadow: 3px 3px 5px #555;
 		display: flex;
 		flex-direction: column;
 		gap: 15px;
@@ -111,7 +115,7 @@ aliases:
 
 	.game-selection-row select {
 		padding: 8px 10px;
-		border: 1px solid #ccc;
+		border: 1px solid #b98f8f;
 		border-radius: 4px;
 		min-width: 250px;
 		max-width: 400px;
@@ -124,18 +128,17 @@ aliases:
 
 	.row-action-button {
 		padding: 8px 15px;
-		border: 1px solid #ccc;
+		border: 2px solid #6e0000;
 		border-radius: 4px;
-		background-color: #eee;
-		color: #333;
+		background-color: #800;
+		color: #fff;
 		cursor: pointer;
 		font-size: 0.9rem;
 		font-family: inherit;
 	}
 
 	.row-action-button:hover:not(:disabled) {
-		background-color: #ddd;
-		color: #000;
+		background-color: #940000;
 	}
 
 	.row-action-button:disabled {
@@ -150,8 +153,8 @@ aliases:
 	}
 
 	.stats-box {
-		border: 1px solid #e0e0e0;
-		background-color: #f7f7f7;
+		border: 1px solid #cda9a9;
+		background-color: #fffaf9;
 		padding: 6px 12px;
 		border-radius: 4px;
 		min-width: 180px;
@@ -160,7 +163,7 @@ aliases:
 		flex-direction: column;
 		gap: 3px;
 		font-size: 0.85rem;
-		color: #444;
+		color: #555;
 	}
 
 	.stats-box .stat-item {
@@ -178,7 +181,7 @@ aliases:
 	.stats-box .stat-value {
 		font-family: monospace;
 		font-variant-numeric: tabular-nums;
-		color: #111;
+		color: #333;
 	}
 
 	.simulation-controls {
@@ -191,20 +194,19 @@ aliases:
 
 	.controls button {
 		padding: 8px 15px;
-		border: 1px solid #ccc;
+		border: 2px solid #6e0000;
 		border-radius: 4px;
-		background-color: #eee;
-		color: #333;
+		background-color: #800;
+		color: #fff;
 		cursor: pointer;
 		font-size: 0.9rem;
-		box-shadow: none;
+		box-shadow: 2px 2px 5px #555;
 		text-transform: none;
 		font-family: inherit;
 	}
 
 	.controls button:hover:not(:disabled) {
-		background-color: #ddd;
-		color: #000;
+		background-color: #940000;
 	}
 
 	.controls button:disabled {
@@ -219,9 +221,10 @@ aliases:
 		box-shadow: none;
 	}
 
+	/* ── Status messages ── */
 	.status-message {
 		text-align: center;
-		margin: 10px 15px;
+		margin: 10px 0;
 		padding: 10px 15px;
 		border-radius: 4px;
 		max-width: 100%;
@@ -236,9 +239,9 @@ aliases:
 	}
 
 	#loadingMessage {
-		color: #555;
-		background-color: #eef;
-		border: 1px solid #dde;
+		color: #800;
+		background-color: #fffaf9;
+		border: 1px solid #cda9a9;
 	}
 
 	#loadingMessage::before {
@@ -268,37 +271,38 @@ aliases:
 	}
 
 	.shared-stats strong {
-		color: #2c3e50;
+		color: #800;
 	}
 
 	.error-message {
-		color: #a94442;
-		background-color: #f2dede;
-		border: 1px solid #ebccd1;
+		color: #800;
+		background-color: #fff0f0;
+		border: 1px solid #cda9a9;
 		font-weight: bold;
 		font-family: inherit;
 		line-height: inherit;
 		padding: 10px 15px;
-		border-left: 1px solid #ebccd1;
+		border-left: 3px solid #800;
 	}
 
 	.warning-message {
-		color: #8a6d3b;
-		background-color: #fcf8e3;
-		border: 1px solid #faebcc;
+		color: #6e0000;
+		background-color: #fffaf9;
+		border: 1px solid #cda9a9;
 		font-weight: normal;
 		font-family: inherit;
 		line-height: inherit;
 		padding: 10px 15px;
-		border-left: 1px solid #faebcc;
+		border-left: 3px solid #d40000;
 	}
 
+	/* ── Graph container ── */
 	#d3-graph-container {
-		border: 1px solid #ccc;
+		border: 1px solid #cda9a9;
 		display: block;
-		background-color: #f9f9f9;
-		margin: 2vh auto;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+		background-color: #fffaf9;
+		margin: 1rem 0;
+		box-shadow: 3px 3px 5px #555;
 		box-sizing: border-box;
 		overflow: hidden;
 		cursor: grab;
@@ -306,6 +310,7 @@ aliases:
 		min-height: 50%;
 		height: 80vh;
 		width: 100%;
+		border-radius: 4px;
 	}
 
 	#d3-graph-container:active {
@@ -313,7 +318,7 @@ aliases:
 	}
 
 	.links line {
-		stroke: #bbb;
+		stroke: #cda9a9;
 		stroke-opacity: 0.6;
 		stroke-width: 1.5px;
 	}
@@ -327,6 +332,7 @@ aliases:
 		pointer-events: none;
 	}
 
+	/* ── Nodes ── */
 	.nodes g.node {
 		cursor: pointer;
 		opacity: 1;
@@ -346,7 +352,7 @@ aliases:
 	.nodes g.node text.node-label {
 		font-family: sans-serif;
 		font-size: 10px;
-		fill: #444;
+		fill: #333;
 		paint-order: stroke;
 		stroke: white;
 		stroke-width: 2.5px;
@@ -376,7 +382,7 @@ aliases:
 	}
 
 	.nodes g.node.highlighted-department:not(.game) text.node-label {
-		fill: #c0392b;
+		fill: #800;
 	}
 
 	#d3-graph-container.show-all-labels .nodes g.node:not(.game) text.node-label {
@@ -395,7 +401,7 @@ aliases:
 
 	.nodes g.node.tooltip-active path.person-slice,
 	.nodes g.node.tooltip-active rect.game-rect {
-		stroke: #000;
+		stroke: #800;
 		stroke-width: 3px;
 	}
 
@@ -405,7 +411,7 @@ aliases:
 
 	.nodes g.node.highlighted-department path.person-slice,
 	.nodes g.node.highlighted-department rect.game-rect {
-		stroke: #e74c3c;
+		stroke: #800;
 		stroke-width: 3.5px;
 	}
 
@@ -431,7 +437,7 @@ aliases:
 
 	.nodes.department-highlight-active g.node.game text.node-label {
 		opacity: 1;
-		fill: #444;
+		fill: #333;
 	}
 
 	.nodes.department-highlight-active g.node.game:not(.highlighted-department) rect.game-rect {
@@ -439,23 +445,23 @@ aliases:
 		stroke-width: 1.5px;
 	}
 
+	/* ── Tooltip ── */
 	#tooltip {
 		display: none;
 		position: absolute;
-		background: linear-gradient(180deg, rgba(18, 22, 30, 0.97), rgba(10, 13, 18, 0.97));
-		color: #f6f2e8;
+		background: #fffaf9;
+		color: #333;
 		padding: 0;
-		border-radius: 12px;
+		border-radius: 4px;
 		font-size: 0.85rem;
 		z-index: 100;
 		max-width: 360px;
 		white-space: normal;
-		box-shadow: 0 14px 36px rgba(0, 0, 0, 0.38);
-		border: 1px solid rgba(207, 178, 114, 0.35);
-		backdrop-filter: blur(8px);
+		box-shadow: 3px 3px 5px #555;
+		border: 1px solid #800;
 		user-select: text;
 		pointer-events: none;
-		font-family: Georgia, serif;
+		font-family: inherit;
 		line-height: 1.5;
 	}
 
@@ -474,7 +480,7 @@ aliases:
 	#tooltip strong {
 		display: block;
 		margin: 0;
-		color: #fff8e7;
+		color: #800;
 		font-weight: bold;
 		font-size: 1rem;
 		line-height: 1.25;
@@ -483,10 +489,10 @@ aliases:
 	#tooltip .tooltip-kind {
 		flex-shrink: 0;
 		padding: 0.12rem 0.45rem;
-		border-radius: 999px;
-		border: 1px solid rgba(207, 178, 114, 0.35);
-		background: rgba(207, 178, 114, 0.12);
-		color: #e7c98a;
+		border-radius: 4px;
+		border: 1px solid #cda9a9;
+		background: #fffaf9;
+		color: #800;
 		font-size: 0.68rem;
 		font-family: Tahoma, sans-serif;
 		letter-spacing: 0.05em;
@@ -494,7 +500,7 @@ aliases:
 	}
 
 	#tooltip .tooltip-meta {
-		color: #d7d0c0;
+		color: #555;
 		font-size: 0.8rem;
 		margin-bottom: 0.65rem;
 	}
@@ -502,7 +508,7 @@ aliases:
 	#tooltip .tooltip-section {
 		margin-top: 0.7rem;
 		padding-top: 0.55rem;
-		border-top: 1px solid rgba(255, 255, 255, 0.08);
+		border-top: 1px solid #cda9a9;
 	}
 
 	#tooltip .tooltip-section:first-of-type {
@@ -510,7 +516,7 @@ aliases:
 	}
 
 	#tooltip .tooltip-section-label {
-		color: #f2d9a0;
+		color: #800;
 		font-size: 0.73rem;
 		font-family: Tahoma, sans-serif;
 		font-weight: 700;
@@ -520,15 +526,15 @@ aliases:
 	}
 
 	#tooltip .tooltip-section-shared .tooltip-section-label {
-		color: #c8f0d2;
+		color: #470000;
 	}
 
 	#tooltip .tooltip-section-game .tooltip-section-label {
-		color: #c8d8f0;
+		color: #6e0000;
 	}
 
 	#tooltip .tooltip-section-repeated .tooltip-section-label {
-		color: #f0d3c8;
+		color: #d40000;
 	}
 
 	#tooltip .tooltip-list {
@@ -537,19 +543,12 @@ aliases:
 	}
 
 	#tooltip .tooltip-list li {
-		color: #ebe4d5;
+		color: #333;
 		font-size: 0.8rem;
 		margin: 0.08rem 0;
 	}
 
-	body > main {
-		width: 100%;
-		max-width: 100%;
-		padding: 0 15px;
-		margin: 0;
-		box-sizing: border-box;
-	}
-
+	/* ── Filters ── */
 	.filter-controls {
 		display: flex;
 		flex-wrap: wrap;
@@ -578,7 +577,7 @@ aliases:
 
 	.filter-group select {
 		padding: 5px 8px;
-		border: 1px solid #ccc;
+		border: 1px solid #b98f8f;
 		border-radius: 4px;
 		background-color: #fff;
 		font-size: 0.9rem;
@@ -587,7 +586,7 @@ aliases:
 
 	.filter-group input[type="text"] {
 		padding: 6px 10px;
-		border: 1px solid #ccc;
+		border: 1px solid #b98f8f;
 		border-radius: 4px;
 		font-size: 0.9rem;
 		flex-grow: 1;

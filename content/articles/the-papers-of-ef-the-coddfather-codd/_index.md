@@ -1,8 +1,9 @@
 ---
 title: 'The Papers of E.F. "The Coddfather" Codd'
+description: "A collection of E.F. Codd's relational model papers, gathered in one place"
 publishDate: 2024-04-07T16:14:44+02:00
 lastmod: 2024-07-23T22:52:47+02:00
-draft: true
+layout: article
 ---
 
 Edgar Frank "Ted" Codd, also known as "The Coddfather", or more generally as "The Father of the Relational Model".

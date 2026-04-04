@@ -1,0 +1,16 @@
+{{- $count := .Get "count" | default 2 | int -}}
+{{- $projects := where .Site.Pages "Section" "projects" -}}
+{{- $projects = where $projects "Kind" "in" (slice "page" "section") -}}
+{{- $projects = where $projects "RelPermalink" "ne" "/projects/" -}}
+{{- $projects = $projects.ByPublishDate.Reverse | first $count -}}
+
+{{- if $projects -}}
+<ul>
+  {{- range $projects }}
+  <li>
+    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+    <small>({{ .PublishDate.Format "2006-01-02" }})</small>
+  </li>
+  {{- end }}
+</ul>
+{{- end -}}

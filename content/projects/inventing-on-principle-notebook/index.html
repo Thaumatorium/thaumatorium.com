@@ -7,22 +7,21 @@ aliases:
   - "/projects/live-visual-notebook/"
 ---
 
-<section class="iop-page">
+<div class="iop-page">
 	<link rel="stylesheet" href="notebook.css" />
 
-	<header class="iop-hero">
+	<div class="iop-hero">
 		<p class="iop-eyebrow">Live visual notebook</p>
-		<h1>Inventing on Principle Notebook</h1>
 		<p class="iop-intro">
-			A code-and-canvas notebook in the spirit of Bret Victor: the scene redraws live while you type, numeric literals can be dragged with <kbd>Ctrl</kbd>, hex colors pop a picker with <kbd>Ctrl</kbd>, and <kbd>Alt</kbd> turns the notebook into an inspector that links code lines to visible shapes.
+			A code-and-canvas notebook in the spirit of Bret Victor: the scene redraws live while you type, numeric literals show a slider on hover, hex colors pop a picker on hover, and <kbd>Ctrl</kbd> turns the notebook into an inspector that links code lines to visible shapes.
 		</p>
 		<div class="iop-shortcuts" aria-label="Keyboard shortcuts">
-			<span><kbd>Ctrl</kbd> hover a number for a slider</span>
-			<span><kbd>Ctrl</kbd> hover a hex color for a picker</span>
-			<span><kbd>Alt</kbd> inspect code to visual output</span>
+			<span>Hover a number for a slider</span>
+			<span>Hover a hex color for a picker</span>
+			<span><kbd>Ctrl</kbd> inspect code to visual output</span>
 			<span>Hover the preview to spotlight its source line</span>
 		</div>
-	</header>
+	</div>
 
 	<div class="iop-book" id="iop-book">
 		<section class="iop-preview-page" id="iop-preview-page" aria-labelledby="iop-preview-title">
@@ -49,9 +48,6 @@ aliases:
 				<div class="iop-widget iop-slider-widget" id="iop-slider-widget" hidden>
 					<input id="iop-slider-input" type="range" aria-label="Adjust numeric literal" />
 				</div>
-				<div class="iop-widget iop-color-widget" id="iop-color-widget" hidden>
-					<input id="iop-color-input" type="color" aria-label="Adjust color literal" />
-				</div>
 			</div>
 		</section>
 	</div>
@@ -66,4 +62,4 @@ aliases:
 	</noscript>
 
 	<script type="module" src="notebook.mjs"></script>
-</section>
+</div>
