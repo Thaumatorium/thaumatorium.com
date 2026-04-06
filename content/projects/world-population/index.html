@@ -1,0 +1,233 @@
+---
+title: "World Population"
+description: "Country-by-country population data scraped from Worldometer into a chart-ready JSON file."
+publishDate: 2026-04-06T20:17:25+02:00
+lastmod: 2026-04-06T20:17:25+02:00
+---
+
+<div class="world-population-page">
+	<style>
+		.world-population-page {
+			display: grid;
+			gap: 1rem;
+			color: #333;
+		}
+
+		.world-population-panel,
+		.world-population-stage {
+			border: 1px solid #cda9a9;
+			border-radius: 4px;
+			background: #fffaf9;
+			box-shadow: 3px 3px 5px #555;
+		}
+
+		.world-population-panel {
+			display: grid;
+			gap: 0.9rem;
+			padding: 1rem;
+		}
+
+		.world-population-panel h2,
+		.world-population-panel p {
+			margin: 0;
+		}
+
+		.world-population-panel p,
+		.world-population-status {
+			color: #555;
+		}
+
+		.world-population-toolbar,
+		.world-population-scale,
+		.world-population-visibility,
+		.world-population-continents,
+		.world-population-legend,
+		.world-population-highlight {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.75rem;
+			align-items: center;
+		}
+
+		.world-population-field {
+			display: grid;
+			gap: 0.35rem;
+			flex: 1 1 18rem;
+		}
+
+		.world-population-slider {
+			display: grid;
+			gap: 0.35rem;
+			flex: 1 1 14rem;
+		}
+
+		.world-population-field input {
+			border: 1px solid #b98f8f;
+			border-radius: 4px;
+			padding: 0.6rem 0.75rem;
+			font: inherit;
+			background: #fff;
+			color: #333;
+		}
+
+		.world-population-slider input[type="range"] {
+			accent-color: #800;
+		}
+
+		.world-population-chip {
+			display: inline-flex;
+			align-items: stretch;
+			border: 1px solid #cda9a9;
+			border-radius: 999px;
+			background: #fff;
+			color: #333;
+			overflow: hidden;
+		}
+
+		.world-population-chip.is-selected {
+			border-color: #800;
+			background: #fff0f0;
+			box-shadow: inset 0 0 0 1px #800;
+			font-weight: 700;
+		}
+
+		.world-population-chip-swatch {
+			width: 0.8rem;
+			height: 0.8rem;
+			border-radius: 999px;
+			flex: 0 0 auto;
+		}
+
+		.world-population-chip-label,
+		.world-population-chip-remove {
+			border: 0;
+			background: transparent;
+			color: inherit;
+			font: inherit;
+		}
+
+		.world-population-chip-label {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.55rem;
+			padding: 0.35rem 0.35rem 0.35rem 0.7rem;
+			cursor: pointer;
+		}
+
+		.world-population-chip-remove {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			min-width: 2rem;
+			padding: 0 0.6rem 0 0.35rem;
+			cursor: pointer;
+			border-left: 1px solid #d8bcbc;
+			font-size: 0.95rem;
+			line-height: 1;
+		}
+
+		.world-population-chip-remove:hover,
+		.world-population-chip-label:hover {
+			background: rgba(128, 0, 0, 0.06);
+		}
+
+		.world-population-scale button.is-active {
+			box-shadow: inset 0 0 0 1px #800;
+			background: #fff;
+		}
+
+		.world-population-continents button.is-active {
+			box-shadow: inset 0 0 0 1px #800;
+			background: #fff0f0;
+		}
+
+		.world-population-stage {
+			position: relative;
+			padding: 0.75rem;
+		}
+
+		#world-population-chart {
+			width: 100%;
+			min-height: 34rem;
+		}
+
+		.world-population-tooltip {
+			position: absolute;
+			display: none;
+			pointer-events: none;
+			max-width: 16rem;
+			padding: 0.6rem 0.75rem;
+			border: 1px solid #800;
+			border-radius: 4px;
+			background: rgba(255, 250, 249, 0.97);
+			color: #333;
+			box-shadow: 3px 3px 5px #555;
+			font-size: 0.9rem;
+			line-height: 1.4;
+			z-index: 2;
+		}
+
+		.world-population-tooltip strong {
+			display: block;
+			margin-bottom: 0.2rem;
+			color: #800;
+		}
+
+		.world-population-note {
+			font-size: 0.92rem;
+		}
+
+		@media (max-width: 719px) {
+			#world-population-chart {
+				min-height: 26rem;
+			}
+		}
+	</style>
+
+	<div class="world-population-panel">
+		<h2>All Countries Over Time</h2>
+		<p>This chart draws every country and dependency in the dataset across the full historical-plus-forecast timeline. All series are visible in the background; highlighted countries are drawn on top so the chart stays readable.</p>
+		<div class="world-population-toolbar">
+			<div class="world-population-scale" aria-label="Scale mode">
+				<button class="button is-active" data-world-population-scale="log" type="button">Log scale</button>
+				<button class="button" data-world-population-scale="linear" type="button">Linear scale</button>
+			</div>
+			<label class="world-population-visibility">
+				<input id="world-population-show-background" type="checkbox" checked />
+				<span>Show unselected countries</span>
+			</label>
+			<button class="button" id="world-population-reset" type="button">Reset highlights</button>
+		</div>
+		<div class="world-population-continents" id="world-population-continents" aria-label="Highlight continents"></div>
+		<div class="world-population-highlight">
+			<label class="world-population-field">
+				<span>Highlight country</span>
+				<input id="world-population-highlight" list="world-population-country-list" placeholder="Netherlands, India, Nigeria…" />
+			</label>
+			<label class="world-population-slider">
+				<span>Neighbors each side: <strong id="world-population-neighbor-count">0</strong></span>
+				<input id="world-population-neighbor-range" type="range" min="0" max="25" step="1" value="0" />
+			</label>
+			<button class="button" id="world-population-add-highlight" type="button">Add highlight</button>
+			<datalist id="world-population-country-list"></datalist>
+		</div>
+		<div class="world-population-legend" id="world-population-legend" aria-label="Highlighted countries"></div>
+		<p class="world-population-status" id="world-population-status">Loading chart data…</p>
+		<p class="world-population-note">The default view uses a logarithmic y-axis because a single linear axis flattens nearly every small and medium-sized country.</p>
+	</div>
+
+	<div class="world-population-stage">
+		<div id="world-population-chart" aria-label="Population chart for all countries"></div>
+		<div class="world-population-tooltip" id="world-population-tooltip" aria-hidden="true"></div>
+	</div>
+
+	<div class="world-population-panel">
+		<p>
+			This project generates one aggregated JSON file via <a href="./fetch_population.py"><code>fetch_population.py</code></a
+			>.
+		</p>
+		<p>The scraper merges the historical and forecast tables per country, sorts them by year, normalizes text values, and writes the chart-ready dataset used by this page.</p>
+	</div>
+
+	<script type="module" src="/projects/world-population/world-population.mjs"></script>
+</div>
