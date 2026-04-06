@@ -8,6 +8,7 @@ const highlightButton = document.getElementById("world-population-add-highlight"
 const resetButton = document.getElementById("world-population-reset");
 const scaleButtons = Array.from(document.querySelectorAll("[data-world-population-scale]"));
 const backgroundToggle = document.getElementById("world-population-show-background");
+const noMigrationToggle = document.getElementById("world-population-show-no-migration");
 const continentButtonsNode = document.getElementById("world-population-continents");
 const legendNode = document.getElementById("world-population-legend");
 const tooltipNode = document.getElementById("world-population-tooltip");
@@ -27,6 +28,7 @@ const state = {
 	selectionWindows: new Map(),
 	continentHighlights: new Set(),
 	showBackgroundCountries: backgroundToggle?.checked ?? true,
+	showNoMigrationComparison: noMigrationToggle?.checked ?? false,
 };
 
 function setStatus(message) {
@@ -59,16 +61,17 @@ function formatPercent(value) {
 	return value == null ? "n/a" : `${value.toFixed(1)}%`;
 }
 
-function showTooltip(event, country, point, color) {
+function showTooltip(event, country, point, color, label = null) {
 	if (!tooltipNode) {
 		return;
 	}
 
 	tooltipNode.innerHTML = `
-		<strong style="color:${color}">${country.name}</strong>
+		<strong style="color:${color}">${label ? `${country.name} (${label})` : country.name}</strong>
 		<div>Year: ${point.year}</div>
 		<div>Population: ${formatPopulation(point.population)}</div>
 		<div>Growth: ${formatSignedPercent(point.yearlyPercentChange)} (${formatSignedInteger(point.yearlyChange)})</div>
+		<div>Net migration: ${formatSignedInteger(point.migrantsNet)}</div>
 		<div>Fertility rate: ${formatFertilityRate(point.fertilityRate)}</div>
 		<div>Median age: ${point.medianAge == null ? "n/a" : point.medianAge.toFixed(1)}</div>
 		<div>Urban pop: ${formatPercent(point.urbanPopulationPercent)}</div>
@@ -164,6 +167,31 @@ function getSelectedCountries() {
 function getAnchorColor(countrySlug) {
 	const anchorIndex = Array.from(state.selectionWindows.keys()).indexOf(countrySlug);
 	return palette[(((anchorIndex >= 0 ? anchorIndex : 0) % palette.length) + palette.length) % palette.length];
+}
+
+function buildSelectionNeighborGroups(anchorCountries) {
+	return anchorCountries
+		.map((anchorCountry) => {
+			const index = state.data.countries.findIndex((candidate) => candidate.slug === anchorCountry.slug);
+			const neighbors = state.selectionWindows.get(anchorCountry.slug) ?? 0;
+			if (index < 0 || neighbors <= 0) {
+				return null;
+			}
+
+			const start = Math.max(0, index - neighbors);
+			const end = Math.min(state.data.countries.length, index + neighbors + 1);
+			const countries = state.data.countries.slice(start, end).filter((country) => country.slug !== anchorCountry.slug);
+			if (countries.length === 0) {
+				return null;
+			}
+
+			return {
+				anchor: anchorCountry,
+				color: getAnchorColor(anchorCountry.slug),
+				countries,
+			};
+		})
+		.filter(Boolean);
 }
 
 function buildEndLabels(countries, y, top, bottom, gap) {
@@ -265,6 +293,37 @@ function updateBackgroundToggle() {
 	}
 }
 
+function updateNoMigrationToggle() {
+	if (noMigrationToggle) {
+		noMigrationToggle.checked = state.showNoMigrationComparison;
+		noMigrationToggle.disabled = state.selectionWindows.size === 0;
+	}
+}
+
+function buildNoMigrationPoints(country) {
+	if (!country?.points?.length) {
+		return [];
+	}
+
+	const derivedPoints = [Object.assign({}, country.points[0])];
+
+	for (let index = 1; index < country.points.length; index += 1) {
+		const previousActual = country.points[index - 1];
+		const actualPoint = country.points[index];
+		const previousDerived = derivedPoints[index - 1];
+		const yearDelta = actualPoint.year - previousActual.year;
+		const migrationContribution = (actualPoint.migrantsNet ?? 0) * yearDelta;
+		const naturalDelta = actualPoint.population - previousActual.population - migrationContribution;
+
+		derivedPoints.push({
+			...actualPoint,
+			population: Math.max(1, Math.round(previousDerived.population + naturalDelta)),
+		});
+	}
+
+	return derivedPoints;
+}
+
 function getContinentColor(continent) {
 	const index = continentOrder.indexOf(continent);
 	return palette[(((index >= 0 ? index : 0) % palette.length) + palette.length) % palette.length];
@@ -332,6 +391,9 @@ function syncUrl() {
 	if (!state.showBackgroundCountries) {
 		params.set("background", "hidden");
 	}
+	if (state.showNoMigrationComparison) {
+		params.set("migration", "compare");
+	}
 	if (state.continentHighlights.size > 0) {
 		params.set("continents", Array.from(state.continentHighlights).join(","));
 	}
@@ -358,6 +420,11 @@ function applyUrlState() {
 	const background = params.get("background");
 	if (background === "hidden") {
 		state.showBackgroundCountries = false;
+	}
+
+	const migration = params.get("migration");
+	if (migration === "compare") {
+		state.showNoMigrationComparison = true;
 	}
 
 	const continents = params
@@ -443,6 +510,7 @@ function render() {
 
 	updateScaleButtons();
 	updateBackgroundToggle();
+	updateNoMigrationToggle();
 	updateNeighborCountLabel();
 	updateContinentButtons();
 	updateLegend();
@@ -461,11 +529,21 @@ function render() {
 	const allPoints = state.data.countries.flatMap((country) => country.points);
 	const highlightedCountries = getHighlightedCountries();
 	const anchorCountries = getSelectedCountries();
+	const selectedCountry = state.selectedCountrySlug ? findCountryBySlug(state.selectedCountrySlug) : null;
+	const selectionNeighborGroups = buildSelectionNeighborGroups(anchorCountries);
+	const noMigrationComparisons = state.showNoMigrationComparison
+		? anchorCountries.map((country) => ({
+				country,
+				color: getAnchorColor(country.slug),
+				points: buildNoMigrationPoints(country),
+			}))
+		: [];
 	const anchorSlugs = new Set(anchorCountries.map((country) => country.slug));
-	const neighborCountries = highlightedCountries.filter((country) => !anchorSlugs.has(country.slug));
+	const selectionNeighborSlugs = new Set(selectionNeighborGroups.flatMap((group) => group.countries.map((country) => country.slug)));
+	const neighborCountries = highlightedCountries.filter((country) => !anchorSlugs.has(country.slug) && !selectionNeighborSlugs.has(country.slug));
 	const backgroundCountries = state.showBackgroundCountries ? state.data.countries.filter((country) => !state.highlightedSlugs.has(country.slug)) : [];
 	const scaleCountries = !state.showBackgroundCountries && highlightedCountries.length > 0 ? highlightedCountries : state.scaleMode === "log" || highlightedCountries.length === 0 ? state.data.countries : highlightedCountries;
-	const scalePoints = scaleCountries.flatMap((country) => country.points);
+	const scalePoints = scaleCountries.flatMap((country) => country.points).concat(noMigrationComparisons.flatMap((comparison) => comparison.points));
 	const years = d3.extent(allPoints, (point) => point.year);
 	const populations = scalePoints.map((point) => point.population).filter((population) => population > 0);
 
@@ -564,13 +642,67 @@ function render() {
 
 	svg
 		.append("g")
+		.selectAll("g")
+		.data(selectionNeighborGroups)
+		.join("g")
+		.each(function (group) {
+			d3.select(this)
+				.selectAll("path")
+				.data(group.countries)
+				.join("path")
+				.attr("fill", "none")
+				.attr("stroke", group.color)
+				.attr("stroke-width", 1.8)
+				.attr("stroke-opacity", 0.8)
+				.attr("stroke-linecap", "round")
+				.attr("stroke-linejoin", "round")
+				.attr("d", (country) => line(country.points));
+		});
+
+	svg
+		.append("g")
+		.selectAll("g")
+		.data(selectionNeighborGroups)
+		.join("g")
+		.each(function (group) {
+			const color = group.color;
+			const baseRadius = 2.8;
+			const hoverRadius = 4.4;
+
+			d3.select(this)
+				.selectAll("circle")
+				.data(group.countries.flatMap((country) => country.points.map((point) => ({ country, point, color }))))
+				.join("circle")
+				.attr("cx", ({ point }) => x(point.year))
+				.attr("cy", ({ point }) => y(point.population))
+				.attr("r", baseRadius)
+				.attr("fill", color)
+				.attr("fill-opacity", 0.9)
+				.attr("stroke", "#fffaf9")
+				.attr("stroke-width", 1)
+				.style("cursor", "crosshair")
+				.on("mouseenter", function (event, datum) {
+					d3.select(this).attr("r", hoverRadius);
+					showTooltip(event, datum.country, datum.point, datum.color);
+				})
+				.on("mousemove", function (event, datum) {
+					showTooltip(event, datum.country, datum.point, datum.color);
+				})
+				.on("mouseleave", function () {
+					d3.select(this).attr("r", baseRadius);
+					hideTooltip();
+				});
+		});
+
+	svg
+		.append("g")
 		.selectAll("path")
 		.data(neighborCountries)
 		.join("path")
 		.attr("fill", "none")
-		.attr("stroke", "#b97f7f")
+		.attr("stroke", "#7f7f7f")
 		.attr("stroke-width", 1.8)
-		.attr("stroke-opacity", 0.8)
+		.attr("stroke-opacity", 0.72)
 		.attr("stroke-linecap", "round")
 		.attr("stroke-linejoin", "round")
 		.attr("d", (country) => line(country.points));
@@ -581,7 +713,7 @@ function render() {
 		.data(neighborCountries)
 		.join("g")
 		.each(function (country) {
-			const color = "#b97f7f";
+			const color = "#7f7f7f";
 			const baseRadius = 2.8;
 			const hoverRadius = 4.4;
 
@@ -616,13 +748,61 @@ function render() {
 		.data(anchorCountries)
 		.join("path")
 		.attr("fill", "none")
-		.attr("stroke", (country) => (country.slug === state.selectedCountrySlug ? "#800" : getAnchorColor(country.slug)))
+		.attr("stroke", (country) => getAnchorColor(country.slug))
 		.attr("stroke-width", (country) => (country.slug === state.selectedCountrySlug ? 5 : 3.4))
 		.attr("stroke-opacity", 1)
 		.attr("stroke-linecap", "round")
 		.attr("stroke-linejoin", "round")
 		.style("filter", (country) => (country.slug === state.selectedCountrySlug ? "drop-shadow(0 0 8px rgba(128, 0, 0, 0.35))" : "drop-shadow(0 0 6px rgba(0, 0, 0, 0.18))"))
 		.attr("d", (country) => line(country.points));
+
+	if (noMigrationComparisons.length > 0) {
+		svg
+			.append("g")
+			.selectAll("path")
+			.data(noMigrationComparisons)
+			.join("path")
+			.attr("fill", "none")
+			.attr("stroke", (comparison) => comparison.color)
+			.attr("stroke-width", 2.2)
+			.attr("stroke-opacity", 0.8)
+			.attr("stroke-dasharray", "8 5")
+			.attr("stroke-linecap", "round")
+			.attr("stroke-linejoin", "round")
+			.attr("d", (comparison) => line(comparison.points));
+
+		svg
+			.append("g")
+			.selectAll("circle")
+			.data(
+				noMigrationComparisons.flatMap((comparison) =>
+					comparison.points.map((point) => ({
+						country: comparison.country,
+						point,
+						color: comparison.color,
+					}))
+				)
+			)
+			.join("circle")
+			.attr("cx", ({ point }) => x(point.year))
+			.attr("cy", ({ point }) => y(point.population))
+			.attr("r", 3.6)
+			.attr("fill", "#fffaf9")
+			.attr("stroke", ({ color }) => color)
+			.attr("stroke-width", 1.4)
+			.style("cursor", "crosshair")
+			.on("mouseenter", function (event, datum) {
+				d3.select(this).attr("r", 5.4);
+				showTooltip(event, datum.country, datum.point, datum.color, "without net migration");
+			})
+			.on("mousemove", function (event, datum) {
+				showTooltip(event, datum.country, datum.point, datum.color, "without net migration");
+			})
+			.on("mouseleave", function () {
+				d3.select(this).attr("r", 3.6);
+				hideTooltip();
+			});
+	}
 
 	svg
 		.append("g")
@@ -631,7 +811,7 @@ function render() {
 		.join("g")
 		.each(function (country) {
 			const isSelected = country.slug === state.selectedCountrySlug;
-			const color = isSelected ? "#800" : getAnchorColor(country.slug);
+			const color = getAnchorColor(country.slug);
 			const baseRadius = isSelected ? 4.8 : 3.8;
 			const hoverRadius = isSelected ? 6.8 : 5.8;
 
@@ -687,9 +867,6 @@ function render() {
 		.attr("y1", (label) => label.targetY)
 		.attr("y2", (label) => label.y)
 		.attr("stroke", (label) => {
-			if (label.country.slug === state.selectedCountrySlug) {
-				return "#800";
-			}
 			if (state.selectionWindows.has(label.country.slug)) {
 				return getAnchorColor(label.country.slug);
 			}
@@ -707,9 +884,6 @@ function render() {
 		.attr("y", (label) => label.y)
 		.attr("dy", "0.32em")
 		.attr("fill", (label) => {
-			if (label.country.slug === state.selectedCountrySlug) {
-				return "#800";
-			}
 			if (state.selectionWindows.has(label.country.slug)) {
 				return getAnchorColor(label.country.slug);
 			}
@@ -724,10 +898,32 @@ function render() {
 		})
 		.text((label) => label.country.name);
 
+	for (const comparison of noMigrationComparisons) {
+		const finalPoint = comparison.points.at(-1);
+		if (!finalPoint) {
+			continue;
+		}
+
+		const labelY = y(finalPoint.population);
+
+		svg
+			.append("line")
+			.attr("x1", labelAnchorX)
+			.attr("x2", labelTextX - 4)
+			.attr("y1", labelY)
+			.attr("y2", labelY)
+			.attr("stroke", comparison.color)
+			.attr("stroke-opacity", 0.9)
+			.attr("stroke-width", 1)
+			.attr("stroke-dasharray", "4 3");
+
+		svg.append("text").attr("x", labelTextX).attr("y", labelY).attr("dy", "0.32em").attr("fill", comparison.color).attr("font-size", 10.5).attr("font-weight", 600).text(`${comparison.country.name} without migration`);
+	}
+
 	setStatus(
 		`Showing ${state.data.countries.length} countries. ${getHighlightedCountries().length} highlighted. ${state.selectionWindows.size} selected anchor countries. Active anchor uses ${state.neighborCount} neighbors each side. ${
 			state.scaleMode === "log" ? "Log scale" : "Linear scale"
-		}. ${state.showBackgroundCountries ? "Unselected countries visible." : "Unselected countries hidden."}`
+		}. ${state.showBackgroundCountries ? "Unselected countries visible." : "Unselected countries hidden."} ${state.showNoMigrationComparison && anchorCountries.length > 0 ? `Comparing ${anchorCountries.length} selected countries with no-net-migration estimates.` : ""}`
 	);
 	syncUrl();
 }
@@ -811,6 +1007,12 @@ for (const button of scaleButtons) {
 
 backgroundToggle?.addEventListener("input", () => {
 	state.showBackgroundCountries = backgroundToggle.checked;
+	hideTooltip();
+	render();
+});
+
+noMigrationToggle?.addEventListener("input", () => {
+	state.showNoMigrationComparison = noMigrationToggle.checked;
 	hideTooltip();
 	render();
 });
