@@ -1,3 +1,20 @@
 {{ define "main" }}
 <h1>{{ .Title }}</h1>
-{{ .Content }} {{ end }}
+{{ .Content }}
+
+<section class="home-jargon">
+	<div class="home-jargon-head">
+		<h2>3 random jargons</h2>
+		<div class="home-jargon-actions">
+			<a class="button" href="/projects/jargon-files/">Browse the full lexicon</a>
+			<button class="button" id="home-jargon-refresh" type="button">Pick three more</button>
+		</div>
+	</div>
+	<p class="home-jargon-intro">A small rotating taste of the Jargon File. Each card links through to the full searchable project page.</p>
+	<div class="home-jargon-grid" id="home-jargon-grid">
+		<p class="home-jargon-status" id="home-jargon-status">Loading jargon cards…</p>
+	</div>
+</section>
+
+<script type="module" src="/scripts/home-jargon.mjs"></script>
+{{ end }}
