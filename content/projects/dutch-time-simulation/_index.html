@@ -2,7 +2,7 @@
 title: "Dutch Summer/Winter Time Simulation"
 description: "Interactive simulation of Dutch time-zone choices: UTC, permanent winter time, and daylight saving time."
 publishDate: 2026-04-01T12:00:00+02:00
-lastmod: 2026-04-01T12:00:00+02:00
+lastmod: 2026-04-09T12:00:00+02:00
 aliases:
   - /projects/simulation-project/
 ---
@@ -481,11 +481,32 @@ aliases:
 			</div>
 
 			<div class="control-group">
+				<label for="scheduleProfile">Ritme-profiel</label>
+				<select id="scheduleProfile">
+					<option value="adult_nl_2025">Volwassenen totaal</option>
+					<option value="age_18_34">18-34 jaar</option>
+					<option value="age_35_49">35-49 jaar</option>
+					<option value="age_50_64">50-64 jaar</option>
+					<option value="age_65_plus">65+ jaar</option>
+					<option value="manual">Handmatig</option>
+				</select>
+				<p class="hint" id="scheduleProfileHint">
+					Gebaseerd op het
+					<a href="https://www.smulderstextiel.nl/c/nationale-bedtijden-onderzoek/" target="_blank" rel="noreferrer">Nationale Bedtijdenonderzoek 2025</a>. De leeftijdsprofielen combineren de bedtijdverdeling uit de volwassenen-scatter met de gerapporteerde slaapduur per leeftijdsgroep; de opstaantijd blijft dus een
+					modelafleiding en geen letterlijk gepubliceerd groepsgemiddelde.
+				</p>
+				<p class="mini">
+					Bron:
+					<a href="https://www.smulderstextiel.nl/c/nationale-bedtijden-onderzoek/" target="_blank" rel="noreferrer">Smulders 2025</a>
+				</p>
+			</div>
+
+			<div class="control-group">
 				<label for="wakeStart">Wakker vanaf: <span id="wakeStartLabel">07:00</span></label>
 				<input id="wakeStart" type="range" min="240" max="720" step="15" value="420" />
 				<label for="wakeEnd">Naar bed om: <span id="wakeEndLabel">23:00</span></label>
 				<input id="wakeEnd" type="range" min="960" max="1560" step="15" value="1380" />
-				<p class="hint">Dit beïnvloedt de maatschappelijke score: welk regime schuift daglicht het best in jouw actieve uren?</p>
+				<p class="hint">Dit beïnvloedt de maatschappelijke score: welk regime schuift daglicht het best in jouw actieve uren? Pas deze sliders gerust aan als jouw ritme afwijkt van het onderzoek-profiel.</p>
 			</div>
 
 			<div class="control-group">
@@ -557,6 +578,11 @@ aliases:
 						<strong>UTC</strong> sluit beter aan op de zon; <strong>CET</strong> en vooral <strong>CET + zomertijd</strong>
 						verschuiven het daglicht later op de klok, wat vaak prettiger is voor avondgebruik maar ongunstiger voor ochtendlicht.
 					</p>
+					<p class="small-note" style="margin-top: 12px">
+						<strong>Onderzoek-invoer:</strong> het standaardritme is afgeleid uit het <a href="https://www.smulderstextiel.nl/c/nationale-bedtijden-onderzoek/" target="_blank" rel="noreferrer">Nationale Bedtijdenonderzoek 2025</a>. Dat onderzoek onder 2.400 volwassenen meldt een gemiddelde slaapduur van 6 uur en 56
+						minuten en splitst die ook uit naar 18-34, 35-49, 50-64 en 65+ jaar. Voor de leeftijdsprofielen gebruikt deze pagina de bedtijdverdeling uit de volwassenen-scatter; de opstaantijd is vervolgens een expliciete modelafleiding op basis van slaapduur en tijd in bed, geen letterlijk overgenomen
+						survey-gemiddelde.
+					</p>
 				</div>
 			</section>
 		</div>
@@ -571,6 +597,53 @@ aliases:
 		maastricht: { label: "Maastricht", lat: 50.8514, lon: 5.69 },
 		nlmid: { label: "Midden van Nederland", lat: 52.1326, lon: 5.2913 },
 		custom: { label: "Aangepast" },
+	};
+
+	const scheduleProfiles = {
+		adult_nl_2025: {
+			label: "Volwassenen totaal",
+			wakeStart: 450,
+			wakeEnd: 1380,
+			morningWindow: 180,
+			eveningWindow: 240,
+			hint: "Afgeleid uit de volwassenen-scatter en de totale slaapduur uit het onderzoek: ongeveer naar bed om 23:00 en wakker rond 07:30. Dit is een empirisch referentieprofiel, geen letterlijke survey-uitkomst voor exacte kloktijden.",
+		},
+		age_18_34: {
+			label: "18-34 jaar",
+			wakeStart: 450,
+			wakeEnd: 1380,
+			morningWindow: 180,
+			eveningWindow: 240,
+			hint: "Latere bedtijd uit de leeftijdsspecifieke scatter, gecombineerd met 7u slaap uit het onderzoek. Afgerond profiel: naar bed om 23:00, wakker rond 07:30.",
+		},
+		age_35_49: {
+			label: "35-49 jaar",
+			wakeStart: 435,
+			wakeEnd: 1365,
+			morningWindow: 180,
+			eveningWindow: 240,
+			hint: "Afgeleid uit de scatter voor 35-49 jaar en de gerapporteerde slaapduur van 6u50. Afgerond profiel: naar bed om 22:45, wakker rond 07:15.",
+		},
+		age_50_64: {
+			label: "50-64 jaar",
+			wakeStart: 435,
+			wakeEnd: 1380,
+			morningWindow: 180,
+			eveningWindow: 240,
+			hint: "Afgeleid uit de scatter voor 50-64 jaar en de gerapporteerde slaapduur van 6u50. Afgerond profiel: naar bed om 23:00, wakker rond 07:15.",
+		},
+		age_65_plus: {
+			label: "65+ jaar",
+			wakeStart: 465,
+			wakeEnd: 1395,
+			morningWindow: 180,
+			eveningWindow: 240,
+			hint: "Afgeleid uit de scatter voor 65+ en de gerapporteerde slaapduur van 7u05. Afgerond profiel: naar bed om 23:15, wakker rond 07:45.",
+		},
+		manual: {
+			label: "Handmatig",
+			hint: "Handmatig ritme. Gebruik de sliders om jouw eigen dagindeling te modelleren of om andere groepen door te rekenen.",
+		},
 	};
 
 	const scenarios = [
@@ -610,6 +683,8 @@ aliases:
 		lon: document.getElementById("lon"),
 		date: document.getElementById("date"),
 		year: document.getElementById("year"),
+		scheduleProfile: document.getElementById("scheduleProfile"),
+		scheduleProfileHint: document.getElementById("scheduleProfileHint"),
 		wakeStart: document.getElementById("wakeStart"),
 		wakeEnd: document.getElementById("wakeEnd"),
 		morningWindow: document.getElementById("morningWindow"),
@@ -638,6 +713,41 @@ aliases:
 		els.date.value = todayIso();
 	}
 
+	function applyScheduleProfile(profileKey) {
+		const profile = scheduleProfiles[profileKey];
+		if (!profile || profileKey === "manual") {
+			return;
+		}
+
+		els.wakeStart.value = profile.wakeStart;
+		els.wakeEnd.value = profile.wakeEnd;
+		els.morningWindow.value = profile.morningWindow;
+		els.eveningWindow.value = profile.eveningWindow;
+	}
+
+	function selectedScheduleProfile() {
+		return scheduleProfiles[els.scheduleProfile.value] || scheduleProfiles.manual;
+	}
+
+	function matchesSelectedScheduleProfile() {
+		const profile = scheduleProfiles[els.scheduleProfile.value];
+		if (!profile || els.scheduleProfile.value === "manual") {
+			return false;
+		}
+
+		return Number(els.wakeStart.value) === profile.wakeStart && Number(els.wakeEnd.value) === profile.wakeEnd && Number(els.morningWindow.value) === profile.morningWindow && Number(els.eveningWindow.value) === profile.eveningWindow;
+	}
+
+	function syncScheduleProfileMode() {
+		if (!matchesSelectedScheduleProfile()) {
+			els.scheduleProfile.value = "manual";
+		}
+	}
+
+	function updateScheduleProfileHint() {
+		els.scheduleProfileHint.textContent = selectedScheduleProfile().hint;
+	}
+
 	document.querySelectorAll("[data-date]").forEach((button) => {
 		button.addEventListener("click", () => {
 			const year = Number(els.year.value) || 2026;
@@ -661,7 +771,18 @@ aliases:
 		update();
 	});
 
-	[els.lat, els.lon, els.date, els.year, els.wakeStart, els.wakeEnd, els.morningWindow, els.eveningWindow].forEach((el) => el.addEventListener("input", update));
+	els.scheduleProfile.addEventListener("change", () => {
+		applyScheduleProfile(els.scheduleProfile.value);
+		update();
+	});
+
+	[els.lat, els.lon, els.date, els.year].forEach((el) => el.addEventListener("input", update));
+	[els.wakeStart, els.wakeEnd, els.morningWindow, els.eveningWindow].forEach((el) =>
+		el.addEventListener("input", () => {
+			syncScheduleProfileMode();
+			update();
+		})
+	);
 
 	function clamp(value, min, max) {
 		return Math.min(max, Math.max(min, value));
@@ -792,6 +913,7 @@ aliases:
 		els.wakeEndLabel.textContent = formatMinutes(state.wakeEnd);
 		els.morningWindowLabel.textContent = `${Math.round(state.morningWindow / 60)} uur`;
 		els.eveningWindowLabel.textContent = `${Math.round(state.eveningWindow / 60)} uur`;
+		updateScheduleProfileHint();
 	}
 
 	function renderTimeline(state, daily) {
@@ -1009,6 +1131,10 @@ aliases:
 		return presets[preset].label;
 	}
 
+	function currentScheduleLabel() {
+		return selectedScheduleProfile().label;
+	}
+
 	function compositeScore(row, annual) {
 		const maxNoon = Math.max(...annual.map((it) => it.noonDeviation));
 		const maxWake = Math.max(...annual.map((it) => it.daylightInWake));
@@ -1070,13 +1196,14 @@ aliases:
 
 	function renderSummaries(state, daily, annual) {
 		const presetLabel = currentPresetLabel();
+		const scheduleLabel = currentScheduleLabel();
 		const selectedDate = state.date.toLocaleDateString("nl-NL", { timeZone: "UTC", year: "numeric", month: "long", day: "numeric" });
 		const bestAstronomy = rankScenarios(annual).astronomy;
 		const bestWake = rankScenarios(annual).wakeLight;
 		const current = annual.find((row) => row.key === "cet_dst");
 
-		els.dailySummary.innerHTML = `Voor <strong>${selectedDate}</strong> op <strong>${presetLabel}</strong> zie je exact dezelfde zon, maar een andere klok. Daardoor verschuiven zonsopkomst, zonne-noen en zonsondergang zichtbaar tussen de vier regimes.`;
-		els.annualSummary.innerHTML = `Over heel <strong>${state.year}</strong> blijkt in deze simulatie dat <strong>${bestAstronomy.name}</strong> het best met de zon uitlijnt, terwijl <strong>${bestWake.name}</strong> het meeste daglicht in de ingestelde wakkere uren stopt. Het huidige systeem <strong>${current.name}</strong> is dus geen puur astronomische keuze, maar een bewuste verschuiving richting latere avonden.`;
+		els.dailySummary.innerHTML = `Voor <strong>${selectedDate}</strong> op <strong>${presetLabel}</strong> en binnen het ritme <strong>${scheduleLabel}</strong> zie je exact dezelfde zon, maar een andere klok. Daardoor verschuiven zonsopkomst, zonne-noen en zonsondergang zichtbaar tussen de vier regimes.`;
+		els.annualSummary.innerHTML = `Over heel <strong>${state.year}</strong> blijkt in deze simulatie met <strong>${scheduleLabel}</strong> dat <strong>${bestAstronomy.name}</strong> het best met de zon uitlijnt, terwijl <strong>${bestWake.name}</strong> het meeste daglicht in de ingestelde wakkere uren stopt. Het huidige systeem <strong>${current.name}</strong> is dus geen puur astronomische keuze, maar een bewuste verschuiving richting latere avonden.`;
 	}
 
 	function update() {
@@ -1102,5 +1229,6 @@ aliases:
 		renderFindings(state, annual);
 	}
 
+	applyScheduleProfile(els.scheduleProfile.value);
 	update();
 </script>
