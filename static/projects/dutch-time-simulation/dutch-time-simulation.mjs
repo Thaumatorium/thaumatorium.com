@@ -51,7 +51,7 @@ function renderPlaceholderSimulation({ start, timezone, notes }) {
 		</div>
 	`;
 
-	setLog(["Template simulation ran.", "", `start: ${start || "(empty)"}`, `timezone: ${timezone || "(empty)"}`, `notes: ${notes || "(empty)"}`, "", "Next step:", "Replace the placeholder render function in static/projects/simulation-project/simulation-project.mjs."]);
+	setLog(["Template simulation ran.", "", `start: ${start || "(empty)"}`, `timezone: ${timezone || "(empty)"}`, `notes: ${notes || "(empty)"}`, "", "Next step:", "Replace the placeholder render function in static/projects/dutch-time-simulation/dutch-time-simulation.mjs."]);
 }
 
 function runSimulation() {

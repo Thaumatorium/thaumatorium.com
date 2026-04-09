@@ -30,7 +30,7 @@ https://thaumatorium.com/projects/maze/
 https://thaumatorium.com/projects/playground/
 https://thaumatorium.com/projects/queueing-simulation/
 https://thaumatorium.com/projects/regex2fa/
-https://thaumatorium.com/projects/simulation-project/
+https://thaumatorium.com/projects/dutch-time-simulation/
 https://thaumatorium.com/projects/warcraft-credits/
 https://thaumatorium.com/projects/warcraft-game-loop/
 https://thaumatorium.com/random-video/
