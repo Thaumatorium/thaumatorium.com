@@ -21,40 +21,65 @@ So instead of a long boring table, you get something that shows why ASCII was la
 
 The columns below are the top 2 bits. The rightmost column is the lower 5 bits.
 
-| 00    |  01   | 10  |   11    | low 5 bits |
-| :---- | :---: | :-: | :-----: | :--------: |
-| `NUL` | `Spc` | `@` | `` ` `` |  `00000`   |
-| `SOH` |  `!`  | `A` |   `a`   |  `00001`   |
-| `STX` |  `"`  | `B` |   `b`   |  `00010`   |
-| `ETX` |  `#`  | `C` |   `c`   |  `00011`   |
-| `EOT` |  `$`  | `D` |   `d`   |  `00100`   |
-| `ENQ` |  `%`  | `E` |   `e`   |  `00101`   |
-| `ACK` |  `&`  | `F` |   `f`   |  `00110`   |
-| `BEL` |  `'`  | `G` |   `g`   |  `00111`   |
-| `BS`  |  `(`  | `H` |   `h`   |  `01000`   |
-| `TAB` |  `)`  | `I` |   `i`   |  `01001`   |
-| `LF`  | `\*`  | `J` |   `j`   |  `01010`   |
-| `VT`  |  `+`  | `K` |   `k`   |  `01011`   |
-| `FF`  |  `,`  | `L` |   `l`   |  `01100`   |
-| `CR`  |  `-`  | `M` |   `m`   |  `01101`   |
-| `SO`  |  `.`  | `N` |   `n`   |  `01110`   |
-| `SI`  |  `/`  | `O` |   `o`   |  `01111`   |
-| `DLE` |  `0`  | `P` |   `p`   |  `10000`   |
-| `DC1` |  `1`  | `Q` |   `q`   |  `10001`   |
-| `DC2` |  `2`  | `R` |   `r`   |  `10010`   |
-| `DC3` |  `3`  | `S` |   `s`   |  `10011`   |
-| `DC4` |  `4`  | `T` |   `t`   |  `10100`   |
-| `NAK` |  `5`  | `U` |   `u`   |  `10101`   |
-| `SYN` |  `6`  | `V` |   `v`   |  `10110`   |
-| `ETB` |  `7`  | `W` |   `w`   |  `10111`   |
-| `CAN` |  `8`  | `X` |   `x`   |  `11000`   |
-| `EM`  |  `9`  | `Y` |   `y`   |  `11001`   |
-| `SUB` |  `:`  | `Z` |   `z`   |  `11010`   |
-| `ESC` |  `;`  | `[` |   `{`   |  `11011`   |
-| `FS`  |  `<`  | `\` |  `\|`   |  `11100`   |
-| `GS`  |  `=`  | `]` |   `}`   |  `11101`   |
-| `RS`  |  `>`  | `^` |   `~`   |  `11110`   |
-| `US`  |  `?`  | `_` |  `DEL`  |  `11111`   |
+<style>
+abbr[title] {
+	cursor: help;
+	position: relative;
+	text-decoration: underline dotted;
+}
+abbr[title]:hover::after,
+abbr[title]:focus::after {
+	content: attr(title);
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: 100%;
+	margin-bottom: 4px;
+	background: #333;
+	color: #fff;
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 0.85em;
+	white-space: nowrap;
+	z-index: 10;
+	pointer-events: none;
+}
+</style>
+
+| 00                                                                       |  01   | 10  |                                                               11 | low 5 bits |
+| :----------------------------------------------------------------------- | :---: | :-: | ---------------------------------------------------------------: | :--------: |
+| <abbr tabindex="0" title="Null – zero byte">NUL</abbr>                   | `Spc` | `@` |                                                          `` ` `` |  `00000`   |
+| <abbr tabindex="0" title="Start of Heading">SOH</abbr>                   |  `!`  | `A` |                                                              `a` |  `00001`   |
+| <abbr tabindex="0" title="Start of Text">STX</abbr>                      |  `"`  | `B` |                                                              `b` |  `00010`   |
+| <abbr tabindex="0" title="End of Text">ETX</abbr>                        |  `#`  | `C` |                                                              `c` |  `00011`   |
+| <abbr tabindex="0" title="End of Transmission">EOT</abbr>                |  `$`  | `D` |                                                              `d` |  `00100`   |
+| <abbr tabindex="0" title="Enquiry – request a response">ENQ</abbr>       |  `%`  | `E` |                                                              `e` |  `00101`   |
+| <abbr tabindex="0" title="Acknowledge – positive response">ACK</abbr>    |  `&`  | `F` |                                                              `f` |  `00110`   |
+| <abbr tabindex="0" title="Bell – beep or flash">BEL</abbr>               |  `'`  | `G` |                                                              `g` |  `00111`   |
+| <abbr tabindex="0" title="Backspace">BS</abbr>                           |  `(`  | `H` |                                                              `h` |  `01000`   |
+| <abbr tabindex="0" title="Horizontal Tab">TAB</abbr>                     |  `)`  | `I` |                                                              `i` |  `01001`   |
+| <abbr tabindex="0" title="Line Feed – move down one line">LF</abbr>      | `\*`  | `J` |                                                              `j` |  `01010`   |
+| <abbr tabindex="0" title="Vertical Tab">VT</abbr>                        |  `+`  | `K` |                                                              `k` |  `01011`   |
+| <abbr tabindex="0" title="Form Feed – next page">FF</abbr>               |  `,`  | `L` |                                                              `l` |  `01100`   |
+| <abbr tabindex="0" title="Carriage Return – start of line">CR</abbr>     |  `-`  | `M` |                                                              `m` |  `01101`   |
+| <abbr tabindex="0" title="Shift Out – alternate character set">SO</abbr> |  `.`  | `N` |                                                              `n` |  `01110`   |
+| <abbr tabindex="0" title="Shift In – default character set">SI</abbr>    |  `/`  | `O` |                                                              `o` |  `01111`   |
+| <abbr tabindex="0" title="Data Link Escape">DLE</abbr>                   |  `0`  | `P` |                                                              `p` |  `10000`   |
+| <abbr tabindex="0" title="Device Control 1 (XON)">DC1</abbr>             |  `1`  | `Q` |                                                              `q` |  `10001`   |
+| <abbr tabindex="0" title="Device Control 2">DC2</abbr>                   |  `2`  | `R` |                                                              `r` |  `10010`   |
+| <abbr tabindex="0" title="Device Control 3 (XOFF)">DC3</abbr>            |  `3`  | `S` |                                                              `s` |  `10011`   |
+| <abbr tabindex="0" title="Device Control 4">DC4</abbr>                   |  `4`  | `T` |                                                              `t` |  `10100`   |
+| <abbr tabindex="0" title="Negative Acknowledge">NAK</abbr>               |  `5`  | `U` |                                                              `u` |  `10101`   |
+| <abbr tabindex="0" title="Synchronous Idle">SYN</abbr>                   |  `6`  | `V` |                                                              `v` |  `10110`   |
+| <abbr tabindex="0" title="End of Transmission Block">ETB</abbr>          |  `7`  | `W` |                                                              `w` |  `10111`   |
+| <abbr tabindex="0" title="Cancel">CAN</abbr>                             |  `8`  | `X` |                                                              `x` |  `11000`   |
+| <abbr tabindex="0" title="End of Medium">EM</abbr>                       |  `9`  | `Y` |                                                              `y` |  `11001`   |
+| <abbr tabindex="0" title="Substitute – replacement marker">SUB</abbr>    |  `:`  | `Z` |                                                              `z` |  `11010`   |
+| <abbr tabindex="0" title="Escape – start escape sequence">ESC</abbr>     |  `;`  | `[` |                                                              `{` |  `11011`   |
+| <abbr tabindex="0" title="File Separator">FS</abbr>                      |  `<`  | `\` |                                                             `\|` |  `11100`   |
+| <abbr tabindex="0" title="Group Separator">GS</abbr>                     |  `=`  | `]` |                                                              `}` |  `11101`   |
+| <abbr tabindex="0" title="Record Separator">RS</abbr>                    |  `>`  | `^` |                                                              `~` |  `11110`   |
+| <abbr tabindex="0" title="Unit Separator">US</abbr>                      |  `?`  | `_` | <abbr tabindex="0" title="Delete – all 1 bits (0x7F)">DEL</abbr> |  `11111`   |
 
 The nicest part is the letter alignment:
 
