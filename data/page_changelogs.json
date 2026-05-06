@@ -170,23 +170,6 @@
 			"subject": "add MIT courses (not yet re-released)"
 		}
 	],
-	"articles/mit-courses/courses/_index.md": [
-		{
-			"date": "2026-04-04",
-			"hash": "fdbda6b",
-			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
-		},
-		{
-			"date": "2023-06-09",
-			"hash": "6e7741b",
-			"subject": "polish the MIT Courses page"
-		},
-		{
-			"date": "2023-06-09",
-			"hash": "060125e",
-			"subject": "add MIT courses (not yet re-released)"
-		}
-	],
 	"articles/mit-courses/courses/index.md": [
 		{
 			"date": "2026-04-04",
@@ -202,28 +185,6 @@
 			"date": "2023-06-09",
 			"hash": "060125e",
 			"subject": "add MIT courses (not yet re-released)"
-		}
-	],
-	"articles/programming-logic-is-quaternary-not-binary/_index.md": [
-		{
-			"date": "2026-04-04",
-			"hash": "fdbda6b",
-			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
-		},
-		{
-			"date": "2026-03-09",
-			"hash": "7c80a18",
-			"subject": "format all files with oxfmt (quite the restructure lmao"
-		},
-		{
-			"date": "2025-08-25",
-			"hash": "dd6c2f3",
-			"subject": "manual polish"
-		},
-		{
-			"date": "2025-08-25",
-			"hash": "7f13cc3",
-			"subject": "add \"Programming Logic Is Quaternary Not Binary\" article"
 		}
 	],
 	"articles/programming-logic-is-quaternary-not-binary/index.md": [
@@ -248,24 +209,12 @@
 			"subject": "add \"Programming Logic Is Quaternary Not Binary\" article"
 		}
 	],
-	"articles/real-ascii-table/_index.md": [
-		{
-			"date": "2026-04-04",
-			"hash": "fdbda6b",
-			"subject": "Do a major frontend update - let Opus 4.6 fix the card-mess of GPT 5.4 ;)"
-		},
-		{
-			"date": "2026-03-08",
-			"hash": "e75f648",
-			"subject": "fix backtick"
-		},
-		{
-			"date": "2026-03-08",
-			"hash": "d51f1df",
-			"subject": "Add ASCII table article: introduce structured ASCII representation and useful shortcuts"
-		}
-	],
 	"articles/real-ascii-table/index.md": [
+		{
+			"date": "2026-04-16",
+			"hash": "4a35553",
+			"subject": "Geef de ASCII table wat hoverables, en verwijder `_index.md` waar duplicaat met `index.md`."
+		},
 		{
 			"date": "2026-04-04",
 			"hash": "fdbda6b",
