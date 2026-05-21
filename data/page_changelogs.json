@@ -55,6 +55,13 @@
 			"subject": "improve \"Big O Beginner's Guide\", as well as rewrite it to markdown"
 		}
 	],
+	"articles/build-pipelines-are-feedback-systems/index.md": [
+		{
+			"date": "2026-05-06",
+			"hash": "b542df1",
+			"subject": "Add draft article on build pipelines as feedback systems"
+		}
+	],
 	"articles/configuring-jmeter-for-neo4j/_index.html": [
 		{
 			"date": "2026-03-09",
@@ -212,7 +219,7 @@
 	"articles/real-ascii-table/index.md": [
 		{
 			"date": "2026-04-16",
-			"hash": "4a35553",
+			"hash": "3530888",
 			"subject": "Geef de ASCII table wat hoverables, en verwijder `_index.md` waar duplicaat met `index.md`."
 		},
 		{
