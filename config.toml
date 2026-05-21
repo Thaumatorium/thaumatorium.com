@@ -1,5 +1,5 @@
 baseURL = 'http://thaumatorium.com/'
-languageCode = 'en-us'
+locale = 'en-us'
 title = 'Thaumatorium'
 subtitle = 'Where the Magic happens'
 enableGitInfo = true

@@ -2,7 +2,7 @@
 
 {{ $changelog := slice }}
 {{ with .File }}
-  {{ with index site.Data.page_changelogs .Path }}
+  {{ with index hugo.Data.page_changelogs .Path }}
     {{ $changelog = . }}
   {{ end }}
 {{ end }}
