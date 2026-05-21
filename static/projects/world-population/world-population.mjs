@@ -587,13 +587,14 @@ function render() {
 	const anchorCountries = getSelectedCountries();
 	const selectedCountry = state.selectedCountrySlug ? findCountryBySlug(state.selectedCountrySlug) : null;
 	const selectionNeighborGroups = buildSelectionNeighborGroups(anchorCountries);
-	const noMigrationComparisons = state.showNoMigrationComparison && isPopulationMetric
-		? anchorCountries.map((country) => ({
-				country,
-				color: getAnchorColor(country.slug),
-				points: buildNoMigrationPoints(country),
-			}))
-		: [];
+	const noMigrationComparisons =
+		state.showNoMigrationComparison && isPopulationMetric
+			? anchorCountries.map((country) => ({
+					country,
+					color: getAnchorColor(country.slug),
+					points: buildNoMigrationPoints(country),
+				}))
+			: [];
 	const anchorSlugs = new Set(anchorCountries.map((country) => country.slug));
 	const selectionNeighborSlugs = new Set(selectionNeighborGroups.flatMap((group) => group.countries.map((country) => country.slug)));
 	const neighborCountries = highlightedCountries.filter((country) => !anchorSlugs.has(country.slug) && !selectionNeighborSlugs.has(country.slug));
@@ -672,7 +673,10 @@ function render() {
 				? state.scaleMode === "log"
 					? d3.axisLeft(y).ticks(8, "~s")
 					: d3.axisLeft(y).ticks(8).tickFormat(d3.format("~s"))
-				: d3.axisLeft(y).ticks(8).tickFormat((value) => `${d3.format("~g")(value)}%`)
+				: d3
+						.axisLeft(y)
+						.ticks(8)
+						.tickFormat((value) => `${d3.format("~g")(value)}%`)
 		)
 		.call((axis) => axis.selectAll("text").attr("fill", "#555"))
 		.call((axis) => axis.selectAll("line,path").attr("stroke", "#b98f8f"));
