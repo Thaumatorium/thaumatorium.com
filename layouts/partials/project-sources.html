@@ -1,0 +1,56 @@
+{{- with .Params.sources }}
+<aside class="project-sources" aria-labelledby="project-sources-title">
+	<h2 id="project-sources-title">Sources</h2>
+	<ul>
+		{{- range . }}
+		<li>
+			<a href="{{ .url }}" rel="noopener noreferrer" target="_blank">{{ .title }}</a>
+			{{- with .note }}
+			<span>{{ . }}</span>
+			{{- end }}
+		</li>
+		{{- end }}
+	</ul>
+</aside>
+
+<style>
+	.project-sources {
+		border: 1px solid #cda9a9;
+		border-radius: 6px;
+		background: #fffaf9;
+		box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.12);
+		margin-top: 2rem;
+		padding: 1rem;
+	}
+
+	.project-sources h2 {
+		color: #800;
+		font-size: 1rem;
+		margin: 0 0 0.75rem;
+		padding: 0;
+	}
+
+	.project-sources ul {
+		display: grid;
+		gap: 0.65rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.project-sources li {
+		display: grid;
+		gap: 0.15rem;
+	}
+
+	.project-sources a {
+		font-weight: 700;
+	}
+
+	.project-sources span {
+		color: #4f3b3b;
+		font-size: 0.92rem;
+		line-height: 1.35;
+	}
+</style>
+{{- end }}

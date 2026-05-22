@@ -1,1 +1,4 @@
-{{ define "main" }} {{ .Content }} {{ end }}
+{{ define "main" }}
+{{ .Content }}
+{{ partial "project-sources.html" . }}
+{{ end }}

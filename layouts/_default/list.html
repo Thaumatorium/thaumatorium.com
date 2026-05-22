@@ -2,4 +2,6 @@
 
 <h1>{{ .Title }}</h1>
 
-{{ .Content }} {{ end }}
+{{ .Content }}
+{{ partial "project-sources.html" . }}
+{{ end }}
