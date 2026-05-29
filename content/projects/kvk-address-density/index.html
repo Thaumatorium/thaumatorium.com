@@ -1,0 +1,122 @@
+---
+title: "KvK Adresdichtheid Risicosignalen"
+description: "Analyse-dashboard voor geaggregeerde signalen van onwaarschijnlijk hoge bedrijfsdichtheid in Nederlandse gebieden."
+publishDate: 2026-05-26T12:00:00+02:00
+lastmod: 2026-05-26T12:00:00+02:00
+sources:
+  - title: "KVK Handelsregister Open Dataset Basis Bedrijfsgegevens"
+    url: "https://developers.kvk.nl/nl/documentation/open-dataset-basis-bedrijfsgegevens-api"
+    note: "Documentatie voor de open dataset; deze bevat geen bedrijfsnaam, KvK-nummer of volledig vestigingsadres."
+  - title: "KVK Handelsregister API-documentatie"
+    url: "https://developers.kvk.nl/nl/documentation"
+    note: "Overzicht van Handelsregister-API's zoals Zoeken, Basisprofiel en Vestigingsprofiel."
+  - title: "CBS StatLine"
+    url: "https://opendata.cbs.nl/"
+    note: "Open statistieken voor regionale context en bedrijfs-/gebiedsaggregaten."
+  - title: "PDOK BAG API"
+    url: "https://api.pdok.nl/kadaster/bag/ogc/v2"
+    note: "BAG-gegevens voor panden, verblijfsobjecten, gebruiksdoel en oppervlakte."
+---
+
+<link rel="stylesheet" href="styles.css" />
+
+<div class="kvk-density-page">
+	<header class="project-hero">
+		<p class="eyebrow">Onderzoeksprototype</p>
+		<h1>KvK Adresdichtheid Risicosignalen</h1>
+		<p class="lede">Deze methode kan locaties of gebieden prioriteren voor nader onderzoek wanneer rechtmatig verkregen vestigingsdata beschikbaar is. De publieke demo toont alleen geaggregeerde voorbeeldindicatoren.</p>
+	</header>
+
+	<section class="notice" aria-label="Status en beperkingen van de demo">
+		<strong>Werk in uitvoering: demo zonder daadwerkelijke data.</strong>
+		Deze pagina gebruikt fictieve, geaggregeerde voorbeeldgegevens en bevat geen echte KvK-, adres- of bedrijfsdata. Hoge dichtheid is alleen een risicosignaal dat context, databronnen en juridische grondslag vereist voordat conclusies worden getrokken.
+	</section>
+
+	<div class="dashboard" role="main" aria-label="Adresdichtheid analyse-dashboard">
+		<section class="kpis" aria-label="Samenvatting">
+			<article>
+				<span>Onderzochte gebieden</span>
+				<strong id="areaCount">-</strong>
+			</article>
+			<article>
+				<span>Hoogste score</span>
+				<strong id="maxScore">-</strong>
+			</article>
+			<article>
+				<span>Risicosignalen</span>
+				<strong id="signalCount">-</strong>
+			</article>
+			<article>
+				<span>Mediaan dichtheid</span>
+				<strong id="medianDensity">-</strong>
+			</article>
+		</section>
+
+		<section class="controls" aria-label="Filters">
+			<label>
+				Zoeken
+				<input id="searchInput" type="search" placeholder="Gebied, gemeente of type" autocomplete="off" />
+			</label>
+			<label>
+				Signaalniveau
+				<select id="riskFilter">
+					<option value="all">Alle niveaus</option>
+					<option value="hoog">Hoog</option>
+					<option value="verhoogd">Verhoogd</option>
+					<option value="normaal">Normaal</option>
+				</select>
+			</label>
+			<label>
+				Minimale score
+				<input id="scoreInput" type="range" min="0" max="100" value="0" step="5" />
+				<span id="scoreLabel">0</span>
+			</label>
+		</section>
+
+		<section class="analysis-grid">
+			<div class="table-panel">
+				<div class="panel-heading">
+					<div>
+						<p class="eyebrow">Geaggregeerde sampledata</p>
+						<h2>Gebieden met dichtheidsscore</h2>
+					</div>
+					<p id="resultCount" class="result-count" aria-live="polite">-</p>
+				</div>
+				<div class="table-wrap">
+					<table>
+						<thead>
+							<tr>
+								<th><button type="button" data-sort="area">Gebied</button></th>
+								<th><button type="button" data-sort="municipality">Gemeente</button></th>
+								<th><button type="button" data-sort="riskScore">Score</button></th>
+								<th><button type="button" data-sort="companiesPerUsableM2">Bedrijven / 100 m2</button></th>
+								<th><button type="button" data-sort="companiesPerObject">Bedrijven / object</button></th>
+								<th><button type="button" data-sort="peerDeviation">Afwijking</button></th>
+								<th>Uitleg</th>
+							</tr>
+						</thead>
+						<tbody id="resultsBody"></tbody>
+					</table>
+				</div>
+			</div>
+
+			<aside class="method-panel" aria-label="Methode">
+				<p class="eyebrow">Methode</p>
+				<h2>Wat de score meet</h2>
+				<p>Het model vergelijkt bedrijfsdichtheid met gebouwcapaciteit en vergelijkbare gebieden. In een echte toepassing zou de invoer alleen bestaan uit rechtmatig verkregen vestigingsdata en open gebieds- of gebouwregistraties.</p>
+				<ol>
+					<li>Normaliseer vestigingen naar een gekozen aggregatieniveau.</li>
+					<li>Koppel BAG-indicatoren zoals bruikbare oppervlakte en verblijfsobjecten.</li>
+					<li>Vergelijk dichtheid en branchemix met vergelijkbare gebieden.</li>
+					<li>Markeer uitschieters als prioriteit voor nader onderzoek.</li>
+				</ol>
+				<div class="source-note">
+					<strong>Datagrens:</strong>
+					de open KvK-dataset bevat geen volledige adressen of bedrijfsidentificatoren voor publieke herpublicatie. Deze demo simuleert daarom alleen geaggregeerde indicatoren.
+				</div>
+			</aside>
+		</section>
+	</div>
+</div>
+
+<script type="module" src="app.js"></script>
