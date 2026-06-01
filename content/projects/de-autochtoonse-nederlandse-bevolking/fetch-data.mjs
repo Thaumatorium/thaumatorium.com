@@ -10,7 +10,10 @@ const datasets = {
 	migrationOrigin: "85671NED",
 	migrationBirthCountry: "85468NED",
 	migrationNationality: "85848NED",
+	migrationPurposeEu: "84808ned",
+	migrationPurposeNonEu: "84809NED",
 	compositionLong: "70787NED",
+	compositionAgeHistorical: "37325",
 	compositionHistorical: "70751NED",
 	compositionCurrent: "85384NED",
 	compositionFlows: "85369NED",
@@ -30,6 +33,26 @@ const compositionCodes = {
 	oneParentBornAbroad: "A051739",
 	bothParentsBornAbroad: "A051740",
 };
+
+const migrationPurposeCodes = {
+	total: "T001056",
+	work: "A009232",
+	family: "A009234",
+	study: "A009235",
+	noDerivedGoal: "A009236",
+	asylum: "A009233",
+	temporaryProtection: "A052135",
+	other: "A009238",
+};
+
+const ageBuckets = [
+	{ key: "0-20", label: "0 tot 20 jaar", codes5: ["70100", "70200", "70300", "70400"] },
+	{ key: "20-40", label: "20 tot 40 jaar", codes5: ["70500", "70600", "70700", "70800"] },
+	{ key: "40-65", label: "40 tot 65 jaar", codes5: ["70900", "71000", "71100", "71200", "71300"] },
+	{ key: "65+", label: "65 jaar of ouder", codes5: ["71400", "71500", "71600", "71700", "71800", "71900", "72000", "22000", "22200"] },
+];
+
+const ageCodeToBucket = new Map(ageBuckets.flatMap((bucket) => bucket.codes5.map((code) => [code, bucket.key])));
 
 const housingShortage = [
 	{ year: 2012, shortage: 162000, percentage: 2.2, source: "Overheid.nl / Primos, ABF" },
@@ -169,6 +192,96 @@ function keyedValueByYear(rows, keyBuilder, valueField) {
 		result.get(year).set(key, value);
 	}
 	return result;
+}
+
+function purposeByYear(rows, keyField, valueField) {
+	const result = new Map();
+	for (const row of rows) {
+		const year = yearFromPeriod(row.JaarVanImmigratie);
+		const key = row[keyField];
+		const value = row[valueField];
+		if (!year || !key || !Number.isFinite(value)) continue;
+		if (!result.has(year)) result.set(year, new Map());
+		result.get(year).set(key, value);
+	}
+	return result;
+}
+
+function ratio(value, total, multiplier = 1) {
+	return Number.isFinite(value) && Number.isFinite(total) && total !== 0 ? (value / total) * multiplier : null;
+}
+
+function latestCountryTrends(rows, keyField, categories, valueField, isCandidate, limit = 8) {
+	const byCountry = new Map();
+	for (const row of rows) {
+		const year = yearFromPeriod(row.Perioden);
+		const category = categories.get(row[keyField]);
+		const value = row[valueField];
+		if (!year || !category || !Number.isFinite(value) || !isCandidate(category, row)) continue;
+		if (!byCountry.has(category.key)) byCountry.set(category.key, { key: category.key, label: category.title, values: [] });
+		byCountry.get(category.key).values.push({ year, value });
+	}
+
+	const latestYears = [...new Set([...byCountry.values()].flatMap((country) => country.values.map((row) => row.year)))].sort((a, b) => b - a).slice(0, 5);
+	const latestYearSet = new Set(latestYears);
+
+	return [...byCountry.values()]
+		.map((country) => {
+			const values = country.values.sort((a, b) => a.year - b.year);
+			const latestWindowTotal = values.filter((row) => latestYearSet.has(row.year)).reduce((total, row) => total + row.value, 0);
+			const peak = values.reduce((best, row) => (!best || row.value > best.value ? row : best), null);
+			const latest = values.at(-1);
+			return {
+				...country,
+				values,
+				latestWindowTotal,
+				latestValue: latest?.value ?? null,
+				peakYear: peak?.year ?? null,
+				peakValue: peak?.value ?? null,
+			};
+		})
+		.sort((a, b) => b.latestWindowTotal - a.latestWindowTotal)
+		.slice(0, limit)
+		.map(({ latestWindowTotal, ...country }) => country);
+}
+
+function addAgeValue(container, year, bucketKey, field, value) {
+	if (!Number.isFinite(value)) return;
+	if (!container.has(year)) container.set(year, new Map());
+	const yearMap = container.get(year);
+	if (!yearMap.has(bucketKey)) yearMap.set(bucketKey, {});
+	const bucket = yearMap.get(bucketKey);
+	bucket[field] = (bucket[field] ?? 0) + value;
+}
+
+function ageStructureFromMaps(ageMaps) {
+	const years = [...new Set(ageMaps.flatMap((map) => [...map.keys()]))].sort((a, b) => a - b);
+	return years.map((year) => {
+		const byBucket = new Map();
+		for (const map of ageMaps) {
+			const buckets = map.get(year);
+			if (!buckets) continue;
+			for (const [bucketKey, values] of buckets) {
+				byBucket.set(bucketKey, { ...(byBucket.get(bucketKey) || {}), ...values });
+			}
+		}
+
+		return {
+			year,
+			buckets: ageBuckets.map((bucket) => {
+				const values = byBucket.get(bucket.key) || {};
+				return {
+					key: bucket.key,
+					label: bucket.label,
+					population: values.population ?? null,
+					nativeBackgroundProxy: values.nativeBackgroundProxy ?? null,
+					migrationBackgroundTotal: values.migrationBackgroundTotal ?? null,
+					firstGenerationMigrationBackground: values.firstGenerationMigrationBackground ?? null,
+					secondGenerationMigrationBackground: values.secondGenerationMigrationBackground ?? null,
+				};
+			}),
+		};
+	});
 }
 
 function topMigrationByYear(rows, keyField, categories, valueField, isCandidate, limit = 7) {
@@ -353,7 +466,10 @@ async function main() {
 		migrationOriginInfo,
 		migrationBirthCountryInfo,
 		migrationNationalityInfo,
+		migrationPurposeEuInfo,
+		migrationPurposeNonEuInfo,
 		compositionLongInfo,
+		compositionAgeHistoricalInfo,
 		compositionHistoricalInfo,
 		compositionCurrentInfo,
 		compositionFlowsInfo,
@@ -367,7 +483,12 @@ async function main() {
 		migrationBirthCountryCategories,
 		migrationNationalityRows,
 		migrationNationalityCategories,
+		migrationPurposeEuRows,
+		migrationPurposeNonEuRows,
+		compositionLongAgeRows,
 		compositionLongRows,
+		compositionAgeHistoricalPeriods,
+		compositionCurrentPeriods,
 		compositionHistoricalRows,
 		compositionCurrentRows,
 		compositionFlowsRows,
@@ -380,16 +501,19 @@ async function main() {
 		fetchOData(datasets.migrationOrigin, "TableInfos"),
 		fetchOData(datasets.migrationBirthCountry, "TableInfos"),
 		fetchOData(datasets.migrationNationality, "TableInfos"),
+		fetchOData(datasets.migrationPurposeEu, "TableInfos"),
+		fetchOData(datasets.migrationPurposeNonEu, "TableInfos"),
 		fetchOData(datasets.compositionLong, "TableInfos"),
+		fetchOData(datasets.compositionAgeHistorical, "TableInfos"),
 		fetchOData(datasets.compositionHistorical, "TableInfos"),
 		fetchOData(datasets.compositionCurrent, "TableInfos"),
 		fetchOData(datasets.compositionFlows, "TableInfos"),
 		fetchOData(datasets.housing, "TableInfos"),
 		fetchOData(datasets.demographics, "TypedDataSet", {
-			$select: "Perioden,TotaalBevolking_4,LevendGeborenKinderen_73,Overledenen_74,Geboorteoverschot_75,Immigratie_76,EmigratieInclusiefAdministratieveC_77,MigratiesaldoInclusiefAdministrati_78",
+			$select: "Perioden,TotaalBevolking_4,LevendGeborenKinderen_73,Overledenen_74,Geboorteoverschot_75,Immigratie_76,EmigratieInclusiefAdministratieveC_77,MigratiesaldoInclusiefAdministrati_78,TotaleBevolkingsgroei_79",
 		}),
 		fetchOData(datasets.population, "TypedDataSet", {
-			$select: "Perioden,TotaleBevolking_1",
+			$select: "Perioden,TotaleBevolking_1,TotaleBevolkingsgroei_65",
 		}),
 		fetchOData(datasets.migration, "TypedDataSet", {
 			$filter: "Geslacht eq 'T001038' and Leeftijd eq '10000' and Nationaliteit eq 'T001059' and RegioS eq 'NL01  '",
@@ -407,10 +531,24 @@ async function main() {
 			$select: "Perioden,Nationaliteit,Immigratie_1,EmigratieInclusiefAdministratieveC_2,AdministratieveAfvoeringen_5",
 		}),
 		fetchOData(datasets.migrationNationality, "Nationaliteit"),
+		fetchOData(datasets.migrationPurposeEu, "TypedDataSet", {
+			$filter: "Geslacht eq 'T001038' and Leeftijd eq '10000  ' and Nationaliteit eq 'T001059' and SociaaleconomischeCategorie eq 'T001083' and Verblijfsduur eq 'A027954'",
+			$select: "JaarVanImmigratie,AfgeleidMigratiedoel,ImmigrantenUitEUEFTALanden_1",
+		}),
+		fetchOData(datasets.migrationPurposeNonEu, "TypedDataSet", {
+			$filter: "Geslacht eq 'T001038' and Leeftijd eq '10000  ' and Nationaliteit eq 'T001059' and SociaaleconomischeCategorie eq 'T001083' and Verblijfsduur eq 'A027954'",
+			$select: "JaarVanImmigratie,Migratiemotief,ImmigrantenExclusiefEUEFTA_1",
+		}),
+		fetchOData(datasets.compositionLong, "TypedDataSet", {
+			$filter: `Geslacht eq 'T001038' and Migratieachtergrond eq '${compositionCodes.migrationBackground}'`,
+			$select: "Perioden,Leeftijd,k_1eEn2eGeneratieMigratieachtergrond_1,k_1eGeneratieMigratieachtergrond_2,k_2eGeneratieMigratieachtergrond_3",
+		}),
 		fetchOData(datasets.compositionLong, "TypedDataSet", {
 			$filter: `Geslacht eq 'T001038' and Leeftijd eq '10000' and Migratieachtergrond eq '${compositionCodes.migrationBackground}'`,
 			$select: "Perioden,k_1eEn2eGeneratieMigratieachtergrond_1,k_1eGeneratieMigratieachtergrond_2,k_2eGeneratieMigratieachtergrond_3",
 		}),
+		fetchOData(datasets.compositionAgeHistorical, "Perioden"),
+		fetchOData(datasets.compositionCurrent, "Perioden"),
 		fetchOData(datasets.compositionHistorical, "TypedDataSet", {
 			$filter: `(Migratieachtergrond eq '${compositionCodes.nativeBackground}' or Migratieachtergrond eq '${compositionCodes.migrationBackground}') and (Generatie eq '${compositionCodes.total}' or Generatie eq '${compositionCodes.firstGeneration}' or Generatie eq '${compositionCodes.secondGeneration}')`,
 			$select: "Perioden,Migratieachtergrond,Generatie,BevolkingOp1Januari_1",
@@ -435,6 +573,18 @@ async function main() {
 		select: "Perioden,LandVanVertrekBestemming,Geboorteland,Immigratie_1,EmigratieExclusiefAdministratieveC_2",
 		delayMs: 150,
 	});
+	const compositionAgeHistoricalRows = await fetchODataPeriodBatches(datasets.compositionAgeHistorical, "TypedDataSet", {
+		periods: compositionAgeHistoricalPeriods.map((row) => row.Key),
+		filter: `Geslacht eq 'T001038' and BurgerlijkeStaat eq 'T001019' and (Migratieachtergrond eq '${compositionCodes.total}' or Migratieachtergrond eq '${compositionCodes.nativeBackground}' or Migratieachtergrond eq '${compositionCodes.migrationBackground}') and (Generatie eq '${compositionCodes.total}' or Generatie eq '${compositionCodes.nativeBackground}' or Generatie eq '${compositionCodes.migrationBackground}' or Generatie eq '${compositionCodes.firstGeneration}' or Generatie eq '${compositionCodes.secondGeneration}')`,
+		select: "Perioden,Leeftijd,Migratieachtergrond,Generatie,Bevolking_1",
+		delayMs: 80,
+	});
+	const compositionCurrentAgeRows = await fetchODataPeriodBatches(datasets.compositionCurrent, "TypedDataSet", {
+		periods: compositionCurrentPeriods.map((row) => row.Key),
+		filter: `Geslacht eq 'T001038' and BurgerlijkeStaat eq 'T001019' and Herkomstland eq '${compositionCodes.total}' and (Geboorteland eq '${compositionCodes.totalBirthCountry}' or Geboorteland eq '${compositionCodes.bornInNetherlands}' or Geboorteland eq '${compositionCodes.bornOutsideNetherlands}') and (GeboortelandOuders eq '${compositionCodes.totalBirthCountry}' or GeboortelandOuders eq '${compositionCodes.bothParentsBornInNetherlands}' or GeboortelandOuders eq '${compositionCodes.oneParentBornAbroad}' or GeboortelandOuders eq '${compositionCodes.bothParentsBornAbroad}')`,
+		select: "Perioden,Leeftijd,Geboorteland,GeboortelandOuders,Bevolking_1",
+		delayMs: 80,
+	});
 
 	const historicalPopulationByYear = indexByYear(demographicsRows, (row) => ({
 		population: thousands(row.TotaalBevolking_4),
@@ -446,14 +596,21 @@ async function main() {
 		immigration: thousands(row.Immigratie_76),
 		emigration: thousands(row.EmigratieInclusiefAdministratieveC_77),
 		netMigration: thousands(row.MigratiesaldoInclusiefAdministrati_78),
+		populationGrowth: thousands(row.TotaleBevolkingsgroei_79),
 	}));
 
+	const migrationByYear = new Map(historicalMigrationByYear);
 	const populationByYear = new Map(historicalPopulationByYear);
-	for (const [year, row] of indexByYear(populationRows, (sourceRow) => ({ population: sourceRow.TotaleBevolking_1 }))) {
-		populationByYear.set(year, row);
+	for (const [year, row] of indexByYear(populationRows, (sourceRow) => ({ population: sourceRow.TotaleBevolking_1, populationGrowth: sourceRow.TotaleBevolkingsgroei_65 }))) {
+		populationByYear.set(year, { population: row.population });
+		if (Number.isFinite(row.populationGrowth)) {
+			migrationByYear.set(year, {
+				...migrationByYear.get(year),
+				populationGrowth: row.populationGrowth,
+			});
+		}
 	}
 
-	const migrationByYear = new Map(historicalMigrationByYear);
 	for (const [year, row] of indexByYear(migrationRows, (sourceRow) => ({
 		immigration: sourceRow.Immigratie_1,
 		emigration: sourceRow.EmigratieInclusiefAdministratieveC_2,
@@ -476,6 +633,8 @@ async function main() {
 	const birthCountryAdminRemovalByYear = keyedMigrationByYear(migrationBirthCountryRows, "Geboorteland", "AdministratieveAfvoeringen_5");
 	const nationalityByYear = keyedMigrationByYear(migrationNationalityRows, "Nationaliteit", "Immigratie_1");
 	const nationalityEmigrationByYear = keyedMigrationByYear(migrationNationalityRows, "Nationaliteit", "EmigratieInclusiefAdministratieveC_2");
+	const migrationPurposeEuByYear = purposeByYear(migrationPurposeEuRows, "AfgeleidMigratiedoel", "ImmigrantenUitEUEFTALanden_1");
+	const migrationPurposeNonEuByYear = purposeByYear(migrationPurposeNonEuRows, "Migratiemotief", "ImmigrantenExclusiefEUEFTA_1");
 	const topDepartureByYear = topMigrationByYear(originTotalRows, "LandVanVertrekBestemming", originCategories, "Immigratie_1", (category) => category.group !== 1 && category.group !== 4 && isCurrentNamedCategory(category));
 	const topDestinationByYear = topMigrationByYear(originTotalRows, "LandVanVertrekBestemming", originCategories, "EmigratieExclusiefAdministratieveC_2", (category) => category.group !== 1 && category.group !== 4 && isCurrentNamedCategory(category));
 	const topBirthCountryByYear = topMigrationByYear(migrationBirthCountryRows, "Geboorteland", birthCountryCategories, "Immigratie_1", (category) => Number(category.group) >= 4 && isCurrentNamedCategory(category));
@@ -496,6 +655,8 @@ async function main() {
 		birthCountryTop: topEmigrationBirthCountryByYear.get(year) || [],
 		nationalityTop: topEmigrationNationalityByYear.get(year) || [],
 	}));
+	const migrationOriginCountryTrends = latestCountryTrends(originTotalRows, "LandVanVertrekBestemming", originCategories, "Immigratie_1", (category) => category.group !== 1 && category.group !== 4 && isCurrentNamedCategory(category));
+	const migrationEmigrationCountryTrends = latestCountryTrends(originTotalRows, "LandVanVertrekBestemming", originCategories, "EmigratieExclusiefAdministratieveC_2", (category) => category.group !== 1 && category.group !== 4 && isCurrentNamedCategory(category));
 
 	const housingByYear = indexByYear(housingRows, (row) => ({
 		newHomes: row.Nieuwbouw_2,
@@ -518,6 +679,58 @@ async function main() {
 	const interpolatedHousingShortage = interpolateHousingShortage(housingShortage);
 	const shortageByYear = interpolatedHousingShortage.byYear;
 	const queueByYear = new Map(gridQueue.map((row) => [row.year, row]));
+
+	const ageLongByYear = new Map();
+	for (const row of compositionLongAgeRows) {
+		const year = yearFromPeriod(row.Perioden);
+		const bucket = ageCodeToBucket.get(row.Leeftijd);
+		if (!year || !bucket || row.Leeftijd === "10000") continue;
+		addAgeValue(ageLongByYear, year, bucket, "migrationBackgroundTotal", row.k_1eEn2eGeneratieMigratieachtergrond_1);
+		addAgeValue(ageLongByYear, year, bucket, "firstGenerationMigrationBackground", row.k_1eGeneratieMigratieachtergrond_2);
+		addAgeValue(ageLongByYear, year, bucket, "secondGenerationMigrationBackground", row.k_2eGeneratieMigratieachtergrond_3);
+	}
+
+	const ageHistoricalByYear = new Map();
+	for (const row of compositionAgeHistoricalRows) {
+		const year = yearFromPeriod(row.Perioden);
+		const bucket = ageCodeToBucket.get(row.Leeftijd);
+		if (!year || !bucket || row.Leeftijd === "10000") continue;
+		const key = `${row.Migratieachtergrond}|${row.Generatie}`;
+		const field =
+			key === `${compositionCodes.total}|${compositionCodes.total}`
+				? "population"
+				: key === `${compositionCodes.nativeBackground}|${compositionCodes.nativeBackground}`
+					? "nativeBackgroundProxy"
+					: key === `${compositionCodes.migrationBackground}|${compositionCodes.migrationBackground}`
+						? "migrationBackgroundTotal"
+						: key === `${compositionCodes.migrationBackground}|${compositionCodes.firstGeneration}`
+							? "firstGenerationMigrationBackground"
+							: key === `${compositionCodes.migrationBackground}|${compositionCodes.secondGeneration}`
+								? "secondGenerationMigrationBackground"
+								: null;
+		if (field) addAgeValue(ageHistoricalByYear, year, bucket, field, row.Bevolking_1);
+	}
+
+	const currentAgeByRawKey = keyedValueByYear(compositionCurrentAgeRows, (row) => `${row.Leeftijd}|${row.Geboorteland}|${row.GeboortelandOuders}`, "Bevolking_1");
+	const ageCurrentByYear = new Map();
+	for (const [year, values] of currentAgeByRawKey) {
+		for (const ageCode of new Set([...values.keys()].map((key) => key.split("|")[0]))) {
+			const bucket = ageCodeToBucket.get(ageCode);
+			if (!bucket || ageCode === "10000") continue;
+			const population = values.get(`${ageCode}|${compositionCodes.totalBirthCountry}|${compositionCodes.totalBirthCountry}`) ?? null;
+			const nativeBackgroundProxy = values.get(`${ageCode}|${compositionCodes.totalBirthCountry}|${compositionCodes.bothParentsBornInNetherlands}`) ?? null;
+			const bornAbroadCurrent = values.get(`${ageCode}|${compositionCodes.bornOutsideNetherlands}|${compositionCodes.totalBirthCountry}`) ?? null;
+			const bornAbroadDutchParentsCurrent = values.get(`${ageCode}|${compositionCodes.bornOutsideNetherlands}|${compositionCodes.bothParentsBornInNetherlands}`) ?? null;
+			const secondGenerationOneParentAbroad = values.get(`${ageCode}|${compositionCodes.bornInNetherlands}|${compositionCodes.oneParentBornAbroad}`) ?? null;
+			const secondGenerationBothParentsAbroad = values.get(`${ageCode}|${compositionCodes.bornInNetherlands}|${compositionCodes.bothParentsBornAbroad}`) ?? null;
+			addAgeValue(ageCurrentByYear, year, bucket, "population", population);
+			addAgeValue(ageCurrentByYear, year, bucket, "nativeBackgroundProxy", nativeBackgroundProxy);
+			addAgeValue(ageCurrentByYear, year, bucket, "migrationBackgroundTotal", Number.isFinite(population) && Number.isFinite(nativeBackgroundProxy) ? population - nativeBackgroundProxy : null);
+			addAgeValue(ageCurrentByYear, year, bucket, "firstGenerationMigrationBackground", Number.isFinite(bornAbroadCurrent) && Number.isFinite(bornAbroadDutchParentsCurrent) ? bornAbroadCurrent - bornAbroadDutchParentsCurrent : null);
+			addAgeValue(ageCurrentByYear, year, bucket, "secondGenerationMigrationBackground", Number.isFinite(secondGenerationOneParentAbroad) && Number.isFinite(secondGenerationBothParentsAbroad) ? secondGenerationOneParentAbroad + secondGenerationBothParentsAbroad : null);
+		}
+	}
+	const ageStructureByYear = ageStructureFromMaps([ageLongByYear, ageHistoricalByYear, ageCurrentByYear]);
 
 	const years = [];
 	for (let year = 1899; year <= 2026; year += 1) years.push(year);
@@ -542,8 +755,10 @@ async function main() {
 		const liveBirths = migration.liveBirths ?? null;
 		const deaths = migration.deaths ?? null;
 		const birthSurplus = migration.birthSurplus ?? null;
+		const populationGrowth = migration.populationGrowth ?? null;
 		const immigration = migration.immigration ?? null;
 		const netMigration = migration.netMigration ?? null;
+		const otherCorrections = Number.isFinite(populationGrowth) && Number.isFinite(birthSurplus) && Number.isFinite(netMigration) ? populationGrowth - birthSurplus - netMigration : null;
 		const origin = originByYear.get(year) || new Map();
 		const destination = destinationByYear.get(year) || new Map();
 		const birthCountry = birthCountryByYear.get(year) || new Map();
@@ -551,6 +766,8 @@ async function main() {
 		const birthCountryAdminRemoval = birthCountryAdminRemovalByYear.get(year) || new Map();
 		const nationality = nationalityByYear.get(year) || new Map();
 		const nationalityEmigration = nationalityEmigrationByYear.get(year) || new Map();
+		const purposeEu = migrationPurposeEuByYear.get(year) || new Map();
+		const purposeNonEu = migrationPurposeNonEuByYear.get(year) || new Map();
 		const historicalComposition = compositionHistoricalByYear.get(year) || new Map();
 		const longComposition = compositionLongByYear.get(year) || {};
 		const currentComposition = compositionCurrentByYear.get(year) || new Map();
@@ -595,6 +812,7 @@ async function main() {
 						? "migratieachtergrond_reconstructie"
 						: "migratieachtergrond_lange_reeks"
 					: null;
+		const qualityMethod = compositionMethod === "migratieachtergrond_reconstructie" ? "cbs_reconstruction" : compositionMethod === "migratieachtergrond_en_generatie" ? "direct_cbs" : compositionMethod === "geboorteland_en_ouders" ? "derived_bridge" : null;
 
 		if (Number.isFinite(immigration)) {
 			cumulativeImmigrationTotal += immigration;
@@ -633,6 +851,9 @@ async function main() {
 			liveBirths,
 			deaths,
 			birthSurplus,
+			naturalGrowth: birthSurplus,
+			populationGrowth,
+			otherCorrections,
 			cumulativeLiveBirths,
 			cumulativeDeaths,
 			cumulativeBirthSurplus,
@@ -659,6 +880,20 @@ async function main() {
 			nativeProxyBirths,
 			nativeProxyBirthsPctLiveBirths,
 			compositionMethod,
+			qualityMethod,
+			migrationPurposeEuTotal: purposeEu.get(migrationPurposeCodes.total) ?? null,
+			migrationPurposeEuWork: purposeEu.get(migrationPurposeCodes.work) ?? null,
+			migrationPurposeEuFamily: purposeEu.get(migrationPurposeCodes.family) ?? null,
+			migrationPurposeEuStudy: purposeEu.get(migrationPurposeCodes.study) ?? null,
+			migrationPurposeEuNoDerivedGoal: purposeEu.get(migrationPurposeCodes.noDerivedGoal) ?? null,
+			migrationPurposeEuOther: purposeEu.get(migrationPurposeCodes.other) ?? null,
+			migrationPurposeNonEuTotal: purposeNonEu.get(migrationPurposeCodes.total) ?? null,
+			migrationPurposeNonEuWork: purposeNonEu.get(migrationPurposeCodes.work) ?? null,
+			migrationPurposeNonEuFamily: purposeNonEu.get(migrationPurposeCodes.family) ?? null,
+			migrationPurposeNonEuAsylum: purposeNonEu.get(migrationPurposeCodes.asylum) ?? null,
+			migrationPurposeNonEuStudy: purposeNonEu.get(migrationPurposeCodes.study) ?? null,
+			migrationPurposeNonEuTemporaryProtection: purposeNonEu.get(migrationPurposeCodes.temporaryProtection) ?? null,
+			migrationPurposeNonEuOther: purposeNonEu.get(migrationPurposeCodes.other) ?? null,
 			originImmigrationTotal: birthCountry.get("T001175") ?? nationality.get("T001059") ?? origin.get("T001040") ?? null,
 			originDepartureKnown: origin.get("2012605") ?? null,
 			originDepartureEurope: origin.get("H007933") ?? null,
@@ -683,6 +918,9 @@ async function main() {
 			housingStock: housing.housingStock ?? null,
 			housingShortage: shortage.shortage ?? null,
 			housingShortagePct: shortage.percentage ?? null,
+			personsPerHome: ratio(population, housing.housingStock),
+			populationGrowthPerNetHome: ratio(populationGrowth, housing.netHousingStockGrowth),
+			netHousingStockGrowthPer1000Residents: ratio(housing.netHousingStockGrowth, population, 1000),
 			housingShortageInterpolated: shortage.interpolated ?? false,
 			housingShortageInterpolationBasis: shortage.basis ?? null,
 			gridAfnameRequests: queue.afnameRequests ?? null,
@@ -738,6 +976,9 @@ async function main() {
 			liveBirths: "personen per jaar",
 			deaths: "personen per jaar",
 			birthSurplus: "personen per jaar",
+			naturalGrowth: "personen per jaar; gelijk aan geboorteoverschot",
+			populationGrowth: "personen per jaar; totale bevolkingsgroei",
+			otherCorrections: "personen per jaar; totale bevolkingsgroei minus geboorteoverschot en nettomigratie",
 			cumulativeLiveBirths: "personen; cumulatieve som van levend geboren kinderen vanaf het eerste beschikbare CBS-jaar in deze reeks",
 			cumulativeDeaths: "personen; cumulatieve som van sterfte vanaf het eerste beschikbare CBS-jaar in deze reeks",
 			cumulativeBirthSurplus: "personen; cumulatieve som van geboorteoverschot vanaf het eerste beschikbare CBS-jaar in deze reeks",
@@ -763,6 +1004,19 @@ async function main() {
 			bornAbroadDutchParents: "personen; geboren buiten Nederland met twee in Nederland geboren ouders, beschikbaar vanaf 2022",
 			nativeProxyBirths: "personen per jaar; vanaf 2022 afgeleid uit 85369NED als overledenen plus geboorteoverschot voor personen met twee in Nederland geboren ouders",
 			nativeProxyBirthsPctLiveBirths: "percentage van alle levend geboren kinderen in het jaar",
+			migrationPurposeEuTotal: "personen per immigratiejaar; EU/EFTA-immigranten naar afgeleid migratiedoel",
+			migrationPurposeEuWork: "personen per immigratiejaar; EU/EFTA arbeid",
+			migrationPurposeEuFamily: "personen per immigratiejaar; EU/EFTA gezin",
+			migrationPurposeEuStudy: "personen per immigratiejaar; EU/EFTA studie",
+			migrationPurposeEuNoDerivedGoal: "personen per immigratiejaar; EU/EFTA geen afgeleid migratiedoel",
+			migrationPurposeEuOther: "personen per immigratiejaar; EU/EFTA overig en onbekend",
+			migrationPurposeNonEuTotal: "personen per immigratiejaar; niet-EU/EFTA immigranten naar IND-migratiemotief",
+			migrationPurposeNonEuWork: "personen per immigratiejaar; niet-EU/EFTA arbeid",
+			migrationPurposeNonEuFamily: "personen per immigratiejaar; niet-EU/EFTA gezin",
+			migrationPurposeNonEuAsylum: "personen per immigratiejaar; niet-EU/EFTA asiel",
+			migrationPurposeNonEuStudy: "personen per immigratiejaar; niet-EU/EFTA studie",
+			migrationPurposeNonEuTemporaryProtection: "personen per immigratiejaar; niet-EU/EFTA tijdelijke bescherming",
+			migrationPurposeNonEuOther: "personen per immigratiejaar; niet-EU/EFTA overige migratiemotieven",
 			originImmigrationTotal: "personen per jaar; immigratie totaal binnen de CBS-herkomsttabellen",
 			originDepartureKnown: "personen per jaar; immigranten met bekend vertrekland buiten Nederland",
 			originDepartureEurope: "personen per jaar; vertrekland in Europa, exclusief Nederland",
@@ -786,6 +1040,9 @@ async function main() {
 			netHousingStockGrowth: "woningen per jaar",
 			housingShortage: "woningen",
 			housingShortagePct: "percentage van de woningvoorraad",
+			personsPerHome: "personen per woning",
+			populationGrowthPerNetHome: "personen bevolkingsgroei per netto toegevoegde woning",
+			netHousingStockGrowthPer1000Residents: "netto toegevoegde woningen per 1000 inwoners",
 			gridRequests: "unieke transportverzoeken in de wachtrij",
 			gridMw: "MW transportvermogen in de wachtrij",
 			gridCapacity: "MW",
@@ -797,7 +1054,10 @@ async function main() {
 			migrationOrigin: migrationOriginInfo[0],
 			migrationBirthCountry: migrationBirthCountryInfo[0],
 			migrationNationality: migrationNationalityInfo[0],
+			migrationPurposeEu: migrationPurposeEuInfo[0],
+			migrationPurposeNonEu: migrationPurposeNonEuInfo[0],
 			compositionLong: compositionLongInfo[0],
+			compositionAgeHistorical: compositionAgeHistoricalInfo[0],
 			compositionHistorical: compositionHistoricalInfo[0],
 			compositionCurrent: compositionCurrentInfo[0],
 			compositionFlows: compositionFlowsInfo[0],
@@ -834,9 +1094,20 @@ async function main() {
 			},
 			gridQueue,
 		},
+		qualityRules: {
+			direct_cbs: { label: "direct", description: "Directe CBS-publicatie voor deze definitie en periode." },
+			cbs_reconstruction: { label: "CBS-reconstructie", description: "CBS markeert deze jaren als reconstructie van het verleden." },
+			derived_bridge: { label: "brugdefinitie", description: "Afgeleid om de oude reeks na een CBS-definitiewijziging door te trekken." },
+			backcast: { label: "teruggeschat", description: "Teruggeschat uit een verwante reeks met vaste kalibratie." },
+			interpolated: { label: "geinterpoleerd", description: "Lineair ingevuld tussen bekende bronpunten." },
+			proxy: { label: "proxy", description: "Benadering van een niet direct gepubliceerde grootheid." },
+		},
 		timeline,
+		ageStructureByYear,
 		migrationOriginBreakdown,
 		migrationEmigrationBreakdown,
+		migrationOriginCountryTrends,
+		migrationEmigrationCountryTrends,
 		gridCurrent,
 	};
 

@@ -21,6 +21,18 @@ export function percent(value) {
 	return Number.isFinite(value) ? `${formatOne.format(value)}%` : "-";
 }
 
+export function decimal(value) {
+	return Number.isFinite(value) ? formatOne.format(value) : "-";
+}
+
+export function personsPerHome(value) {
+	return Number.isFinite(value) ? `${formatOne.format(value)} personen/woning` : "-";
+}
+
+export function homesPer1000(value) {
+	return Number.isFinite(value) ? `${formatOne.format(value)} woningen per 1000 inwoners` : "-";
+}
+
 export function mw(value) {
 	return Number.isFinite(value) ? `${formatOne.format(value)} MW` : "-";
 }
@@ -38,7 +50,10 @@ export function formatMetric(key, value) {
 	if (key.includes("Mw")) return mw(value);
 	if (key.includes("Requests")) return requests(value);
 	if (key === "housingShortagePct" || key.endsWith("PctPopulation")) return percent(value);
-	if (key === "netMigration" || key === "birthSurplus" || key === "cumulativeNetMigration") return signedPeople(value);
+	if (key === "personsPerHome") return personsPerHome(value);
+	if (key === "netHousingStockGrowthPer1000Residents") return homesPer1000(value);
+	if (key === "populationGrowthPerNetHome") return decimal(value);
+	if (key === "netMigration" || key === "birthSurplus" || key === "naturalGrowth" || key === "populationGrowth" || key === "otherCorrections" || key === "cumulativeNetMigration") return signedPeople(value);
 	if (
 		key === "population" ||
 		key === "liveBirths" ||
@@ -56,7 +71,8 @@ export function formatMetric(key, value) {
 		key === "secondGenerationBothParentsAbroad" ||
 		key === "bornAbroadDutchParents" ||
 		key.startsWith("origin") ||
-		key.startsWith("emigration")
+		key.startsWith("emigration") ||
+		key.startsWith("migrationPurpose")
 	)
 		return people(value);
 	if (key === "newHomes" || key === "netHousingStockGrowth" || key === "housingShortage" || key === "housingStock") return homes(value);

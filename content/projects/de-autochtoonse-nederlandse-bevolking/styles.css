@@ -144,6 +144,29 @@ body:has(.autochtoon-page) {
 	text-transform: uppercase;
 }
 
+.definition-control {
+	display: grid;
+	gap: 6px;
+}
+
+.definition-control[hidden] {
+	display: none;
+}
+
+.definition-options {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 6px;
+}
+
+.definition-options button {
+	min-height: 34px;
+	padding: 0 8px;
+	font-size: 12px;
+	font-weight: 780;
+	line-height: 1.1;
+}
+
 .year-control-head,
 .year-range-labels {
 	display: flex;
@@ -186,6 +209,12 @@ body:has(.autochtoon-page) {
 	font-weight: 800;
 	letter-spacing: 0;
 	text-transform: none;
+}
+
+.chart-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
 }
 
 .zoom-reset:disabled {
@@ -288,8 +317,17 @@ body:has(.autochtoon-page) {
 	border-radius: 0;
 }
 
+.legend-item.is-highlighted {
+	color: var(--ink);
+	font-weight: 900;
+}
+
+.legend-item.is-highlighted i {
+	box-shadow: 0 0 0 3px rgba(35, 87, 137, 0.16);
+}
+
 .chart-note {
-	max-width: 86ch;
+	max-width: 132ch;
 	margin: -2px 0 0;
 	color: #5f584d;
 	font-size: 12px;
@@ -385,6 +423,22 @@ body:has(.autochtoon-page) {
 	stroke-width: 4px;
 }
 
+.definition-marker {
+	stroke: rgba(129, 103, 169, 0.46);
+	stroke-dasharray: 2 5;
+	pointer-events: none;
+}
+
+.definition-marker-label {
+	fill: #5d4b78;
+	font-size: 11px;
+	font-weight: 800;
+	paint-order: stroke;
+	stroke: rgba(255, 253, 250, 0.9);
+	stroke-width: 4px;
+	text-transform: uppercase;
+}
+
 .hover-capture {
 	fill: transparent;
 	cursor: grab;
@@ -459,6 +513,23 @@ body:has(.autochtoon-page) {
 	color: #8b443d;
 	font-size: 11px;
 	font-weight: 760;
+}
+
+.quality-badge {
+	display: inline-flex;
+	width: fit-content;
+	align-items: center;
+	margin-left: 7px;
+	padding: 2px 6px;
+	border: 1px solid rgba(35, 87, 137, 0.22);
+	border-radius: 999px;
+	background: #eef5f8;
+	color: #264d69;
+	font-size: 10px;
+	font-weight: 850;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+	vertical-align: middle;
 }
 
 .tooltip i {

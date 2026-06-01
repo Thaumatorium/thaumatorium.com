@@ -1,4 +1,4 @@
-import { homes, mw, people, percent, requests, signedPeople } from "./formatters.js";
+import { decimal, homes, homesPer1000, mw, people, percent, personsPerHome, requests, signedPeople } from "./formatters.js";
 
 export const views = {
 	population: {
@@ -65,6 +65,44 @@ export const views = {
 			{ key: "secondGenerationMigrationBackgroundPctPopulation", label: "2e generatie (%)", format: percent },
 		],
 	},
+	growth: {
+		kicker: "Bevolkingsgroei ontleed",
+		title: "Geboorte, migratie en correcties",
+		leftLabel: "personen per jaar",
+		rightLabel: "",
+		series: [
+			{ key: "populationGrowth", label: "Totale groei", color: "#235789", axis: "left", kind: "line", width: 3 },
+			{ key: "birthSurplus", label: "Geboorteoverschot", color: "#2a9d8f", axis: "left", kind: "bar" },
+			{ key: "netMigration", label: "Nettomigratie", color: "#d1495b", axis: "left", kind: "bar" },
+			{ key: "otherCorrections", label: "Overige correcties", color: "#8167a9", axis: "left", kind: "line", width: 2.2, dash: "5 5" },
+		],
+		stats: [
+			{ key: "populationGrowth", label: "Totale groei", format: signedPeople },
+			{ key: "birthSurplus", label: "Geboorteoverschot", format: signedPeople },
+			{ key: "netMigration", label: "Nettomigratie", format: signedPeople },
+			{ key: "otherCorrections", label: "Overige correcties", format: signedPeople },
+		],
+	},
+	age: {
+		kicker: "Leeftijdsopbouw",
+		title: "Samenstelling naar leeftijd",
+		leftLabel: "personen",
+		rightLabel: "",
+		series: [
+			{ key: "population", label: "Bevolking", color: "#235789", axis: "left", kind: "bar" },
+			{ key: "nativeBackgroundProxy", label: "Inheemse proxy", color: "#8167a9", axis: "left", kind: "bar" },
+			{ key: "migrationBackgroundTotal", label: "Migratieachtergrond", color: "#8b443d", axis: "left", kind: "bar" },
+			{ key: "firstGenerationMigrationBackground", label: "1e generatie", color: "#d1495b", axis: "left", kind: "bar" },
+			{ key: "secondGenerationMigrationBackground", label: "2e generatie", color: "#2a9d8f", axis: "left", kind: "bar" },
+		],
+		stats: [
+			{ key: "population", label: "Bevolking", format: people },
+			{ key: "nativeBackgroundProxy", label: "Inheemse proxy", format: people },
+			{ key: "migrationBackgroundTotal", label: "Migratieachtergrond", format: people },
+			{ key: "firstGenerationMigrationBackground", label: "1e generatie", format: people },
+			{ key: "secondGenerationMigrationBackground", label: "2e generatie", format: people },
+		],
+	},
 	origin: {
 		kicker: "Herkomst migratie",
 		title: "Waar immigranten vandaan komen",
@@ -114,6 +152,32 @@ export const views = {
 			{ key: "emigrationAdministrativeRemovals", label: "Administratieve afvoeringen", format: people },
 		],
 	},
+	motives: {
+		kicker: "Migratiemotieven",
+		title: "Waarom immigranten komen",
+		leftLabel: "personen per immigratiejaar",
+		rightLabel: "",
+		series: [
+			{ key: "migrationPurposeEuWork", label: "EU/EFTA arbeid", color: "#2a9d8f", axis: "left", kind: "line", width: 2.4 },
+			{ key: "migrationPurposeEuFamily", label: "EU/EFTA gezin", color: "#235789", axis: "left", kind: "line", width: 2.4 },
+			{ key: "migrationPurposeEuStudy", label: "EU/EFTA studie", color: "#edae49", axis: "left", kind: "line", width: 2.4 },
+			{ key: "migrationPurposeNonEuWork", label: "Niet-EU/EFTA arbeid", color: "#1b998b", axis: "left", kind: "bar" },
+			{ key: "migrationPurposeNonEuFamily", label: "Niet-EU/EFTA gezin", color: "#4f6d7a", axis: "left", kind: "bar" },
+			{ key: "migrationPurposeNonEuAsylum", label: "Niet-EU/EFTA asiel", color: "#d1495b", axis: "left", kind: "bar" },
+			{ key: "migrationPurposeNonEuTemporaryProtection", label: "Tijdelijke bescherming", color: "#8167a9", axis: "left", kind: "bar" },
+		],
+		stats: [
+			{ key: "migrationPurposeEuTotal", label: "EU/EFTA totaal", format: people },
+			{ key: "migrationPurposeEuWork", label: "EU/EFTA arbeid", format: people },
+			{ key: "migrationPurposeEuFamily", label: "EU/EFTA gezin", format: people },
+			{ key: "migrationPurposeEuStudy", label: "EU/EFTA studie", format: people },
+			{ key: "migrationPurposeNonEuTotal", label: "Niet-EU/EFTA totaal", format: people },
+			{ key: "migrationPurposeNonEuWork", label: "Niet-EU/EFTA arbeid", format: people },
+			{ key: "migrationPurposeNonEuFamily", label: "Niet-EU/EFTA gezin", format: people },
+			{ key: "migrationPurposeNonEuAsylum", label: "Niet-EU/EFTA asiel", format: people },
+			{ key: "migrationPurposeNonEuTemporaryProtection", label: "Tijdelijke bescherming", format: people },
+		],
+	},
 	housing: {
 		kicker: "Woningbouw en tekort",
 		title: "Gebouwde woningen versus tekort",
@@ -124,6 +188,8 @@ export const views = {
 			{ key: "netHousingStockGrowth", label: "Netto voorraadgroei", color: "#e9c46a", axis: "left", kind: "bar" },
 			{ key: "housingShortage", label: "Woningtekort", color: "#d1495b", axis: "left", kind: "line", width: 3 },
 			{ key: "housingStock", label: "Woningvoorraad", color: "#235789", axis: "right", kind: "line", width: 2.2, dash: "5 5" },
+			{ key: "personsPerHome", label: "Inwoners per woning", color: "#8167a9", axis: "right", kind: "line", width: 2, dash: "4 5" },
+			{ key: "netHousingStockGrowthPer1000Residents", label: "Netto groei per 1000 inwoners", color: "#8b443d", axis: "right", kind: "line", width: 2, dash: "2 5" },
 		],
 		stats: [
 			{ key: "newHomes", label: "Nieuwbouw", format: homes },
@@ -131,6 +197,9 @@ export const views = {
 			{ key: "housingShortage", label: "Woningtekort", format: homes },
 			{ key: "housingShortagePct", label: "Tekortpercentage", format: percent },
 			{ key: "housingStock", label: "Woningvoorraad", format: homes },
+			{ key: "personsPerHome", label: "Inwoners per woning", format: personsPerHome },
+			{ key: "populationGrowthPerNetHome", label: "Bevolkingsgroei per netto woning", format: decimal },
+			{ key: "netHousingStockGrowthPer1000Residents", label: "Netto woningen per 1000 inwoners", format: homesPer1000 },
 		],
 	},
 	grid: {

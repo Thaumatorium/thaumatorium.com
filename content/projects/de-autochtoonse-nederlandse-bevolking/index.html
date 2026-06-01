@@ -25,6 +25,9 @@ sources:
   - title: "CBS StatLine: Bevolking met migratieachtergrond; geslacht, leeftijd, 1 januari 1972-2022"
     url: "https://www.cbs.nl/nl-nl/cijfers/detail/70787NED"
     note: "Gereconstrueerde CBS-reeks voor migratieachtergrond en 1e/2e generatie. CBS markeert 1972-1995 als geschat op basis van een reconstructie van het verleden."
+  - title: "CBS StatLine: Bevolking; leeftijd, generatie en migratieachtergrond, 1996-2022"
+    url: "https://www.cbs.nl/nl-nl/cijfers/detail/37325"
+    note: "Leeftijdsprofiel per generatie en migratieachtergrond, gebruikt voor de leeftijdstab."
   - title: "CBS StatLine: Bevolkingsontwikkeling; migratieachtergrond en generatie; 1996-2021"
     url: "https://www.cbs.nl/nl-nl/cijfers/detail/70751NED"
     note: "Lange publieke reeks voor Nederlandse achtergrond, migratieachtergrond totaal en 1e/2e generatie migratieachtergrond."
@@ -37,6 +40,12 @@ sources:
   - title: "CBS StatLine: Voorraad woningen; standen en mutaties vanaf 1921"
     url: "https://www.cbs.nl/nl-nl/cijfers/detail/82235NED"
     note: "Nieuwbouw, woningbouw, saldo voorraad en eindstand woningvoorraad."
+  - title: "CBS StatLine: EU/EFTA-immigranten; afgeleid migratiedoel"
+    url: "https://www.cbs.nl/nl-nl/cijfers/detail/84808ned"
+    note: "Immigranten uit EU/EFTA-landen naar afgeleid migratiedoel, gebruikt voor de Motieven-tab."
+  - title: "CBS StatLine: Niet-EU/EFTA-immigranten; migratiemotief"
+    url: "https://www.cbs.nl/nl-nl/cijfers/detail/84809NED"
+    note: "Immigranten exclusief EU/EFTA naar IND-migratiemotief, gebruikt voor de Motieven-tab."
   - title: "Overheid.nl: woningtekort volgens Primos/ABF"
     url: "https://zoek.officielebekendmakingen.nl/kst-35925-VII-10.html"
     note: "Historische reeks 2012-2021 voor statistisch woningtekort."
@@ -71,13 +80,25 @@ sources:
 				<div class="view-switch" role="group" aria-label="Grafiekweergave">
 					<button class="active" type="button" data-view="population">Bevolking</button>
 					<button type="button" data-view="composition">Samenstelling</button>
+					<button type="button" data-view="growth">Groei</button>
+					<button type="button" data-view="age">Leeftijd</button>
 					<button type="button" data-view="origin">Herkomst</button>
 					<button type="button" data-view="emigration">Emigratie</button>
+					<button type="button" data-view="motives">Motieven</button>
 					<button type="button" data-view="housing">Wonen</button>
 					<button type="button" data-view="grid">Stroomnet</button>
 				</div>
 
 				<div class="year-control">
+					<div id="definitionControl" class="definition-control" hidden>
+						<span>Definitie</span>
+						<div class="definition-options" role="group" aria-label="Benadruk definitie">
+							<button class="active" type="button" data-definition="nativeBackgroundProxy">Inheemse proxy</button>
+							<button type="button" data-definition="bornAbroadPopulation">Geboren buiten NL</button>
+							<button type="button" data-definition="firstGenerationMigrationBackground">1e generatie</button>
+							<button type="button" data-definition="migrationBackgroundTotal">Migratieachtergrond</button>
+						</div>
+					</div>
 					<div class="year-control-head">
 						<span>Selecteer jaar</span>
 						<strong id="yearLabel">2024</strong>
@@ -91,7 +112,10 @@ sources:
 						<span id="minYearLabel">2010</span>
 						<span id="maxYearLabel">2025</span>
 					</div>
-					<button id="resetZoom" class="zoom-reset" type="button" disabled>Volledig bereik</button>
+					<div class="chart-actions">
+						<button id="resetZoom" class="zoom-reset" type="button" disabled>Volledig bereik</button>
+						<button id="exportCsv" class="zoom-reset" type="button">CSV</button>
+					</div>
 				</div>
 			</div>
 
@@ -140,6 +164,7 @@ sources:
 				grootouderherkomst zit niet in deze openbare tabellen. De Bevolking-tab trekt die samenstellingsreeksen nu ook de hoofdgrafiek in. De voorraad "in het buitenland geboren" is vanaf 2022 direct en voor 1972-2021 teruggeschat uit 1e generatie plus een kleine vaste correctiegroep. 85369NED is een verwante
 				contextreeks voor jaarlijkse stromen, niet de hoofdbron voor deze bevolkingssamenstelling.
 			</p>
+			<p>De Groei-tab ontleedt de jaarlijkse bevolkingsgroei boekhoudkundig in geboorteoverschot, nettomigratie en overige correcties. De Motieven-tab houdt EU/EFTA en niet-EU/EFTA apart: het eerste is een afgeleid migratiedoel, het tweede een IND-migratiemotief. Dat zijn verwante maar niet identieke definities.</p>
 		</article>
 		<article>
 			<h2>Bronnen</h2>

@@ -17,6 +17,9 @@ const maxYearLabel = document.querySelector("#maxYearLabel");
 const prevYearButton = document.querySelector("#prevYear");
 const nextYearButton = document.querySelector("#nextYear");
 const resetZoomButton = document.querySelector("#resetZoom");
+const exportCsvButton = document.querySelector("#exportCsv");
+const definitionControl = document.querySelector("#definitionControl");
+const definitionButtons = document.querySelectorAll("[data-definition]");
 const selectedYearTitle = document.querySelector("#selectedYearTitle");
 const statList = document.querySelector("#statList");
 const gridCards = document.querySelector("#gridCards");
@@ -30,6 +33,7 @@ let data;
 let state = {
 	view: "population",
 	year: 2024,
+	definition: "nativeBackgroundProxy",
 };
 const zoomDomains = new Map();
 let suppressNextClick = false;
@@ -49,8 +53,15 @@ function rowForYear(year) {
 }
 
 function rowsForView(view) {
+	if (view === "age") {
+		return data.ageStructureByYear.map((row) => ({ year: row.year, population: row.buckets.reduce((total, bucket) => total + (bucket.population || 0), 0) || row.buckets.reduce((total, bucket) => total + (bucket.migrationBackgroundTotal || 0), 0) }));
+	}
 	const keys = views[view].series.map((series) => series.key);
 	return data.timeline.filter((row) => keys.some((key) => Number.isFinite(row[key])));
+}
+
+function ageRowForYear(year) {
+	return data.ageStructureByYear?.find((row) => row.year === year) || null;
 }
 
 function fullDomainForRows(rows) {
@@ -163,6 +174,68 @@ function activeView() {
 	return views[state.view];
 }
 
+function qualityForMetric(row, key) {
+	if (!row) return null;
+	if ((key === "housingShortage" || key === "housingShortagePct") && row.housingShortageInterpolated) return "interpolated";
+	if (["bornAbroadPopulation", "bornAbroadPopulationPctPopulation"].includes(key) && row.bornAbroadPopulationEstimated) return "backcast";
+	if (
+		[
+			"nativeBackgroundProxy",
+			"nativeBackgroundProxyPctPopulation",
+			"migrationBackgroundTotal",
+			"migrationBackgroundTotalPctPopulation",
+			"firstGenerationMigrationBackground",
+			"firstGenerationMigrationBackgroundPctPopulation",
+			"secondGenerationMigrationBackground",
+			"secondGenerationMigrationBackgroundPctPopulation",
+		].includes(key)
+	)
+		return row.qualityMethod;
+	if (key === "populationMinusNetMigration" || key === "originBornNetherlands") return "proxy";
+	return null;
+}
+
+function qualityBadge(code) {
+	const rule = data?.qualityRules?.[code];
+	if (!rule) return "";
+	return `<small class="quality-badge">${rule.label}</small>`;
+}
+
+function appendQualityBadge(element, code) {
+	const rule = data?.qualityRules?.[code];
+	if (!rule) return;
+	const badge = document.createElement("small");
+	badge.className = "quality-badge";
+	badge.textContent = rule.label;
+	badge.title = rule.description;
+	element.append(badge);
+}
+
+function definitionInfo() {
+	return {
+		nativeBackgroundProxy: {
+			title: "Gekozen definitie: inheemse proxy",
+			description: "Personen met Nederlandse achtergrond of, vanaf 2022, twee in Nederland geboren ouders. Dit blijft een proxy en geen directe CBS-categorie 'inheems'.",
+			key: "nativeBackgroundProxy",
+		},
+		bornAbroadPopulation: {
+			title: "Gekozen definitie: geboren buiten Nederland",
+			description: "Directe voorraad vanaf 2022; oudere jaren zijn teruggeschat uit 1e generatie plus een vaste correctiegroep.",
+			key: "bornAbroadPopulation",
+		},
+		firstGenerationMigrationBackground: {
+			title: "Gekozen definitie: 1e generatie",
+			description: "Geboren buiten Nederland met migratieachtergrond volgens oude CBS-definitie of brugdefinitie.",
+			key: "firstGenerationMigrationBackground",
+		},
+		migrationBackgroundTotal: {
+			title: "Gekozen definitie: migratieachtergrond totaal",
+			description: "1e en 2e generatie volgens oude CBS-definitie of doorgetrokken via geboorteland van persoon en ouders.",
+			key: "migrationBackgroundTotal",
+		},
+	}[state.definition];
+}
+
 function seriesByKeys(view, keys, axisOverride = null) {
 	return view.series.filter((series) => keys.includes(series.key)).map((series) => (axisOverride ? { ...series, axis: axisOverride } : series));
 }
@@ -174,6 +247,7 @@ function renderLegend(view) {
 		for (const item of items) {
 			const entry = document.createElement("span");
 			entry.className = "legend-item";
+			if (item.key === state.definition) entry.classList.add("is-highlighted");
 			entry.tabIndex = 0;
 			entry.title = metricInfo[item.key]?.description || item.label;
 			entry.setAttribute("aria-label", `${item.label}: ${entry.title}`);
@@ -265,9 +339,22 @@ function renderLegend(view) {
 		return;
 	}
 
+	if (state.view === "growth") {
+		chartNote.textContent = "Deze tab ontleedt jaarlijkse bevolkingsgroei boekhoudkundig: totale groei = geboorteoverschot + nettomigratie + overige correcties.";
+		chartNote.hidden = false;
+		return;
+	}
+
+	if (state.view === "age") {
+		chartNote.textContent = "Deze tab toont het geselecteerde jaar als leeftijdsprofiel. Voor 1972-1995 zijn alleen migratieachtergrond en generaties per leeftijdsbucket beschikbaar; ontbrekende waarden worden niet geinterpoleerd.";
+		chartNote.hidden = false;
+		return;
+	}
+
 	for (const item of view.series) {
 		const entry = document.createElement("span");
 		entry.className = "legend-item";
+		if (item.key === state.definition) entry.classList.add("is-highlighted");
 		entry.tabIndex = 0;
 		entry.title = metricInfo[item.key]?.description || item.label;
 		entry.setAttribute("aria-label", `${item.label}: ${entry.title}`);
@@ -289,7 +376,15 @@ function renderLegend(view) {
 
 function renderStats() {
 	const view = activeView();
-	const row = rowForYear(state.year);
+	const row =
+		state.view === "age"
+			? Object.fromEntries(
+					view.stats.map((stat) => {
+						const values = (ageRowForYear(state.year)?.buckets || []).map((bucket) => valueFor(bucket, stat.key)).filter((value) => value !== null);
+						return [stat.key, values.length ? values.reduce((total, value) => total + value, 0) : null];
+					})
+				)
+			: rowForYear(state.year);
 
 	yearLabel.textContent = state.year;
 	selectedYearTitle.textContent = state.year;
@@ -308,6 +403,7 @@ function renderStats() {
 		const value = document.createElement("strong");
 		value.textContent = stat.format(valueFor(row, stat.key));
 		item.append(label, value);
+		appendQualityBadge(item, qualityForMetric(row, stat.key));
 		if ((stat.key === "housingShortage" || stat.key === "housingShortagePct") && row?.housingShortageInterpolated) {
 			const note = document.createElement("small");
 			note.className = "stat-note";
@@ -408,6 +504,45 @@ function appendRankCard(title, rows, note) {
 		const empty = document.createElement("small");
 		empty.className = "card-note";
 		empty.textContent = "Geen CBS-uitsplitsing voor dit jaar.";
+		card.append(empty);
+	}
+
+	if (note) {
+		const source = document.createElement("small");
+		source.className = "card-note";
+		source.textContent = note;
+		card.append(source);
+	}
+
+	gridCards.append(card);
+}
+
+function appendTrendCard(title, trends, selectedYear, note) {
+	const card = document.createElement("div");
+	card.className = "grid-card is-list trend-card";
+	const heading = document.createElement("h3");
+	heading.textContent = title;
+	card.append(heading);
+
+	if (trends?.length) {
+		const list = document.createElement("ol");
+		list.className = "rank-list";
+		for (const trend of trends.slice(0, 5)) {
+			const selected = trend.values.find((row) => row.year === selectedYear);
+			const item = document.createElement("li");
+			const label = document.createElement("span");
+			label.textContent = trend.label;
+			label.title = `${trend.label}; piek ${trend.peakYear}: ${formatNumber.format(trend.peakValue)}`;
+			const value = document.createElement("strong");
+			value.textContent = selected ? formatNumber.format(selected.value) : `laatst ${formatNumber.format(trend.latestValue)}`;
+			item.append(label, value);
+			list.append(item);
+		}
+		card.append(list);
+	} else {
+		const empty = document.createElement("small");
+		empty.className = "card-note";
+		empty.textContent = "Geen trenddata beschikbaar.";
 		card.append(empty);
 	}
 
@@ -543,6 +678,58 @@ function renderCompositionCards() {
 		rows: [],
 		note: "CBS publiceert in deze openbare reeksen geen grootouderherkomst. Daardoor is een doorlopende 3e generatie-telling hier niet verdedigbaar te reconstrueren.",
 	});
+
+	const info = definitionInfo();
+	if (info) {
+		appendMetricCard({
+			title: info.title,
+			mainValue: formatMetric(info.key, valueFor(row, info.key)),
+			rows: [["Kwaliteit", data.qualityRules?.[qualityForMetric(row, info.key)]?.label || "direct"]],
+			note: info.description,
+			info: metricInfo[info.key],
+		});
+	}
+}
+
+function renderGrowthCards() {
+	const row = rowForYear(state.year);
+	detailEyebrow.textContent = "Groei geselecteerd jaar";
+	detailTitle.textContent = "Bevolkingsgroei ontleed";
+	gridCards.replaceChildren();
+
+	appendMetricCard({
+		title: "Totale groei",
+		mainValue: formatMetric("populationGrowth", valueFor(row, "populationGrowth")),
+		rows: [
+			["Geboorteoverschot", formatMetric("birthSurplus", valueFor(row, "birthSurplus"))],
+			["Nettomigratie", formatMetric("netMigration", valueFor(row, "netMigration"))],
+			["Overige correcties", formatMetric("otherCorrections", valueFor(row, "otherCorrections"))],
+		],
+		note: "Boekhoudkundig: totale groei = geboorteoverschot + nettomigratie + overige correcties.",
+		info: metricInfo.populationGrowth,
+	});
+}
+
+function renderAgeCards() {
+	const ageRow = ageRowForYear(state.year);
+	detailEyebrow.textContent = "Leeftijd geselecteerd jaar";
+	detailTitle.textContent = "Leeftijdsopbouw";
+	gridCards.replaceChildren();
+
+	for (const bucket of ageRow?.buckets || []) {
+		appendMetricCard({
+			title: bucket.label,
+			mainValue: people(valueFor(bucket, "population") ?? valueFor(bucket, "migrationBackgroundTotal")),
+			rows: [
+				["Bevolking", people(valueFor(bucket, "population"))],
+				["Inheemse proxy", people(valueFor(bucket, "nativeBackgroundProxy"))],
+				["Migratieachtergrond", people(valueFor(bucket, "migrationBackgroundTotal"))],
+				["1e generatie", people(valueFor(bucket, "firstGenerationMigrationBackground"))],
+				["2e generatie", people(valueFor(bucket, "secondGenerationMigrationBackground"))],
+			],
+			note: state.year < 1996 ? "Voor 1972-1995 zijn alleen migratieachtergrond en generaties per leeftijdsbucket beschikbaar." : "",
+		});
+	}
 }
 
 function renderOriginCards() {
@@ -591,6 +778,7 @@ function renderOriginCards() {
 	appendRankCard("Top vertreklanden", breakdown?.departureTop, "CBS 85671NED; beschikbaar vanaf 2014.");
 	appendRankCard("Top geboortelanden", breakdown?.birthCountryTop, "CBS 85468NED; Nederland apart als terugkeer-proxy.");
 	appendRankCard("Top nationaliteiten", breakdown?.nationalityTop, "CBS 85848NED; nationaliteit op moment van immigratie.");
+	appendTrendCard("Vertreklanden door de tijd", data.migrationOriginCountryTrends, state.year, "Top 8 bepaald op basis van de laatste vijf beschikbare jaren.");
 }
 
 function renderEmigrationCards() {
@@ -640,6 +828,43 @@ function renderEmigrationCards() {
 	appendRankCard("Top bestemmingen", breakdown?.destinationTop, "CBS 85671NED; exclusief administratieve correcties.");
 	appendRankCard("Top geboortelanden", breakdown?.birthCountryTop, "CBS 85468NED; inclusief administratieve correcties.");
 	appendRankCard("Top nationaliteiten", breakdown?.nationalityTop, "CBS 85848NED; inclusief administratieve correcties.");
+	appendTrendCard("Bestemmingen door de tijd", data.migrationEmigrationCountryTrends, state.year, "Top 8 bepaald op basis van de laatste vijf beschikbare jaren.");
+}
+
+function renderMotivesCards() {
+	const row = rowForYear(state.year);
+	detailEyebrow.textContent = "Motieven geselecteerd jaar";
+	detailTitle.textContent = "EU/EFTA en niet-EU/EFTA";
+	gridCards.replaceChildren();
+
+	appendMetricCard({
+		title: "EU/EFTA afgeleid migratiedoel",
+		mainValue: people(valueFor(row, "migrationPurposeEuTotal")),
+		rows: [
+			["Arbeid", people(valueFor(row, "migrationPurposeEuWork"))],
+			["Gezin", people(valueFor(row, "migrationPurposeEuFamily"))],
+			["Studie", people(valueFor(row, "migrationPurposeEuStudy"))],
+			["Geen doel", people(valueFor(row, "migrationPurposeEuNoDerivedGoal"))],
+			["Overig/onbekend", people(valueFor(row, "migrationPurposeEuOther"))],
+		],
+		note: "CBS leidt dit af; het is niet hetzelfde als een IND-migratiemotief.",
+		info: metricInfo.migrationPurposeEuTotal,
+	});
+
+	appendMetricCard({
+		title: "Niet-EU/EFTA migratiemotief",
+		mainValue: people(valueFor(row, "migrationPurposeNonEuTotal")),
+		rows: [
+			["Arbeid", people(valueFor(row, "migrationPurposeNonEuWork"))],
+			["Gezin", people(valueFor(row, "migrationPurposeNonEuFamily"))],
+			["Asiel", people(valueFor(row, "migrationPurposeNonEuAsylum"))],
+			["Studie", people(valueFor(row, "migrationPurposeNonEuStudy"))],
+			["Tijdelijke bescherming", people(valueFor(row, "migrationPurposeNonEuTemporaryProtection"))],
+			["Overig", people(valueFor(row, "migrationPurposeNonEuOther"))],
+		],
+		note: "Gebaseerd op de eerste vergunning volgens IND/CBS-definitie.",
+		info: metricInfo.migrationPurposeNonEuTotal,
+	});
 }
 
 function renderHousingCards() {
@@ -656,6 +881,8 @@ function renderHousingCards() {
 		rows: [
 			["Netto voorraadgroei", homes(valueFor(row, "netHousingStockGrowth"))],
 			["Woningvoorraad", homes(valueFor(row, "housingStock"))],
+			["Inwoners per woning", formatMetric("personsPerHome", valueFor(row, "personsPerHome"))],
+			["Netto woningen per 1000 inwoners", formatMetric("netHousingStockGrowthPer1000Residents", valueFor(row, "netHousingStockGrowthPer1000Residents"))],
 		],
 		note: "CBS woningvoorraadmutaties; netto groei kan afwijken van nieuwbouw door sloop, onttrekking, overige toevoegingen en correcties.",
 		info: metricInfo.newHomes,
@@ -667,6 +894,7 @@ function renderHousingCards() {
 		rows: [
 			["Tekortpercentage", percent(valueFor(row, "housingShortagePct"))],
 			["Nieuwbouw", homes(valueFor(row, "newHomes"))],
+			["Bevolkingsgroei per netto woning", formatMetric("populationGrowthPerNetHome", valueFor(row, "populationGrowthPerNetHome"))],
 		],
 		note: shortageNote,
 		info: metricInfo.housingShortage,
@@ -684,6 +912,16 @@ function renderDetailCards() {
 		return;
 	}
 
+	if (state.view === "growth") {
+		renderGrowthCards();
+		return;
+	}
+
+	if (state.view === "age") {
+		renderAgeCards();
+		return;
+	}
+
 	if (state.view === "origin") {
 		renderOriginCards();
 		return;
@@ -691,6 +929,17 @@ function renderDetailCards() {
 
 	if (state.view === "emigration") {
 		renderEmigrationCards();
+		return;
+	}
+
+	if (state.view === "motives") {
+		chartNote.textContent = "EU/EFTA gebruikt CBS 'afgeleid migratiedoel'; niet-EU/EFTA gebruikt migratiemotief op basis van IND-vergunning. Die definities zijn verwant, maar niet identiek.";
+		chartNote.hidden = false;
+		return;
+	}
+
+	if (state.view === "motives") {
+		renderMotivesCards();
 		return;
 	}
 
@@ -718,6 +967,11 @@ function drawChartPanel({ root, rows, series, x, top, height, marginLeft, innerW
 		.range([top + height, top]);
 	const baselineLeft = yLeft(0);
 	const baselineRight = yRight(0);
+	const annotationYears = [
+		{ year: 1972, label: "1972 CBS-reconstructie" },
+		{ year: 1996, label: "1996 oude migratieachtergrondreeks" },
+		{ year: 2022, label: "2022 nieuwe herkomstindeling" },
+	].filter((item) => item.year >= x.domain()[0] && item.year <= x.domain()[1]);
 	const barSeries = series.filter((item) => item.kind === "bar");
 	const xDomain = x.domain();
 	const yearSpacing = innerWidth / Math.max(1, xDomain[1] - xDomain[0]);
@@ -861,6 +1115,23 @@ function drawChartPanel({ root, rows, series, x, top, height, marginLeft, innerW
 			.attr("y1", top)
 			.attr("y2", top + height);
 
+		for (const annotation of annotationYears) {
+			const annotationX = x(annotation.year);
+			panel
+				.append("line")
+				.attr("class", "definition-marker")
+				.attr("x1", annotationX)
+				.attr("x2", annotationX)
+				.attr("y1", top)
+				.attr("y2", top + height);
+			panel
+				.append("text")
+				.attr("class", "definition-marker-label")
+				.attr("x", annotationX + 5)
+				.attr("y", top + 12)
+				.text(annotation.label);
+		}
+
 		if (showSelectedYearLabel) {
 			selected
 				.append("text")
@@ -899,22 +1170,11 @@ function attachYearOverlay({ rows, zoomRows = rows, x, top, height, marginLeft, 
 			resetZoomForCurrentView();
 		})
 		.on("mousemove", (event) => {
-			const [mouseX, mouseY] = d3.pointer(event);
+			const [mouseX] = d3.pointer(event);
 			const nearest = d3.least(rows, (row) => Math.abs(x(row.year) - mouseX));
 			if (!nearest) return;
 
-			const tooltipSeries =
-				state.view === "population" && panelContext
-					? tooltipSeriesWindow({
-							row: nearest,
-							series: panelContext.series,
-							mouseY,
-							yLeft: panelContext.yLeft,
-							yRight: panelContext.yRight,
-							baselineLeft: panelContext.baselineLeft,
-							baselineRight: panelContext.baselineRight,
-						})
-					: view.series;
+			const tooltipSeries = state.view === "population" && panelContext ? panelContext.series : view.series;
 
 			showTooltip(event, nearest, view, tooltipSeries);
 		})
@@ -1098,6 +1358,73 @@ function renderSplitPopulationChart(view, rows) {
 	});
 }
 
+function renderAgeChart(view) {
+	const ageRow = ageRowForYear(state.year);
+	const buckets = ageRow?.buckets || [];
+	const rect = chartWrap.getBoundingClientRect();
+	const width = Math.max(320, Math.floor(rect.width));
+	const height = Math.max(420, Math.floor(rect.height));
+	const margin = { top: 30, right: 22, bottom: 70, left: 72 };
+	const innerWidth = width - margin.left - margin.right;
+	const innerHeight = height - margin.top - margin.bottom;
+	const series = view.series;
+	const maxValue = d3.max(buckets.flatMap((bucket) => series.map((item) => valueFor(bucket, item.key) || 0))) || 1;
+	const x0 = d3
+		.scaleBand()
+		.domain(buckets.map((bucket) => bucket.key))
+		.range([margin.left, margin.left + innerWidth])
+		.padding(0.18);
+	const x1 = d3
+		.scaleBand()
+		.domain(series.map((item) => item.key))
+		.range([0, x0.bandwidth()])
+		.padding(0.08);
+	const y = d3
+		.scaleLinear()
+		.domain([0, maxValue * 1.08])
+		.nice()
+		.range([margin.top + innerHeight, margin.top]);
+
+	chart.attr("viewBox", `0 0 ${width} ${height}`);
+	chart.selectAll("*").remove();
+
+	chart
+		.append("g")
+		.attr("class", "grid-lines")
+		.selectAll("line")
+		.data(y.ticks(5))
+		.join("line")
+		.attr("x1", margin.left)
+		.attr("x2", margin.left + innerWidth)
+		.attr("y1", (tick) => y(tick))
+		.attr("y2", (tick) => y(tick));
+
+	chart
+		.append("g")
+		.attr("class", "axis")
+		.attr("transform", `translate(0,${margin.top + innerHeight})`)
+		.call(d3.axisBottom(x0).tickFormat((key) => buckets.find((bucket) => bucket.key === key)?.label || key));
+	chart.append("g").attr("class", "axis").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y).ticks(5).tickFormat(shortNumber));
+
+	const groups = chart
+		.append("g")
+		.selectAll("g")
+		.data(buckets)
+		.join("g")
+		.attr("transform", (bucket) => `translate(${x0(bucket.key)},0)`);
+
+	groups
+		.selectAll("rect")
+		.data((bucket) => series.map((item) => ({ bucket, item, value: valueFor(bucket, item.key) })))
+		.join("rect")
+		.attr("class", "bar")
+		.attr("x", (entry) => x1(entry.item.key))
+		.attr("y", (entry) => (entry.value === null ? y(0) : y(entry.value)))
+		.attr("width", x1.bandwidth())
+		.attr("height", (entry) => (entry.value === null ? 0 : y(0) - y(entry.value)))
+		.attr("fill", (entry) => entry.item.color);
+}
+
 function renderChart() {
 	const view = activeView();
 	const rows = rowsForView(state.view);
@@ -1105,6 +1432,12 @@ function renderChart() {
 
 	if (state.view === "population") {
 		renderSplitPopulationChart(view, rows);
+		updateZoomControls();
+		return;
+	}
+
+	if (state.view === "age") {
+		renderAgeChart(view);
 		updateZoomControls();
 		return;
 	}
@@ -1183,6 +1516,7 @@ function zoomChartAtPointer(event, rows, x) {
 	setZoomDomainForView(state.view, rows, nextDomain);
 	hideTooltip();
 	renderChart();
+	scheduleUrlUpdate();
 }
 
 function startChartPan(event, rows, innerWidth) {
@@ -1207,6 +1541,7 @@ function startChartPan(event, rows, innerWidth) {
 		setZoomDomainForView(state.view, rows, [startDomain[0] + deltaYears, startDomain[1] + deltaYears]);
 		hideTooltip();
 		renderChart();
+		scheduleUrlUpdate();
 	};
 
 	const handleUp = () => {
@@ -1223,7 +1558,7 @@ function startChartPan(event, rows, innerWidth) {
 function resetZoomForCurrentView() {
 	zoomDomains.delete(state.view);
 	hideTooltip();
-	renderChart();
+	render();
 }
 
 function updateZoomControls() {
@@ -1234,15 +1569,72 @@ function updateZoomControls() {
 	resetZoomButton.textContent = zoomed ? "Reset zoom" : "Volledig bereik";
 }
 
+let urlTimer = null;
+function scheduleUrlUpdate() {
+	window.clearTimeout(urlTimer);
+	urlTimer = window.setTimeout(updateUrlState, 150);
+}
+
+function updateUrlState() {
+	const params = new URLSearchParams();
+	params.set("view", state.view);
+	params.set("year", state.year);
+	if (["population", "composition"].includes(state.view)) params.set("definition", state.definition);
+	const domain = zoomDomains.get(state.view);
+	if (domain) {
+		params.set("x0", String(Math.round(domain[0] * 100) / 100));
+		params.set("x1", String(Math.round(domain[1] * 100) / 100));
+	}
+	history.replaceState(null, "", `${location.pathname}?${params.toString()}`);
+}
+
+function readUrlState() {
+	const params = new URLSearchParams(location.search);
+	const view = params.get("view");
+	if (view && views[view]) state.view = view;
+	const year = Number(params.get("year"));
+	if (Number.isFinite(year)) state.year = Math.round(year);
+	const definition = params.get("definition");
+	if (definition && ["nativeBackgroundProxy", "bornAbroadPopulation", "firstGenerationMigrationBackground", "migrationBackgroundTotal"].includes(definition)) state.definition = definition;
+	const x0 = Number(params.get("x0"));
+	const x1 = Number(params.get("x1"));
+	if (Number.isFinite(x0) && Number.isFinite(x1) && x0 !== x1) zoomDomains.set(state.view, [x0, x1]);
+}
+
+function csvEscape(value) {
+	const text = String(value ?? "");
+	return /[;"\n]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
+}
+
+function exportCsv() {
+	const view = activeView();
+	const rows = state.view === "age" ? (ageRowForYear(state.year)?.buckets || []).map((bucket) => ({ year: state.year, bucket: bucket.label, ...bucket })) : rowsInsideDomain(rowsForView(state.view), zoomDomainForView(state.view, rowsForView(state.view)));
+	const columns = state.view === "age" ? ["year", "bucket", ...view.series.map((series) => series.key)] : ["year", ...view.series.map((series) => series.key), ...view.stats.map((stat) => stat.key).filter((key) => !view.series.some((series) => series.key === key))];
+	const labels = Object.fromEntries(view.series.concat(view.stats).map((item) => [item.key, item.label]));
+	const header = columns.map((key) => csvEscape(labels[key] || key)).join(";");
+	const body = rows.map((row) => columns.map((key) => csvEscape(row[key] ?? "")).join(";")).join("\n");
+	const blob = new Blob([`${header}\n${body}\n`], { type: "text/csv;charset=utf-8" });
+	const link = document.createElement("a");
+	link.href = URL.createObjectURL(blob);
+	link.download = `de-autochtoonse-nederlandse-bevolking-${state.view}-${state.year}.csv`;
+	link.click();
+	URL.revokeObjectURL(link.href);
+}
+
 function showTooltip(event, row, view, tooltipSeries = view.series) {
 	const lines = tooltipSeries
 		.map((series) => {
 			const value = valueFor(row, series.key);
 			if (value === null) return null;
 			const formatted = formatMetric(series.key, value);
-			return `<span><i style="background:${series.color}"></i>${series.label}${tooltipAnnotation(series, row)}</span><strong>${formatted}</strong>`;
+			return {
+				label: series.label,
+				html: `<span><i style="background:${series.color}"></i>${series.label}${qualityBadge(qualityForMetric(row, series.key))}${tooltipAnnotation(series, row)}</span><strong>${formatted}</strong>`,
+			};
 		})
-		.filter(Boolean);
+		.filter(Boolean)
+		.sort((a, b) => a.label.localeCompare(b.label, "nl", { sensitivity: "base" }))
+		.map((line) => line.html);
 
 	tooltip.innerHTML = `<div class="tooltip-title"><strong>${row.year}</strong><small>${viewSourceNotes[state.view]}</small></div><dl>${lines.map((line) => `<div>${line}</div>`).join("")}</dl>`;
 	tooltip.hidden = false;
@@ -1252,10 +1644,10 @@ function showTooltip(event, row, view, tooltipSeries = view.series) {
 	const padding = 8;
 	const cursorX = event.clientX - wrapRect.left;
 	const cursorY = event.clientY - wrapRect.top;
-	let left = cursorX + gap;
+	let left = cursorX - tooltip.offsetWidth - gap;
 	let top = cursorY + gap;
 
-	if (left + tooltip.offsetWidth > wrapRect.width - padding) left = cursorX - tooltip.offsetWidth - gap;
+	if (left < padding) left = cursorX + gap;
 	if (top + tooltip.offsetHeight > wrapRect.height - padding) top = cursorY - tooltip.offsetHeight - gap;
 
 	left = Math.max(padding, Math.min(wrapRect.width - tooltip.offsetWidth - padding, left));
@@ -1380,6 +1772,9 @@ function render() {
 	renderDetailCards();
 	renderChart();
 	viewButtons.forEach((button) => button.classList.toggle("active", button.dataset.view === state.view));
+	definitionControl.hidden = !["population", "composition"].includes(state.view);
+	definitionButtons.forEach((button) => button.classList.toggle("active", button.dataset.definition === state.definition));
+	scheduleUrlUpdate();
 }
 
 function setupEvents() {
@@ -1387,6 +1782,13 @@ function setupEvents() {
 		button.addEventListener("click", () => {
 			state.view = button.dataset.view;
 			syncYearRange();
+			render();
+		});
+	});
+
+	definitionButtons.forEach((button) => {
+		button.addEventListener("click", () => {
+			state.definition = button.dataset.definition;
 			render();
 		});
 	});
@@ -1399,6 +1801,7 @@ function setupEvents() {
 	prevYearButton.addEventListener("click", () => stepYear(-1));
 	nextYearButton.addEventListener("click", () => stepYear(1));
 	resetZoomButton?.addEventListener("click", resetZoomForCurrentView);
+	exportCsvButton?.addEventListener("click", exportCsv);
 
 	window.addEventListener("resize", () => renderChart());
 }
@@ -1424,6 +1827,7 @@ function syncYearRange() {
 
 async function init() {
 	data = await fetch("data.json").then((response) => response.json());
+	readUrlState();
 	setupEvents();
 	syncYearRange();
 	render();

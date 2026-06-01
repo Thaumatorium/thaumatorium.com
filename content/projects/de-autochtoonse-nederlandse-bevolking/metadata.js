@@ -15,6 +15,18 @@ export const metricInfo = {
 		description: "Geboorteoverschot: levend geboren kinderen minus overledenen in hetzelfde jaar.",
 		source: "CBS StatLine 85524NED; jaarlijkse kernreeks vanaf 1899.",
 	},
+	naturalGrowth: {
+		description: "Natuurlijke groei, gelijk aan het geboorteoverschot: geboorten minus sterfte.",
+		source: "CBS StatLine 85524NED.",
+	},
+	populationGrowth: {
+		description: "Totale bevolkingsgroei in het kalenderjaar.",
+		source: "CBS StatLine 85524NED; vanaf 1950 aangevuld met 85496NED.",
+	},
+	otherCorrections: {
+		description: "Boekhoudkundige restpost: totale bevolkingsgroei minus geboorteoverschot en nettomigratie.",
+		source: "Afgeleid uit CBS StatLine 85524NED, 85496NED en 85451NED.",
+	},
 	populationMinusNetMigration: {
 		description:
 			"Rekenkundige reeks: totale bevolking minus een gekalibreerde migratievoorraad. Vanaf 1972 sluit de lijn aan op de waargenomen of teruggeschatte bevolking geboren buiten Nederland; voor eerdere jaren gebruikt de pagina een op 1972 geankerde cumulatieve nettomigratie met niet-nul basisvoorraad. Dit is geen directe telling van 'inheemse Nederlanders'.",
@@ -80,6 +92,58 @@ export const metricInfo = {
 	bornAbroadDutchParents: {
 		description: "Geboren buiten Nederland met twee in Nederland geboren ouders. Deze groep valt niet onder de oude CBS-definitie van 1e generatie migratieachtergrond, maar zit wel in de recente oudertabellen.",
 		source: "CBS StatLine 85384NED.",
+	},
+	migrationPurposeEuTotal: {
+		description: "EU/EFTA-immigranten totaal binnen de CBS-tabel naar afgeleid migratiedoel.",
+		source: "CBS StatLine 84808ned.",
+	},
+	migrationPurposeEuWork: {
+		description: "EU/EFTA-immigranten met afgeleid migratiedoel arbeid.",
+		source: "CBS StatLine 84808ned.",
+	},
+	migrationPurposeEuFamily: {
+		description: "EU/EFTA-immigranten met afgeleid migratiedoel gezin.",
+		source: "CBS StatLine 84808ned.",
+	},
+	migrationPurposeEuStudy: {
+		description: "EU/EFTA-immigranten met afgeleid migratiedoel studie.",
+		source: "CBS StatLine 84808ned.",
+	},
+	migrationPurposeEuNoDerivedGoal: {
+		description: "EU/EFTA-immigranten waarvoor CBS geen afgeleid migratiedoel publiceert.",
+		source: "CBS StatLine 84808ned.",
+	},
+	migrationPurposeEuOther: {
+		description: "EU/EFTA-immigranten met overig of onbekend afgeleid migratiedoel.",
+		source: "CBS StatLine 84808ned.",
+	},
+	migrationPurposeNonEuTotal: {
+		description: "Niet-EU/EFTA-immigranten totaal binnen de CBS-tabel naar migratiemotief op basis van IND-vergunning.",
+		source: "CBS StatLine 84809NED.",
+	},
+	migrationPurposeNonEuWork: {
+		description: "Niet-EU/EFTA-immigranten met migratiemotief arbeid.",
+		source: "CBS StatLine 84809NED.",
+	},
+	migrationPurposeNonEuFamily: {
+		description: "Niet-EU/EFTA-immigranten met migratiemotief gezin.",
+		source: "CBS StatLine 84809NED.",
+	},
+	migrationPurposeNonEuAsylum: {
+		description: "Niet-EU/EFTA-immigranten met migratiemotief asiel; nareizigers vallen in deze CBS-tabel ook onder asiel.",
+		source: "CBS StatLine 84809NED.",
+	},
+	migrationPurposeNonEuStudy: {
+		description: "Niet-EU/EFTA-immigranten met migratiemotief studie.",
+		source: "CBS StatLine 84809NED.",
+	},
+	migrationPurposeNonEuTemporaryProtection: {
+		description: "Niet-EU/EFTA-immigranten onder tijdelijke bescherming, zoals Oekraïense ontheemden vanaf 2022.",
+		source: "CBS StatLine 84809NED.",
+	},
+	migrationPurposeNonEuOther: {
+		description: "Niet-EU/EFTA-immigranten met overige migratiemotieven.",
+		source: "CBS StatLine 84809NED.",
 	},
 	immigration: {
 		description: "Personen die zich vanuit het buitenland in Nederland vestigen.",
@@ -189,6 +253,18 @@ export const metricInfo = {
 		description: "Eindstand van de Nederlandse woningvoorraad in het kalenderjaar.",
 		source: "CBS StatLine 82235NED.",
 	},
+	personsPerHome: {
+		description: "Aantal inwoners per woning in de woningvoorraad.",
+		source: "Afgeleid uit CBS bevolking en woningvoorraad.",
+	},
+	populationGrowthPerNetHome: {
+		description: "Bevolkingsgroei gedeeld door netto groei van de woningvoorraad in hetzelfde jaar.",
+		source: "Afgeleid uit CBS bevolking en woningvoorraad.",
+	},
+	netHousingStockGrowthPer1000Residents: {
+		description: "Netto woningvoorraadgroei per 1000 inwoners.",
+		source: "Afgeleid uit CBS bevolking en woningvoorraad.",
+	},
 	gridAfnameRequests: {
 		description: "Unieke grootverbruikverzoeken in de wachtrij voor afname van elektriciteit.",
 		source: "Netbeheer Nederland.",
@@ -210,8 +286,11 @@ export const metricInfo = {
 export const viewSourceNotes = {
 	population: "CBS StatLine 85524NED vanaf 1899; deze tab combineert bevolking, samenstellingsvoorraden, aandelen en jaarstromen. Samenstellingsreeksen starten in 1972; 1972-1995 is CBS-reconstructie.",
 	composition: "1972-1995 CBS-reconstructie migratieachtergrond; 1996-2021 CBS migratieachtergrond en generatie; vanaf 2022 gereconstrueerd via geboorteland van persoon en ouders.",
+	growth: "Bevolkingsgroei wordt boekhoudkundig ontleed in geboorteoverschot, nettomigratie en overige correcties.",
+	age: "Leeftijdsopbouw gebruikt CBS 70787NED, 37325 en 85384NED; ontbrekende buckets worden niet geinterpoleerd.",
 	origin: "CBS StatLine 85671NED, 85468NED en 85848NED; definities verschillen.",
 	emigration: "Bestemming: CBS 85671NED excl. administratieve correcties; overige reeksen incl. correcties.",
+	motives: "CBS 84808ned gebruikt afgeleid migratiedoel voor EU/EFTA; CBS 84809NED gebruikt IND-migratiemotief voor niet-EU/EFTA.",
 	housing: "CBS StatLine voor woningbouw; ABF/Primos voor woningtekort.",
 	grid: "Netbeheer Nederland wachtrijreeksen.",
 };
