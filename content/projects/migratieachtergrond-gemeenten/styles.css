@@ -94,7 +94,7 @@ body:has(.migration-map-page) {
 
 .toolbar {
 	display: grid;
-	grid-template-columns: 170px minmax(0, 1fr);
+	grid-template-columns: 170px minmax(220px, 300px) minmax(0, 1fr);
 	gap: 14px;
 	align-items: end;
 	padding: 16px;
@@ -110,6 +110,31 @@ body:has(.migration-map-page) {
 	font-weight: 780;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
+}
+
+.metric-picker {
+	display: grid;
+	gap: 7px;
+	color: var(--muted);
+	font-size: 12px;
+	font-weight: 780;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.metric-picker select {
+	width: 100%;
+	min-height: 38px;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	padding: 0 34px 0 10px;
+	background: #fff;
+	color: var(--ink);
+	font: inherit;
+	font-size: 14px;
+	font-weight: 760;
+	letter-spacing: 0;
+	text-transform: none;
 }
 
 .year-picker strong {

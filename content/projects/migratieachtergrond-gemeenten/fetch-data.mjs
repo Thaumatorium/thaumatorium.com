@@ -10,9 +10,69 @@ const dimensions = {
 	ageTotal: "10000",
 	originTotal: "T001040",
 	birthTotal: "T001638",
+	originNetherlands: "1012600",
+	originEuropeExceptNetherlands: "H007933",
 	originOutsideEurope: "H008859",
+	bornInsideNetherlands: "A051735",
 	bornOutsideNetherlands: "A051736",
 };
+
+const metrics = [
+	{
+		id: "buiten-europa-geboren-buiten-nl",
+		label: "Buiten Nederland geboren, buiten-Europese herkomst",
+		shortLabel: "Buiten Europa, geboren buiten NL",
+		description: "Personen die buiten Nederland zijn geboren en een buiten-Europese herkomst hebben.",
+		herkomstland: dimensions.originOutsideEurope,
+		geboorteland: dimensions.bornOutsideNetherlands,
+		leeftijd: dimensions.ageTotal,
+	},
+	{
+		id: "herkomst-buiten-europa",
+		label: "Herkomstland buiten Europa",
+		shortLabel: "Herkomst buiten Europa",
+		description: "Alle inwoners met een herkomstland buiten Europa, ongeacht geboorteland.",
+		herkomstland: dimensions.originOutsideEurope,
+		geboorteland: dimensions.birthTotal,
+		leeftijd: dimensions.ageTotal,
+	},
+	{
+		id: "herkomst-europa-excl-nl",
+		label: "Herkomstland Europa exclusief Nederland",
+		shortLabel: "Herkomst Europa excl. NL",
+		description: "Alle inwoners met een herkomstland in Europa, exclusief Nederland.",
+		herkomstland: dimensions.originEuropeExceptNetherlands,
+		geboorteland: dimensions.birthTotal,
+		leeftijd: dimensions.ageTotal,
+	},
+	{
+		id: "geboren-buiten-nl",
+		label: "Geboren buiten Nederland",
+		shortLabel: "Geboren buiten NL",
+		description: "Alle inwoners die buiten Nederland zijn geboren, ongeacht herkomstland.",
+		herkomstland: dimensions.originTotal,
+		geboorteland: dimensions.bornOutsideNetherlands,
+		leeftijd: dimensions.ageTotal,
+	},
+	{
+		id: "geboren-in-nl-herkomst-buiten-europa",
+		label: "Geboren in Nederland, buiten-Europese herkomst",
+		shortLabel: "Geboren in NL, buiten-Europa",
+		description: "Inwoners die in Nederland zijn geboren en een buiten-Europese herkomst hebben.",
+		herkomstland: dimensions.originOutsideEurope,
+		geboorteland: dimensions.bornInsideNetherlands,
+		leeftijd: dimensions.ageTotal,
+	},
+	{
+		id: "herkomst-nederland",
+		label: "Herkomstland Nederland",
+		shortLabel: "Herkomst Nederland",
+		description: "Inwoners met herkomstland Nederland.",
+		herkomstland: dimensions.originNetherlands,
+		geboorteland: dimensions.birthTotal,
+		leeftijd: dimensions.ageTotal,
+	},
+];
 
 async function fetchJson(url) {
 	const response = await fetch(url, {
@@ -49,10 +109,10 @@ function isMunicipalityCode(code) {
 	return /^GM\d{4}$/.test(cleanRegionCode(code));
 }
 
-async function fetchMetricRows({ herkomstland, geboorteland }) {
+async function fetchMetricRows({ herkomstland, geboorteland, leeftijd = dimensions.ageTotal }) {
 	const allRows = [];
 	for (const period of periods) {
-		const filter = [`Geslacht eq '${dimensions.sexTotal}'`, `Leeftijd eq '${dimensions.ageTotal}'`, `Herkomstland eq '${herkomstland}'`, `Geboorteland eq '${geboorteland}'`, `Perioden eq '${period}'`, "substringof('GM',RegioS)"].join(" and ");
+		const filter = [`Geslacht eq '${dimensions.sexTotal}'`, `Leeftijd eq '${leeftijd}'`, `Herkomstland eq '${herkomstland}'`, `Geboorteland eq '${geboorteland}'`, `Perioden eq '${period}'`, "substringof('GM',RegioS)"].join(" and ");
 		allRows.push(
 			...(await fetchOData("TypedDataSet", {
 				$filter: filter,
@@ -94,17 +154,17 @@ function compactFeature(feature) {
 }
 
 async function main() {
-	const [regionRows, totalRows, outsideEuropeRows, boundaries, nationalNumerator2025] = await Promise.all([
+	const [regionRows, totalRows, metricRows, boundaries, nationalNumerator2025] = await Promise.all([
 		fetchOData("RegioS"),
 		fetchMetricRows({ herkomstland: dimensions.originTotal, geboorteland: dimensions.birthTotal }),
-		fetchMetricRows({ herkomstland: dimensions.originOutsideEurope, geboorteland: dimensions.bornOutsideNetherlands }),
+		Promise.all(metrics.map(async (metric) => [metric.id, rowsByRegionYear(await fetchMetricRows(metric))])),
 		fetchJson(pdokUrl),
 		fetchNationalNumerator2025(),
 	]);
 
 	const regionNames = new Map(regionRows.filter((row) => isMunicipalityCode(row.Key)).map((row) => [cleanRegionCode(row.Key), row.Title]));
 	const totalByRegionYear = rowsByRegionYear(totalRows);
-	const outsideEuropeByRegionYear = rowsByRegionYear(outsideEuropeRows);
+	const metricRowsById = new Map(metricRows);
 
 	const rawMunicipalities = [...regionNames.entries()]
 		.map(([code, name]) => ({
@@ -114,20 +174,24 @@ async function main() {
 				periods.map((period) => {
 					const year = yearFromPeriod(period);
 					const totalPopulation = totalByRegionYear.get(`${code}:${year}`) ?? null;
-					const outsideEuropeBornAbroad = outsideEuropeByRegionYear.get(`${code}:${year}`) ?? null;
-					const percentage = totalPopulation && Number.isFinite(outsideEuropeBornAbroad) ? (outsideEuropeBornAbroad / totalPopulation) * 100 : null;
+					const metricValues = Object.fromEntries(
+						metrics.map((metric) => {
+							const count = metricRowsById.get(metric.id)?.get(`${code}:${year}`) ?? null;
+							const percentage = totalPopulation && Number.isFinite(count) ? (count / totalPopulation) * 100 : null;
+							return [metric.id, { count, percentage }];
+						})
+					);
 					return [
 						year,
 						{
 							totalPopulation,
-							outsideEuropeBornAbroad,
-							percentage,
+							metrics: metricValues,
 						},
 					];
 				})
 			),
 		}))
-		.filter((municipality) => Object.values(municipality.years).some((row) => Number.isFinite(row.percentage)))
+		.filter((municipality) => Object.values(municipality.years).some((row) => metrics.some((metric) => Number.isFinite(row.metrics?.[metric.id]?.percentage))))
 		.sort((a, b) => a.name.localeCompare(b.name, "nl-NL"));
 
 	const rawMunicipalityCodes = new Set(rawMunicipalities.map((row) => row.code));
@@ -142,14 +206,17 @@ async function main() {
 			cbsTable: "85458NED",
 			mapYear: 2025,
 			periods: periods.map((period) => ({ key: period, year: yearFromPeriod(period) })),
-			measure: {
-				label: "Buiten Nederland geboren, buiten-Europese herkomst",
-				description: "Personen die buiten Nederland zijn geboren en een buiten-Europese herkomst hebben, als percentage van de totale gemeentebevolking.",
+			defaultMetric: "buiten-europa-geboren-buiten-nl",
+			metrics: metrics.map((metric) => ({
+				id: metric.id,
+				label: metric.label,
+				shortLabel: metric.shortLabel,
+				description: metric.description,
 				numerator: {
 					Geslacht: dimensions.sexTotal,
-					Leeftijd: dimensions.ageTotal,
-					Herkomstland: dimensions.originOutsideEurope,
-					Geboorteland: dimensions.bornOutsideNetherlands,
+					Leeftijd: metric.leeftijd,
+					Herkomstland: metric.herkomstland,
+					Geboorteland: metric.geboorteland,
 				},
 				denominator: {
 					Geslacht: dimensions.sexTotal,
@@ -157,7 +224,7 @@ async function main() {
 					Herkomstland: dimensions.originTotal,
 					Geboorteland: dimensions.birthTotal,
 				},
-			},
+			})),
 			sources: ["https://www.vzinfo.nl/bevolking/regionaal/migratieachtergrond", "https://opendata.cbs.nl/ODataApi/OData/85458NED", "https://service.pdok.nl/cbs/gebiedsindelingen/2025/wfs/v1_0"],
 			omittedNoBoundaryCodes,
 			nationalNumerator2025,
@@ -169,7 +236,7 @@ async function main() {
 		},
 	};
 
-	await writeFile(new URL("./data.json", import.meta.url), `${JSON.stringify(output)}\n`);
+	await writeFile(new URL("./data.json", import.meta.url), `${JSON.stringify(output, null, "\t")}\n`);
 
 	console.log(`Wrote ${municipalities.length} municipalities and ${features.length} boundary features.`);
 	if (omittedNoBoundaryCodes.length) console.warn(`Omitted rows without 2025 boundary: ${omittedNoBoundaryCodes.join(", ")}`);

@@ -5,10 +5,12 @@ const tooltip = document.querySelector("#tooltip");
 const yearSlider = document.querySelector("#yearSlider");
 const yearLabel = document.querySelector("#yearLabel");
 const yearTicks = document.querySelector("#yearTicks");
+const metricSelect = document.querySelector("#metricSelect");
 const tableBody = document.querySelector("#tableBody");
 const rowCount = document.querySelector("#rowCount");
 const selectionLabel = document.querySelector("#selectionLabel");
 const summaryStrip = document.querySelector("#summaryStrip");
+const mapTitle = document.querySelector("#mapTitle");
 const sortButtons = document.querySelectorAll("[data-sort]");
 
 const numberFormat = new Intl.NumberFormat("nl-NL");
@@ -17,6 +19,7 @@ const percentFormat = new Intl.NumberFormat("nl-NL", { minimumFractionDigits: 1,
 let data;
 let state = {
 	year: 2025,
+	metricId: "buiten-europa-geboren-buiten-nl",
 	selectedCode: null,
 	sortKey: "percentage",
 	sortDirection: "desc",
@@ -34,15 +37,23 @@ function metricFor(row, year = state.year) {
 	return row?.years?.[year] || {};
 }
 
+function activeMetric() {
+	return data.metadata.metrics.find((metric) => metric.id === state.metricId) || data.metadata.metrics[0];
+}
+
+function activeMetricValue(row, year = state.year) {
+	return metricFor(row, year).metrics?.[state.metricId] || {};
+}
+
 function rowsForYear() {
-	return data.municipalities.filter((row) => Number.isFinite(metricFor(row).percentage));
+	return data.municipalities.filter((row) => Number.isFinite(activeMetricValue(row).percentage));
 }
 
 function compareRows(a, b) {
 	const direction = state.sortDirection === "asc" ? 1 : -1;
 	if (state.sortKey === "name") return a.name.localeCompare(b.name, "nl-NL") * direction;
-	const aValue = metricFor(a)[state.sortKey];
-	const bValue = metricFor(b)[state.sortKey];
+	const aValue = state.sortKey === "totalPopulation" ? metricFor(a).totalPopulation : activeMetricValue(a)[state.sortKey];
+	const bValue = state.sortKey === "totalPopulation" ? metricFor(b).totalPopulation : activeMetricValue(b)[state.sortKey];
 	return ((aValue ?? -Infinity) - (bValue ?? -Infinity)) * direction;
 }
 
@@ -55,7 +66,7 @@ function rowByCode(code) {
 }
 
 function colorScale(rows = rowsForYear()) {
-	const values = rows.map((row) => metricFor(row).percentage).filter(Number.isFinite);
+	const values = rows.map((row) => activeMetricValue(row).percentage).filter(Number.isFinite);
 	const max =
 		d3.quantile(
 			values.sort((a, b) => a - b),
@@ -118,7 +129,7 @@ function geometryPath(geometry, project) {
 function setSelected(code, { scroll = false } = {}) {
 	state.selectedCode = code;
 	const row = rowByCode(code);
-	selectionLabel.textContent = row ? `${row.name}: ${formatPercent(metricFor(row).percentage)}` : "Geen gemeente geselecteerd";
+	selectionLabel.textContent = row ? `${row.name}: ${formatPercent(activeMetricValue(row).percentage)}` : "Geen gemeente geselecteerd";
 	renderMap();
 	renderTable();
 	if (scroll && code) {
@@ -133,13 +144,14 @@ function moveTooltip(event) {
 }
 
 function showTooltip(event, row) {
-	const metric = metricFor(row);
+	const metric = activeMetricValue(row);
 	tooltip.hidden = false;
 	tooltip.innerHTML = `
 		<strong>${row.name}</strong>
+		<span>${activeMetric().shortLabel}</span>
 		<span>${state.year}: ${formatPercent(metric.percentage)}</span>
-		<span>Aantal: ${formatNumber(metric.outsideEuropeBornAbroad)}</span>
-		<span>Bevolking: ${formatNumber(metric.totalPopulation)}</span>
+		<span>Aantal: ${formatNumber(metric.count)}</span>
+		<span>Bevolking: ${formatNumber(metricFor(row).totalPopulation)}</span>
 	`;
 	moveTooltip(event);
 }
@@ -151,15 +163,15 @@ function hideTooltip() {
 function renderSummary() {
 	const rows = rowsForYear();
 	const totalPopulation = d3.sum(rows, (row) => metricFor(row).totalPopulation || 0);
-	const totalOutsideEurope = d3.sum(rows, (row) => metricFor(row).outsideEuropeBornAbroad || 0);
-	const top = rows.reduce((best, row) => (metricFor(row).percentage > metricFor(best).percentage ? row : best), rows[0]);
+	const totalCount = d3.sum(rows, (row) => activeMetricValue(row).count || 0);
+	const top = rows.reduce((best, row) => (activeMetricValue(row).percentage > activeMetricValue(best).percentage ? row : best), rows[0]);
 	summaryStrip.replaceChildren();
 
 	const items = [
 		["Gemeenten", formatNumber(rows.length)],
-		["Totaal aantal", formatNumber(totalOutsideEurope)],
-		["Aandeel", formatPercent((totalOutsideEurope / totalPopulation) * 100)],
-		["Hoogste", top ? `${top.name} (${formatPercent(metricFor(top).percentage)})` : "-"],
+		["Totaal aantal", formatNumber(totalCount)],
+		["Aandeel", formatPercent((totalCount / totalPopulation) * 100)],
+		["Hoogste", top ? `${top.name} (${formatPercent(activeMetricValue(top).percentage)})` : "-"],
 	];
 
 	for (const [label, value] of items) {
@@ -170,6 +182,7 @@ function renderSummary() {
 }
 
 function renderMap() {
+	mapTitle.textContent = activeMetric().label;
 	const wrap = document.querySelector(".map-wrap");
 	const width = Math.max(320, Math.floor(wrap.getBoundingClientRect().width));
 	const height = window.matchMedia("(max-width: 760px)").matches ? 560 : 720;
@@ -189,7 +202,7 @@ function renderMap() {
 		.attr("d", (feature) => geometryPath(feature.geometry, project))
 		.attr("fill", (feature) => {
 			const row = byCode.get(feature.properties.code);
-			const value = metricFor(row).percentage;
+			const value = activeMetricValue(row).percentage;
 			return Number.isFinite(value) ? color(value) : "#ddd7cd";
 		})
 		.on("mouseenter", (event, feature) => {
@@ -205,7 +218,7 @@ function renderMap() {
 		.append("title")
 		.text((feature) => {
 			const row = byCode.get(feature.properties.code);
-			return row ? `${row.name}: ${formatPercent(metricFor(row).percentage)}` : feature.properties.name;
+			return row ? `${row.name}: ${formatPercent(activeMetricValue(row).percentage)}` : feature.properties.name;
 		});
 
 	const legendWidth = Math.min(300, width - 44);
@@ -247,15 +260,15 @@ function renderTable() {
 	tableBody.replaceChildren();
 
 	for (const row of rows) {
-		const metric = metricFor(row);
+		const metric = activeMetricValue(row);
 		const tr = document.createElement("tr");
 		tr.dataset.rowCode = row.code;
 		if (row.code === state.selectedCode) tr.classList.add("is-selected");
 		tr.innerHTML = `
 			<td><strong>${row.name}</strong><span>${row.code}</span></td>
 			<td>${formatPercent(metric.percentage)}</td>
-			<td>${formatNumber(metric.outsideEuropeBornAbroad)}</td>
-			<td>${formatNumber(metric.totalPopulation)}</td>
+			<td>${formatNumber(metric.count)}</td>
+			<td>${formatNumber(metricFor(row).totalPopulation)}</td>
 		`;
 		tr.addEventListener("click", () => setSelected(row.code));
 		tableBody.append(tr);
@@ -291,6 +304,7 @@ async function init() {
 	data = await response.json();
 	const years = data.metadata.periods.map((period) => period.year);
 	state.year = Math.max(...years);
+	state.metricId = data.metadata.defaultMetric || data.metadata.metrics[0].id;
 
 	yearSlider.min = Math.min(...years);
 	yearSlider.max = Math.max(...years);
@@ -303,11 +317,25 @@ async function init() {
 			return tick;
 		})
 	);
+	metricSelect.replaceChildren(
+		...data.metadata.metrics.map((metric) => {
+			const option = document.createElement("option");
+			option.value = metric.id;
+			option.textContent = metric.shortLabel;
+			return option;
+		})
+	);
+	metricSelect.value = state.metricId;
 
 	yearSlider.addEventListener("input", () => {
 		state.year = Number(yearSlider.value);
 		yearLabel.textContent = state.year;
-		if (state.selectedCode && !Number.isFinite(metricFor(rowByCode(state.selectedCode)).percentage)) state.selectedCode = null;
+		if (state.selectedCode && !Number.isFinite(activeMetricValue(rowByCode(state.selectedCode)).percentage)) state.selectedCode = null;
+		render();
+	});
+	metricSelect.addEventListener("change", () => {
+		state.metricId = metricSelect.value;
+		if (state.selectedCode && !Number.isFinite(activeMetricValue(rowByCode(state.selectedCode)).percentage)) state.selectedCode = null;
 		render();
 	});
 	sortButtons.forEach((button) => button.addEventListener("click", () => setSort(button.dataset.sort)));
