@@ -2,7 +2,9 @@
 
 const svg = d3.select("#municipalityMap");
 const tooltip = document.querySelector("#tooltip");
-const yearSelect = document.querySelector("#yearSelect");
+const yearSlider = document.querySelector("#yearSlider");
+const yearLabel = document.querySelector("#yearLabel");
+const yearTicks = document.querySelector("#yearTicks");
 const tableBody = document.querySelector("#tableBody");
 const rowCount = document.querySelector("#rowCount");
 const selectionLabel = document.querySelector("#selectionLabel");
@@ -290,18 +292,21 @@ async function init() {
 	const years = data.metadata.periods.map((period) => period.year);
 	state.year = Math.max(...years);
 
-	yearSelect.replaceChildren(
+	yearSlider.min = Math.min(...years);
+	yearSlider.max = Math.max(...years);
+	yearSlider.value = state.year;
+	yearLabel.textContent = state.year;
+	yearTicks.replaceChildren(
 		...years.map((year) => {
-			const option = document.createElement("option");
-			option.value = year;
-			option.textContent = year;
-			option.selected = year === state.year;
-			return option;
+			const tick = document.createElement("span");
+			tick.textContent = year;
+			return tick;
 		})
 	);
 
-	yearSelect.addEventListener("change", () => {
-		state.year = Number(yearSelect.value);
+	yearSlider.addEventListener("input", () => {
+		state.year = Number(yearSlider.value);
+		yearLabel.textContent = state.year;
 		if (state.selectedCode && !Number.isFinite(metricFor(rowByCode(state.selectedCode)).percentage)) state.selectedCode = null;
 		render();
 	});

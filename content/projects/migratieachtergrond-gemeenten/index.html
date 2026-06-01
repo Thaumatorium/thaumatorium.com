@@ -30,8 +30,9 @@ sources:
 		<section class="map-panel" aria-labelledby="mapTitle">
 			<div class="toolbar">
 				<label class="year-picker">
-					<span>Jaar</span>
-					<select id="yearSelect"></select>
+					<span>Jaar <strong id="yearLabel">2025</strong></span>
+					<input id="yearSlider" type="range" min="2022" max="2025" value="2025" step="1" />
+					<div id="yearTicks" class="year-ticks" aria-hidden="true"></div>
 				</label>
 				<div class="summary-strip" id="summaryStrip" aria-label="Samenvatting"></div>
 			</div>

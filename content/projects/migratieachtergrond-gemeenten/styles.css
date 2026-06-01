@@ -112,17 +112,25 @@ body:has(.migration-map-page) {
 	text-transform: uppercase;
 }
 
-.year-picker select {
-	min-height: 42px;
-	border: 1px solid var(--line);
-	border-radius: 6px;
-	padding: 0 12px;
-	background: #fff;
-	color: var(--ink);
-	font: inherit;
+.year-picker strong {
+	color: var(--accent-dark);
 	font-size: 15px;
-	font-weight: 760;
 	letter-spacing: 0;
+}
+
+.year-picker input[type="range"] {
+	width: 100%;
+	accent-color: var(--accent);
+}
+
+.year-ticks {
+	display: flex;
+	justify-content: space-between;
+	color: var(--muted);
+	font-size: 12px;
+	font-weight: 720;
+	letter-spacing: 0;
+	text-transform: none;
 }
 
 .summary-strip {
