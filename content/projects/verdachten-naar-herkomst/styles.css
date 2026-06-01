@@ -154,6 +154,39 @@ body:has(.suspects-page) {
 	font-weight: 760;
 }
 
+.axis-scale-toggle {
+	display: inline-flex;
+	min-height: 42px;
+	align-items: center;
+	gap: 0;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	padding: 3px;
+	background: #fff;
+}
+
+.axis-scale-toggle legend {
+	padding: 0 7px 0 6px;
+	color: var(--muted);
+	font-size: 12px;
+	font-weight: 780;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.axis-scale-toggle label {
+	min-height: 34px;
+	border: 0;
+	border-radius: 4px;
+	padding: 0 9px;
+	background: transparent;
+}
+
+.axis-scale-toggle label:has(input:checked) {
+	background: #e3eef5;
+	color: #173f5a;
+}
+
 .suspects-page button {
 	min-height: 42px;
 	border: 1px solid rgba(34, 96, 137, 0.4);
@@ -494,9 +527,14 @@ body:has(.suspects-page) {
 	}
 
 	.toggle-row label,
-	.toggle-row button {
+	.toggle-row button,
+	.axis-scale-toggle {
 		flex: 1 1 130px;
 		justify-content: center;
+	}
+
+	.axis-scale-toggle label {
+		flex: 1 1 auto;
 	}
 
 	.side-panel {

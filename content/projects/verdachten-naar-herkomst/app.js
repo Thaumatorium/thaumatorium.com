@@ -5,6 +5,7 @@ const tooltip = document.querySelector("#tooltip");
 const searchInput = document.querySelector("#searchInput");
 const labelToggle = document.querySelector("#labelToggle");
 const aggregateToggle = document.querySelector("#aggregateToggle");
+const xScaleInputs = document.querySelectorAll('input[name="xScale"]');
 const exportButton = document.querySelector("#exportCsv");
 const resetZoomButton = document.querySelector("#resetZoom");
 const selectedTitle = document.querySelector("#selectedTitle");
@@ -20,6 +21,8 @@ let zoomTransform = d3.zoomIdentity;
 const numberFormat = new Intl.NumberFormat("nl-NL");
 const perFormat = new Intl.NumberFormat("nl-NL", { maximumFractionDigits: 0 });
 const ratioFormat = new Intl.NumberFormat("nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const percentFormat = new Intl.NumberFormat("nl-NL", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const sharePercentFormat = new Intl.NumberFormat("nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 function formatNumber(value) {
 	return Number.isFinite(value) ? numberFormat.format(value) : "-";
@@ -33,9 +36,21 @@ function dutchBackgroundRate() {
 	return data?.legacy2022.points.find((point) => point.label === "Nederlandse achtergrond")?.suspectsPer10000 || null;
 }
 
+function totalPoint() {
+	return data?.legacy2022.points.find((point) => point.label === "Totaal") || null;
+}
+
 function formatRatioOfDutchBackground(value) {
 	const baseline = dutchBackgroundRate();
 	return Number.isFinite(value) && Number.isFinite(baseline) && baseline > 0 ? `${ratioFormat.format(value / baseline)}x` : "";
+}
+
+function formatPercent(value) {
+	return Number.isFinite(value) ? `${percentFormat.format(value)}%` : "-";
+}
+
+function formatSharePercent(value) {
+	return Number.isFinite(value) ? `${sharePercentFormat.format(value)}%` : "-";
 }
 
 function formatChance(value) {
@@ -45,8 +60,28 @@ function formatChance(value) {
 	return `${ratioFormat.format(percentage)}% / 1 op ${formatNumber(oneIn)}`;
 }
 
+function shareOfTotalSuspects(point) {
+	const total = totalPoint()?.totalSuspects;
+	return Number.isFinite(point?.totalSuspects) && Number.isFinite(total) && total > 0 ? (point.totalSuspects / total) * 100 : null;
+}
+
+function shareOfTotalPopulation(point) {
+	const total = totalPoint()?.populationEstimate;
+	return Number.isFinite(point?.populationEstimate) && Number.isFinite(total) && total > 0 ? (point.populationEstimate / total) * 100 : null;
+}
+
+function suspectPopulationShareRatio(point) {
+	const suspectShare = shareOfTotalSuspects(point);
+	const populationShare = shareOfTotalPopulation(point);
+	return Number.isFinite(suspectShare) && Number.isFinite(populationShare) && populationShare > 0 ? suspectShare / populationShare : null;
+}
+
 function isSmallScreen() {
 	return window.matchMedia("(max-width: 760px)").matches;
+}
+
+function selectedXScale() {
+	return document.querySelector('input[name="xScale"]:checked')?.value === "linear" ? "linear" : "log";
 }
 
 function visiblePoints() {
@@ -71,6 +106,9 @@ function rowsForStats(point) {
 		["Totaal verdachten", formatNumber(point.totalSuspects)],
 		["Met woonadres in NL", formatNumber(point.suspectsWithDutchAddress)],
 		["Bevolking groep", `ca. ${formatNumber(point.populationEstimate)}`],
+		["Aandeel alle verdachten", formatSharePercent(shareOfTotalSuspects(point))],
+		["Aandeel bevolking", formatSharePercent(shareOfTotalPopulation(point))],
+		["Verdachten/bevolking", Number.isFinite(suspectPopulationShareRatio(point)) ? `${ratioFormat.format(suspectPopulationShareRatio(point))}x` : "-"],
 		["Per 10.000 inwoners", formatPer(point.suspectsPer10000)],
 		["Aandeel totaal", formatChance(point.populationEstimate > 0 ? (point.totalSuspects / point.populationEstimate) * 10000 : null)],
 		["Aandeel met NL-adres", formatChance(point.suspectsPer10000)],
@@ -136,6 +174,9 @@ function showTooltip(event, point) {
 		<span>Totaal verdachten: ${formatNumber(point.totalSuspects)}</span>
 		<span>Met woonadres in Nederland: ${formatNumber(point.suspectsWithDutchAddress)}</span>
 		<span>Bevolking groep: ca. ${formatNumber(point.populationEstimate)}</span>
+		<span>Aandeel alle verdachten: ${formatSharePercent(shareOfTotalSuspects(point))}</span>
+		<span>Aandeel bevolking: ${formatSharePercent(shareOfTotalPopulation(point))}</span>
+		<span>Verdachten/bevolking: ${Number.isFinite(suspectPopulationShareRatio(point)) ? `${ratioFormat.format(suspectPopulationShareRatio(point))}x` : "-"}</span>
 		<span>Per 10.000 inwoners: ${formatPer(point.suspectsPer10000)}</span>
 		<span>Aandeel totaal: ${formatChance(point.populationEstimate > 0 ? (point.totalSuspects / point.populationEstimate) * 10000 : null)}</span>
 		<span>Aandeel met NL-adres: ${formatChance(point.suspectsPer10000)}</span>
@@ -164,11 +205,19 @@ function renderChart() {
 
 	const xExtent = d3.extent(allPoints, (point) => point.totalSuspects);
 	const yMax = d3.max(allPoints, (point) => point.suspectsPer10000) || 1;
-	const x = d3
-		.scaleLog()
-		.domain([Math.max(1, xExtent[0] * 0.72), xExtent[1] * 1.28])
-		.range([0, innerWidth])
-		.nice();
+	const xScale = selectedXScale();
+	const x =
+		xScale === "linear"
+			? d3
+					.scaleLinear()
+					.domain([0, xExtent[1] * 1.08])
+					.range([0, innerWidth])
+					.nice()
+			: d3
+					.scaleLog()
+					.domain([Math.max(1, xExtent[0] * 0.72), xExtent[1] * 1.28])
+					.range([0, innerWidth])
+					.nice();
 	const y = d3
 		.scaleLinear()
 		.domain([-20, Math.ceil((yMax + 28) / 25) * 25])
@@ -220,7 +269,7 @@ function renderChart() {
 		.attr("x", innerWidth / 2)
 		.attr("y", innerHeight + 52)
 		.attr("text-anchor", "middle")
-		.text("Totaal verdachten (aantal, 2022, log)");
+		.text(`Totaal verdachten (aantal, 2022, ${xScale === "linear" ? "lineair" : "log"})`);
 
 	g.append("text")
 		.attr("class", "axis-label")
@@ -408,6 +457,12 @@ async function init() {
 	searchInput.addEventListener("input", renderChart);
 	labelToggle.addEventListener("change", renderChart);
 	aggregateToggle.addEventListener("change", renderChart);
+	xScaleInputs.forEach((input) => {
+		input.addEventListener("change", () => {
+			zoomTransform = d3.zoomIdentity;
+			renderChart();
+		});
+	});
 	exportButton.addEventListener("click", exportCsv);
 	resetZoomButton.addEventListener("click", () => {
 		zoomTransform = d3.zoomIdentity;
