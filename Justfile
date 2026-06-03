@@ -23,6 +23,7 @@ alias b := build
 build *args:
     bash ./cmd/generate-page-changelogs.sh
     hugo --buildDrafts "$@"
+    just fmt
     just fmt-public
 
 changelog:
