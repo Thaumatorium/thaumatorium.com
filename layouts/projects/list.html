@@ -4,7 +4,8 @@
 
 {{ .Content }}
 
-{{ $pages := .Pages.ByPublishDate.Reverse }}
+{{ $pages := where .Pages "Params.hidden" "ne" true }}
+{{ $pages = $pages.ByPublishDate.Reverse }}
 
 {{ if $pages }}
 <section class="project-index" aria-label="Project index">

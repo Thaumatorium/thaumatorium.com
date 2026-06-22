@@ -1,73 +1,74 @@
 ---
-title: "KvK Adresdichtheid Risicosignalen"
-description: "Analyse-dashboard voor geaggregeerde signalen van onwaarschijnlijk hoge bedrijfsdichtheid in Nederlandse gebieden."
+title: "KVK Address Density Risk Signals"
+description: "Analytics dashboard for aggregated signals of unusually high business density in areas of the Netherlands."
 publishDate: 2026-05-26T12:00:00+02:00
 lastmod: 2026-05-26T12:00:00+02:00
+hidden: true
 sources:
-  - title: "KVK Handelsregister Open Dataset Basis Bedrijfsgegevens"
+  - title: "KVK Business Register Open Dataset: Basic Business Data"
     url: "https://developers.kvk.nl/nl/documentation/open-dataset-basis-bedrijfsgegevens-api"
-    note: "Documentatie voor de open dataset; deze bevat geen bedrijfsnaam, KvK-nummer of volledig vestigingsadres."
-  - title: "KVK Handelsregister API-documentatie"
+    note: "Documentation for the open dataset; it does not contain business names, KVK numbers, or complete establishment addresses."
+  - title: "KVK Business Register API documentation"
     url: "https://developers.kvk.nl/nl/documentation"
-    note: "Overzicht van Handelsregister-API's zoals Zoeken, Basisprofiel en Vestigingsprofiel."
+    note: "Overview of Business Register APIs such as Search, Basic Profile, and Establishment Profile."
   - title: "CBS StatLine"
     url: "https://opendata.cbs.nl/"
-    note: "Open statistieken voor regionale context en bedrijfs-/gebiedsaggregaten."
+    note: "Open statistics for regional context and business and area aggregates."
   - title: "PDOK BAG API"
     url: "https://api.pdok.nl/kadaster/bag/ogc/v2"
-    note: "BAG-gegevens voor panden, verblijfsobjecten, gebruiksdoel en oppervlakte."
+    note: "BAG data for buildings, occupancy units, usage purposes, and floor area."
 ---
 
 <link rel="stylesheet" href="styles.css" />
 
 <div class="kvk-density-page">
 	<header class="project-hero">
-		<p class="eyebrow">Onderzoeksprototype</p>
-		<h1>KvK Adresdichtheid Risicosignalen</h1>
-		<p class="lede">Deze methode kan locaties of gebieden prioriteren voor nader onderzoek wanneer rechtmatig verkregen vestigingsdata beschikbaar is. De publieke demo toont alleen geaggregeerde voorbeeldindicatoren.</p>
+		<p class="eyebrow">Research prototype</p>
+		<h1>KVK Address Density Risk Signals</h1>
+		<p class="lede">This method can prioritise locations or areas for further investigation when lawfully obtained establishment data is available. The public demo only shows aggregated sample indicators.</p>
 	</header>
 
-	<section class="notice" aria-label="Status en beperkingen van de demo">
-		<strong>Werk in uitvoering: demo zonder daadwerkelijke data.</strong>
-		Deze pagina gebruikt fictieve, geaggregeerde voorbeeldgegevens en bevat geen echte KvK-, adres- of bedrijfsdata. Hoge dichtheid is alleen een risicosignaal dat context, databronnen en juridische grondslag vereist voordat conclusies worden getrokken.
+	<section class="notice" aria-label="Demo status and limitations">
+		<strong>Work in progress: demo without real data.</strong>
+		This page uses fictional, aggregated sample data and contains no real KVK, address, or business data. High density is only a risk signal; context, data sources, and a legal basis are required before drawing conclusions.
 	</section>
 
-	<div class="dashboard" role="main" aria-label="Adresdichtheid analyse-dashboard">
-		<section class="kpis" aria-label="Samenvatting">
+	<div class="dashboard" role="main" aria-label="Address density analytics dashboard">
+		<section class="kpis" aria-label="Summary">
 			<article>
-				<span>Onderzochte gebieden</span>
+				<span>Areas analysed</span>
 				<strong id="areaCount">-</strong>
 			</article>
 			<article>
-				<span>Hoogste score</span>
+				<span>Highest score</span>
 				<strong id="maxScore">-</strong>
 			</article>
 			<article>
-				<span>Risicosignalen</span>
+				<span>Risk signals</span>
 				<strong id="signalCount">-</strong>
 			</article>
 			<article>
-				<span>Mediaan dichtheid</span>
+				<span>Median density</span>
 				<strong id="medianDensity">-</strong>
 			</article>
 		</section>
 
 		<section class="controls" aria-label="Filters">
 			<label>
-				Zoeken
-				<input id="searchInput" type="search" placeholder="Gebied, gemeente of type" autocomplete="off" />
+				Search
+				<input id="searchInput" type="search" placeholder="Area, municipality, or type" autocomplete="off" />
 			</label>
 			<label>
-				Signaalniveau
+				Signal level
 				<select id="riskFilter">
-					<option value="all">Alle niveaus</option>
-					<option value="hoog">Hoog</option>
-					<option value="verhoogd">Verhoogd</option>
-					<option value="normaal">Normaal</option>
+					<option value="all">All levels</option>
+					<option value="high">High</option>
+					<option value="elevated">Elevated</option>
+					<option value="normal">Normal</option>
 				</select>
 			</label>
 			<label>
-				Minimale score
+				Minimum score
 				<input id="scoreInput" type="range" min="0" max="100" value="0" step="5" />
 				<span id="scoreLabel">0</span>
 			</label>
@@ -77,8 +78,8 @@ sources:
 			<div class="table-panel">
 				<div class="panel-heading">
 					<div>
-						<p class="eyebrow">Geaggregeerde sampledata</p>
-						<h2>Gebieden met dichtheidsscore</h2>
+						<p class="eyebrow">Aggregated sample data</p>
+						<h2>Areas by density score</h2>
 					</div>
 					<p id="resultCount" class="result-count" aria-live="polite">-</p>
 				</div>
@@ -86,13 +87,13 @@ sources:
 					<table>
 						<thead>
 							<tr>
-								<th><button type="button" data-sort="area">Gebied</button></th>
-								<th><button type="button" data-sort="municipality">Gemeente</button></th>
+								<th><button type="button" data-sort="area">Area</button></th>
+								<th><button type="button" data-sort="municipality">Municipality</button></th>
 								<th><button type="button" data-sort="riskScore">Score</button></th>
-								<th><button type="button" data-sort="companiesPerUsableM2">Bedrijven / 100 m2</button></th>
-								<th><button type="button" data-sort="companiesPerObject">Bedrijven / object</button></th>
-								<th><button type="button" data-sort="peerDeviation">Afwijking</button></th>
-								<th>Uitleg</th>
+								<th><button type="button" data-sort="companiesPerUsableM2">Businesses / 100 m2</button></th>
+								<th><button type="button" data-sort="companiesPerObject">Businesses / object</button></th>
+								<th><button type="button" data-sort="peerDeviation">Deviation</button></th>
+								<th>Explanation</th>
 							</tr>
 						</thead>
 						<tbody id="resultsBody"></tbody>
@@ -100,19 +101,19 @@ sources:
 				</div>
 			</div>
 
-			<aside class="method-panel" aria-label="Methode">
-				<p class="eyebrow">Methode</p>
-				<h2>Wat de score meet</h2>
-				<p>Het model vergelijkt bedrijfsdichtheid met gebouwcapaciteit en vergelijkbare gebieden. In een echte toepassing zou de invoer alleen bestaan uit rechtmatig verkregen vestigingsdata en open gebieds- of gebouwregistraties.</p>
+			<aside class="method-panel" aria-label="Method">
+				<p class="eyebrow">Method</p>
+				<h2>What the score measures</h2>
+				<p>The model compares business density with building capacity and comparable areas. In a real application, its inputs would consist only of lawfully obtained establishment data and open area or building registers.</p>
 				<ol>
-					<li>Normaliseer vestigingen naar een gekozen aggregatieniveau.</li>
-					<li>Koppel BAG-indicatoren zoals bruikbare oppervlakte en verblijfsobjecten.</li>
-					<li>Vergelijk dichtheid en branchemix met vergelijkbare gebieden.</li>
-					<li>Markeer uitschieters als prioriteit voor nader onderzoek.</li>
+					<li>Normalise establishments to a chosen aggregation level.</li>
+					<li>Link BAG indicators such as usable floor area and occupancy units.</li>
+					<li>Compare density and industry mix with comparable areas.</li>
+					<li>Flag outliers as priorities for further investigation.</li>
 				</ol>
 				<div class="source-note">
-					<strong>Datagrens:</strong>
-					de open KvK-dataset bevat geen volledige adressen of bedrijfsidentificatoren voor publieke herpublicatie. Deze demo simuleert daarom alleen geaggregeerde indicatoren.
+					<strong>Data limitation:</strong>
+					the open KVK dataset does not contain complete addresses or business identifiers for public republication. This demo therefore only simulates aggregated indicators.
 				</div>
 			</aside>
 		</section>

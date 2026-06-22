@@ -1,0 +1,61 @@
+---
+title: "The Honest Page"
+description: "A browser dashboard showing what information an ordinary web page can read about your browser, device, and session."
+publishDate: 2026-05-29T12:00:00+02:00
+lastmod: 2026-05-29T12:00:00+02:00
+aliases:
+  - /projects/eerlijke-pagina/
+sources:
+  - title: "MDN: Navigator"
+    url: "https://developer.mozilla.org/en-US/docs/Web/API/Navigator"
+    note: "Reference for browser and device properties available through navigator."
+  - title: "MDN: Permissions API"
+    url: "https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API"
+    note: "Reference for permission states such as geolocation, camera, and microphone."
+  - title: "MDN: Screen"
+    url: "https://developer.mozilla.org/en-US/docs/Web/API/Screen"
+    note: "Reference for screen and viewport information."
+---
+
+<link rel="stylesheet" href="styles.css" />
+
+<div class="honest-page">
+	<header class="honest-hero">
+		<p class="honest-eyebrow">Browser transparency</p>
+		<h1>The Honest Page</h1>
+		<p>This page shows as much information as possible that an ordinary web page can read locally in your browser. Nothing is sent to a server.</p>
+		<p>
+			<a class="honest-link-button" href="https://amiunique.org/" rel="noopener noreferrer"> More fingerprinting details on Am I Unique </a>
+		</p>
+	</header>
+
+	<section class="honest-actions" aria-label="Actions">
+		<button id="refreshButton" type="button">Measure again</button>
+		<button id="copyButton" type="button">Copy JSON</button>
+		<button id="locationButton" type="button">Request location</button>
+		<span id="statusText" role="status">Loading measurements...</span>
+	</section>
+
+	<section class="honest-summary" aria-label="Summary">
+		<article>
+			<span>Browser</span>
+			<strong id="summaryBrowser">-</strong>
+		</article>
+		<article>
+			<span>Screen</span>
+			<strong id="summaryScreen">-</strong>
+		</article>
+		<article>
+			<span>Language</span>
+			<strong id="summaryLanguage">-</strong>
+		</article>
+		<article>
+			<span>Time zone</span>
+			<strong id="summaryTimezone">-</strong>
+		</article>
+	</section>
+
+	<section id="sections" class="honest-sections" aria-label="Browser information"></section>
+</div>
+
+<script type="module" src="app.js"></script>

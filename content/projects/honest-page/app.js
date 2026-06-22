@@ -6,19 +6,19 @@ const locationButton = document.getElementById("locationButton");
 
 let latestReport = {};
 
-const unavailable = "Niet beschikbaar";
+const unavailable = "Unavailable";
 
 function read(fn, fallback = unavailable) {
 	try {
 		const value = fn();
 		return value === undefined || value === null || value === "" ? fallback : value;
 	} catch (error) {
-		return `Fout: ${error.message}`;
+		return `Error: ${error.message}`;
 	}
 }
 
 function yesNo(value) {
-	return value ? "Ja" : "Nee";
+	return value ? "Yes" : "No";
 }
 
 function formatValue(value) {
@@ -38,12 +38,12 @@ function formatValue(value) {
 }
 
 function classify(value) {
-	if (value === "Ja" || value === true || value === "granted") {
+	if (value === "Yes" || value === true || value === "granted") {
 		return "honest-yes";
 	}
 
-	if (value === "Nee" || value === false || value === "denied" || String(value).startsWith("Fout:")) {
-		return String(value).startsWith("Fout:") ? "honest-error" : "honest-no";
+	if (value === "No" || value === false || value === "denied" || String(value).startsWith("Error:")) {
+		return String(value).startsWith("Error:") ? "honest-error" : "honest-no";
 	}
 
 	return "";
@@ -58,7 +58,7 @@ async function permissionState(name) {
 		const result = await navigator.permissions.query({ name });
 		return result.state;
 	} catch (error) {
-		return `Niet ondersteund (${error.message})`;
+		return `Unsupported (${error.message})`;
 	}
 }
 
@@ -85,12 +85,12 @@ async function mediaDevices() {
 		const devices = await navigator.mediaDevices.enumerateDevices();
 		return devices.map((device) => ({
 			kind: device.kind,
-			label: device.label || "(label verborgen zonder toestemming)",
-			deviceId: device.deviceId ? "(aanwezig)" : unavailable,
-			groupId: device.groupId ? "(aanwezig)" : unavailable,
+			label: device.label || "(label hidden without permission)",
+			deviceId: device.deviceId ? "(present)" : unavailable,
+			groupId: device.groupId ? "(present)" : unavailable,
 		}));
 	} catch (error) {
-		return `Fout: ${error.message}`;
+		return `Error: ${error.message}`;
 	}
 }
 
@@ -115,56 +115,56 @@ function collectSynchronousReport() {
 	const date = new Date();
 
 	return {
-		"Browser en systeem": {
+		"Browser and system": {
 			"User agent": nav.userAgent,
 			Platform: read(() => nav.platform),
 			Vendor: read(() => nav.vendor),
-			Browsertaal: read(() => nav.language),
-			"Alle talen": read(() => nav.languages),
-			"Cookies ingeschakeld": read(() => nav.cookieEnabled),
+			"Browser language": read(() => nav.language),
+			"All languages": read(() => nav.languages),
+			"Cookies enabled": read(() => nav.cookieEnabled),
 			"Do Not Track": read(() => nav.doNotTrack || window.doNotTrack || nav.msDoNotTrack),
 			Online: read(() => nav.onLine),
-			"PDF viewer beschikbaar": read(() => nav.pdfViewerEnabled),
+			"PDF viewer available": read(() => nav.pdfViewerEnabled),
 			"Hardware threads": read(() => nav.hardwareConcurrency),
-			Geheugenklasse: read(() => (nav.deviceMemory ? `${nav.deviceMemory} GB` : unavailable)),
+			"Memory class": read(() => (nav.deviceMemory ? `${nav.deviceMemory} GB` : unavailable)),
 			"Max touch points": read(() => nav.maxTouchPoints),
 		},
-		"Scherm en venster": {
-			Schermresolutie: `${screenInfo.width} x ${screenInfo.height}`,
-			"Beschikbare schermruimte": `${screenInfo.availWidth} x ${screenInfo.availHeight}`,
-			Kleurdiepte: `${screenInfo.colorDepth} bit`,
-			Pixeldiepte: `${screenInfo.pixelDepth} bit`,
+		"Screen and window": {
+			"Screen resolution": `${screenInfo.width} x ${screenInfo.height}`,
+			"Available screen space": `${screenInfo.availWidth} x ${screenInfo.availHeight}`,
+			"Colour depth": `${screenInfo.colorDepth} bit`,
+			"Pixel depth": `${screenInfo.pixelDepth} bit`,
 			Viewport: `${window.innerWidth} x ${window.innerHeight}`,
 			"Outer window": `${window.outerWidth} x ${window.outerHeight}`,
 			"Device pixel ratio": window.devicePixelRatio,
-			Schermorientatie: read(() => screenInfo.orientation.type),
+			"Screen orientation": read(() => screenInfo.orientation.type),
 			"Media: dark mode": read(() => matchMedia("(prefers-color-scheme: dark)").matches),
 			"Media: reduced motion": read(() => matchMedia("(prefers-reduced-motion: reduce)").matches),
-			"Media: pointer precies": read(() => matchMedia("(pointer: fine)").matches),
+			"Media: precise pointer": read(() => matchMedia("(pointer: fine)").matches),
 		},
-		"Tijd en locale": {
-			"Huidige browsertijd": date.toString(),
-			"ISO tijd": date.toISOString(),
-			Tijdzone: read(() => Intl.DateTimeFormat().resolvedOptions().timeZone),
-			"UTC offset minuten": date.getTimezoneOffset(),
+		"Time and locale": {
+			"Current browser time": date.toString(),
+			"ISO time": date.toISOString(),
+			"Time zone": read(() => Intl.DateTimeFormat().resolvedOptions().timeZone),
+			"UTC offset in minutes": date.getTimezoneOffset(),
 			Locale: read(() => Intl.DateTimeFormat().resolvedOptions().locale),
-			Kalender: read(() => Intl.DateTimeFormat().resolvedOptions().calendar),
-			Getalsnotatie: read(() => new Intl.NumberFormat().format(1234567.89)),
-			"Valuta voorbeeld": read(() => new Intl.NumberFormat(undefined, { style: "currency", currency: "EUR" }).format(1234.56)),
+			Calendar: read(() => Intl.DateTimeFormat().resolvedOptions().calendar),
+			"Number format": read(() => new Intl.NumberFormat().format(1234567.89)),
+			"Currency example": read(() => new Intl.NumberFormat(undefined, { style: "currency", currency: "EUR" }).format(1234.56)),
 		},
-		"Pagina en netwerk": {
+		"Page and network": {
 			URL: location.href,
 			Origin: location.origin,
 			Referrer: document.referrer || unavailable,
 			Protocol: location.protocol,
 			Host: location.host,
-			Pad: location.pathname,
-			Verbindingstype: read(() => connection?.effectiveType),
+			Path: location.pathname,
+			"Connection type": read(() => connection?.effectiveType),
 			Downlink: read(() => (connection?.downlink ? `${connection.downlink} Mbps` : unavailable)),
 			"Round-trip time": read(() => (connection?.rtt ? `${connection.rtt} ms` : unavailable)),
 			"Data saver": read(() => connection?.saveData),
 		},
-		Browsermogelijkheden: {
+		"Browser capabilities": {
 			localStorage: read(() => Boolean(window.localStorage)),
 			sessionStorage: read(() => Boolean(window.sessionStorage)),
 			IndexedDB: read(() => Boolean(window.indexedDB)),
@@ -187,19 +187,19 @@ function collectSynchronousReport() {
 async function collectReport() {
 	const report = collectSynchronousReport();
 
-	report["Permissies"] = {
-		Geolocatie: await permissionState("geolocation"),
+	report["Permissions"] = {
+		Geolocation: await permissionState("geolocation"),
 		Camera: await permissionState("camera"),
-		Microfoon: await permissionState("microphone"),
-		Notificaties: await permissionState("notifications"),
-		"Klembord lezen": await permissionState("clipboard-read"),
-		"Klembord schrijven": await permissionState("clipboard-write"),
+		Microphone: await permissionState("microphone"),
+		Notifications: await permissionState("notifications"),
+		"Read clipboard": await permissionState("clipboard-read"),
+		"Write clipboard": await permissionState("clipboard-write"),
 	};
 
-	report["Opslag, media en energie"] = {
+	report["Storage, media, and energy"] = {
 		"Storage estimate": await storageEstimate(),
-		"Media-apparaten": await mediaDevices(),
-		Batterij: await batteryInfo(),
+		"Media devices": await mediaDevices(),
+		Battery: await batteryInfo(),
 	};
 
 	return report;
@@ -217,7 +217,7 @@ function renderReport(report) {
 		const meta = document.createElement("span");
 		heading.textContent = title;
 		meta.className = "honest-section-meta";
-		meta.textContent = `${Object.keys(entries).length} velden`;
+		meta.textContent = `${Object.keys(entries).length} fields`;
 		header.append(heading, meta);
 
 		const list = document.createElement("dl");
@@ -243,52 +243,52 @@ function renderReport(report) {
 }
 
 function updateSummary(report) {
-	document.getElementById("summaryBrowser").textContent = report["Browser en systeem"]["Vendor"] || "Browser";
-	document.getElementById("summaryScreen").textContent = report["Scherm en venster"]["Schermresolutie"];
-	document.getElementById("summaryLanguage").textContent = report["Browser en systeem"]["Browsertaal"];
-	document.getElementById("summaryTimezone").textContent = report["Tijd en locale"]["Tijdzone"];
+	document.getElementById("summaryBrowser").textContent = report["Browser and system"]["Vendor"] || "Browser";
+	document.getElementById("summaryScreen").textContent = report["Screen and window"]["Screen resolution"];
+	document.getElementById("summaryLanguage").textContent = report["Browser and system"]["Browser language"];
+	document.getElementById("summaryTimezone").textContent = report["Time and locale"]["Time zone"];
 }
 
 async function refresh() {
-	statusText.textContent = "Metingen worden geladen...";
+	statusText.textContent = "Loading measurements...";
 	latestReport = await collectReport();
 	renderReport(latestReport);
 	updateSummary(latestReport);
-	statusText.textContent = `Laatst gemeten om ${new Date().toLocaleTimeString()}.`;
+	statusText.textContent = `Last measured at ${new Date().toLocaleTimeString()}.`;
 }
 
 async function copyReport() {
 	const json = JSON.stringify(latestReport, null, 2);
 	await navigator.clipboard.writeText(json);
-	statusText.textContent = "JSON gekopieerd naar het klembord.";
+	statusText.textContent = "JSON copied to the clipboard.";
 }
 
 function requestLocation() {
 	if (!navigator.geolocation) {
-		statusText.textContent = "Geolocatie wordt niet ondersteund.";
+		statusText.textContent = "Geolocation is not supported.";
 		return;
 	}
 
-	statusText.textContent = "Wachten op locatietoestemming...";
+	statusText.textContent = "Waiting for location permission...";
 	navigator.geolocation.getCurrentPosition(
 		(position) => {
-			latestReport["Expliciet opgevraagde locatie"] = {
-				Breedtegraad: position.coords.latitude,
-				Lengtegraad: position.coords.longitude,
-				Nauwkeurigheid: `${position.coords.accuracy} meter`,
-				Hoogte: position.coords.altitude ?? unavailable,
-				Snelheid: position.coords.speed ?? unavailable,
-				Tijdstip: new Date(position.timestamp).toString(),
+			latestReport["Explicitly requested location"] = {
+				Latitude: position.coords.latitude,
+				Longitude: position.coords.longitude,
+				Accuracy: `${position.coords.accuracy} metres`,
+				Altitude: position.coords.altitude ?? unavailable,
+				Speed: position.coords.speed ?? unavailable,
+				Timestamp: new Date(position.timestamp).toString(),
 			};
 			renderReport(latestReport);
-			statusText.textContent = "Locatie toegevoegd aan het overzicht.";
+			statusText.textContent = "Location added to the report.";
 		},
 		(error) => {
-			latestReport["Expliciet opgevraagde locatie"] = {
-				Status: `Fout: ${error.message}`,
+			latestReport["Explicitly requested location"] = {
+				Status: `Error: ${error.message}`,
 			};
 			renderReport(latestReport);
-			statusText.textContent = "Locatie kon niet worden opgehaald.";
+			statusText.textContent = "The location could not be retrieved.";
 		},
 		{ enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 }
 	);
@@ -297,7 +297,7 @@ function requestLocation() {
 refreshButton.addEventListener("click", refresh);
 copyButton.addEventListener("click", () => {
 	copyReport().catch((error) => {
-		statusText.textContent = `Kopieren mislukt: ${error.message}`;
+		statusText.textContent = `Copy failed: ${error.message}`;
 	});
 });
 locationButton.addEventListener("click", requestLocation);
