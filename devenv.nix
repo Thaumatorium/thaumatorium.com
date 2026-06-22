@@ -6,6 +6,7 @@
   packages = with pkgs; [
     hugo
     just
+    nodejs
     oxfmt
     prek
   ];

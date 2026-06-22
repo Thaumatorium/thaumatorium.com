@@ -1,0 +1,17 @@
+{
+	"name": "thaumatorium.com",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build:html-cleaner": "esbuild scripts/html-cleaner/tokenizer.worker.js --bundle --format=esm --minify --outfile=content/projects/html-cleaner/tokenizer.bundle.js",
+		"test": "vitest run"
+	},
+	"dependencies": {
+		"js-tiktoken": "^1.0.21"
+	},
+	"devDependencies": {
+		"esbuild": "^0.25.0",
+		"jsdom": "^26.0.0",
+		"vitest": "^3.0.0"
+	}
+}

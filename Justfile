@@ -16,15 +16,27 @@ shell:
 
 alias s := serve
 serve *args:
+    @npm run build:html-cleaner
     @bash ./cmd/generate-page-changelogs.sh
     @hugo server --buildDrafts --port {{port}} --baseURL {{base_url}} --noHTTPCache --disableFastRender "$@"
 
 alias b := build
 build *args:
+    @npm run build:html-cleaner
     @bash ./cmd/generate-page-changelogs.sh
     @hugo --buildDrafts "$@"
     @just fmt
     @just fmt-public
+
+html-cleaner-assets:
+    @npm run build:html-cleaner
+
+html-cleaner-test:
+    @npm test
+
+publish:
+    @just html-cleaner-test
+    @just build
 
 changelog:
     @bash ./cmd/generate-page-changelogs.sh

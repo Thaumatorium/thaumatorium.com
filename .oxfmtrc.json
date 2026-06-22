@@ -7,5 +7,5 @@
 	"trailingComma": "es5",
 	"endOfLine": "lf",
 	"bracketSpacing": true,
-	"ignorePatterns": ["**/highlight.pack.js", "**/d3.js", "**/wow_credits.json", "**/crypto-subreddits/**", "**/docs/html-spec/**", "**/layouts/_default/**", "**/layouts/articles/**", "**/layouts/projects/**"]
+	"ignorePatterns": ["**/highlight.pack.js", "**/d3.js", "**/wow_credits.json", "**/crypto-subreddits/**", "**/docs/html-spec/**", "**/layouts/_default/**", "**/layouts/articles/**", "**/layouts/projects/**", "**/html-cleaner/tokenizer.bundle.js"]
 }
