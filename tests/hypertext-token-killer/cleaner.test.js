@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cleanHtml, formatHtml, PROFILES, validateHtmlFragment } from "../../content/projects/html-cleaner/cleaner.js";
+import { cleanHtml, formatHtml, PROFILES, validateHtmlFragment } from "../../content/projects/hypertext-token-killer/cleaner.js";
 
 describe("cleanHtml", () => {
 	it("extracts main content from a full document", () => {

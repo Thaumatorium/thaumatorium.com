@@ -3,7 +3,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"build:html-cleaner": "esbuild scripts/html-cleaner/tokenizer.worker.js --bundle --format=esm --minify --outfile=content/projects/html-cleaner/tokenizer.bundle.js",
+		"build:hypertext-token-killer": "esbuild scripts/hypertext-token-killer/tokenizer.worker.js --bundle --format=esm --minify --outfile=content/projects/hypertext-token-killer/tokenizer.bundle.js",
 		"test": "vitest run"
 	},
 	"dependencies": {

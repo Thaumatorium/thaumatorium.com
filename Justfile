@@ -16,26 +16,26 @@ shell:
 
 alias s := serve
 serve *args:
-    @npm run build:html-cleaner
+    @npm run build:hypertext-token-killer
     @bash ./cmd/generate-page-changelogs.sh
     @hugo server --buildDrafts --port {{port}} --baseURL {{base_url}} --noHTTPCache --disableFastRender "$@"
 
 alias b := build
 build *args:
-    @npm run build:html-cleaner
+    @npm run build:hypertext-token-killer
     @bash ./cmd/generate-page-changelogs.sh
     @hugo --buildDrafts "$@"
     @just fmt
     @just fmt-public
 
-html-cleaner-assets:
-    @npm run build:html-cleaner
+hypertext-token-killer-assets:
+    @npm run build:hypertext-token-killer
 
-html-cleaner-test:
+hypertext-token-killer-test:
     @npm test
 
 publish:
-    @just html-cleaner-test
+    @just hypertext-token-killer-test
     @just build
 
 changelog:
