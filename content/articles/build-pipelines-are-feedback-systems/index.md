@@ -1,8 +1,8 @@
 ---
 title: "Build Pipelines Are Feedback Systems"
 description: "A practical way to think about build pipelines: fast feedback, deterministic builds, and fewer broken releases."
-publishDate: 2026-04-09T20:00:00+02:00
-lastmod: 2026-04-09T20:00:00+02:00
+publishDate: 9999-04-09T20:00:00+02:00
+lastmod: 9999-04-09T20:00:00+02:00
 layout: article
 draft: true
 ---
