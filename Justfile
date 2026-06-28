@@ -3,6 +3,7 @@ set positional-arguments
 
 port := "1314"
 base_url := "http://thaum.localhost:" + port + "/"
+publish_dir := "/home/david/dev/Thaumatorium/thaumatorium.github.io/branches/master"
 
 default:
     @just --list --unsorted
@@ -37,6 +38,14 @@ hypertext-token-killer-test:
 publish:
     @just hypertext-token-killer-test
     @just build
+    @just publish-copy
+
+publish-copy:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    target_dir={{quote(publish_dir)}}
+    test -d "$target_dir" || (echo "Publish target does not exist: $target_dir" >&2; exit 1)
+    rsync -a --exclude '.git' public/ "$target_dir"/
 
 changelog:
     @bash ./cmd/generate-page-changelogs.sh

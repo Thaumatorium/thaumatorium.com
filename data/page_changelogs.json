@@ -57,6 +57,11 @@
 	],
 	"articles/build-pipelines-are-feedback-systems/index.md": [
 		{
+			"date": "2026-06-28",
+			"hash": "60207d0",
+			"subject": "build-pipelines-are-feedback-systems: verstop de pagina"
+		},
+		{
 			"date": "2026-05-06",
 			"hash": "b542df1",
 			"subject": "Add draft article on build pipelines as feedback systems"

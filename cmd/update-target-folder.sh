@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
 git pull --recurse-submodules
 
 # maybe

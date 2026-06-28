@@ -10,9 +10,10 @@ This is my ~~handcrafted~~ _Hugo-generated_ website. I post [articles](/articles
 care enough about to make public.
 
 This site is basically 2 github repos: [one to contain the
-sourcecode](https://github.com/Thaumatorium/thaumatorium.com), with [a submodule I can generate
-into](https://github.com/Thaumatorium/thaumatorium.github.io), so I can push generated files to the second repo, which
-functions as host repo, using Github Pages or whatever it's called.
+sourcecode](https://github.com/Thaumatorium/thaumatorium.com), and [one to receive generated
+output](https://github.com/Thaumatorium/thaumatorium.github.io). I keep the second repo checked
+out separately and publish the built site into it, so it can function as the host repo for GitHub
+Pages.
 
 If you want more details about this site, check out the [About](/about) page.
 
