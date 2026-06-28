@@ -1,10 +1,36 @@
-# Devenv
-.devenv*
-devenv.local.nix
-devenv.local.yaml
+# ignore all direct items, nonrecursively
+/*
 
-# JavaScript dependencies
+# unignore folders
+!archetypes/
+!cmd/
+!content/
+!data/
+!docs/
+!html2yaml/
+!htmx-test/
+!layouts/
+!node_modules/
+!public/
+!scripts/
+!static/
+!tests/
+!yaml2json/
+
+# unignore files
+!.gitignore
+!Justfile
+!README.md
+!config.toml
+!devenv.lock
+!devenv.nix
+!network_topology.md
+!package-lock.json
+!package.json
+!vitest.config.js
+
+# reignore subfolders/files *anywhere* in the project
+__pycache__/
+*.egg-info
 node_modules/
-
-# direnv
-.direnv
+public/
