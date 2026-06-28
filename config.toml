@@ -4,6 +4,9 @@ title = 'Thaumatorium'
 subtitle = 'Where the Magic happens'
 enableGitInfo = true
 
+[security]
+allowContent = ['^text/html$', '^text/markdown$']
+
 [frontmatter]
 lastmod = [':git', 'lastmod', ':fileModTime', ':default']
 
