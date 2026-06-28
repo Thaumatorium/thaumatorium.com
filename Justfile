@@ -139,6 +139,10 @@ fmt-public:
     find public -type f -name '*.html' -print0 | while IFS= read -r -d '' file; do
       sed -i '/^[[:space:]]*$/d' "$file"
     done
+    find public -type f -name '*.xml' -print0 | while IFS= read -r -d '' file; do
+      sed -i '1{/^[[:space:]]*$/d;}' "$file"
+      xmllint --format "$file" --output "$file"
+    done
     oxfmt public
 
 fmt:
