@@ -1,7 +1,7 @@
 set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
 set positional-arguments
 
-port := "1313"
+port := "1314"
 base_url := "http://thaum.localhost:" + port + "/"
 
 default:
