@@ -15,6 +15,36 @@ describe("cleanHtml", () => {
 		expect(result.html).toBe("<h2>Heading</h2><p>Paragraph</p>");
 	});
 
+	it("preserves bare documentation placeholders as escaped text", () => {
+		const input = '<p data-renderer-start-pos="569" data-local-id="42ed97d2b754">ADR-<DOMAIN>-<NNNN> <Statement-on-decision></p>';
+		const expected = "<p>ADR-&lt;DOMAIN&gt;-&lt;NNNN&gt; &lt;Statement-on-decision&gt;</p>";
+		for (const profile of Object.values(PROFILES)) {
+			const result = cleanHtml(input, { ...profile, stripAttributes: true });
+			expect(result.html).toBe(expected);
+			expect(formatHtml(result.html)).toBe(expected);
+			expect(validateHtmlFragment(result.html).valid).toBe(true);
+			expect(cleanHtml(result.html, profile).html).toBe(expected);
+		}
+	});
+
+	it.each([
+		["<P><STRONG>Text</STRONG><BR>After</P>", "<p><strong>Text</strong><br>After</p>"],
+		["<My-Widget>Text</My-Widget>", "<my-widget>Text</my-widget>"],
+		['<DOMAIN title="hint">Text</DOMAIN>', "<domain>Text</domain>"],
+		["<domain>Text</domain>", "<domain>Text</domain>"],
+		['<p title="<DOMAIN>">Text</p>', "<p>Text</p>"],
+		["<p><DOMAIN><!-- </DOMAIN> --></p>", "<p>&lt;DOMAIN&gt;</p>"],
+		['<script>"</DOMAIN><NNNN>"</script><p><DOMAIN></p>', "<p>&lt;DOMAIN&gt;</p>"],
+		["<textarea><DOMAIN></textarea>", "<textarea>&lt;DOMAIN&gt;</textarea>"],
+		["<p><Script-name></p>", "<p>&lt;Script-name&gt;</p>"],
+		["<svg/><p><DOMAIN></p>", "<p>&lt;DOMAIN&gt;</p>"],
+		["<math><MI>x</MI></math><p><DOMAIN></p>", "<math><mi>x</mi></math><p>&lt;DOMAIN&gt;</p>"],
+		["<p>&lt;DOMAIN&gt; &amp; &lt;NNNN&gt;</p>", "<p>&lt;DOMAIN&gt; &amp; &lt;NNNN&gt;</p>"],
+		["<p><DOMAIN> trailing text <strong>kept</strong></p>", "<p>&lt;DOMAIN&gt; trailing text <strong>kept</strong></p>"],
+	])("distinguishes placeholders from markup and already escaped text: %s", (input, expected) => {
+		expect(cleanHtml(input).html).toBe(expected);
+	});
+
 	it("removes executable markup and unsafe attributes in every profile", () => {
 		for (const profile of Object.values(PROFILES)) {
 			const result = cleanHtml(`<p id="x" style="color:red" onclick="evil()">Safe<script>evil()</script></p><a href="javascript:evil()">Link</a>`, profile);
@@ -127,6 +157,14 @@ describe("cleanHtml", () => {
 });
 
 describe("formatHtml", () => {
+	it.each(["&lt;DOMAIN&gt; &amp; &lt;NNNN&gt;", "<p>&lt;DOMAIN&gt; &amp; &lt;NNNN&gt;</p>", "<article>&lt;script&gt;alert(1)&lt;/script&gt;<p>Text</p></article>"])("keeps escaped text inert after formatting: %s", (html) => {
+		const formatted = formatHtml(html);
+		const parsed = new DOMParser().parseFromString(formatted, "text/html");
+		expect(parsed.querySelector("domain, nnnn, script")).toBeNull();
+		expect(parsed.body.textContent.replace(/\s+/g, "")).toBe(new DOMParser().parseFromString(html, "text/html").body.textContent.replace(/\s+/g, ""));
+		expect(formatted).toContain("&lt;");
+	});
+
 	it("indents block structure while preserving inline content", () => {
 		const html = "<article><h1>Title</h1><p>Hello <strong>world</strong>.</p></article>";
 		expect(formatHtml(html)).toBe("<article>\n\t<h1>Title</h1>\n\t<p>Hello <strong>world</strong>.</p>\n</article>");
